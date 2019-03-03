@@ -1,0 +1,2 @@
+<div class="wpautoterms-cookies-notice"><?php echo $message; ?>
+	<a href="javascript:void(0);" class="wpautoterms-notice-close" value="<?php echo esc_attr($cookie_value); ?>" cookie="<?php echo esc_attr($cookie_name); ?>"><?php echo $close; ?></a></div>

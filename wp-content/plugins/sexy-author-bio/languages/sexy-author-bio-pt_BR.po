@@ -1,0 +1,183 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Author Bio v1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2013-12-22 20:11:34+0000\n"
+"Last-Translator: Andy Forsberg <andyforsberg@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: CSL v1.x\n"
+"X-Poedit-Language: Portuguese\n"
+"X-Poedit-Country: BRAZIL\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Textdomain-Support: yes"
+
+#: admin/class-sexy-author-bio-admin.php:88
+#@ sexy-author-bio
+msgid "Settings"
+msgstr "Configurações"
+
+#: admin/class-sexy-author-bio-admin.php:183
+#@ sexy-author-bio
+msgid "Facebook"
+msgstr "Facebook"
+
+#: admin/class-sexy-author-bio-admin.php:184
+#@ sexy-author-bio
+msgid "Twitter"
+msgstr "Twitter"
+
+#: admin/class-sexy-author-bio-admin.php:185
+#@ sexy-author-bio
+msgid "Google Plus"
+msgstr "Google Plus"
+
+#: admin/class-sexy-author-bio-admin.php:186
+#@ sexy-author-bio
+msgid "LinkedIn"
+msgstr "LinkedIn"
+
+#: admin/class-sexy-author-bio-admin.php:93
+#@ sexy-author-bio
+msgid "Display in"
+msgstr "Exibir em"
+
+#: admin/class-sexy-author-bio-admin.php:96
+#, php-format
+#@ sexy-author-bio
+msgid "You can display the box directly into your theme using: %s"
+msgstr "Você pode exibir o box diretamente em seu tema usando: %s"
+
+#: admin/class-sexy-author-bio-admin.php:100
+#@ sexy-author-bio
+msgid "Only in Posts"
+msgstr "Apenas em Posts"
+
+#: admin/class-sexy-author-bio-admin.php:101
+#@ sexy-author-bio
+msgid "Homepage and Posts"
+msgstr "Homepage e Posts"
+
+#: admin/class-sexy-author-bio-admin.php:102
+#: admin/class-sexy-author-bio-admin.php:154
+#@ sexy-author-bio
+msgid "None"
+msgstr "Nenhum"
+
+#: admin/class-sexy-author-bio-admin.php:106
+#@ sexy-author-bio
+msgid "Design"
+msgstr "Aparência"
+
+#: admin/class-sexy-author-bio-admin.php:111
+#@ sexy-author-bio
+msgid "Gravatar size"
+msgstr "Tamanho do Gravatar"
+
+#: admin/class-sexy-author-bio-admin.php:114
+#, php-format
+#@ sexy-author-bio
+msgid "Set the Gravatar size (only integers). To configure the profile picture of the author you need to register in %s."
+msgstr "Configure o tamanho do Gravatar (aceita apenas números inteiros). Para configurar a imagem do perfil do autor é necessário fazer cadastro em %s."
+
+#: admin/class-sexy-author-bio-admin.php:119
+#@ sexy-author-bio
+msgid "Background color"
+msgstr "Cor de fundo"
+
+#: admin/class-sexy-author-bio-admin.php:126
+#@ sexy-author-bio
+msgid "Text color"
+msgstr "Cor do texto"
+
+#: admin/class-sexy-author-bio-admin.php:133
+#@ sexy-author-bio
+msgid "Title color"
+msgstr "Cor do título"
+
+#: admin/class-sexy-author-bio-admin.php:140
+#@ sexy-author-bio
+msgid "Border size"
+msgstr "Cor da borda"
+
+#: admin/class-sexy-author-bio-admin.php:144
+#@ sexy-author-bio
+msgid "Thickness of the top and bottom edge of the box (only integers)."
+msgstr "Configura a largura da borda no topo e rodapé do box (aceita apenas números inteiros)."
+
+#: admin/class-sexy-author-bio-admin.php:148
+#@ sexy-author-bio
+msgid "Border style"
+msgstr "Estilo da borda"
+
+#: admin/class-sexy-author-bio-admin.php:155
+#@ sexy-author-bio
+msgid "Solid"
+msgstr "Sólida"
+
+#: admin/class-sexy-author-bio-admin.php:156
+#@ sexy-author-bio
+msgid "Dotted"
+msgstr "Pontilhada"
+
+#: admin/class-sexy-author-bio-admin.php:157
+#@ sexy-author-bio
+msgid "Dashed"
+msgstr "Tracejada"
+
+#: admin/class-sexy-author-bio-admin.php:161
+#@ sexy-author-bio
+msgid "Border color"
+msgstr "Cor da borda"
+
+#. translators: plugin header field 'Name'
+#: admin/class-sexy-author-bio-admin.php:234
+#: admin/class-sexy-author-bio-admin.php:235
+#: sexy-author-bio.php:0
+#@ sexy-author-bio
+msgid "WP Author Bio"
+msgstr "WP Author Bio"
+
+#. translators: plugin header field 'PluginURI'
+#: sexy-author-bio.php:0
+#@ sexy-author-bio
+msgid "https://github.com/claudiosmweb/sexy-author-bio"
+msgstr "https://github.com/claudiosmweb/sexy-author-bio"
+
+#. translators: plugin header field 'Description'
+#: sexy-author-bio.php:0
+#@ sexy-author-bio
+msgid "Display a box with the author's biography and also social icons in bottom of the post."
+msgstr "Exibe uma caixa com a biografia do autor e também ícones sociais no final do post."
+
+#. translators: plugin header field 'Author'
+#: sexy-author-bio.php:0
+#@ sexy-author-bio
+msgid "penguininitiatives"
+msgstr "penguininitiatives"
+
+#. translators: plugin header field 'AuthorURI'
+#: sexy-author-bio.php:0
+#@ sexy-author-bio
+msgid "http://claudiosmweb.com/"
+msgstr "http://claudiosmweb.com/"
+
+#: public/class-sexy-author-bio.php:340
+#@ sexy-author-bio
+msgid "All posts by"
+msgstr "Todos os posts por"
+
+#. translators: plugin header field 'Version'
+#: sexy-author-bio.php:0
+#@ sexy-author-bio
+msgid "1.0.0"
+msgstr "1.0.0"
+

@@ -1,0 +1,1 @@
+<?php/** * Dynamic css generation file * */?><?phpheader( "Content-type: text/css; charset: UTF-8" );echo LP_dynamic_options_v2();echo listingpro_dynamic_options(); ?>

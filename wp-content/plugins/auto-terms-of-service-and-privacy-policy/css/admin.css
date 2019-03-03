@@ -1,0 +1,160 @@
+.inline-row-action-summary {
+    display: block;
+    width: 100% !important;
+}
+
+#legal-page-create-selector {
+    display: none;
+}
+
+#legal-page-create-selector ul {
+    list-style-type: none;
+}
+
+ul.legal-pages-form-checkbox-group,
+ul.legal-pages-form-radio {
+    list-style-type: none;
+}
+
+.wpautoterms-nopadding {
+    padding: 0;
+}
+
+.wpautoterms-nomargin {
+    margin: 0;
+}
+
+.wpautoterms-topalign {
+    vertical-align: top;
+}
+
+.wpautoterms-fullwidth {
+    width: 100%;
+}
+
+.wpautoterms-options-header,
+.wpautoterms-options-box {
+    width: 300px;
+    float: left;
+    margin: 1em 1em 0 0 !important;
+    background: none;
+}
+
+.wpautoterms-options-header {
+    border: 0;
+    box-shadow: none;
+}
+
+.wpautoterms-options-header h3 {
+    padding: 8px 0;
+    margin: 0;
+}
+
+.wpautoterms-options-box {
+    height: 180px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+
+.wpautoterms-options-box.wpautoterms-paid {
+    background-color: beige;
+}
+
+.wpautoterms-options-box h3 {
+    padding: 8px 12px;
+    margin: 0;
+}
+
+.wpautoterms-options-box .inside {
+    padding: 0 12px;
+}
+
+.wpautoterms-options-box .box-status {
+    color: #000;
+}
+
+.wpautoterms-options-box .box-status.enabled {
+    color: green;
+}
+
+.wpautoterms-options-box .box-status.disabled {
+    color: #888;
+}
+
+.wpautoterms-box-enable-button {
+    position: absolute;
+    bottom: 8px;
+    left: 12px;
+}
+
+.wpautoterms-box-configure-button {
+    position: absolute;
+    bottom: 8px;
+    right: 12px;
+}
+
+.wpautoterms-box-page-submit {
+    float: left;
+}
+
+.wpautoterms-box-page-back {
+    float: left;
+    padding: 5px 0 0 20px
+}
+
+.wpautoterms-hidden {
+    display: none;
+}
+
+.wpautoterms-options-select-combo .inside {
+    padding: 4px;
+}
+
+.wpautoterms-option-required {
+    color: red;
+}
+
+.wpautoterms-form-errors {
+    color: red;
+    padding: 10px 0 0 0;
+    margin: 0;
+}
+
+.wpautoterms-recheck-license-button {
+    display: inline;
+    margin-left: 1em;
+}
+
+.wpautoterms-recheck-license-button a {
+    vertical-align: inherit !important;
+}
+
+.wpautoterms-button-disabled {
+    pointer-events: none;
+    color: lightgray !important;
+}
+
+.wpautoterms-license-key {
+    width: 24em;
+}
+
+.wpautoterms-option-info {
+    padding: 5px 2px;
+}
+
+.wpautoterms-pull-right {
+    float: right;
+}
+
+.wpautoterms-clear {
+    clear: both;
+}
+
+.wpautoterms-wrapper {
+    display: inline-block;
+}
+
+.wpautoterms-resize-both {
+    resize: both;
+}

@@ -1,0 +1,1 @@
+<p style="clear:both"><?php echo esc_html__('Sorry! There is no coupon', 'listingpro-plugin'); ?></p>
