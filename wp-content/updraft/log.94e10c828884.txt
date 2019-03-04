@@ -1,0 +1,303 @@
+0000.002 (0) Opened log file at time: Mon, 04 Mar 2019 01:31:24 +0000 on http://dev-lokalpam.test
+0000.005 (0) UpdraftPlus WordPress backup plugin (https://updraftplus.com): 1.14.12 WP: 5.0.3 PHP: 7.1.1 (apache2handler, Darwin netero.local 18.2.0 Darwin Kernel Version 18.2.0: Thu Dec 20 20:46:53 PST 2018; root:xnu-4903.241.1~1/RELEASE_X86_64 x86_64) MySQL: 5.6.35 WPLANG: en_US Server: Apache/2.2.31 (Unix) mod_wsgi/3.5 Python/2.7.13 PHP/7.1.1 mod_ssl/2.2.31 OpenSSL/1.0.2j DAV/2 mod_fastcgi/2.4.6 mod_perl/2.0.9 Perl/v5.24.0 safe_mode: 0 max_execution_time: 900 memory_limit: 256M (used: 64.6M | 70M) multisite: N openssl: OpenSSL 1.0.2j  26 Sep 2016 mcrypt: Y LANG:  ZipArchive::addFile: Y
+0000.007 (0) Free space on disk containing Updraft's temporary directory: 10057.7 MB
+0000.017 (0) Tasks: Backup files:  (schedule: weekly) Backup DB: 1 (schedule: daily)
+0000.019 (0) Processed schedules. Tasks now: Backup files:  Backup DB: 1
+0000.035 (0) Requesting semaphore lock (d) (apparently via scheduler: last_scheduled_action_called_at=1544513362, seconds_ago=7149722)
+0000.040 (0) Set semaphore last lock (d) time to 2019-03-04 01:31:24
+0000.042 (0) Semaphore lock (d) complete
+0000.051 (0) Backup run: resumption=0, nonce=94e10c828884, begun at=1551663084 (0s ago), job type=backup
+0000.055 (0) Scheduling a resumption (1) after 300 seconds (1551663384) in case this run gets aborted
+0000.085 (0) This backup run is not intended for files - skipping
+0000.087 (0) Beginning creation of database dump (WordPress DB)
+0000.094 (0) Testing: /usr/local/bin/mysqldump
+0000.213 (0) Binary mysqldump: error (code: 2)
+0000.232 (0) Table wp_options: Total expected rows (approximate): 944
+0000.556 (0) Table wp_options: Total rows added: 937 in 0.32 seconds
+0000.559 (0) Table wp_options: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_options.table.gz - 615.8 KB)
+0000.570 (0) Table wp_users: Total expected rows (approximate): 57
+0000.582 (0) Table wp_users: Total rows added: 57 in 0.01 seconds
+0000.585 (0) Table wp_users: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_users.table.gz - 4.6 KB)
+0000.594 (0) Table wp_usermeta: Total expected rows (approximate): 1738
+0000.656 (0) Table wp_usermeta: Total rows added: 1738 in 0.06 seconds
+0000.659 (0) Table wp_usermeta: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_usermeta.table.gz - 28.8 KB)
+0000.666 (0) Table wp_commentmeta: Total expected rows (approximate): 0
+0000.672 (0) Table wp_commentmeta: Total rows added: 0 in 0.00 seconds
+0000.674 (0) Table wp_commentmeta: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_commentmeta.table.gz - 0.4 KB)
+0000.681 (0) Table wp_comments: Total expected rows (approximate): 48
+0000.692 (0) Table wp_comments: Total rows added: 48 in 0.01 seconds
+0000.694 (0) Table wp_comments: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_comments.table.gz - 1.7 KB)
+0000.702 (0) Table wp_links: Total expected rows (approximate): 0
+0000.710 (0) Table wp_links: Total rows added: 0 in 0.01 seconds
+0000.712 (0) Table wp_links: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_links.table.gz - 0.4 KB)
+0000.720 (0) Table wp_postmeta: Total expected rows (approximate): 4736
+0000.912 (0) Table wp_postmeta: Total rows added: 4736 in 0.19 seconds
+0000.916 (0) Table wp_postmeta: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_postmeta.table.gz - 117 KB)
+0000.924 (0) Table wp_posts: Total expected rows (approximate): 734
+0001.038 (0) Table wp_posts: Total rows added: 734 in 0.11 seconds
+0001.041 (0) Table wp_posts: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_posts.table.gz - 67.6 KB)
+0001.049 (0) Table wp_term_relationships: Total expected rows (approximate): 2860
+0001.109 (0) Table wp_term_relationships: Total rows added: 2860 in 0.06 seconds
+0001.113 (0) Table wp_term_relationships: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_term_relationships.table.gz - 7.9 KB)
+0001.121 (0) Table wp_term_taxonomy: Total expected rows (approximate): 1528
+0001.175 (0) Table wp_term_taxonomy: Total rows added: 1528 in 0.05 seconds
+0001.179 (0) Table wp_term_taxonomy: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_term_taxonomy.table.gz - 9.5 KB)
+0001.187 (0) Table wp_termmeta: Total expected rows (approximate): 85
+0001.199 (0) Table wp_termmeta: Total rows added: 85 in 0.01 seconds
+0001.202 (0) Table wp_termmeta: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_termmeta.table.gz - 4.3 KB)
+0001.211 (0) Table wp_terms: Total expected rows (approximate): 1528
+0001.268 (0) Table wp_terms: Total rows added: 1528 in 0.06 seconds
+0001.273 (0) Table wp_terms: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_terms.table.gz - 22.1 KB)
+0001.285 (0) Table wp_woocommerce_order_itemmeta: Total expected rows (approximate): 273
+0001.307 (0) Table wp_woocommerce_order_itemmeta: Total rows added: 375 in 0.02 seconds
+0001.310 (0) Table wp_woocommerce_order_itemmeta: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_order_itemmeta.table.gz - 3.3 KB)
+0001.322 (0) Table wp_woocommerce_payment_tokenmeta: Total expected rows (approximate): 0
+0001.329 (0) Table wp_woocommerce_payment_tokenmeta: Total rows added: 0 in 0.00 seconds
+0001.331 (0) Table wp_woocommerce_payment_tokenmeta: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_payment_tokenmeta.table.gz - 0.4 KB)
+0001.343 (0) Table wp_itsec_distributed_storage: Total expected rows (approximate): 13
+0001.667 (0) Table wp_itsec_distributed_storage: Total rows added: 13 in 0.32 seconds
+0001.669 (0) Table wp_itsec_distributed_storage: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_itsec_distributed_storage.table.gz - 538.6 KB)
+0001.677 (0) Table wp_itsec_lockouts: Total expected rows (approximate): 14
+0001.687 (0) Table wp_itsec_lockouts: Total rows added: 14 in 0.01 seconds
+0001.689 (0) Table wp_itsec_lockouts: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_itsec_lockouts.table.gz - 0.8 KB)
+0001.718 (0) Table wp_itsec_logs: Total expected rows (approximate): 1399
+0002.023 (0) Table wp_itsec_logs: Total rows added: 1449 in 0.30 seconds
+0002.027 (0) Table wp_itsec_logs: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_itsec_logs.table.gz - 214.7 KB)
+0002.037 (0) Table wp_itsec_temp: Total expected rows (approximate): 84
+0002.048 (0) Table wp_itsec_temp: Total rows added: 84 in 0.01 seconds
+0002.051 (0) Table wp_itsec_temp: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_itsec_temp.table.gz - 1.4 KB)
+0002.060 (0) Table wp_listing_orders: Total expected rows (approximate): 11
+0002.071 (0) Table wp_listing_orders: Total rows added: 11 in 0.01 seconds
+0002.073 (0) Table wp_listing_orders: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_listing_orders.table.gz - 1 KB)
+0002.086 (0) Table wp_listing_stats: Total expected rows (approximate): 5398
+0002.369 (0) Table wp_listing_stats: Total rows added: 5433 in 0.28 seconds
+0002.372 (0) Table wp_listing_stats: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_listing_stats.table.gz - 42.9 KB)
+0002.382 (0) Table wp_sg_fblike_popup: Total expected rows (approximate): 0
+0002.389 (0) Table wp_sg_fblike_popup: Total rows added: 0 in 0.00 seconds
+0002.391 (0) Table wp_sg_fblike_popup: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_sg_fblike_popup.table.gz - 0.3 KB)
+0002.401 (0) Table wp_sg_html_popup: Total expected rows (approximate): 0
+0002.408 (0) Table wp_sg_html_popup: Total rows added: 0 in 0.00 seconds
+0002.410 (0) Table wp_sg_html_popup: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_sg_html_popup.table.gz - 0.2 KB)
+0002.420 (0) Table wp_sg_image_popup: Total expected rows (approximate): 1
+0002.427 (0) Table wp_sg_image_popup: Total rows added: 1 in 0.01 seconds
+0002.430 (0) Table wp_sg_image_popup: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_sg_image_popup.table.gz - 0.3 KB)
+0002.440 (0) Table wp_sg_popup: Total expected rows (approximate): 1
+0002.447 (0) Table wp_sg_popup: Total rows added: 1 in 0.01 seconds
+0002.450 (0) Table wp_sg_popup: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_sg_popup.table.gz - 1.6 KB)
+0002.460 (0) Table wp_sg_popup_addons: Total expected rows (approximate): 0
+0002.467 (0) Table wp_sg_popup_addons: Total rows added: 0 in 0.01 seconds
+0002.470 (0) Table wp_sg_popup_addons: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_sg_popup_addons.table.gz - 0.3 KB)
+0002.480 (0) Table wp_sg_popup_addons_connection: Total expected rows (approximate): 0
+0002.487 (0) Table wp_sg_popup_addons_connection: Total rows added: 0 in 0.01 seconds
+0002.490 (0) Table wp_sg_popup_addons_connection: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_sg_popup_addons_connection.table.gz - 0.3 KB)
+0002.500 (0) Table wp_sg_popup_settings: Total expected rows (approximate): 1
+0002.507 (0) Table wp_sg_popup_settings: Total rows added: 1 in 0.01 seconds
+0002.510 (0) Table wp_sg_popup_settings: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_sg_popup_settings.table.gz - 0.4 KB)
+0002.521 (0) Table wp_sg_shortCode_popup: Total expected rows (approximate): 0
+0002.527 (0) Table wp_sg_shortCode_popup: Total rows added: 0 in 0.00 seconds
+0002.529 (0) Table wp_sg_shortCode_popup: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_sg_shortCode_popup.table.gz - 0.2 KB)
+0002.540 (0) Table wp_sgpb_subscribers: Total expected rows (approximate): 0
+0002.548 (0) Table wp_sgpb_subscribers: Total rows added: 0 in 0.01 seconds
+0002.550 (0) Table wp_sgpb_subscribers: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_sgpb_subscribers.table.gz - 0.3 KB)
+0002.561 (0) Table wp_sgpb_subscription_error_log: Total expected rows (approximate): 0
+0002.568 (0) Table wp_sgpb_subscription_error_log: Total rows added: 0 in 0.00 seconds
+0002.571 (0) Table wp_sgpb_subscription_error_log: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_sgpb_subscription_error_log.table.gz - 0.3 KB)
+0002.580 (0) Table wp_social_users: Total expected rows (approximate): 16
+0002.589 (0) Table wp_social_users: Total rows added: 16 in 0.01 seconds
+0002.591 (0) Table wp_social_users: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_social_users.table.gz - 0.6 KB)
+0002.602 (0) Table wp_wc_download_log: Total expected rows (approximate): 0
+0002.611 (0) Table wp_wc_download_log: Total rows added: 0 in 0.01 seconds
+0002.613 (0) Table wp_wc_download_log: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_wc_download_log.table.gz - 0.4 KB)
+0002.624 (0) Table wp_wc_webhooks: Total expected rows (approximate): 0
+0002.631 (0) Table wp_wc_webhooks: Total rows added: 0 in 0.01 seconds
+0002.634 (0) Table wp_wc_webhooks: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_wc_webhooks.table.gz - 0.5 KB)
+0002.644 (0) Table wp_woocommerce_api_keys: Total expected rows (approximate): 0
+0002.650 (0) Table wp_woocommerce_api_keys: Total rows added: 0 in 0.00 seconds
+0002.652 (0) Table wp_woocommerce_api_keys: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_api_keys.table.gz - 0.4 KB)
+0002.661 (0) Table wp_woocommerce_attribute_taxonomies: Total expected rows (approximate): 0
+0002.668 (0) Table wp_woocommerce_attribute_taxonomies: Total rows added: 0 in 0.00 seconds
+0002.669 (0) Table wp_woocommerce_attribute_taxonomies: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_attribute_taxonomies.table.gz - 0.4 KB)
+0002.679 (0) Table wp_woocommerce_downloadable_product_permissions: Total expected rows (approximate): 0
+0002.686 (0) Table wp_woocommerce_downloadable_product_permissions: Total rows added: 0 in 0.01 seconds
+0002.688 (0) Table wp_woocommerce_downloadable_product_permissions: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_downloadable_product_permissions.table.gz - 0.5 KB)
+0002.698 (0) Table wp_woocommerce_log: Total expected rows (approximate): 0
+0002.705 (0) Table wp_woocommerce_log: Total rows added: 0 in 0.00 seconds
+0002.708 (0) Table wp_woocommerce_log: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_log.table.gz - 0.4 KB)
+0002.718 (0) Table wp_woocommerce_order_items: Total expected rows (approximate): 33
+0002.727 (0) Table wp_woocommerce_order_items: Total rows added: 33 in 0.01 seconds
+0002.729 (0) Table wp_woocommerce_order_items: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_order_items.table.gz - 0.6 KB)
+0002.740 (0) Table wp_woocommerce_payment_tokens: Total expected rows (approximate): 0
+0002.747 (0) Table wp_woocommerce_payment_tokens: Total rows added: 0 in 0.01 seconds
+0002.749 (0) Table wp_woocommerce_payment_tokens: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_payment_tokens.table.gz - 0.4 KB)
+0002.759 (0) Table wp_woocommerce_sessions: Total expected rows (approximate): 0
+0002.765 (0) Table wp_woocommerce_sessions: Total rows added: 0 in 0.00 seconds
+0002.768 (0) Table wp_woocommerce_sessions: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_sessions.table.gz - 0.4 KB)
+0002.779 (0) Table wp_woocommerce_shipping_zone_locations: Total expected rows (approximate): 0
+0002.786 (0) Table wp_woocommerce_shipping_zone_locations: Total rows added: 0 in 0.01 seconds
+0002.788 (0) Table wp_woocommerce_shipping_zone_locations: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_shipping_zone_locations.table.gz - 0.4 KB)
+0002.798 (0) Table wp_woocommerce_shipping_zone_methods: Total expected rows (approximate): 0
+0002.806 (0) Table wp_woocommerce_shipping_zone_methods: Total rows added: 0 in 0.01 seconds
+0002.808 (0) Table wp_woocommerce_shipping_zone_methods: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_shipping_zone_methods.table.gz - 0.4 KB)
+0002.818 (0) Table wp_woocommerce_shipping_zones: Total expected rows (approximate): 0
+0002.825 (0) Table wp_woocommerce_shipping_zones: Total rows added: 0 in 0.00 seconds
+0002.828 (0) Table wp_woocommerce_shipping_zones: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_shipping_zones.table.gz - 0.3 KB)
+0002.837 (0) Table wp_woocommerce_tax_rate_locations: Total expected rows (approximate): 0
+0002.844 (0) Table wp_woocommerce_tax_rate_locations: Total rows added: 0 in 0.00 seconds
+0002.846 (0) Table wp_woocommerce_tax_rate_locations: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_tax_rate_locations.table.gz - 0.4 KB)
+0002.857 (0) Table wp_woocommerce_tax_rates: Total expected rows (approximate): 0
+0002.864 (0) Table wp_woocommerce_tax_rates: Total rows added: 0 in 0.01 seconds
+0002.867 (0) Table wp_woocommerce_tax_rates: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_tax_rates.table.gz - 0.4 KB)
+0002.878 (0) Table wp_wpforms_entries: Total expected rows (approximate): 9
+0002.888 (0) Table wp_wpforms_entries: Total rows added: 9 in 0.01 seconds
+0002.890 (0) Table wp_wpforms_entries: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_wpforms_entries.table.gz - 3.9 KB)
+0002.899 (0) Table wp_wpforms_entry_fields: Total expected rows (approximate): 138
+0002.913 (0) Table wp_wpforms_entry_fields: Total rows added: 138 in 0.01 seconds
+0002.915 (0) Table wp_wpforms_entry_fields: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_wpforms_entry_fields.table.gz - 2.7 KB)
+0002.925 (0) Table wp_wpforms_entry_meta: Total expected rows (approximate): 0
+0002.932 (0) Table wp_wpforms_entry_meta: Total rows added: 0 in 0.01 seconds
+0002.934 (0) Table wp_wpforms_entry_meta: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_wpforms_entry_meta.table.gz - 0.4 KB)
+0002.943 (0) Table wp_yoast_seo_links: Total expected rows (approximate): 65
+0002.951 (0) Table wp_yoast_seo_links: Total rows added: 65 in 0.01 seconds
+0002.954 (0) Table wp_yoast_seo_links: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_yoast_seo_links.table.gz - 1.1 KB)
+0002.961 (0) Table wp_yoast_seo_meta: Total expected rows (approximate): 489
+0002.975 (0) Table wp_yoast_seo_meta: Total rows added: 489 in 0.01 seconds
+0002.978 (0) Table wp_yoast_seo_meta: finishing file (backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_yoast_seo_meta.table.gz - 1.5 KB)
+0002.983 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_options.table.gz (1/50): adding to final database dump
+0003.280 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_users.table.gz (2/50): adding to final database dump
+0003.284 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_usermeta.table.gz (3/50): adding to final database dump
+0003.304 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_commentmeta.table.gz (4/50): adding to final database dump
+0003.307 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_comments.table.gz (5/50): adding to final database dump
+0003.311 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_links.table.gz (6/50): adding to final database dump
+0003.313 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_postmeta.table.gz (7/50): adding to final database dump
+0003.421 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_posts.table.gz (8/50): adding to final database dump
+0003.468 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_term_relationships.table.gz (9/50): adding to final database dump
+0003.486 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_term_taxonomy.table.gz (10/50): adding to final database dump
+0003.500 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_termmeta.table.gz (11/50): adding to final database dump
+0003.506 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_terms.table.gz (12/50): adding to final database dump
+0003.523 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_order_itemmeta.table.gz (13/50): adding to final database dump
+0003.529 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_payment_tokenmeta.table.gz (14/50): adding to final database dump
+0003.531 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_itsec_distributed_storage.table.gz (15/50): adding to final database dump
+0003.805 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_itsec_lockouts.table.gz (16/50): adding to final database dump
+0003.808 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_itsec_logs.table.gz (17/50): adding to final database dump
+0003.973 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_itsec_temp.table.gz (18/50): adding to final database dump
+0003.976 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_listing_orders.table.gz (19/50): adding to final database dump
+0003.979 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_listing_stats.table.gz (20/50): adding to final database dump
+0004.034 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_sg_fblike_popup.table.gz (21/50): adding to final database dump
+0004.036 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_sg_html_popup.table.gz (22/50): adding to final database dump
+0004.038 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_sg_image_popup.table.gz (23/50): adding to final database dump
+0004.040 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_sg_popup.table.gz (24/50): adding to final database dump
+0004.042 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_sg_popup_addons.table.gz (25/50): adding to final database dump
+0004.045 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_sg_popup_addons_connection.table.gz (26/50): adding to final database dump
+0004.047 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_sg_popup_settings.table.gz (27/50): adding to final database dump
+0004.050 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_sg_shortCode_popup.table.gz (28/50): adding to final database dump
+0004.052 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_sgpb_subscribers.table.gz (29/50): adding to final database dump
+0004.054 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_sgpb_subscription_error_log.table.gz (30/50): adding to final database dump
+0004.056 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_social_users.table.gz (31/50): adding to final database dump
+0004.058 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_wc_download_log.table.gz (32/50): adding to final database dump
+0004.060 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_wc_webhooks.table.gz (33/50): adding to final database dump
+0004.062 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_api_keys.table.gz (34/50): adding to final database dump
+0004.065 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_attribute_taxonomies.table.gz (35/50): adding to final database dump
+0004.067 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_downloadable_product_permissions.table.gz (36/50): adding to final database dump
+0004.071 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_log.table.gz (37/50): adding to final database dump
+0004.073 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_order_items.table.gz (38/50): adding to final database dump
+0004.075 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_payment_tokens.table.gz (39/50): adding to final database dump
+0004.077 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_sessions.table.gz (40/50): adding to final database dump
+0004.079 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_shipping_zone_locations.table.gz (41/50): adding to final database dump
+0004.081 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_shipping_zone_methods.table.gz (42/50): adding to final database dump
+0004.083 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_shipping_zones.table.gz (43/50): adding to final database dump
+0004.086 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_tax_rate_locations.table.gz (44/50): adding to final database dump
+0004.089 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_woocommerce_tax_rates.table.gz (45/50): adding to final database dump
+0004.091 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_wpforms_entries.table.gz (46/50): adding to final database dump
+0004.095 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_wpforms_entry_fields.table.gz (47/50): adding to final database dump
+0004.098 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_wpforms_entry_meta.table.gz (48/50): adding to final database dump
+0004.100 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_yoast_seo_links.table.gz (49/50): adding to final database dump
+0004.104 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db-table-wp_yoast_seo_meta.table.gz (50/50): adding to final database dump
+0004.109 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db.gz: finished writing out complete database file (1688 KB)
+0004.211 (0) Total database tables backed up: 50 (backup_2019-03-04-0131_lokalPam_94e10c828884-db.gz, size: 1736512, sha256)
+0004.231 (0) backup_2019-03-04-0131_lokalPam_94e10c828884-db.gz: db: This file has not yet been successfully uploaded: will queue
+0004.233 (0) Saving backup history. Total backup size: 1.7 MB
+0004.243 (0) Requesting upload of the files that have not yet been successfully uploaded (1)
+0004.250 (0) Cloud backup selection (1/1): googledrive with instance (1/1) (last)
+0004.252 (0) Beginning dispatch of backup to remote (googledrive) (instance identifier s-44ce23bc36356072666b7ad9c78c7c43)
+0005.206 (0) ERROR: Have not yet obtained an access token from Google (has the user authorised?) (Invalid request (refresh token not present).) (no_refresh_token)
+0005.208 (0) An error condition has occurred for the first time during this job
+0005.212 (0) Retain: beginning examination of existing backup sets; user setting: retain_files=2, retain_db=14
+0005.216 (0) Number of backup sets in history: 17; groups (db): 1
+0005.218 (0) Examining (for databases) backup set with group_id=0, nonce=94e10c828884, datestamp=1551663084 (Mar 04 2019 01:31:24)
+0005.219 (0) This backup set is the backup set just made, so will not be deleted.
+0005.219 (0) Examining (for databases) backup set with group_id=0, nonce=70815c1bca6c, datestamp=1544513362 (Dec 11 2018 07:29:22)
+0005.219 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.221 (0) Examining (for databases) backup set with group_id=0, nonce=60718a52ffce, datestamp=1544427080 (Dec 10 2018 07:31:20)
+0005.221 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.221 (0) Examining (for databases) backup set with group_id=0, nonce=3c22bf718bc1, datestamp=1544340686 (Dec 09 2018 07:31:26)
+0005.222 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.222 (0) Examining (for databases) backup set with group_id=0, nonce=b6b26a4818e3, datestamp=1544254261 (Dec 08 2018 07:31:01)
+0005.222 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.222 (0) Examining (for databases) backup set with group_id=0, nonce=2544b18631c0, datestamp=1544167747 (Dec 07 2018 07:29:07)
+0005.222 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.222 (0) Examining (for databases) backup set with group_id=0, nonce=778675d69dc5, datestamp=1544081508 (Dec 06 2018 07:31:48)
+0005.222 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.223 (0) Examining (for databases) backup set with group_id=0, nonce=4f1a3b1069da, datestamp=1543995321 (Dec 05 2018 07:35:21)
+0005.223 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.223 (0) Examining (for databases) backup set with group_id=0, nonce=423499493b07, datestamp=1543908613 (Dec 04 2018 07:30:13)
+0005.223 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.223 (0) Examining (for databases) backup set with group_id=0, nonce=cf36a28fb449, datestamp=1543822300 (Dec 03 2018 07:31:40)
+0005.223 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.224 (0) Examining (for databases) backup set with group_id=0, nonce=3c6608decf94, datestamp=1543736229 (Dec 02 2018 07:37:09)
+0005.224 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.224 (0) Examining (for databases) backup set with group_id=0, nonce=c422a97bb221, datestamp=1543649360 (Dec 01 2018 07:29:20)
+0005.224 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.224 (0) Examining (for databases) backup set with group_id=0, nonce=6c0177f87726, datestamp=1543563505 (Nov 30 2018 07:38:25)
+0005.224 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.225 (0) Examining (for databases) backup set with group_id=0, nonce=15c2a3297348, datestamp=1543476549 (Nov 29 2018 07:29:09)
+0005.225 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.225 (0) Examining (for databases) backup set with group_id=0, nonce=48ab3bd66e99, datestamp=1543390555 (Nov 28 2018 07:35:55)
+0005.225 (0) 1543390555: db: this set includes a database (backup_2018-11-28-0735_lokalPam_48ab3bd66e99-db.gz); db count is now 14
+0005.225 (0) 1543390555: db: over retain limit (14); will delete this database
+0005.225 (0) Delete file: backup_2018-11-28-0735_lokalPam_48ab3bd66e99-db.gz, service=googledrive
+0005.925 (0) ERROR: Have not yet obtained an access token from Google (has the user authorised?) (Invalid request (refresh token not present).) (no_refresh_token)
+0005.930 (0) This backup set is now empty; will remove from history
+0005.932 (0) Corresponding log file (log.48ab3bd66e99.txt) not found - must have already been deleted
+0005.934 (0) Examining (for databases) backup set with group_id=0, nonce=24d0d8bd05fc, datestamp=1538638282 (Oct 04 2018 07:31:22)
+0005.934 (0) Examining (for databases) backup set with group_id=0, nonce=fca9dc5ddf55, datestamp=1538033436 (Sep 27 2018 07:30:36)
+0005.934 (0) Number of backup sets in history: 16; groups (files): 1
+0005.935 (0) Examining (for files) backup set with nonce=94e10c828884, datestamp=1551663084 (Mar 04 2019 01:31:24)
+0005.936 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.937 (0) Examining (for files) backup set with nonce=70815c1bca6c, datestamp=1544513362 (Dec 11 2018 07:29:22)
+0005.937 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.938 (0) Examining (for files) backup set with nonce=60718a52ffce, datestamp=1544427080 (Dec 10 2018 07:31:20)
+0005.938 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.938 (0) Examining (for files) backup set with nonce=3c22bf718bc1, datestamp=1544340686 (Dec 09 2018 07:31:26)
+0005.938 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.939 (0) Examining (for files) backup set with nonce=b6b26a4818e3, datestamp=1544254261 (Dec 08 2018 07:31:01)
+0005.939 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.939 (0) Examining (for files) backup set with nonce=2544b18631c0, datestamp=1544167747 (Dec 07 2018 07:29:07)
+0005.939 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.940 (0) Examining (for files) backup set with nonce=778675d69dc5, datestamp=1544081508 (Dec 06 2018 07:31:48)
+0005.940 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.940 (0) Examining (for files) backup set with nonce=4f1a3b1069da, datestamp=1543995321 (Dec 05 2018 07:35:21)
+0005.940 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.940 (0) Examining (for files) backup set with nonce=423499493b07, datestamp=1543908613 (Dec 04 2018 07:30:13)
+0005.940 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.941 (0) Examining (for files) backup set with nonce=cf36a28fb449, datestamp=1543822300 (Dec 03 2018 07:31:40)
+0005.941 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.941 (0) Examining (for files) backup set with nonce=3c6608decf94, datestamp=1543736229 (Dec 02 2018 07:37:09)
+0005.941 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.941 (0) Examining (for files) backup set with nonce=c422a97bb221, datestamp=1543649360 (Dec 01 2018 07:29:20)
+0005.941 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.942 (0) Examining (for files) backup set with nonce=6c0177f87726, datestamp=1543563505 (Nov 30 2018 07:38:25)
+0005.942 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.942 (0) Examining (for files) backup set with nonce=15c2a3297348, datestamp=1543476549 (Nov 29 2018 07:29:09)
+0005.942 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0005.942 (0) Examining (for files) backup set with nonce=24d0d8bd05fc, datestamp=1538638282 (Oct 04 2018 07:31:22)
+0005.942 (0) This backup set remains non-empty (f=1/d=0); will retain in history
+0005.944 (0) Examining (for files) backup set with nonce=fca9dc5ddf55, datestamp=1538033436 (Sep 27 2018 07:30:36)
+0005.944 (0) This backup set remains non-empty (f=1/d=0); will retain in history
+0005.944 (0) Retain: saving new backup history (sets now: 16) and finishing retain operation
+0005.953 (0) Resume backup (94e10c828884, 0): finish run
+0005.958 (0) Decremented the semaphore (d) by 1
+0005.961 (0) Semaphore (d) unlocked
+0005.963 (0) There were errors in the uploads, so the 'resume' event is remaining scheduled
+0005.971 (0) Rescheduling resumption 1: moving to 120 seconds from now (1551663210)
+0005.976 (0) No email will/can be sent - the user has not configured an email address.
+0005.978 (0) The backup has not finished; a resumption is scheduled

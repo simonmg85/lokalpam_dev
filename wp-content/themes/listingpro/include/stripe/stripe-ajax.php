@@ -168,11 +168,13 @@ if(!function_exists('listingpro_save_stripe')){
 			if(isset($claimPost)){
 				if(!empty($claimPost)){
 					$new_author = listing_get_metabox_by_ID('claimer', $claimPost);
+					$exMetaboxes = get_post_meta($listing, 'lp_' . strtolower(THEMENAME) . '_options', true);
 					$argListing = array(
 						'ID' => $listing,
 						'post_author' => $new_author,
 					);
 					wp_update_post($argListing);
+					update_post_meta($listing, 'lp_' . strtolower(THEMENAME) . '_options', $exMetaboxes);
 					lp_update_paid_claim_metas($claimPost, $listing, 'stripe');
 					delete_post_meta($listing, 'claimpID');
 				}
@@ -566,6 +568,14 @@ if(!function_exists('listingpro_claim_payment_via_stripe')){
         ));
 
         if($charge['amount_refunded'] == 0 && $charge['failure_code'] == null && $charge['captured'] == true){
+			
+			$exMetaboxes = get_post_meta($claimPost, 'lp_' . strtolower(THEMENAME) . '_options', true);
+			$argClaims = array(
+				'ID' => $claimPost,
+				'post_author' => $claimerID,
+			);
+			wp_update_post( $argClaims );
+			update_post_meta($claimPost, 'lp_' . strtolower(THEMENAME) . '_options', $exMetaboxes);
 
             /* update claim to success */
             listing_set_metabox('claim_status', 'approved',$claimPost);
@@ -575,18 +585,6 @@ if(!function_exists('listingpro_claim_payment_via_stripe')){
             /* updating post table */
             global $wpdb;
             $prefix = $wpdb->prefix;
-
-            $update_data   = array(
-                'post_author' => $claimerID
-            );
-            $where         = array(
-                'ID' => $listing_id
-            );
-            $update_format = array(
-                '%s'
-            );
-            $wpdb->update($prefix . 'posts', $update_data, $where, $update_format);
-
 
             $status = 'success';
             $response = '';

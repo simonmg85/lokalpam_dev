@@ -13,6 +13,8 @@ function listingpro_dynamic_options() {
     /* Header Color Options*/
     $lp_top_bar = lp_theme_option('top_bar_enable');
     $headerBgcolor = lp_theme_option('header_bgcolor');
+    $headerBgcolorInner = lp_theme_option('header_bgcolor_inner_pages');
+
     $top_bar_bgcolor = lp_theme_option('top_bar_bgcolor');
     $topBannerView = lp_theme_option('top_banner_styles');
 
@@ -153,17 +155,17 @@ function listingpro_dynamic_options() {
     <?php
     if(is_admin_bar_showing()){
         ?>
-		<style>
+
 			div.lp-top-notification-bar{
 				top: 32px !important;
 			}
-		</style>
+
         <?php
     }
     ?>
 
 	<!-- Custom category Color-->
-<style>
+
 
 		.home-categories-area .new-banner-category-view2 li a span p#cat-img-bg, .home-categories-area .new-banner-category-view1 li a, .banner-default-view-category-2 .lp-home-categoires li a span p#cat-img-bg, .banner-view-cat-tranparent-category .lp-upper-cat-view3 li a span p#cat-img-bg, .home-categories-area .lp-inside-search-view1 li a, .home-categories-area .lp-inside-search-view2 li a span p#cat-img-bg, .banner-view-cat-tranparent-category .lp-upper-cat-view4 li a, .home-categories-area .banner-default-view-category1 li a,.home-categories-area .banner-default-view-category2 li a span p#cat-img-bg,
 
@@ -206,9 +208,9 @@ function listingpro_dynamic_options() {
 
 
 
-	</style>
-	<!--Start Header color options-->
-	<style>
+
+<!--	Start Header color options-->
+
 		.header-container.lp-header-bg .lp-color-header-style .lp-menu-container .lp-menu > div > ul > li > a,
 		.header-container.lp-header-bg .lp-color-header-style .lp-menu-container .lp-menu ul li.page_item_has_children::after,
 		.header-container.lp-header-bg .lp-color-header-style .lp-menu-container .lp-menu ul li.menu-item-has-children::after, .lp-menu-outer::after, #click-search-view,
@@ -230,11 +232,11 @@ function listingpro_dynamic_options() {
 		.lp-header-full-width .lp-add-listing-btn ul li a.header-list-icon, .lp-header-full-width .lp-add-listing-btn ul li a.header-list-icon-st6{
 			border: 1px solid <?php echo esc_html($header_textcolor); ?>;
 		}
-	</style>
+
 
 	<!--End Header color options-->
 	<!-- Custom CSS -->
-	<style>
+
 		.lp-header-with-bigmenu .lp-join-now a,.lp-header-with-bigmenu .lp-add-listing-btn ul li a{
 
 			color: <?php echo esc_html($header_textcolor); ?> ;
@@ -398,51 +400,61 @@ function listingpro_dynamic_options() {
     }
     ?>
         }
-		<?php
-        if(is_front_page()){
-            if(!empty($headerBgcolor)){
-                ?>
-               .lp-header-full-width .lp-menu-bar{
-                   background-color: <?php echo esc_html($headerBgcolor); ?>;
-               }
-               <?php
-            }
-        }
-		if(!is_front_page()){
-			if(!empty($headerBgcolor)) { ?>
-		.lp-menu-bar, .header-normal .lp-menu-bar.lp-header-full-width {
-			background-color: <?php echo esc_html($headerBgcolor); ?>
-		}
-		.header-filter .input-group.width-49-percent.margin-right-15.hide-where,
-		.header-filter .input-group.width-49-percent,
-		.header-filter .input-group.width-49-percent.margin-right-15 {
-			border:1px solid <?php echo esc_html($header_textcolor); ?>;
-		}
-		.header-right-panel .lp-menu ul li a,
-		.lp-menu ul li.page_item_has_children::after, .lp-menu ul li.menu-item-has-children::after,
-		.lp-join-now a, .lp-add-listing-btn li a {
-			color: <?php echo esc_html($header_textcolor); ?>;
-		}
-		.lp-header-bg-black .navbar-toggle,
-		.lp-header-bg-black.header-fixed .navbar-toggle,
+		
+		.lp-header-full-width .lp-add-listing-btn ul li a:hover{
 
-		.fullwidth-header .lp-add-listing-btn ul li a {
-			color: <?php echo esc_html($header_textcolor); ?>;
-			border-color: <?php echo esc_html($header_textcolor); ?>;
-		}
-		<?php } ?>
-		<?php }elseif ( $topBannerView == 'map_view' && is_front_page() ) {
-			if(!empty($headerBgcolor)) { ?>
-		.lp-menu-bar, .header-normal .lp-menu-bar.lp-header-full-width {
-			background-color: <?php echo esc_html($headerBgcolor); ?>
-		}
-		.header-right-panel .lp-menu ul li a,
-		.lp-menu ul li.page_item_has_children::after, .lp-menu ul li.menu-item-has-children::after,
-		.lp-join-now a, .lp-add-listing-btn li a {
-			color: <?php echo esc_html($header_textcolor); ?>;
-		}
-		<?php } ?>
-		<?php }
+		   border-color: <?php echo $themeClr; ?>;
+
+	   }
+		<?php
+		
+		
+
+        if(!empty($headerBgcolor))
+        {
+            ?>
+
+            .header-front-page-wrap .lp-header-full-width .lp-menu-bar{
+                background-color: <?php echo esc_html($headerBgcolor); ?>;
+            }
+
+            .header-right-panel .lp-menu > ul li a,
+           .lp-menu > ul li a,
+            .lp-menu ul li.page_item_has_children::after,
+            .lp-menu ul li.menu-item-has-children::after,
+            .lp-add-listing-btn li a, .lp-header-middle .lp-header-add-btn a{
+                color: <?php echo esc_html($header_textcolor); ?> !important;
+            }
+            .header-inner-page-wrap .lp-menu-bar-color{
+            background-color: <?php echo esc_html($headerBgcolorInner); ?>
+            }
+            .header-inner-page-wrap .header-filter .input-group.width-49-percent.margin-right-15.hide-where,
+            .header-inner-page-wrap .header-filter .input-group.width-49-percent,
+            .header-inner-page-wrap .header-filter .input-group.width-49-percent.margin-right-15 {
+                border:1px solid <?php echo esc_html($header_textcolor); ?>;
+            }
+            .header-inner-page-wrap .lp-header-bg-black .navbar-toggle,
+            .header-inner-page-wrap .lp-header-bg-black.header-fixed .navbar-toggle{
+                color: <?php echo esc_html($header_textcolor); ?>;
+                border-color: <?php echo esc_html($header_textcolor); ?>;
+            }
+            <?php
+            if( $topBannerView == 'map_view' )
+            {
+                ?>
+                .header-front-page-wrap .lp-menu-bar, .header-normal .lp-menu-bar.lp-header-full-width {
+                    background-color: <?php echo esc_html($headerBgcolor); ?>
+                }
+                .header-front-page-wrap .header-right-panel .lp-menu ul li a,
+                .header-front-page-wrap .lp-menu ul li.page_item_has_children::after,
+                .header-front-page-wrap .lp-menu ul li.menu-item-has-children::after,
+                .header-front-page-wrap .lp-join-now a, .lp-add-listing-btn li a {
+                    color: <?php echo esc_html($header_textcolor); ?>;
+                }
+                <?php
+            }
+
+        }
 		if(!empty($top_bar_bgcolor)) { ?>
 		.lp-topbar {
 			background-color: <?php echo esc_html($top_bar_bgcolor); ?>
@@ -574,9 +586,9 @@ function listingpro_dynamic_options() {
 
 		<?php } ?>
 
-		/* ===============================
-				Theme Color Settings
-		================================== */
+<!--		 ===============================-->
+<!--				Theme Color Settings-->
+<!--		================================== -->
 
 		.lp-list-view-edit li a:hover, .review-post p i, .lp-header-full-width.lp-header-bg-grey .lp-add-listing-btn li a:hover,
 		.lp-header-full-width.lp-header-bg-grey .lp-add-listing-btn li a, .lp-header-bg-grey .navbar-toggle, .lp-search-bar-all-demo .add-more,
@@ -698,9 +710,9 @@ function listingpro_dynamic_options() {
 			border-bottom-color: <?php echo esc_html($themeClr); ?> !important;
 		}
 
-		/* ===================================
-				Secondary Theme Color
-		====================================== */
+<!--		 ===================================-->
+<!--				Secondary Theme Color-->
+<!--		====================================== -->
 		.lp-primary-btn, .lp-search-btn:hover, .dashboard-tabs, .nav-tabs > li > a:hover,
 		.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus, .lp-submit-btn, .secondary-btn:hover,
 		.list-st-img li a, .btn-first-hover:hover, .btn-second-hover, .about-box-icon, .upload-btn:hover, .chosen-container .chosen-results li.highlighted,
@@ -1036,35 +1048,29 @@ function listingpro_dynamic_options() {
 		}
 		<?php } ?>
 
-	</style>
 
     <?php
 }
-add_action('wp_head', 'listingpro_dynamic_options', 100);
+//add_action('wp_head', 'listingpro_dynamic_options', 100);
 
 
 function listingpro_dynamic_css_options() {
     $css_editor = lp_theme_option('css_editor');
     ?>
 
-	<!-- Custom CSS -->
-	<style>
-		<?php echo $css_editor; ?>
-	</style>
+<!--	 Custom CSS -->
+    <?php echo $css_editor; ?>
+
     <?php
 }
-add_action('wp_head', 'listingpro_dynamic_css_options', 100);
+//add_action('wp_head', 'listingpro_dynamic_css_options', 100);
 
 
 function listingpro_dynamic_js_options() {
     $script_editor = lp_theme_option('script_editor');
     ?>
-
-	<!-- Custom CSS -->
-	<script type="text/javascript">
-        <?php echo $script_editor; ?>
-	</script>
+    <?php echo $script_editor; ?>
     <?php
 }
-add_action('wp_head', 'listingpro_dynamic_js_options', 100);
+//add_action('wp_head', 'listingpro_dynamic_js_options', 100);
 ?>

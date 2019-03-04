@@ -19,6 +19,12 @@
     }else
     {
 	get_header();
+	
+	global $post;
+	$listingid = $post->ID;
+	$gAddress = listing_get_metabox_by_ID('gAddress', $listingid);
+	lp_get_lat_long_from_address($gAddress, $listingid);
+	
     $lp_detail_page_styles = $listingpro_options['lp_detail_page_styles'];
 	if($lp_detail_page_styles == 'lp_detail_page_styles1') {
 		

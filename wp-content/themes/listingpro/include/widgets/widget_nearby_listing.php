@@ -85,7 +85,8 @@ function widget($args, $instance) {
 	<?php
 		if( $listing_layout == 'list_view_v2' || $listing_layout == 'grid_view_v2' ):
 		   ?>
-		   <div class="lp-listings-widget">
+		   <div class="lp-nearby paid-listing">
+		   <div class="listing-post">
 		   <?php
 		else:
 		   ?>
@@ -275,6 +276,7 @@ function widget($args, $instance) {
 		<?php
 		   if( $listing_layout == 'list_view_v2' || $listing_layout == 'grid_view_v2' ):
 			   ?>
+			   </div>
 			   </div>
 			   <?php
 		   else:

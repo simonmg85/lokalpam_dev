@@ -10532,7 +10532,7 @@ fieldset[disabled] .form-control {
 }
 
 .lp-header-full-width .lp-add-listing-btn ul li a:hover {
-    background-color: #fff;
+    /* background-color: #fff; */
     color: #333
 }
 
@@ -28134,10 +28134,13 @@ p.lp-general-section-title .fa {
 .lpreplyQest-outer .lpQest {
     border-top-left-radius: 5px!important;
     border-top-right-radius: 0;
-    width: calc(100% - 58px);
+	
+    width: -webkit-calc(100% - 65px);
+    width: -moz-calc(100% - 65px);
+    width: calc(100% - 65px);
     margin-right: 25px;
     background-color: #eef2f4;
-}
+}	
 
 .lpsinglemsgbox .lpsinglemsgbox-inner {
     margin-top: 15px
@@ -37036,4 +37039,36 @@ footer .container .row .clearfix.col-md-3 .widget-title h2{
 }
 .single-listing .post-detail-content ul{
 	list-style:disc;
+}
+
+.lp-ad-step-two-inner .input-group.margin-right-0 input[type="checkbox"]{
+	width:15px;
+	height:15px;
+}
+.checkout-transaction-success{
+	margin-top:-70px;
+}
+.sucess-transaction-inner-section p {
+    margin-bottom: 0;
+    margin-top: 10px;
+    font-size: 30px;
+}
+.page-template-template-favourites .container.page-container-four .text-center.margin-top-80.margin-bottom-80 p a{
+	display:none;
+}
+
+.icon-lionked{
+	background-color:#0077b5 !Important;
+}
+.icon-insta{
+	background-color:#517fa4 !Important;
+}
+.icon-wk{
+	background-color:#40a4c4 !Important;
+}
+.icon-youu{
+	background-color:#b31217 !Important;
+}
+.grid-show-popup .quickmap img{
+padding:0px !important;
 }

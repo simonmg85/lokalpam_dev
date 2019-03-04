@@ -197,6 +197,36 @@ get_header();
                                     <?php if(!empty($tumb)){ ?>
                                         <a href="" class="lp-blog-grid-shares-icon icon-pin"><i class="fa fa-delicious"></i></a>
                                     <?php } ?>
+									
+									<?php if(!empty($fyout)){ ?>
+									
+											<a href="<?php echo esc_url($fyout); ?>" class="lp-blog-grid-shares-icon icon-youu">
+												<i class="fa fa-youtube" aria-hidden="true"></i>
+											</a>
+										
+									<?php } ?>
+									<?php if(!empty($flinked)){ ?>
+										
+											<a href="<?php echo esc_url($flinked); ?>" class="lp-blog-grid-shares-icon icon-lionked">
+												<i class="fa fa-linkedin" aria-hidden="true"></i>
+											</a>
+										
+									<?php } ?>
+								
+									<?php if(!empty($fvk)){ ?>
+										
+											<a href="<?php echo esc_url($fvk); ?>" class="lp-blog-grid-shares-icon icon-wk">
+												<i class="fa fa-vk" aria-hidden="true"></i>
+											</a>
+										
+									<?php } ?>
+									<?php if(!empty($insta)){ ?>
+										
+											<a href="<?php echo esc_attr($insta); ?>" class="lp-blog-grid-shares-icon icon-insta">
+											<i class="fa fa-instagram" aria-hidden="true"></i>
+											</a>
+										
+									<?php } ?>
 
                                 </div>
                             <?php } ?>

@@ -82,10 +82,25 @@ elseif ( $topBannerView=="banner_view_search_bottom"){
    if($topBannerView == 'banner_view2'){
        $headerfour_mobile_height = 'lp-headerfour-height';
    }
+   
+	$header_inner_page_class =   'header-inner-page-wrap';
+	if( is_front_page() )
+	{
+	   $header_inner_page_class =   'header-front-page-wrap';
+	}
+	
+	$banner_height = lp_theme_option('banner_height');
+
+	$header_container_height    =   '';
+	if( !empty( $banner_height ) && $topBannerView == 'banner_view2' && is_front_page() && !wp_is_mobile() )
+
+	{
+	   $header_container_height    =   'header-container-height';
+	}
 ?>
 
-	<div class="pos-relative">
-		<div class="header-container <?php echo $listing_style; ?> <?php echo $header_fixed_class; ?> <?php if(is_front_page()){ echo esc_attr($imgClass); } ?> <?php echo $headerfour_mobile_height; ?> ">
+	<div class="pos-relative <?php echo $header_inner_page_class; ?>">
+		<div class="header-container <?php echo $header_container_height; ?> <?php echo $listing_style; ?> <?php echo $header_fixed_class; ?> <?php if(is_front_page()){ echo esc_attr($imgClass); } ?> <?php echo $headerfour_mobile_height; ?> ">
 <?php if( !is_page_template('template-dashboard.php') ) {
     ?>
     <?php

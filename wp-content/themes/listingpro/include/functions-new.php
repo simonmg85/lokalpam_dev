@@ -19,6 +19,7 @@ function listingpro_style_version2()
     wp_enqueue_style('version2-countdown', THEME_DIR . '/assets/lib/countdown/flipclock.css');
     wp_enqueue_style('version2-styles', THEME_DIR . '/assets/css/main-new.css');
     wp_enqueue_style('version2-colors', THEME_DIR . '/assets/css/colors-new.css');
+	wp_enqueue_style( 'listing-dynamic-css', THEME_DIR . '/assets/css/dynamic-css.css' );
 
 //    wp_enqueue_style('version2-font-family', THEME_DIR . '/layouts/assets/css/font-family.css');
 
@@ -1104,7 +1105,7 @@ if( !function_exists( 'activity_reviews' ) )
 									   $field_rating_val   =   $post_rating_data[$k];
 								   }
                                     ?>
-                                    <div class="lp-multi-star-field">
+                                    <div class="lp-multi-star-field rating-with-colors <?php echo review_rating_color_class($field_rating_val); ?>">
                                         <label><?php echo $v['label'];  ?></label>
                                         <p>
                                             <i class="fa <?php if( $field_rating_val > 0 ){echo 'fa-star'; }else{echo 'fa-star-o';} ?>" aria-hidden="true"></i>
@@ -3900,7 +3901,7 @@ add_action( 'add_meta_boxes', 'event_details_meta' );
 add_action( 'save_post', 'save_event_metas' );
 function event_details_meta()
 {
-    add_meta_box( 'event_meta_box', __( 'Event Details', 'lsitingpro' ), 'event_meta_box', 'events' );
+    add_meta_box( 'event_meta_box', __( 'Event Details', 'listingpro' ), 'event_meta_box', 'events' );
 }
 function event_meta_box( $post )
 {
@@ -4277,4 +4278,32 @@ if( !function_exists( 'ajax_search_child_cats' ) )
 			die(json_encode($return));
 		}
 	}
+}
+
+/* ================review_rating_color_class=============== */
+if( !function_exists( 'review_rating_color_class' ) )
+{
+    function review_rating_color_class( $rating_val )
+    {
+
+        $rating_color_class =   '';
+        if( $rating_val < 1 )
+        {
+            $rating_color_class =   'lp-star-worst';
+        }
+        else if($rating_val >=1 && $rating_val < 2)
+        {
+            $rating_color_class =   'lp-star-bad';
+        }
+        else if($rating_val >=2 && $rating_val < 3.5)
+        {
+            $rating_color_class =   'lp-star-satisfactory';
+        }
+        else if($rating_val >=3.5 && $rating_val <= 5)
+        {
+            $rating_color_class =   'lp-star-good';
+        }
+
+        return $rating_color_class;
+    }
 }

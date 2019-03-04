@@ -68,7 +68,9 @@
 					
 					var fd = new FormData(this);
 					if(!jQuery('input#filer_input2').val()){
-						fd.delete('post_gallery[]');
+						if(detectIE() == false){
+							fd.delete('post_gallery[]');
+						}
 					}
 					fd.append('action', 'ajax_review_submit');
                     fd.append('multiState', multiState);
@@ -132,7 +134,9 @@
 			
 			var fd = new FormData(this);
 			if(!jQuery('input#filer_input2').val()){
-				fd.delete('post_gallery[]');
+				if(detectIE() == false){
+					fd.delete('post_gallery[]');
+				}
 			}
 			fd.append('multiState', multiState);
            if( multiState == '1' )

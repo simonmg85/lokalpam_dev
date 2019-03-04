@@ -43,8 +43,8 @@
 				}
 				$gAddress = listing_get_metabox('gAddress');
 				lp_get_lat_long_from_address($gAddress, get_the_ID());
-				$latitude = listing_get_metabox('latitude');
-				$longitude = listing_get_metabox('longitude');
+				$latitude = listing_get_metabox_by_ID('latitude', get_the_ID());
+				$longitude = listing_get_metabox_by_ID('longitude', get_the_ID());
 				$gAddress = listing_get_metabox('gAddress');
                 $phone = listing_get_metabox('phone');
 				if(!empty($latitude)){

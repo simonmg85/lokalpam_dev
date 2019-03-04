@@ -1,0 +1,305 @@
+0000.001 (0) Opened log file at time: Mon, 04 Mar 2019 01:31:31 +0000 on http://dev-lokalpam.test
+0000.003 (0) UpdraftPlus WordPress backup plugin (https://updraftplus.com): 1.14.12 WP: 5.0.3 PHP: 7.1.1 (apache2handler, Darwin netero.local 18.2.0 Darwin Kernel Version 18.2.0: Thu Dec 20 20:46:53 PST 2018; root:xnu-4903.241.1~1/RELEASE_X86_64 x86_64) MySQL: 5.6.35 WPLANG: en_US Server: Apache/2.2.31 (Unix) mod_wsgi/3.5 Python/2.7.13 PHP/7.1.1 mod_ssl/2.2.31 OpenSSL/1.0.2j DAV/2 mod_fastcgi/2.4.6 mod_perl/2.0.9 Perl/v5.24.0 safe_mode: 0 max_execution_time: 900 memory_limit: 256M (used: 65.6M | 78M) multisite: N openssl: OpenSSL 1.0.2j  26 Sep 2016 mcrypt: Y LANG:  ZipArchive::addFile: Y
+0000.005 (0) Free space on disk containing Updraft's temporary directory: 10055.9 MB
+0000.009 (0) Tasks: Backup files: 1 (schedule: weekly) Backup DB:  (schedule: daily)
+0000.011 (0) Processed schedules. Tasks now: Backup files: 1 Backup DB: 
+0000.016 (0) Requesting semaphore lock (f) (apparently via scheduler: last_scheduled_action_called_at=1536220334, seconds_ago=15442757)
+0000.019 (0) Set semaphore last lock (f) time to 2019-03-04 01:31:31
+0000.021 (0) Semaphore lock (f) complete
+0000.027 (0) Backup run: resumption=0, nonce=ae51be552816, begun at=1551663091 (0s ago), job type=backup
+0000.029 (0) Scheduling a resumption (1) after 300 seconds (1551663391) in case this run gets aborted
+0000.035 (0) Checking if we have a zip executable available
+0000.037 (0) Testing: /usr/bin/zip
+0000.057 (0) Output: zip warning: binziptest/test.zip not found or empty
+0000.059 (0) Output: adding: binziptest/subdir1/	(in=0) (out=0) (stored 0%)
+0000.061 (0) Output: adding: binziptest/subdir1/subdir2/	(in=0) (out=0) (stored 0%)
+0000.063 (0) Output: adding: binziptest/subdir1/subdir2/test.html	(in=131) (out=107) (deflated 18%)
+0000.065 (0) Output: total bytes=131, compressed=107 -> 18% savings
+0000.086 (0) Output: adding: binziptest/subdir1/subdir2/test2.html	(in=138) (out=113) (deflated 18%)
+0000.090 (0) Output: total bytes=269, compressed=220 -> 18% savings
+0000.115 (0) Working binary zip found: /usr/bin/zip
+0000.119 (0) Zip engine: found/will use a binary zip: /usr/bin/zip
+0000.121 (0) Creation of backups of directories: beginning
+0000.129 (0) Beginning creation of dump of plugins (split every: 400 MB)
+0001.157 (0) Total entities for the zip file: 1800 directories, 10240 files (0 skipped as non-modified), 149.5 MB
+0001.174 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 100 files added (on-disk size: 0 KB)
+0001.188 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 200 files added (on-disk size: 0 KB)
+0001.202 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 300 files added (on-disk size: 0 KB)
+0001.214 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 400 files added (on-disk size: 0 KB)
+0001.227 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 500 files added (on-disk size: 0 KB)
+0001.229 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (6 MB, 10240 files batched, 501 (501) added so far); re-opening (prior size: 0 KB)
+0001.756 (0) backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: size is now: 2.70 MB
+0001.771 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 600 files added (on-disk size: 2809.7 KB)
+0001.783 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 700 files added (on-disk size: 2809.7 KB)
+0001.795 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 800 files added (on-disk size: 2809.7 KB)
+0001.807 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 900 files added (on-disk size: 2809.7 KB)
+0001.818 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 1000 files added (on-disk size: 2809.7 KB)
+0001.820 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (5 MB, 10240 files batched, 501 (1002) added so far); re-opening (prior size: 2809.7 KB)
+0002.175 (0) backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: size is now: 4.10 MB
+0002.193 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 1100 files added (on-disk size: 4174.8 KB)
+0002.205 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 1200 files added (on-disk size: 4174.8 KB)
+0002.216 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 1300 files added (on-disk size: 4174.8 KB)
+0002.228 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 1400 files added (on-disk size: 4174.8 KB)
+0002.238 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 1500 files added (on-disk size: 4174.8 KB)
+0002.240 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (11 MB, 10240 files batched, 501 (1503) added so far); re-opening (prior size: 4174.8 KB)
+0002.739 (0) backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: size is now: 7.20 MB
+0002.755 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 1600 files added (on-disk size: 7384.9 KB)
+0002.767 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 1700 files added (on-disk size: 7384.9 KB)
+0002.779 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 1800 files added (on-disk size: 7384.9 KB)
+0002.790 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 1900 files added (on-disk size: 7384.9 KB)
+0002.804 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 2000 files added (on-disk size: 7384.9 KB)
+0002.806 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (3.1 MB, 10240 files batched, 501 (2004) added so far); re-opening (prior size: 7384.9 KB)
+0003.273 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 2100 files added (on-disk size: 8772.7 KB)
+0003.288 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 2200 files added (on-disk size: 8772.7 KB)
+0003.300 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 2300 files added (on-disk size: 8772.7 KB)
+0003.314 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 2400 files added (on-disk size: 8772.7 KB)
+0003.327 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 2500 files added (on-disk size: 8772.7 KB)
+0003.329 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (8.3 MB, 10240 files batched, 501 (2505) added so far); re-opening (prior size: 8772.7 KB)
+0003.908 (0) backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: size is now: 10.50 MB
+0003.924 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 2600 files added (on-disk size: 10721.5 KB)
+0003.936 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 2700 files added (on-disk size: 10721.5 KB)
+0003.950 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 2800 files added (on-disk size: 10721.5 KB)
+0003.962 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 2900 files added (on-disk size: 10721.5 KB)
+0003.973 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 3000 files added (on-disk size: 10721.5 KB)
+0003.976 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (6.1 MB, 10240 files batched, 501 (3006) added so far); re-opening (prior size: 10721.5 KB)
+0004.554 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 3100 files added (on-disk size: 12796.1 KB)
+0004.566 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 3200 files added (on-disk size: 12796.1 KB)
+0004.577 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 3300 files added (on-disk size: 12796.1 KB)
+0004.588 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 3400 files added (on-disk size: 12796.1 KB)
+0004.599 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 3500 files added (on-disk size: 12796.1 KB)
+0004.602 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (10.6 MB, 10240 files batched, 501 (3507) added so far); re-opening (prior size: 12796.1 KB)
+0005.402 (0) backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: size is now: 16.50 MB
+0005.420 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 3600 files added (on-disk size: 16936.7 KB)
+0005.432 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 3700 files added (on-disk size: 16936.7 KB)
+0005.446 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 3800 files added (on-disk size: 16936.7 KB)
+0005.459 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 3900 files added (on-disk size: 16936.7 KB)
+0005.471 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 4000 files added (on-disk size: 16936.7 KB)
+0005.473 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (10 MB, 10240 files batched, 501 (4008) added so far); re-opening (prior size: 16936.7 KB)
+0006.195 (0) backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: size is now: 20.70 MB
+0006.213 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 4100 files added (on-disk size: 21203.5 KB)
+0006.225 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 4200 files added (on-disk size: 21203.5 KB)
+0006.238 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 4300 files added (on-disk size: 21203.5 KB)
+0006.250 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 4400 files added (on-disk size: 21203.5 KB)
+0006.262 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 4500 files added (on-disk size: 21203.5 KB)
+0006.265 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (6.5 MB, 10240 files batched, 501 (4509) added so far); re-opening (prior size: 21203.5 KB)
+0006.845 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 4600 files added (on-disk size: 23300.1 KB)
+0006.860 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 4700 files added (on-disk size: 23300.1 KB)
+0006.873 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 4800 files added (on-disk size: 23300.1 KB)
+0006.889 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 4900 files added (on-disk size: 23300.1 KB)
+0006.905 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 5000 files added (on-disk size: 23300.1 KB)
+0006.908 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (4.6 MB, 10240 files batched, 501 (5010) added so far); re-opening (prior size: 23300.1 KB)
+0007.396 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 5100 files added (on-disk size: 25114 KB)
+0007.409 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 5200 files added (on-disk size: 25114 KB)
+0007.421 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 5300 files added (on-disk size: 25114 KB)
+0007.434 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 5400 files added (on-disk size: 25114 KB)
+0007.446 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 5500 files added (on-disk size: 25114 KB)
+0007.449 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (16.7 MB, 10240 files batched, 501 (5511) added so far); re-opening (prior size: 25114 KB)
+0008.731 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 5600 files added (on-disk size: 29801.7 KB)
+0008.744 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 5700 files added (on-disk size: 29801.7 KB)
+0008.758 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 5800 files added (on-disk size: 29801.7 KB)
+0008.770 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 5900 files added (on-disk size: 29801.7 KB)
+0008.782 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 6000 files added (on-disk size: 29801.7 KB)
+0008.786 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (1.9 MB, 10240 files batched, 501 (6012) added so far); re-opening (prior size: 29801.7 KB)
+0009.338 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 6100 files added (on-disk size: 30559.9 KB)
+0009.351 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 6200 files added (on-disk size: 30559.9 KB)
+0009.364 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 6300 files added (on-disk size: 30559.9 KB)
+0009.377 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 6400 files added (on-disk size: 30559.9 KB)
+0009.389 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 6500 files added (on-disk size: 30559.9 KB)
+0009.392 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (3.8 MB, 10240 files batched, 501 (6513) added so far); re-opening (prior size: 30559.9 KB)
+0010.086 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 6600 files added (on-disk size: 32263.4 KB)
+0010.097 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 6700 files added (on-disk size: 32263.4 KB)
+0010.110 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 6800 files added (on-disk size: 32263.4 KB)
+0010.122 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 6900 files added (on-disk size: 32263.4 KB)
+0010.134 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 7000 files added (on-disk size: 32263.4 KB)
+0010.138 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (10 MB, 10240 files batched, 501 (7014) added so far); re-opening (prior size: 32263.4 KB)
+0011.296 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 7100 files added (on-disk size: 35624.8 KB)
+0011.309 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 7200 files added (on-disk size: 35624.8 KB)
+0011.321 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 7300 files added (on-disk size: 35624.8 KB)
+0011.334 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 7400 files added (on-disk size: 35624.8 KB)
+0011.348 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 7500 files added (on-disk size: 35624.8 KB)
+0011.352 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (3.5 MB, 10240 files batched, 501 (7515) added so far); re-opening (prior size: 35624.8 KB)
+0012.063 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 7600 files added (on-disk size: 36923 KB)
+0012.075 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 7700 files added (on-disk size: 36923 KB)
+0012.085 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 7800 files added (on-disk size: 36923 KB)
+0012.097 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 7900 files added (on-disk size: 36923 KB)
+0012.110 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 8000 files added (on-disk size: 36923 KB)
+0012.113 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (4.1 MB, 10240 files batched, 501 (8016) added so far); re-opening (prior size: 36923 KB)
+0012.795 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 8100 files added (on-disk size: 38341.2 KB)
+0012.809 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 8200 files added (on-disk size: 38341.2 KB)
+0012.821 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 8300 files added (on-disk size: 38341.2 KB)
+0012.834 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 8400 files added (on-disk size: 38341.2 KB)
+0012.848 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 8500 files added (on-disk size: 38341.2 KB)
+0012.851 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (7.5 MB, 10240 files batched, 501 (8517) added so far); re-opening (prior size: 38341.2 KB)
+0013.912 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 8600 files added (on-disk size: 40622.2 KB)
+0013.923 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 8700 files added (on-disk size: 40622.2 KB)
+0013.936 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 8800 files added (on-disk size: 40622.2 KB)
+0013.949 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 8900 files added (on-disk size: 40622.2 KB)
+0013.962 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 9000 files added (on-disk size: 40622.2 KB)
+0013.966 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (4.7 MB, 10240 files batched, 501 (9018) added so far); re-opening (prior size: 40622.2 KB)
+0014.848 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 9100 files added (on-disk size: 42904.4 KB)
+0014.860 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 9200 files added (on-disk size: 42904.4 KB)
+0014.873 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 9300 files added (on-disk size: 42904.4 KB)
+0014.887 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 9400 files added (on-disk size: 42904.4 KB)
+0014.898 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 9500 files added (on-disk size: 42904.4 KB)
+0014.902 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (11.2 MB, 10240 files batched, 501 (9519) added so far); re-opening (prior size: 42904.4 KB)
+0016.189 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 9600 files added (on-disk size: 46186.4 KB)
+0016.203 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 9700 files added (on-disk size: 46186.4 KB)
+0016.216 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 9800 files added (on-disk size: 46186.4 KB)
+0016.229 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 9900 files added (on-disk size: 46186.4 KB)
+0016.242 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 10000 files added (on-disk size: 46186.4 KB)
+0016.246 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (8.1 MB, 10240 files batched, 501 (10020) added so far); re-opening (prior size: 46186.4 KB)
+0017.345 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 10100 files added (on-disk size: 49947.7 KB)
+0017.359 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip.tmp: 10200 files added (on-disk size: 49947.7 KB)
+0021.115 (0) Created plugins zip (0) - 52387.1 KB in 21 s (2496.7 KB/s) (sha1: 44e03a18cc39a8621693e350906c95880c675d4e, sha256: 5cdada920d9036482b9699eb21814cbeb5dfcdbebdf932ad86e445dd6f759815)
+0021.123 (0) Beginning creation of dump of themes (split every: 400 MB)
+0021.334 (0) Total entities for the zip file: 310 directories, 2193 files (0 skipped as non-modified), 71.6 MB
+0021.346 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip.tmp: 100 files added (on-disk size: 0 KB)
+0021.356 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip.tmp: 200 files added (on-disk size: 0 KB)
+0021.366 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip.tmp: 300 files added (on-disk size: 0 KB)
+0021.379 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip.tmp: 400 files added (on-disk size: 0 KB)
+0021.390 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip.tmp: 500 files added (on-disk size: 0 KB)
+0021.392 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (19.9 MB, 2193 files batched, 501 (501) added so far); re-opening (prior size: 0 KB)
+0021.953 (0) backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip.tmp: size is now: 15.80 MB
+0021.972 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip.tmp: 600 files added (on-disk size: 16194.9 KB)
+0021.986 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip.tmp: 700 files added (on-disk size: 16194.9 KB)
+0021.999 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip.tmp: 800 files added (on-disk size: 16194.9 KB)
+0022.011 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip.tmp: 900 files added (on-disk size: 16194.9 KB)
+0022.023 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip.tmp: 1000 files added (on-disk size: 16194.9 KB)
+0022.025 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (12.5 MB, 2193 files batched, 501 (1002) added so far); re-opening (prior size: 16194.9 KB)
+0022.495 (0) backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip.tmp: size is now: 25.00 MB
+0022.514 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip.tmp: 1100 files added (on-disk size: 25551 KB)
+0022.527 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip.tmp: 1200 files added (on-disk size: 25551 KB)
+0022.538 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip.tmp: 1300 files added (on-disk size: 25551 KB)
+0022.550 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip.tmp: 1400 files added (on-disk size: 25551 KB)
+0022.563 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip.tmp: 1500 files added (on-disk size: 25551 KB)
+0022.565 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (15.4 MB, 2193 files batched, 501 (1503) added so far); re-opening (prior size: 25551 KB)
+0023.571 (0) backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip.tmp: size is now: 32.70 MB
+0023.588 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip.tmp: 1600 files added (on-disk size: 33479.4 KB)
+0023.601 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip.tmp: 1700 files added (on-disk size: 33479.4 KB)
+0023.614 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip.tmp: 1800 files added (on-disk size: 33479.4 KB)
+0023.626 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip.tmp: 1900 files added (on-disk size: 33479.4 KB)
+0023.637 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip.tmp: 2000 files added (on-disk size: 33479.4 KB)
+0023.639 (0) Adding batch to zip file (UpdraftPlus_BinZip): over 500 files added on this batch (16.3 MB, 2193 files batched, 501 (2004) added so far); re-opening (prior size: 33479.4 KB)
+0024.347 (0) backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip.tmp: size is now: 45.70 MB
+0024.366 (0) Zip: backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip.tmp: 2100 files added (on-disk size: 46829.6 KB)
+0027.723 (0) Created themes zip (0) - 49493.1 KB in 6.6 s (7503.6 KB/s) (sha1: 010419f066fd85eaca1f16ff099c6b0a094501ab, sha256: 82fb29d0c09da88e590c907d7330998d0378fb30a371e59dff97291e3ab24d83)
+0027.731 (0) Exclusion option setting (uploads): backup*,*backups,backwpup*,wp-clone,snapshots
+0027.733 (0) Looking for candidates to backup in: /Applications/MAMP/htdocs/lokalpam_dev/wp-content/uploads
+0027.735 (0) finding files: 2019: adding to list (1)
+0027.737 (0) Beginning creation of dump of uploads (split every: 400 MB)
+0027.743 (0) Total entities for the zip file: 2 directories, 0 files (0 skipped as non-modified), 0 MB
+0027.761 (0) backup_2019-03-04-0131_lokalPam_ae51be552816-uploads.zip.tmp: size is now: 0.00 MB
+0027.772 (0) Created uploads zip (0) - 0.3 KB in 0 s (10.2 KB/s) (sha1: d740467c2c33dfeacdc7c782e84cb8a4ee822cb3, sha256: ead4c4b68a29c5e31755482b53bc913e6ebdaef4a47aff6fb638fc6f716af17f)
+0027.779 (0) Beginning backup of other directories found in the content directory (index: 0)
+0027.781 (0) Exclusion option setting (others): upgrade,cache,updraft,backup*,*backups,mysql.sql,debug.log
+0027.782 (0) Looking for candidates to backup in: /Applications/MAMP/htdocs/lokalpam_dev/wp-content
+0027.784 (0) finding files: .DS_Store: adding to list (1)
+0027.786 (0) finding files: index.php: adding to list (2)
+0027.787 (0) finding files: plugins: skipping: this is the plugins directory
+0027.788 (0) finding files: uploads: skipping: this is the uploads directory
+0027.790 (0) finding files: updraft: skipping: this is the updraft directory
+0027.791 (0) finding files: themes: skipping: this is the themes directory
+0027.798 (0) Total entities for the zip file: 0 directories, 2 files (0 skipped as non-modified), 0 MB
+0027.815 (0) backup_2019-03-04-0131_lokalPam_ae51be552816-others.zip.tmp: size is now: 0.00 MB
+0027.829 (0) Created others zip (0) - 0.5 KB in 0 s (15.8 KB/s) (sha1: 83ca9b5ce6b36169bff3ec51be1564052b6afeaf, sha256: 843b9c03eeab737eb60e1cb38e13fbdf98ab1f28a76b380b67e7f7e58c132098)
+0027.841 (0) Saving backup status to database (elements: 8)
+0027.851 (0) No database backup (wp) - not part of this run
+0027.860 (0) backup_2019-03-04-0131_lokalPam_ae51be552816-plugins.zip: plugins: This file has not yet been successfully uploaded: will queue
+0027.861 (0) backup_2019-03-04-0131_lokalPam_ae51be552816-themes.zip: themes: This file has not yet been successfully uploaded: will queue
+0027.863 (0) backup_2019-03-04-0131_lokalPam_ae51be552816-uploads.zip: uploads: This file has not yet been successfully uploaded: will queue
+0027.865 (0) backup_2019-03-04-0131_lokalPam_ae51be552816-others.zip: others: This file has not yet been successfully uploaded: will queue
+0027.866 (0) Saving backup history. Total backup size: 99.5 MB
+0027.875 (0) Requesting upload of the files that have not yet been successfully uploaded (4)
+0027.879 (0) Cloud backup selection (1/1): googledrive with instance (1/1) (last)
+0027.881 (0) Beginning dispatch of backup to remote (googledrive) (instance identifier s-44ce23bc36356072666b7ad9c78c7c43)
+0028.731 (0) ERROR: Have not yet obtained an access token from Google (has the user authorised?) (Invalid request (refresh token not present).) (no_refresh_token)
+0028.736 (0) Retain: beginning examination of existing backup sets; user setting: retain_files=2, retain_db=14
+0028.739 (0) Number of backup sets in history: 17; groups (db): 1
+0028.741 (0) Examining (for databases) backup set with group_id=0, nonce=ae51be552816, datestamp=1551663091 (Mar 04 2019 01:31:31)
+0028.743 (0) Examining (for databases) backup set with group_id=0, nonce=94e10c828884, datestamp=1551663084 (Mar 04 2019 01:31:24)
+0028.744 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.745 (0) Examining (for databases) backup set with group_id=0, nonce=70815c1bca6c, datestamp=1544513362 (Dec 11 2018 07:29:22)
+0028.745 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.746 (0) Examining (for databases) backup set with group_id=0, nonce=60718a52ffce, datestamp=1544427080 (Dec 10 2018 07:31:20)
+0028.746 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.746 (0) Examining (for databases) backup set with group_id=0, nonce=3c22bf718bc1, datestamp=1544340686 (Dec 09 2018 07:31:26)
+0028.746 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.746 (0) Examining (for databases) backup set with group_id=0, nonce=b6b26a4818e3, datestamp=1544254261 (Dec 08 2018 07:31:01)
+0028.746 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.747 (0) Examining (for databases) backup set with group_id=0, nonce=2544b18631c0, datestamp=1544167747 (Dec 07 2018 07:29:07)
+0028.747 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.747 (0) Examining (for databases) backup set with group_id=0, nonce=778675d69dc5, datestamp=1544081508 (Dec 06 2018 07:31:48)
+0028.747 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.747 (0) Examining (for databases) backup set with group_id=0, nonce=4f1a3b1069da, datestamp=1543995321 (Dec 05 2018 07:35:21)
+0028.747 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.748 (0) Examining (for databases) backup set with group_id=0, nonce=423499493b07, datestamp=1543908613 (Dec 04 2018 07:30:13)
+0028.748 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.748 (0) Examining (for databases) backup set with group_id=0, nonce=cf36a28fb449, datestamp=1543822300 (Dec 03 2018 07:31:40)
+0028.748 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.748 (0) Examining (for databases) backup set with group_id=0, nonce=3c6608decf94, datestamp=1543736229 (Dec 02 2018 07:37:09)
+0028.748 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.749 (0) Examining (for databases) backup set with group_id=0, nonce=c422a97bb221, datestamp=1543649360 (Dec 01 2018 07:29:20)
+0028.749 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.749 (0) Examining (for databases) backup set with group_id=0, nonce=6c0177f87726, datestamp=1543563505 (Nov 30 2018 07:38:25)
+0028.749 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.749 (0) Examining (for databases) backup set with group_id=0, nonce=15c2a3297348, datestamp=1543476549 (Nov 29 2018 07:29:09)
+0028.749 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.749 (0) Examining (for databases) backup set with group_id=0, nonce=24d0d8bd05fc, datestamp=1538638282 (Oct 04 2018 07:31:22)
+0028.749 (0) Examining (for databases) backup set with group_id=0, nonce=fca9dc5ddf55, datestamp=1538033436 (Sep 27 2018 07:30:36)
+0028.749 (0) Number of backup sets in history: 17; groups (files): 1
+0028.751 (0) Examining (for files) backup set with nonce=ae51be552816, datestamp=1551663091 (Mar 04 2019 01:31:31)
+0028.751 (0) This backup set is the backup set just made, so will not be deleted.
+0028.752 (0) This backup set is the backup set just made, so will not be deleted.
+0028.753 (0) This backup set is the backup set just made, so will not be deleted.
+0028.753 (0) This backup set is the backup set just made, so will not be deleted.
+0028.753 (0) This backup set remains non-empty (f=1/d=0); will retain in history
+0028.755 (0) Examining (for files) backup set with nonce=94e10c828884, datestamp=1551663084 (Mar 04 2019 01:31:24)
+0028.755 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.757 (0) Examining (for files) backup set with nonce=70815c1bca6c, datestamp=1544513362 (Dec 11 2018 07:29:22)
+0028.757 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.757 (0) Examining (for files) backup set with nonce=60718a52ffce, datestamp=1544427080 (Dec 10 2018 07:31:20)
+0028.757 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.757 (0) Examining (for files) backup set with nonce=3c22bf718bc1, datestamp=1544340686 (Dec 09 2018 07:31:26)
+0028.757 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.758 (0) Examining (for files) backup set with nonce=b6b26a4818e3, datestamp=1544254261 (Dec 08 2018 07:31:01)
+0028.758 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.758 (0) Examining (for files) backup set with nonce=2544b18631c0, datestamp=1544167747 (Dec 07 2018 07:29:07)
+0028.758 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.758 (0) Examining (for files) backup set with nonce=778675d69dc5, datestamp=1544081508 (Dec 06 2018 07:31:48)
+0028.759 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.759 (0) Examining (for files) backup set with nonce=4f1a3b1069da, datestamp=1543995321 (Dec 05 2018 07:35:21)
+0028.759 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.759 (0) Examining (for files) backup set with nonce=423499493b07, datestamp=1543908613 (Dec 04 2018 07:30:13)
+0028.759 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.760 (0) Examining (for files) backup set with nonce=cf36a28fb449, datestamp=1543822300 (Dec 03 2018 07:31:40)
+0028.760 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.760 (0) Examining (for files) backup set with nonce=3c6608decf94, datestamp=1543736229 (Dec 02 2018 07:37:09)
+0028.760 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.760 (0) Examining (for files) backup set with nonce=c422a97bb221, datestamp=1543649360 (Dec 01 2018 07:29:20)
+0028.760 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.761 (0) Examining (for files) backup set with nonce=6c0177f87726, datestamp=1543563505 (Nov 30 2018 07:38:25)
+0028.761 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.761 (0) Examining (for files) backup set with nonce=15c2a3297348, datestamp=1543476549 (Nov 29 2018 07:29:09)
+0028.761 (0) This backup set remains non-empty (f=0/d=1); will retain in history
+0028.761 (0) Examining (for files) backup set with nonce=24d0d8bd05fc, datestamp=1538638282 (Oct 04 2018 07:31:22)
+0028.761 (0) This backup set remains non-empty (f=1/d=0); will retain in history
+0028.763 (0) Examining (for files) backup set with nonce=fca9dc5ddf55, datestamp=1538033436 (Sep 27 2018 07:30:36)
+0028.763 (0) plugins: over retain limit (2); will delete this file entity
+0028.763 (0) themes: over retain limit (2); will delete this file entity
+0028.763 (0) uploads: over retain limit (2); will delete this file entity
+0028.763 (0) others: over retain limit (2); will delete this file entity
+0028.764 (0) Delete file: backup_2018-09-27-0730_lokalPam_fca9dc5ddf55-plugins.zip, service=googledrive
+0028.765 (0) Delete file: backup_2018-09-27-0730_lokalPam_fca9dc5ddf55-themes.zip, service=googledrive
+0028.767 (0) Delete file: backup_2018-09-27-0730_lokalPam_fca9dc5ddf55-uploads.zip, service=googledrive
+0028.768 (0) Delete file: backup_2018-09-27-0730_lokalPam_fca9dc5ddf55-others.zip, service=googledrive
+0029.750 (0) ERROR: Have not yet obtained an access token from Google (has the user authorised?) (Invalid request (refresh token not present).) (no_refresh_token)
+0029.755 (0) This backup set is now empty; will remove from history
+0029.757 (0) Corresponding log file (log.fca9dc5ddf55.txt) not found - must have already been deleted
+0029.758 (0) Retain: saving new backup history, because at least 10 seconds have passed since the last save (sets now: 16)
+0029.769 (0) Retain: saving new backup history (sets now: 16) and finishing retain operation
+0029.776 (0) Resume backup (ae51be552816, 0): finish run
+0029.781 (0) Decremented the semaphore (f) by 1
+0029.783 (0) Semaphore (f) unlocked
+0029.785 (0) There were errors in the uploads, so the 'resume' event is remaining scheduled
+0029.790 (0) No email will/can be sent - the user has not configured an email address.
+0029.791 (0) The backup has not finished; a resumption is scheduled

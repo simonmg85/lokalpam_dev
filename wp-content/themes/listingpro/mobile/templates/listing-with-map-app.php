@@ -315,6 +315,14 @@
 								  $minRange = $listingpro_options['enable_readious_search_filter_min'];
 								  $maxRange = $listingpro_options['enable_readious_search_filter_max'];
 								  
+								  $defVal = 100;
+
+                                    if(isset($listingpro_options['enable_readious_search_filter_default'])){
+
+                                        $defVal = $listingpro_options['enable_readious_search_filter_default'];
+
+                                    }
+								  
 								  ?>
 								  <div class="location-filters location-filters-wrapper">
 
@@ -322,7 +330,7 @@
 									<div class="clearfix row">
 									 <div class="lp-price-range-btnn col-md-1 col-xs-1 text-right padding-0"><?php echo $minRange; ?></div>
 									 <div  class="col-md-9 col-xs-9" id="distance_range_div">
-									  <input id="distance_range" name="distance_range" type="text" data-slider-min="<?php echo $minRange; ?>" data-slider-max="<?php echo $maxRange; ?>" data-slider-step="1" data-slider-value="100"/>
+									  <input id="distance_range" name="distance_range" type="text" data-slider-min="<?php echo $minRange; ?>" data-slider-max="<?php echo $maxRange; ?>" data-slider-step="1" data-slider-value="<?php echo $defVal ?>"/>
 
 									 </div>
 									 <div class="col-md-2 col-xs-2 padding-0 text-left lp-price-range-btnn"><?php echo $maxRange; ?></div>

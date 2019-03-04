@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: listingpro\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-08 17:29+0500\n"
+"POT-Creation-Date: 2019-02-01 17:39+0500\n"
 "POT-Revision-Date: Tue Mar 08 2016 16:05:54 GMT+0500 (Pakistan Standard Time)\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: cland <cland@gmail.com>\n"
@@ -265,7 +265,7 @@ msgstr ""
 msgid "1 Review"
 msgstr ""
 
-#: comments.php:32 include/functions-new.php:651 include/functions-new.php:1056
+#: comments.php:32 include/functions-new.php:652 include/functions-new.php:1057
 #: include/options-config.php:3170 include/reviews/all-reviews.php:118
 #: mobile/templates/dashboard/main-screen-app-view.php:62 template-dashboard.php:604
 #: templates/author/author-banner.php:1 templates/author/author-content.php:1
@@ -336,31 +336,31 @@ msgstr ""
 msgid "Partypro Category Menu"
 msgstr ""
 
-#: functions.php:565 functions.php:572
+#: functions.php:568 functions.php:575
 msgid "You don't have permission to access this page."
 msgstr ""
 
-#: functions.php:605
+#: functions.php:608
 msgid "Type and hit enter"
 msgstr ""
 
-#: functions.php:904
+#: functions.php:907
 msgid "Footer sidebar "
 msgstr ""
 
-#: functions.php:906
+#: functions.php:909
 msgid "The footer sidebar widget area"
 msgstr ""
 
-#: functions.php:1136 functions.php:2069
+#: functions.php:1139 functions.php:2072
 msgid "&laquo;"
 msgstr ""
 
-#: functions.php:1137 functions.php:2070
+#: functions.php:1140 functions.php:2073
 msgid "&raquo;"
 msgstr ""
 
-#: functions.php:1214 functions.php:1269 include/functions-new.php:1319
+#: functions.php:1217 functions.php:1272 include/functions-new.php:1320
 #: mobile/templates/listing-with-map-app.php:286
 #: mobile/templates/search/filter-app-view.php:136
 #: templates/headers/filters-in-header.php:134 templates/search/filter.php:166
@@ -370,7 +370,7 @@ msgstr ""
 msgid "Inexpensive"
 msgstr ""
 
-#: functions.php:1218 functions.php:1273 include/functions-new.php:1331
+#: functions.php:1221 functions.php:1276 include/functions-new.php:1332
 #: mobile/templates/listing-with-map-app.php:287
 #: mobile/templates/search/filter-app-view.php:137
 #: templates/headers/filters-in-header.php:135 templates/search/filter.php:167
@@ -380,7 +380,7 @@ msgstr ""
 msgid "Moderate"
 msgstr ""
 
-#: functions.php:1222 functions.php:1277 include/functions-new.php:1343
+#: functions.php:1225 functions.php:1280 include/functions-new.php:1344
 #: mobile/templates/listing-with-map-app.php:288
 #: mobile/templates/search/filter-app-view.php:138
 #: templates/headers/filters-in-header.php:136 templates/search/filter.php:168
@@ -390,7 +390,7 @@ msgstr ""
 msgid "Pricey"
 msgstr ""
 
-#: functions.php:1226 functions.php:1281 include/functions-new.php:1355
+#: functions.php:1229 functions.php:1284 include/functions-new.php:1356
 #: mobile/templates/listing-with-map-app.php:289
 #: mobile/templates/search/filter-app-view.php:139
 #: templates/headers/filters-in-header.php:137 templates/search/filter.php:169
@@ -400,114 +400,114 @@ msgstr ""
 msgid "Ultra High End"
 msgstr ""
 
-#: functions.php:1311
+#: functions.php:1314
 #: templates/single-list/listing-details-style3/sidebar/quicks.php:117
 #: templates/single-list/listing-details-style4/sidebar/quicks.php:117
 msgid "Price Range"
 msgstr ""
 
-#: functions.php:1650 include/functions-new.php:1747
+#: functions.php:1653 include/functions-new.php:1748
 msgid "Share"
 msgstr ""
 
-#: functions.php:1709 functions.php:1720
+#: functions.php:1712 functions.php:1723
 msgid "0 View"
 msgstr ""
 
-#: functions.php:1713
+#: functions.php:1716
 msgid " View"
 msgstr ""
 
-#: functions.php:1716
+#: functions.php:1719
 msgid " Views"
 msgstr ""
 
-#: functions.php:2133
+#: functions.php:2136
 msgid "Rating only enabled on published listing"
 msgstr ""
 
-#: functions.php:2137
+#: functions.php:2140
 msgid "Be the first one to rate!"
 msgstr ""
 
-#: functions.php:2915 functions.php:2937 functions.php:2992 functions.php:2997
-#: functions.php:3003 templates/popups.php:500
+#: functions.php:2918 functions.php:2940 functions.php:2995 functions.php:3000
+#: functions.php:3006 templates/popups.php:500
 msgid "Free"
 msgstr ""
 
-#: functions.php:2922 functions.php:2953
+#: functions.php:2925 functions.php:2956
 msgid "No Plan Assigned Yet"
 msgstr ""
 
-#: functions.php:2924 functions.php:2955
+#: functions.php:2927 functions.php:2958
 msgid "Change Plan"
 msgstr ""
 
-#: functions.php:2943 include/invoices/invoice-modal.php:155 templates/popups.php:507
+#: functions.php:2946 include/invoices/invoice-modal.php:155 templates/popups.php:507
 msgid "Package"
 msgstr ""
 
-#: functions.php:2946 include/invoices/invoice-modal.php:152 templates/popups.php:510
+#: functions.php:2949 include/invoices/invoice-modal.php:152 templates/popups.php:510
 msgid "Pay Per Listing"
 msgstr ""
 
-#: functions.php:2982 include/setup/-envato_setup.php:684
+#: functions.php:2985 include/setup/-envato_setup.php:684
 #: include/setup/envato_setup.php:684
 msgid "Success"
 msgstr ""
 
-#: functions.php:2989 mobile/templates/dashboard/main-screen-app-view.php:114
+#: functions.php:2992 mobile/templates/dashboard/main-screen-app-view.php:114
 #: templates/dashboard/expired.php:126 templates/dashboard/listing.php:159
 #: templates/dashboard/listings.php:194 templates/dashboard/pending.php:140
 msgid "Pending"
 msgstr ""
 
-#: functions.php:3315
+#: functions.php:3348
 msgid "Important Update Notice!"
 msgstr ""
 
-#: functions.php:3317 functions.php:5148
+#: functions.php:3350 functions.php:5154
 msgid ""
 "Thanks for updating your theme, now we highly recommend you to also update the "
 "following plugin called  "
 msgstr ""
 
-#: functions.php:3319
+#: functions.php:3352
 msgid "ListingPro Plugin"
 msgstr ""
 
-#: functions.php:3321
+#: functions.php:3354
 msgid ""
 "  Go to Plugins, deactivate and delete  *ListingPro Plugin*. After deleting, the "
 "following notice will appear,  "
 msgstr ""
 
-#: functions.php:3323
+#: functions.php:3356
 msgid "This theme requires the following plugin - Listingpro Plugin"
 msgstr ""
 
-#: functions.php:3325 functions.php:5156
+#: functions.php:3358 functions.php:5162
 msgid "  Click  "
 msgstr ""
 
-#: functions.php:3328 functions.php:5159
+#: functions.php:3361 functions.php:5165
 msgid "begin installing plugin"
 msgstr ""
 
-#: functions.php:3330
+#: functions.php:3363
 msgid ""
 "  link. After installation is complete, activate the plugin. Listingpro plugin "
 "will be up to date"
 msgstr ""
 
-#: functions.php:3332 functions.php:5163
+#: functions.php:3365 functions.php:5169
 msgid ""
 "  Additional Note for CHILD THEME Users: If you are using child theme then please "
 "switch to parent theme and follow the above steps and then switch back to child "
 "theme"
 msgstr ""
 
-#: functions.php:3389 include/options-config.php:2561 include/options-config.php:2573
+#: functions.php:3422 include/options-config.php:2561 include/options-config.php:2573
 #: include/options-config.php:2594 include/options-config.php:3301
 #: include/options-config.php:3326 include/options-config.php:3872
 #: include/options-config.php:3885 include/options-config.php:3898
@@ -522,76 +522,76 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: functions.php:3670 functions.php:4065 functions.php:4068
+#: functions.php:3703 functions.php:4098 functions.php:4101
 msgid "Sorry! There is no plan associated with the category"
 msgstr ""
 
-#: functions.php:3748
+#: functions.php:3781
 msgid "Sorry! There is no general plan"
 msgstr ""
 
-#: functions.php:3789
+#: functions.php:3822
 msgid "To get Claim for listing, click of following link"
 msgstr ""
 
-#: functions.php:3794
+#: functions.php:3827
 msgid "Load Claim Email"
 msgstr ""
 
-#: functions.php:3795
+#: functions.php:3828
 msgid "john@gmail.com"
 msgstr ""
 
-#: functions.php:3797
+#: functions.php:3830
 msgid "Claim For Listing"
 msgstr ""
 
-#: functions.php:3801
+#: functions.php:3834
 msgid "Send Link to email"
 msgstr ""
 
-#: functions.php:3838
+#: functions.php:3871
 msgid "Email has sent"
 msgstr ""
 
-#: functions.php:3846
+#: functions.php:3879
 msgid "Problem in email sending"
 msgstr ""
 
-#: functions.php:4562
+#: functions.php:4577
 msgid "Template saved successully"
 msgstr ""
 
-#: functions.php:4676
+#: functions.php:4691
 msgid "Lead message reply"
 msgstr ""
 
-#: functions.php:4844 templates/dashboard/inbox.php:352
+#: functions.php:4848 templates/dashboard/inbox.php:357
 msgid "Reply to this"
 msgstr ""
 
-#: functions.php:4846 templates/dashboard/inbox.php:354
+#: functions.php:4850 templates/dashboard/inbox.php:359
 msgid "Send message"
 msgstr ""
 
-#: functions.php:4860 templates/dashboard/inbox.php:87
+#: functions.php:4864 templates/dashboard/inbox.php:92
 msgid "Registered User"
 msgstr ""
 
-#: functions.php:4862 templates/dashboard/inbox.php:91
+#: functions.php:4866 templates/dashboard/inbox.php:96
 msgid "Unregistered User"
 msgstr ""
 
-#: functions.php:4868 mobile/templates/listing_app_view.php:645
-#: templates/dashboard/inbox.php:100 templates/dashboard/invoices.php:391
+#: functions.php:4872 mobile/templates/listing_app_view.php:645
+#: templates/dashboard/inbox.php:105 templates/dashboard/invoices.php:391
 #: templates/listing_detail3.php:146
 msgid "Details"
 msgstr ""
 
-#: functions.php:4873 include/reviews/reviews-form.php:284
+#: functions.php:4877 include/reviews/reviews-form.php:284
 #: include/reviews/reviews-form.php:897 mobile/templates/login-reg-popup.php:204
 #: templates/blog-comments.php:85 templates/blog-comments.php:112
-#: templates/dashboard/inbox.php:108 templates/dashboard/lead_form.php:106
+#: templates/dashboard/inbox.php:113 templates/dashboard/lead_form.php:106
 #: templates/dashboard/lead_form.php:223 templates/dashboard/lead_form.php:263
 #: templates/dashboard/lead_form.php:373 templates/dashboard/update-profile.php:182
 #: templates/dashboard/update-profile.php:327
@@ -599,9 +599,9 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: functions.php:4876 include/options-config.php:7056
+#: functions.php:4880 include/options-config.php:7056
 #: mobile/templates/listing_app_view_leadform.php:118
-#: templates/author/author-about.php:1 templates/dashboard/inbox.php:111
+#: templates/author/author-about.php:1 templates/dashboard/inbox.php:116
 #: templates/dashboard/lead_form.php:107 templates/dashboard/lead_form.php:232
 #: templates/dashboard/lead_form.php:264 templates/dashboard/lead_form.php:382
 #: templates/dashboard/update-profile.php:186
@@ -615,31 +615,31 @@ msgstr ""
 msgid "Phone"
 msgstr ""
 
-#: functions.php:5146
+#: functions.php:5152
 msgid "Important Update Notice! for LISTINGPRO ADS Plugin"
 msgstr ""
 
-#: functions.php:5150
+#: functions.php:5156
 msgid "ListingPro Ads Plugin"
 msgstr ""
 
-#: functions.php:5152
+#: functions.php:5158
 msgid ""
 "  Go to Plugins, deactivate and delete  *ListingPro Ads Plugin*. After deleting, "
 "the following notice will appear,  "
 msgstr ""
 
-#: functions.php:5154
+#: functions.php:5160
 msgid "This theme requires the following plugin - Listingpro Ads Plugin"
 msgstr ""
 
-#: functions.php:5161
+#: functions.php:5167
 msgid ""
 "  link. After installation is complete, activate the plugin. Listingpro ads plugin "
 "will be up to date"
 msgstr ""
 
-#: functions.php:5180
+#: functions.php:5186
 msgid "Select Plan"
 msgstr ""
 
@@ -661,8 +661,8 @@ msgstr ""
 msgid " Top in Search Page Ads "
 msgstr ""
 
-#: include/all-extra-fields.php:17 include/functions-new.php:1527
-#: include/functions-new.php:1677
+#: include/all-extra-fields.php:17 include/functions-new.php:1528
+#: include/functions-new.php:1678
 msgid "Additional Details"
 msgstr ""
 
@@ -671,7 +671,7 @@ msgid "Show all"
 msgstr ""
 
 #: include/favorite-function.php:68 include/favorite-function.php:105
-#: include/favorite-function.php:132 include/functions-new.php:1995
+#: include/favorite-function.php:132 include/functions-new.php:1996
 #: templates/dashboard/announcements.php:1 templates/dashboard/create-menu.php:100
 #: templates/listing-style3.php:1
 #: templates/single-list/listing-details-style4/content/title-bar.php:52
@@ -679,7 +679,7 @@ msgid "Save"
 msgstr ""
 
 #: include/favorite-function.php:103 include/favorite-function.php:130
-#: include/functions-new.php:1921 listing-loop.php:170 listing-loop.php:370
+#: include/functions-new.php:1922 listing-loop.php:170 listing-loop.php:370
 #: listing-loop.php:584 listing-loop.php:892 listing-loop.php:1108
 #: mobile/listing-loop-app-view.php:158 mobile/template-dashboard-app-view.php:591
 #: mobile/template-dashboard-app-view.php:608
@@ -693,11 +693,11 @@ msgstr ""
 msgid "Saved"
 msgstr ""
 
-#: include/functions-new.php:119 include/timings.php:45
+#: include/functions-new.php:120 include/timings.php:45
 msgid "Today"
 msgstr ""
 
-#: include/functions-new.php:155 include/time-status.php:135
+#: include/functions-new.php:156 include/time-status.php:135
 #: include/time-status.php:254 include/time-status.php:392
 #: include/time-status.php:511 include/time-status.php:612
 #: include/time-status.php:719 include/time-status.php:796 include/timings.php:261
@@ -707,179 +707,179 @@ msgstr ""
 msgid "24 hours open"
 msgstr ""
 
-#: include/functions-new.php:169
+#: include/functions-new.php:170
 msgid "Open"
 msgstr ""
 
-#: include/functions-new.php:181
+#: include/functions-new.php:182
 msgid "Closed"
 msgstr ""
 
-#: include/functions-new.php:199 include/time-status.php:812
+#: include/functions-new.php:200 include/time-status.php:812
 #: include/time-status.php:816 include/timings.php:570 include/timings.php:572
 msgid "Day Off!"
 msgstr ""
 
-#: include/functions-new.php:460 include/reviews/all-reviews.php:55
-#: include/reviews/all-reviews.php:329
+#: include/functions-new.php:461 include/reviews/all-reviews.php:55
+#: include/reviews/all-reviews.php:334
 msgid "Review for "
 msgstr ""
 
-#: include/functions-new.php:464 include/reviews/all-reviews.php:57
-#: include/reviews/all-reviews.php:331
+#: include/functions-new.php:465 include/reviews/all-reviews.php:57
+#: include/reviews/all-reviews.php:336
 msgid "Reviews for "
 msgstr ""
 
-#: include/functions-new.php:580 include/functions-new.php:803
-#: include/functions-new.php:979 include/functions-new.php:1237
-#: include/reviews/all-reviews.php:194 include/reviews/all-reviews.php:219
-#: include/reviews/all-reviews.php:455 include/reviews/all-reviews.php:477
+#: include/functions-new.php:581 include/functions-new.php:804
+#: include/functions-new.php:980 include/functions-new.php:1238
+#: include/reviews/all-reviews.php:199 include/reviews/all-reviews.php:224
+#: include/reviews/all-reviews.php:465 include/reviews/all-reviews.php:487
 msgid "Interesting"
 msgstr ""
 
-#: include/functions-new.php:582 include/functions-new.php:981
-#: include/reviews/all-reviews.php:195 include/reviews/all-reviews.php:226
-#: include/reviews/all-reviews.php:456 include/reviews/all-reviews.php:483
+#: include/functions-new.php:583 include/functions-new.php:982
+#: include/reviews/all-reviews.php:200 include/reviews/all-reviews.php:231
+#: include/reviews/all-reviews.php:466 include/reviews/all-reviews.php:493
 msgid "Lol"
 msgstr ""
 
-#: include/functions-new.php:584 include/functions-new.php:807
-#: include/functions-new.php:983 include/functions-new.php:1241
-#: include/reviews/all-reviews.php:196 include/reviews/all-reviews.php:233
-#: include/reviews/all-reviews.php:457 include/reviews/all-reviews.php:489
+#: include/functions-new.php:585 include/functions-new.php:808
+#: include/functions-new.php:984 include/functions-new.php:1242
+#: include/reviews/all-reviews.php:201 include/reviews/all-reviews.php:238
+#: include/reviews/all-reviews.php:467 include/reviews/all-reviews.php:499
 msgid "Love"
 msgstr ""
 
-#: include/functions-new.php:622 include/functions-new.php:1021
-#: include/reviews/all-reviews.php:218 include/reviews/all-reviews.php:225
-#: include/reviews/all-reviews.php:232 include/reviews/all-reviews.php:476
-#: include/reviews/all-reviews.php:482 include/reviews/all-reviews.php:488
-#: include/reviews/review-submit.php:475
+#: include/functions-new.php:623 include/functions-new.php:1022
+#: include/reviews/all-reviews.php:223 include/reviews/all-reviews.php:230
+#: include/reviews/all-reviews.php:237 include/reviews/all-reviews.php:486
+#: include/reviews/all-reviews.php:492 include/reviews/all-reviews.php:498
+#: include/reviews/review-submit.php:480
 msgid "You already reacted"
 msgstr ""
 
-#: include/functions-new.php:673 include/functions-new.php:1088
-#: include/reviews/all-reviews.php:131 include/reviews/all-reviews.php:389
+#: include/functions-new.php:674 include/functions-new.php:1089
+#: include/reviews/all-reviews.php:131 include/reviews/all-reviews.php:394
 msgid "View All"
 msgstr ""
 
-#: include/functions-new.php:801 include/functions-new.php:1235
-#: include/reviews/all-reviews.php:215 include/reviews/all-reviews.php:473
+#: include/functions-new.php:802 include/functions-new.php:1236
+#: include/reviews/all-reviews.php:220 include/reviews/all-reviews.php:483
 msgid "Was this review ...?"
 msgstr ""
 
-#: include/functions-new.php:805 include/functions-new.php:1239
+#: include/functions-new.php:806 include/functions-new.php:1240
 msgid "LOL"
 msgstr ""
 
-#: include/functions-new.php:815 include/functions-new.php:1249
-#: include/reviews/all-reviews.php:241 include/reviews/all-reviews.php:496
+#: include/functions-new.php:816 include/functions-new.php:1250
+#: include/reviews/all-reviews.php:246 include/reviews/all-reviews.php:506
 msgid "Report"
 msgstr ""
 
-#: include/functions-new.php:829
+#: include/functions-new.php:830
 msgid "Author Response"
 msgstr ""
 
-#: include/functions-new.php:1072
+#: include/functions-new.php:1073
 msgid "Ago"
 msgstr ""
 
-#: include/functions-new.php:1633 include/timings.php:805
+#: include/functions-new.php:1634 include/timings.php:805
 msgid "Contract"
 msgstr ""
 
-#: include/functions-new.php:1633 include/timings.php:805
+#: include/functions-new.php:1634 include/timings.php:805
 msgid "Expand"
 msgstr ""
 
-#: include/functions-new.php:2040 include/functions-new.php:2187
-#: include/functions-new.php:2313 include/functions-new.php:2393
-#: include/functions-new.php:2491 include/functions-new.php:2674
-#: include/functions-new.php:2768 include/functions-new.php:2990
-#: include/functions-new.php:3031 include/functions-new.php:3694
+#: include/functions-new.php:2041 include/functions-new.php:2188
+#: include/functions-new.php:2314 include/functions-new.php:2394
+#: include/functions-new.php:2492 include/functions-new.php:2675
+#: include/functions-new.php:2769 include/functions-new.php:2991
+#: include/functions-new.php:3032 include/functions-new.php:3695
 msgid "Invalid User Session"
 msgstr ""
 
-#: include/functions-new.php:2062
+#: include/functions-new.php:2063
 msgid "Announcement updated"
 msgstr ""
 
-#: include/functions-new.php:2100
+#: include/functions-new.php:2101
 msgid "Announcements are not allowed with this listing"
 msgstr ""
 
-#: include/functions-new.php:2115 include/functions-new.php:2124
+#: include/functions-new.php:2116 include/functions-new.php:2125
 msgid "Announcement added successfully"
 msgstr ""
 
-#: include/functions-new.php:2217
+#: include/functions-new.php:2218
 msgid "offer updated"
 msgstr ""
 
-#: include/functions-new.php:2243 include/functions-new.php:2259
+#: include/functions-new.php:2244 include/functions-new.php:2260
 msgid "offer added"
 msgstr ""
 
-#: include/functions-new.php:2269 include/functions-new.php:2333
-#: include/functions-new.php:2347 include/functions-new.php:2413
-#: include/functions-new.php:2427
+#: include/functions-new.php:2270 include/functions-new.php:2334
+#: include/functions-new.php:2348 include/functions-new.php:2414
+#: include/functions-new.php:2428
 msgid "Something went wrong"
 msgstr ""
 
-#: include/functions-new.php:2515 include/functions-new.php:2553
+#: include/functions-new.php:2516 include/functions-new.php:2554
 msgid "Menu item updated successfully"
 msgstr ""
 
-#: include/functions-new.php:2592 include/functions-new.php:2620
+#: include/functions-new.php:2593 include/functions-new.php:2621
 msgid "Menu item added successfully"
 msgstr ""
 
-#: include/functions-new.php:2699
+#: include/functions-new.php:2700
 msgid "Coupon Updated successfully"
 msgstr ""
 
-#: include/functions-new.php:2707
+#: include/functions-new.php:2708
 msgid "Coupons are not allowed with this listing"
 msgstr ""
 
-#: include/functions-new.php:2718 include/functions-new.php:2725
-#: include/functions-new.php:2730
+#: include/functions-new.php:2719 include/functions-new.php:2726
+#: include/functions-new.php:2731
 msgid "Coupon Created successfully"
 msgstr ""
 
-#: include/functions-new.php:2781 include/functions-new.php:2807
-#: include/functions-new.php:2853 include/functions-new.php:2886
-#: include/functions-new.php:2920 include/functions-new.php:2942
-#: include/functions-new.php:2963
+#: include/functions-new.php:2782 include/functions-new.php:2808
+#: include/functions-new.php:2854 include/functions-new.php:2887
+#: include/functions-new.php:2921 include/functions-new.php:2943
+#: include/functions-new.php:2964
 msgid "Data deleted"
 msgstr ""
 
-#: include/functions-new.php:2969
+#: include/functions-new.php:2970
 msgid "Bad Request"
 msgstr ""
 
-#: include/functions-new.php:2997
+#: include/functions-new.php:2998
 msgid "Menu Items deleted successfully"
 msgstr ""
 
-#: include/functions-new.php:3731
+#: include/functions-new.php:3732
 msgid "event updated successfully"
 msgstr ""
 
-#: include/functions-new.php:3737
+#: include/functions-new.php:3738
 msgid "Error while updating event"
 msgstr ""
 
-#: include/functions-new.php:3798
+#: include/functions-new.php:3799
 msgid "event created successfully"
 msgstr ""
 
-#: include/functions-new.php:3804
+#: include/functions-new.php:3805
 msgid "Error while creating event"
 msgstr ""
 
-#: include/functions-new.php:3846 mobile/templates/events-app-view.php:64
+#: include/functions-new.php:3847 mobile/templates/events-app-view.php:64
 #: templates/single-event/event-detail.php:227 templates/single-list/event.php:101
 #: templates/single-list/listing-details-style1/sidebar/event.php:60
 #: templates/single-list/listing-details-style2/sidebar/event.php:60
@@ -888,54 +888,54 @@ msgstr ""
 msgid "going"
 msgstr ""
 
-#: include/functions-new.php:3868
+#: include/functions-new.php:3869
 msgctxt "post type general name"
 msgid "Events"
 msgstr ""
 
-#: include/functions-new.php:3869
+#: include/functions-new.php:3870
 msgctxt "post type singular name"
 msgid "Events"
 msgstr ""
 
-#: include/functions-new.php:3870
+#: include/functions-new.php:3871
 msgctxt "book"
 msgid "Add New Event"
 msgstr ""
 
-#: include/functions-new.php:3871
+#: include/functions-new.php:3872
 msgid "Add New Event"
 msgstr ""
 
-#: include/functions-new.php:3872
+#: include/functions-new.php:3873
 msgid "Edit Event"
 msgstr ""
 
-#: include/functions-new.php:3873
+#: include/functions-new.php:3874
 msgid "New Event"
 msgstr ""
 
-#: include/functions-new.php:3874
+#: include/functions-new.php:3875
 msgid "View Event"
 msgstr ""
 
-#: include/functions-new.php:3875
+#: include/functions-new.php:3876
 msgid "Search Events"
 msgstr ""
 
-#: include/functions-new.php:3876
+#: include/functions-new.php:3877
 msgid "No Event found"
 msgstr ""
 
-#: include/functions-new.php:3877
+#: include/functions-new.php:3878
 msgid "No Event found in Trash"
 msgstr ""
 
-#: include/functions-new.php:3903
+#: include/functions-new.php:3904
 msgid "Event Details"
 msgstr ""
 
-#: include/functions-new.php:4041 include/functions-new.php:4054
+#: include/functions-new.php:4042 include/functions-new.php:4055
 msgid "Something went wrong!"
 msgstr ""
 
@@ -1129,7 +1129,7 @@ msgid "Login successful, redirecting..."
 msgstr ""
 
 #: include/login-register.php:109 include/login-register.php:266
-#: include/reviews/review-submit.php:381 include/single-ajax.php:475
+#: include/reviews/review-submit.php:386 include/single-ajax.php:475
 msgid "Please check captcha"
 msgstr ""
 
@@ -4659,7 +4659,7 @@ msgid ""
 "options.</p>"
 msgstr ""
 
-#: include/paypal/form-handler.php:178
+#: include/paypal/form-handler.php:184
 msgid "Enjoy using our features of Listings subscription in very cheap price"
 msgstr ""
 
@@ -5188,7 +5188,7 @@ msgstr[1] ""
 msgid "All plugins installed and activated successfully. %s"
 msgstr ""
 
-#: include/reviews/all-reviews.php:253 include/reviews/all-reviews.php:508
+#: include/reviews/all-reviews.php:258 include/reviews/all-reviews.php:518
 msgid "Owner Response"
 msgstr ""
 
@@ -5212,7 +5212,7 @@ msgstr ""
 msgid "Review has been submitted successfully"
 msgstr ""
 
-#: include/reviews/review-submit.php:470
+#: include/reviews/review-submit.php:475
 msgid "Thanks for reacting"
 msgstr ""
 
@@ -5290,7 +5290,7 @@ msgstr ""
 
 #: include/reviews/reviews-form.php:159 include/reviews/reviews-form.php:317
 #: include/reviews/reviews-form.php:684 include/reviews/reviews-form.php:961
-#: mobile/templates/login-reg-popup.php:169 template-contact.php:335
+#: mobile/templates/login-reg-popup.php:169 template-contact.php:365
 #: template-login.php:166 templates/popups.php:186
 #: templates/single-list/claim-form.php:99 templates/single-list/claim-form.php:248
 #: templates/single-list/claim-form.php:349
@@ -5382,63 +5382,63 @@ msgstr ""
 msgid "Features"
 msgstr ""
 
-#: include/search-filter.php:757 include/search-filter.php:780 loop.php:479
-#: mobile/templates/listing-with-map-app.php:417 template-favourites.php:106
-#: templates/listing-simple.php:260 templates/listing-with-header-filters.php:482
+#: include/search-filter.php:758 include/search-filter.php:781 loop.php:479
+#: mobile/templates/listing-with-map-app.php:425 template-favourites.php:106
+#: templates/listing-simple.php:262 templates/listing-with-header-filters.php:482
 #: templates/listing-with-map.php:267 templates/listing-with-sidebar.php:354
 msgid "No Results"
 msgstr ""
 
-#: include/search-filter.php:760 include/search-filter.php:783
-#: mobile/templates/listing-with-map-app.php:418 templates/listing-simple.php:261
+#: include/search-filter.php:761 include/search-filter.php:784
+#: mobile/templates/listing-with-map-app.php:426 templates/listing-simple.php:263
 #: templates/listing-with-map.php:268 templates/listing-with-sidebar.php:355
 msgid "Sorry! There are no listings matching your search."
 msgstr ""
 
-#: include/search-filter.php:763 include/search-filter.php:786
+#: include/search-filter.php:764 include/search-filter.php:787
 msgid "Try changing your search filters or "
 msgstr ""
 
-#: include/search-filter.php:763 include/search-filter.php:786
-#: mobile/templates/listing-with-map-app.php:423 templates/listing-simple.php:266
+#: include/search-filter.php:764 include/search-filter.php:787
+#: mobile/templates/listing-with-map-app.php:431 templates/listing-simple.php:268
 #: templates/listing-with-map.php:273 templates/listing-with-sidebar.php:360
 msgid "Reset Filter"
 msgstr ""
 
-#: include/search-filter.php:986
+#: include/search-filter.php:987
 msgid "https://placeholdit.imgix.net/~text?txtsize=33&w=50&h=50"
 msgstr ""
 
-#: include/search-filter.php:1141
+#: include/search-filter.php:1142
 msgid "in"
 msgstr ""
 
-#: include/search-filter.php:1176
+#: include/search-filter.php:1177
 msgid "More results for "
 msgstr ""
 
-#: include/search-filter.php:1238 include/search-filter.php:1333
+#: include/search-filter.php:1239 include/search-filter.php:1334
 msgid "Someone"
 msgstr ""
 
-#: include/search-filter.php:1244 include/search-filter.php:1339
+#: include/search-filter.php:1245 include/search-filter.php:1340
 msgid "Country : "
 msgstr ""
 
-#: include/search-filter.php:1246 include/search-filter.php:1341
+#: include/search-filter.php:1247 include/search-filter.php:1342
 msgid " City : "
 msgstr ""
 
-#: include/search-filter.php:1248 include/search-filter.php:1343
+#: include/search-filter.php:1249 include/search-filter.php:1344
 msgid " Zip : "
 msgstr ""
 
-#: include/search-filter.php:1463 mobile/templates/search/filter-app-view.php:434
+#: include/search-filter.php:1464 mobile/templates/search/filter-app-view.php:434
 #: templates/search/more-filter.php:14
 msgid "More Option"
 msgstr ""
 
-#: include/search-filter.php:1640 include/setup/-envato_setup.php:461
+#: include/search-filter.php:1641 include/setup/-envato_setup.php:461
 #: include/setup/envato_setup.php:461 mobile/templates/listing-with-map-app.php:245
 #: mobile/templates/login-reg-popup.php:213 template-login.php:275
 #: templates/dashboard/active-campaigns.php:736
@@ -5460,11 +5460,11 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: include/search-filter.php:1642 templates/search/more-filter.php:193
+#: include/search-filter.php:1643 templates/search/more-filter.php:193
 msgid "Show Results"
 msgstr ""
 
-#: include/search-filter.php:1668 templates/headers/filters-in-header.php:255
+#: include/search-filter.php:1669 templates/headers/filters-in-header.php:255
 msgid "Other Filters"
 msgstr ""
 
@@ -6051,8 +6051,8 @@ msgstr ""
 msgid "Sorry! A plan should have a duration for recurring payment"
 msgstr ""
 
-#: include/stripe/stripe-ajax.php:128 include/stripe/stripe-ajax.php:385
-#: include/stripe/stripe-ajax.php:600
+#: include/stripe/stripe-ajax.php:128 include/stripe/stripe-ajax.php:387
+#: include/stripe/stripe-ajax.php:598
 msgid "Sorry! Error in transaction"
 msgstr ""
 
@@ -6060,7 +6060,7 @@ msgstr ""
 msgid "Sorry! There is some problem in your stripe payment"
 msgstr ""
 
-#: include/stripe/stripe-ajax.php:518
+#: include/stripe/stripe-ajax.php:520
 msgid "Sorry!, error in transaction"
 msgstr ""
 
@@ -6216,7 +6216,7 @@ msgid "Style Three"
 msgstr ""
 
 #: include/widgets/widget_most_viewed.php:99 templates/loop-grid-view.php:283
-#: templates/loop-list-view.php:238 templates/loop-list-view.php:385
+#: templates/loop-list-view.php:239 templates/loop-list-view.php:386
 msgid "Be the first to review!"
 msgstr ""
 
@@ -6357,7 +6357,7 @@ msgstr ""
 
 #: mobile/template-dashboard-app-view.php:546 template-dashboard.php:519
 #: templates/listing_detail3.php:246 templates/listing_detail5.php:500
-#: templates/loop-list-view.php:429 templates/loop-list-view.php:454
+#: templates/loop-list-view.php:430 templates/loop-list-view.php:455
 #: templates/single-list/listing-detail-style5/announcements.php:19
 #: templates/single-list/listing-details-style1/content/list-announcements.php:1
 #: templates/single-list/listing-details-style3/content/list-announcements.php:1
@@ -6722,7 +6722,7 @@ msgstr ""
 
 #: mobile/templates/headers/header-app-view-template.php:107
 #: mobile/templates/headers/header-app-view-template.php:207
-#: templates/headers/header-app-view-template.php:126
+#: templates/headers/header-app-view-template.php:133
 #: templates/headers/header-menu-dropdown.php:62
 #: templates/headers/header-style5.php:83 templates/headers/header-style6.php:79
 #: templates/headers/header-style7.php:78 templates/headers/header-style8.php:79
@@ -6743,9 +6743,9 @@ msgstr ""
 #: mobile/templates/headers/header-app-view-template.php:142
 #: mobile/templates/headers/header-app-view-template.php:259
 #: mobile/templates/headers/header-app-view-template.php:303
-#: templates/headers/header-app-view-template.php:117
-#: templates/headers/header-app-view-template.php:189
-#: templates/headers/header-app-view-template.php:233
+#: templates/headers/header-app-view-template.php:124
+#: templates/headers/header-app-view-template.php:196
+#: templates/headers/header-app-view-template.php:240
 #: templates/headers/header-menu-dropdown.php:53
 #: templates/headers/header-menu-dropdown.php:108
 #: templates/headers/header-menu-dropdown.php:157
@@ -6781,8 +6781,8 @@ msgstr ""
 
 #: mobile/templates/headers/header-app-view-template.php:262
 #: templates/dashboard/announcements.php:1
-#: templates/headers/header-app-view-template.php:125
-#: templates/headers/header-app-view-template.php:192
+#: templates/headers/header-app-view-template.php:132
+#: templates/headers/header-app-view-template.php:199
 #: templates/headers/header-menu-dropdown.php:61
 #: templates/headers/header-menu-dropdown.php:111
 #: templates/headers/header-style5.php:82 templates/headers/header-style6.php:78
@@ -6823,28 +6823,28 @@ msgstr ""
 msgid "Price.."
 msgstr ""
 
-#: mobile/templates/listing-with-map-app.php:330
+#: mobile/templates/listing-with-map-app.php:338
 #: templates/listing-with-header-filters.php:386 templates/search/filter.php:258
 #: templates/search/filter.php:329 templates/search/filter2.php:261
 #: templates/search/filter2.php:332
 msgid "New Location"
 msgstr ""
 
-#: mobile/templates/listing-with-map-app.php:335
+#: mobile/templates/listing-with-map-app.php:343
 #: templates/listing-with-header-filters.php:390 templates/search/filter.php:262
 #: templates/search/filter.php:334 templates/search/filter2.php:265
 #: templates/search/filter2.php:337
 msgid "Enter a location"
 msgstr ""
 
-#: mobile/templates/listing-with-map-app.php:359
+#: mobile/templates/listing-with-map-app.php:367
 #: mobile/templates/search/filter-app-view.php:184
 #: templates/headers/filters-in-header.php:148 templates/search/filter.php:190
 #: templates/search/filter2.php:198
 msgid "Open Now"
 msgstr ""
 
-#: mobile/templates/listing-with-map-app.php:419 templates/listing-simple.php:262
+#: mobile/templates/listing-with-map-app.php:427 templates/listing-simple.php:264
 #: templates/listing-with-map.php:269 templates/listing-with-sidebar.php:356
 msgid "Try changing your search filters or"
 msgstr ""
@@ -6948,7 +6948,7 @@ msgstr ""
 msgid "Q"
 msgstr ""
 
-#: mobile/templates/listing_app_view_leadform.php:112 template-contact.php:300
+#: mobile/templates/listing_app_view_leadform.php:112 template-contact.php:330
 #: templates/popups.php:360
 #: templates/single-list/listing-details-style1/sidebar/leadform.php:146
 #: templates/single-list/listing-details-style2/content/contacts.php:154
@@ -6958,7 +6958,7 @@ msgstr ""
 msgid "Name:"
 msgstr ""
 
-#: mobile/templates/listing_app_view_leadform.php:115 template-contact.php:303
+#: mobile/templates/listing_app_view_leadform.php:115 template-contact.php:333
 #: templates/popups.php:363
 #: templates/single-list/listing-details-style1/sidebar/leadform.php:151
 #: templates/single-list/listing-details-style2/content/contacts.php:159
@@ -6968,7 +6968,7 @@ msgstr ""
 msgid "Email:"
 msgstr ""
 
-#: mobile/templates/listing_app_view_leadform.php:121 template-contact.php:313
+#: mobile/templates/listing_app_view_leadform.php:121 template-contact.php:343
 #: templates/popups.php:366 templates/single-list/claim-form.php:342
 #: templates/single-list/listing-details-style1/sidebar/leadform.php:158
 #: templates/single-list/listing-details-style2/content/contacts.php:167
@@ -7126,37 +7126,38 @@ msgid "All Categories"
 msgstr ""
 
 #: mobile/templates/search/home-search-app-view.php:62
-#: templates/headers/header-search.php:206 templates/search/header-search-view.php:62
+#: templates/headers/header-search.php:206
+#: templates/search/header-search-view.php:212
 #: templates/search/home-search-view1.php:65
 #: templates/search/home-search-view2.php:65
 #: templates/search/home-search-view3.php:65 templates/search/home-search.php:62
-#: templates/search/top_search.php:160
+#: templates/search/top_search.php:162
 msgid "What"
 msgstr ""
 
 #: mobile/templates/search/home-search-app-view.php:65
 #: templates/headers/header-search.php:196 templates/headers/header-search.php:213
-#: templates/search/header-search-view.php:65
+#: templates/search/header-search-view.php:215
 #: templates/search/home-search-view1.php:68
 #: templates/search/home-search-view2.php:68
 #: templates/search/home-search-view3.php:68 templates/search/home-search.php:65
-#: templates/search/top_search.php:166
+#: templates/search/top_search.php:168
 msgid "More results for"
 msgstr ""
 
 #: mobile/templates/search/home-search-app-view.php:129
 #: mobile/templates/search/home-search-app-view.php:140
 #: templates/headers/header-search.php:286 templates/headers/header-search.php:305
-#: templates/search/header-search-view.php:129
-#: templates/search/header-search-view.php:141
+#: templates/search/header-search-view.php:283
+#: templates/search/header-search-view.php:295
 #: templates/search/home-search-view1.php:132
 #: templates/search/home-search-view1.php:144
 #: templates/search/home-search-view2.php:132
 #: templates/search/home-search-view2.php:144
 #: templates/search/home-search-view3.php:132
 #: templates/search/home-search-view3.php:144 templates/search/home-search.php:129
-#: templates/search/home-search.php:141 templates/search/top_search.php:273
-#: templates/search/top_search.php:289
+#: templates/search/home-search.php:141 templates/search/top_search.php:275
+#: templates/search/top_search.php:291
 msgid "Where"
 msgstr ""
 
@@ -7192,15 +7193,15 @@ msgstr ""
 msgid "Please check captcha."
 msgstr ""
 
-#: template-contact.php:308
+#: template-contact.php:338
 msgid "Subject:"
 msgstr ""
 
-#: template-contact.php:339 templates/single-list/claim-form.php:103
+#: template-contact.php:369 templates/single-list/claim-form.php:103
 msgid "You agree & accept our Terms & Conditions for posting this information?"
 msgstr ""
 
-#: template-contact.php:346 template-contact.php:353
+#: template-contact.php:376 template-contact.php:383
 msgid "Send Message"
 msgstr ""
 
@@ -7366,7 +7367,7 @@ msgstr ""
 
 #: templates/author/author-banner.php:1 templates/child-cats.php:50
 #: templates/dashboard/announcements.php:1 templates/dashboard/create-menu.php:82
-#: templates/dashboard/create-menu.php:154 templates/dashboard/inbox.php:105
+#: templates/dashboard/create-menu.php:154 templates/dashboard/inbox.php:110
 #: templates/popups.php:518
 msgid "Listing"
 msgstr ""
@@ -8152,8 +8153,8 @@ msgstr ""
 #: templates/dashboard/discounts.php:125 templates/dashboard/discounts.php:241
 #: templates/dashboard/discounts.php:330 templates/dashboard/discounts.php:411
 #: templates/dashboard/discounts.php:499 templates/dashboard/discounts.php:580
-#: templates/dashboard/discounts.php:718 templates/loop-list-view.php:475
-#: templates/loop-list-view.php:492
+#: templates/dashboard/discounts.php:718 templates/loop-list-view.php:476
+#: templates/loop-list-view.php:493
 #: templates/single-list/listing-detail-style5/deals.php:86
 #: templates/single-list/listing-detail-style5/offers.php:65
 #: templates/single-list/listing-details-style1/content/list-offers.php:92
@@ -8422,27 +8423,27 @@ msgid ""
 "contact you through lead form."
 msgstr ""
 
-#: templates/dashboard/inbox.php:137
+#: templates/dashboard/inbox.php:142
 msgid "Replied messages"
 msgstr ""
 
-#: templates/dashboard/inbox.php:179
+#: templates/dashboard/inbox.php:184
 msgid "There is no replied message"
 msgstr ""
 
-#: templates/dashboard/inbox.php:186
+#: templates/dashboard/inbox.php:191
 msgid "Un-Replied messages"
 msgstr ""
 
-#: templates/dashboard/inbox.php:226
+#: templates/dashboard/inbox.php:231
 msgid "There is no un-replied message"
 msgstr ""
 
-#: templates/dashboard/inbox.php:240
+#: templates/dashboard/inbox.php:245
 msgid "On Lisitng "
 msgstr ""
 
-#: templates/dashboard/inbox.php:244
+#: templates/dashboard/inbox.php:249
 msgid "No Recent recent message thread found"
 msgstr ""
 
@@ -9495,22 +9496,22 @@ msgstr ""
 msgid "Faqs"
 msgstr ""
 
-#: templates/loop-grid-view.php:366 templates/loop-list-view.php:300
-#: templates/loop-list-view.php:564
+#: templates/loop-grid-view.php:366 templates/loop-list-view.php:301
+#: templates/loop-list-view.php:565
 msgid "call"
 msgstr ""
 
-#: templates/loop-grid-view.php:373 templates/loop-list-view.php:307
-#: templates/loop-list-view.php:571 templates/single-list/event.php:131
+#: templates/loop-grid-view.php:373 templates/loop-list-view.php:308
+#: templates/loop-list-view.php:572 templates/single-list/event.php:131
 msgid "Show Map"
 msgstr ""
 
-#: templates/loop-grid-view.php:380 templates/loop-list-view.php:314
-#: templates/loop-list-view.php:578
+#: templates/loop-grid-view.php:380 templates/loop-list-view.php:315
+#: templates/loop-list-view.php:579
 msgid "View Menu"
 msgstr ""
 
-#: templates/loop-list-view.php:539
+#: templates/loop-list-view.php:540
 #: templates/single-list/listing-details-style1/content/list-deals.php:139
 #: templates/single-list/listing-details-style1/content/list-discount.php:137
 #: templates/single-list/listing-details-style1/content/list-offers.php:133
@@ -9526,7 +9527,7 @@ msgstr ""
 msgid "Copy to clipboard"
 msgstr ""
 
-#: templates/loop-list-view.php:540
+#: templates/loop-list-view.php:541
 #: templates/single-list/listing-details-style1/content/list-deals.php:140
 #: templates/single-list/listing-details-style1/content/list-discount.php:139
 #: templates/single-list/listing-details-style1/content/list-offers.php:134
@@ -9542,7 +9543,7 @@ msgstr ""
 msgid "Copied"
 msgstr ""
 
-#: templates/loop-list-view.php:540
+#: templates/loop-list-view.php:541
 #: templates/single-list/listing-details-style1/content/list-deals.php:140
 #: templates/single-list/listing-details-style1/content/list-discount.php:139
 #: templates/single-list/listing-details-style1/content/list-offers.php:134
@@ -9726,7 +9727,7 @@ msgstr ""
 msgid "features/tags"
 msgstr ""
 
-#: templates/search/top_search.php:49
+#: templates/search/header-search-view.php:49 templates/search/top_search.php:49
 msgid "City..."
 msgstr ""
 

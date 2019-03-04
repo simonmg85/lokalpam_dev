@@ -1,4 +1,155 @@
 		<?php
+   global $listingpro_options;
+   $listing_style = $listingpro_options['listing_style'];
+   if( !wp_is_mobile() && $listing_style == 4 && (is_archive() || is_search()) ) return false;
+
+	$sQuery = '';
+
+	$sLocation = '';
+
+	$sLocationName = '';
+
+	$lp_tag = '';
+
+	$lp_cat = '';
+
+	$sLoc = '';
+
+	$defaultCats = null;
+
+	if( isset($_GET['select']) && !empty($_GET['select']) ){
+
+		$sQuery = sanitize_text_field($_GET['select']);
+
+	}
+
+	if( isset($_GET['lp_s_loc']) && !empty($_GET['lp_s_loc']) ){
+
+		$sLocation = sanitize_text_field($_GET['lp_s_loc']);
+
+		if(is_numeric($sLocation)){
+
+			$locTerm = get_term_by('id', $sLocation, 'location');
+			if( !empty($locTerm) ){
+				$sLoc = $locTerm->name;
+			}
+
+		}
+
+		else{
+
+			$checkTerm = listingpro_term_exist($sLocation,'location');
+
+			if($checkTerm==true){
+
+				$locTerm = get_term_by('name', $sLocation, 'location');
+				if( !empty($locTerm) ){
+					$sLocationName = $locTerm->name;
+					$sLocation = $locTerm->name;
+					$sLoc = $sLocation ? $sLocationName : esc_html__( 'City...', 'listingpro' );
+				}
+
+			}
+
+			else{
+
+				$sLoc = $sLocation;
+
+				
+
+			}
+
+		}
+
+		
+
+	}
+
+	if(is_tax('location')){
+
+		$queried_object = get_queried_object();
+
+		$sLocation = $queried_object->name;
+		
+		$sLoc = $sLocation;
+
+	}
+
+	
+
+	if( !empty($_GET['lp_s_tag']) && isset($_GET['lp_s_tag'])){
+
+		$lp_tag = sanitize_text_field($_GET['lp_s_tag']);
+
+	}
+
+	if( !empty($_GET['lp_s_cat']) && isset($_GET['lp_s_cat'])){
+
+		$lp_cat = sanitize_text_field($_GET['lp_s_cat']);
+
+	}
+
+	global $listingpro_options;
+
+	$search_placeholder = $listingpro_options['search_placeholder'];
+
+	$location_default_text = $listingpro_options['location_default_text'];
+
+	$inner_srch_loc_switchr = $listingpro_options['inner_search_loc_switcher'];
+
+	$hideWhereClass = '';
+
+	$search_loc_field_hide = $listingpro_options['lp_location_loc_switcher'];
+
+	if(isset($search_loc_field_hide) && $search_loc_field_hide==1){
+
+		$hideWhereClass = "hide-where";
+
+		$searchHide = "hide-search";
+
+	} else {
+
+		$searchHide = '';
+
+	}
+
+	$lp_what_field_switcher = $listingpro_options['lp_what_field_switcher'];
+	$hideWhatClass = '';
+	$whatHide = '';
+	if(isset($lp_what_field_switcher) && $lp_what_field_switcher==1){
+		$hideWhatClass = "hide-what";
+		$whatHide = "what-hide";
+	} else {
+		$whatHide = "";
+	}
+
+	$srchBr = '';
+
+	$slct = '';
+
+	if ( $inner_srch_loc_switchr == true ) {
+
+		$srchBr = 'ui-widget';
+
+		$slct = 'select2';
+
+	}else {
+
+		$srchBr = 'ui-widget border-dropdown';
+
+		$slct = 'chosen-select chosen-select5';
+
+	}
+	
+	$locations_search_type = $listingpro_options['lp_listing_search_locations_type'];
+	$locArea = '';
+	if(!empty($locations_search_type) && $locations_search_type=="auto_loc"){
+		$locArea = $listingpro_options['lp_listing_search_locations_range'];
+	}
+
+?>
+		
+		<?php
 								
 			$listCats=array();
 			$catIcon = '';
@@ -54,7 +205,6 @@
 		<div class="lp-search-bar lp-search-bar-header">
 			<form autocomplete="off" class="form-inline" action="<?php echo home_url(); ?>" method="get" accept-charset="UTF-8">
 				
-				
 					<?php 
 						if( isset($lp_what_field_switcher) && $lp_what_field_switcher==0 ){
 					?>
@@ -62,7 +212,7 @@
 					<div class="input-group-addon lp-border"><?php esc_html_e('What','listingpro'); ?></div>
 						<div class="pos-relative">
 							<div class="what-placeholder pos-relative" data-holder="">
-							<input autocomplete="off" type="text" class="lp-suggested-search js-typeahead-input lp-search-input form-control ui-autocomplete-input dropdown_fields" name="select" id="select" placeholder="<?php echo $search_placeholder; ?>" data-prev-value='0' data-noresult = "<?php echo esc_html__('More results for', 'listingpro'); ?>">
+							<input autocomplete="off" type="text" class="lp-suggested-search js-typeahead-input lp-search-input form-control ui-autocomplete-input dropdown_fields" name="select" id="select" placeholder="<?php echo $search_placeholder; ?>" data-prev-value='0' data-noresult = "<?php echo esc_html__('More results for', 'listingpro'); ?>" value="<?php echo $sQuery; ?>">
 							<i class="cross-search-q fa fa-times-circle" aria-hidden="true"></i>
 							<img class='loadinerSearch' width="100px" src="<?php echo get_template_directory_uri().'/assets/images/search-load.gif' ?>"/>
 							
@@ -124,13 +274,17 @@
 				<?php 
 					if( isset($search_loc_field_hide) && $search_loc_field_hide==0 ){
 						if( !empty($locations_search_type) && $locations_search_type=="auto_loc" ){
+							
+							if(!empty($sLoc)){
+								$location_default_text = $sLoc;
+							}
 				?>
 							<div class="form-group lp-location-search <?php echo esc_attr($hideWhatClass); ?>">
 								<div class="input-group-addon lp-border lp-where"><?php esc_html_e('Where','listingpro'); ?></div>
 								<div data-option="<?php echo esc_attr($locOption); ?>" class="<?php echo esc_attr($srchBr); ?>">
 									<i class="fa fa-crosshairs"></i>
-									<input autocomplete="off" id="cities" class="form-control" data-country="<?php echo $locArea; ?>" placeholder="<?php echo $location_default_text; ?>">
-									<input type="hidden" autocomplete="off" name="lp_s_loc">
+									<input autocomplete="off" id="cities" class="form-control" data-country="<?php echo $locArea; ?>" placeholder="<?php echo $location_default_text; ?>" value="<?php echo $sLocation; ?>">
+									<input id="lp_search_loc" type="hidden" autocomplete="off" name="lp_s_loc" value="<?php echo $sLoc; ?>">
 								</div>
 							</div>
 				<?php
@@ -142,7 +296,22 @@
 								<div data-option="<?php echo esc_attr($locOption); ?>" class="<?php echo esc_attr($srchBr); ?>">
 									<i class="fa fa-crosshairs"></i>
 								  <select class="<?php echo esc_attr($slct); ?>" name="lp_s_loc" id="searchlocation">
-									<option id="def_location" value=""><?php echo $location_default_text; ?></option>
+								  
+								  <?php
+									if(!empty($sLoc)){
+									?>
+									<option id="def_location" value="<?php echo $sLoc; ?>"><?php echo $sLoc; ?></option>
+									<?php
+										}elseif(!empty($sLocation)){ ?>
+										<option id="def_location" value="<?php echo $sLocation; ?>"><?php echo $sLocation; ?></option>
+									<?php								
+										}else{
+									?>
+										<option id="def_location" value=""><?php echo $location_default_text; ?></option>
+									<?php
+										}
+									?>
+								  
 									<?php
 										$selected = '';									
 										$args = array(
@@ -154,6 +323,16 @@
 										$locations = get_terms( 'location',$args);
 										if ( ! empty( $locations ) && ! is_wp_error( $locations ) ){
 											foreach($locations as $location) {
+												
+												if($sLocation == $location->term_id){
+
+													$selected = 'selected';
+
+												}else{
+
+													$selected = '';
+
+												}
 												
 												echo '<option '.$selected.' value="'.$location->term_id.'">'.$location->name.'</option>';
 												
