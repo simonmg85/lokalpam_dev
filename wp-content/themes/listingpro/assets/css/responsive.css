@@ -8252,3 +8252,34 @@ body.blog .aliceblue{
         margin-right: 0 !important;
     }
 }
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .listing-simple .lp-title.col-md-10.col-sm-10 {
+        margin-top: -134px !important;
+    }
+    .header-filter.form-group.pos-relative .form-inline.top-search-form {
+        margin-top: 3px;
+    }
+    .lp-list-page-grid .clearfix {
+        display: inline-block !important;
+    }
+    .lp-grid-box-contianer.grid_view2.lp-grid-box-contianer1 {
+        max-height: 392px important;
+    }
+    
+    .social-login li button span, .social-login li a span {
+        margin-left: 0px !important;
+        font-size: 12px;
+    }
+    .social-login li button .lp-pop-icon-img, .social-login li a .lp-pop-icon-img {
+        margin: 8px;
+        float: left;
+        font-size: 16px;
+    }
+}
+
+@media only screen and (max-width: 767px){
+    .lp-menu-bar.header-bg-color-class .fullwidth-header .header-filter .input-group.width-49-percent.margin-right-15 {
+        width: 100% !important;
+    }
+}

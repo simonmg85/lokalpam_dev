@@ -37037,3 +37037,19 @@ footer .container .row .clearfix.col-md-3 .widget-title h2{
 .single-listing .post-detail-content ul{
 	list-style:disc;
 }
+
+.lp-home-banner-contianer .lp-search-bar .ui-widget select{
+    height: 46px;
+    border: none;
+    box-shadow: unset;
+}
+
+.header-filter .ui-widget {
+    height: 46px;
+}
+
+.login-form-popup .md-close {
+    position: absolute;
+    top: 3%;
+    right: 4%;
+}
