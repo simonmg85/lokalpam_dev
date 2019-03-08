@@ -28,8 +28,21 @@
 		?>	
 		<?php wp_head(); ?>
     </head>
+	
+	<?php
+	$lpAtts = '';
+	if( is_search() || is_tax() ){
+		if(lp_theme_option('enable_search_filter')==1){
+			if(lp_theme_option('enable_nearme_search_filter')==1){
+				if(lp_theme_option('disable_location_in_nearme_search_filter')==1){
+					 $lpAtts = "data-locdisablefilter='yes'".' ';
+				}
+			}
+		}
+	}
+	?>
 
-    <body <?php body_class() ?> data-submitlink="<?php echo listingpro_url('submit-listing'); ?>" data-sliderstyle="<?php echo esc_attr($listing_detail_slider_style); ?>" data-defaultmaplat="<?php echo esc_attr($lp_default_map_location_lat); ?>" data-defaultmaplot="<?php echo esc_attr($lp_default_map_location_long); ?>" data-lpsearchmode = "<?php echo esc_attr($lpsearchMode); ?>">
+    <body <?php body_class() ?> data-submitlink="<?php echo listingpro_url('submit-listing'); ?>" data-sliderstyle="<?php echo esc_attr($listing_detail_slider_style); ?>" data-defaultmaplat="<?php echo esc_attr($lp_default_map_location_lat); ?>" data-defaultmaplot="<?php echo esc_attr($lp_default_map_location_long); ?>" data-lpsearchmode = "<?php echo esc_attr($lpsearchMode); ?>" <?php echo $lpAtts; ?>>
 	
 	<?php
 		$mapbox_token= '';

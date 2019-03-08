@@ -86,9 +86,10 @@ if( is_array( $listing_discount_data ) && !empty( $listing_discount_data ) )
 $listing_discount_count  =   count( $listing_discount );
 $user_id    =   get_current_user_id();
 $lp_listing_announcements_initial  =   get_post_meta( get_the_ID(), 'lp_listing_announcements', true );
+$lp_listing_announcements  =   array();
 if( isset( $lp_listing_announcements_initial ) && is_array( $lp_listing_announcements_initial ) )
 {
-    $lp_listing_announcements  =   array();
+    
     foreach ( $lp_listing_announcements_initial as $lp_listing_announcement )
     {
         if( !isset( $lp_listing_announcement['annStatus'] ) || $lp_listing_announcement['annStatus'] == 1 )

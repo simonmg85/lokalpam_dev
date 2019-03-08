@@ -200,10 +200,12 @@
         <div data-layout-class="<?php echo $layout_class; ?>" id="list-grid-view-v2" class="swtch-ll <?php echo $header_style_v2; ?> <?php echo $v2_map_class; ?> <?php echo $listing_layout; ?>"></div>
         <?php endif; ?>
 		<div class="container page-container listing-simple <?php echo esc_attr($addClassListing); ?>">
+			<!-- archive adsense space before filter -->
+			<?php do_action('lp_archive_adsense_before_filter'); ?>
 			<div class="margin-bottom-20 margin-top-30 post-with-map-container-right">
 				<?php get_template_part( 'templates/search/filter'); ?>
 			</div>
-
+			
 			<div class="mobile-map-space">
 			
 					<!-- Popup Open -->

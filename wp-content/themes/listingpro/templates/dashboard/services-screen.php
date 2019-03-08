@@ -2,7 +2,7 @@
 if ( isset( $_POST['menu_nonce_field'] ) && wp_verify_nonce( $_POST['menu_nonce_field'], 'menu_nonce' ) ) {
 	$res_menu_title 		= $_POST['res_menu_title'];
 	$listID 				= $_POST['listID'];
-	$menu_img 				= $_POST['frontend_input'];
+	$menu_img 				= $_POST['frontend-input-multiple'];
 	$menuArray = array('menu-img'=>$menu_img,'menu-title'=>$res_menu_title);
 	if(isset($menu_img) && !empty($menu_img) && isset($listID) && !empty($listID)){
 		update_post_meta( $listID, 'menu_listing', $menuArray);

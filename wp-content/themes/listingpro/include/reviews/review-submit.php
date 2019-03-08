@@ -334,6 +334,11 @@ if(!function_exists('ajax_review_submit')){
 			$authID = $listingData->post_author;
 			//$currentdate = date("Y-m-d h:i:a");
 			//$currentdate = date("d-m-Y h:i:a");
+			if( isset($_POST['multiState']) ){
+				if( $_POST['multiState'] == '1' ){
+				   $rating =   $total_multi_rating;
+				}
+			}
 			$currentdate =  current_time('mysql');
 			$activityData = array();
 			$activityData = array( array(

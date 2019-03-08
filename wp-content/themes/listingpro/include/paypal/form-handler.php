@@ -101,6 +101,12 @@ if(!empty($_POST['post_id']) && isset($_POST['post_id']) && !empty($_POST['metho
                 Redux::setOption( $opt_name, 'listingpro_invoiceno_no_start', "$ord_num");
             }
         }
+		if(isset($_POST['claim_id'])){
+			if(!empty($_POST['claim_id'])){
+				update_post_meta($post_id, 'claimOrderNo', $ord_num);
+				update_post_meta($post_id, 'claimPlan_id', $new_plan_id);
+			}
+		}
 
         $plan_title = get_the_title($new_plan_id);
         $plan_price = get_post_meta($new_plan_id, 'plan_price', true);

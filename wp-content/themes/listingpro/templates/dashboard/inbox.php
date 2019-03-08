@@ -56,10 +56,15 @@ if(empty($lpAllMessges)){
                 $name = $latestLeadArray['name'];
                 $phone = $latestLeadArray['phone'];
                 $times = $latestLeadArray['time'];
-                $messages = $latestLeadArray['message'];
+                $latestMessages = $latestLeadArray['message'];
                 $extras = $latestLeadArray['extras'];
                 if(!empty($latestRepliesArray)){
                     $replytimes = $latestRepliesArray['time'];
+					if(!empty($replytimes)){
+						if(is_array($replytimes)){
+							$replytimes = array_reverse($replytimes);
+						}
+					}
                     $replymessages = $latestRepliesArray['message'];
                 }
 
@@ -148,8 +153,8 @@ if(empty($lpAllMessges)){
                                 $leads = $singleUserLeads['leads'];
                                 $name = $leads['name'];
                                 $phone = $leads['phone'];
-                                $times = $leads['time'];
-                                $latestTime = end($times);
+                                $timess = $leads['time'];
+                                $latestTime = end($timess);
                                 $messages = $leads['message'];
                                 $latestMessge = end($messages);
                                 $datatts = '';
@@ -197,8 +202,8 @@ if(empty($lpAllMessges)){
                                 $leads = $singleUserLeads['leads'];
                                 $name = $leads['name'];
                                 $phone = $leads['phone'];
-                                $times = $leads['time'];
-                                $latestTime = end($times);
+                                $timess = $leads['time'];
+                                $latestTime = end($timess);
                                 $messages = $leads['message'];
                                 $latestMessge = end($messages);
                                 $datatts = '';
@@ -249,7 +254,7 @@ if(empty($lpAllMessges)){
         </div>
         <div class="lp_all_messages_box clearfix">
             <?php
-            if(!empty($messages)){
+            if(!empty($latestMessages)){
                 $leadUID = '';
                 if ( email_exists( $lead_mail ) ){
                     $leadUser = get_user_by( 'email', $lead_mail );
@@ -258,14 +263,14 @@ if(empty($lpAllMessges)){
                 }else{
                     $leadAvatar = listingpro_icons_url('lp_def_author');
                 }
-                $messages = array_reverse($messages);
+                $latestMessages = array_reverse($latestMessages);
                 echo '<div  class="lpsinglemsgbox clearfix">';
                 echo '<div class="lpsinglemsgbox-inner">';
                 /* leads */
 				
 				$msgCount = 1;
 				$outputtMSG = null;
-                foreach($messages as $key=>$singlemessage){
+                foreach($latestMessages as $key=>$singlemessage){
 
                     /* replies */
                     if(!empty($replymessages)){

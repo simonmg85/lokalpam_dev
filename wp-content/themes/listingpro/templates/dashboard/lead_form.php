@@ -24,7 +24,7 @@ $count_a_listings       =   $a_listings->found_posts;
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo esc_html__( 'Cancel', 'listingpro' ); ?></button>
-                <button type="button" class="btn btn-primary dashboard-confirm-form-field-btn"><?php echo esc_html__( 'Delete', 'lsitingpro' ); ?></button>
+                <button type="button" class="btn btn-primary dashboard-confirm-form-field-btn"><?php echo esc_html__( 'Delete', 'listingpro' ); ?></button>
             </div>
         </div>
     </div>
@@ -71,8 +71,8 @@ if( function_exists( 'popup_notification' ) )
                                             <div class="lp-dot-extra-buttons">
                                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABtSURBVEhLYxgFgwN4R2UKekXl7gJhEBsqTDnwiM4N8YrO/Q/GUTlBUGHKAciVntG5O0DYJTSNHyo8UoFnVI61V0yuFZRLHQAyEBZ5PpHZllBhygHIMKjB/6hqMAiADKS6oUMPjGbpUUANwMAAAIAtN4uDPUCkAAAAAElFTkSuQmCC">
                                                 <ul class="lp-user-menu list-style-none">
-                                                    <li><a href="#" class="edit-lead-form" href="" data-targetid="<?php echo $lid; ?>" data-lid="<?php echo $lid; ?>" data-uid="<?php echo $user_id; ?>"><i class="fa fa-pencil-square-o"></i><span><?php echo esc_html__( 'Edit', 'lsitingpro' ); ?></span></a></li>
-                                                    <li><a href="#" class="lf-del lp-remove-form-field" data-targetID="<?php echo $lid; ?>" data-uid="<?php echo $user_id; ?>"><i class="fa fa-trash-o"></i><span><?php echo esc_html__( 'Delete', 'lsitingpro' ); ?></span></a></li>
+                                                    <li><a href="#" class="edit-lead-form" href="" data-targetid="<?php echo $lid; ?>" data-lid="<?php echo $lid; ?>" data-uid="<?php echo $user_id; ?>"><i class="fa fa-pencil-square-o"></i><span><?php echo esc_html__( 'Edit', 'listingpro' ); ?></span></a></li>
+                                                    <li><a href="#" class="lf-del lp-remove-form-field" data-targetID="<?php echo $lid; ?>" data-uid="<?php echo $user_id; ?>"><i class="fa fa-trash-o"></i><span><?php echo esc_html__( 'Delete', 'listingpro' ); ?></span></a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -102,18 +102,18 @@ if( function_exists( 'popup_notification' ) )
                                                             <div class="form-group col-sm-6 ">
                                                                 <div class="lp-listing-selecter-drop">
                                                                     <select data-pid="<?php echo $lid; ?>" class="form-control select2 field-type" name="field-type-<?php echo $lid; ?>" id="field-type-<?php echo $lid; ?>">
-                                                                        <option value="text"><?php echo esc_html__( 'Text', 'lsitingpro' ); ?></option>
-                                                                        <option value="email"><?php echo esc_html__( 'Email', 'lsitingpro' ); ?></option>
-                                                                        <option value="tel"><?php echo esc_html__( 'Phone', 'lsitingpro' ); ?></option>
-                                                                        <option value="url"><?php echo esc_html__( 'Url', 'lsitingpro' ); ?></option>
-                                                                        <option value="date"><?php echo esc_html__( 'Date', 'lsitingpro' ); ?></option>
-                                                                        <option value="time"><?php echo esc_html__( 'Time', 'lsitingpro' ); ?></option>
-                                                                        <option value="datetime-local"><?php echo esc_html__( 'Date-Time Local', 'lsitingpro' ); ?></option>
-                                                                        <option value="radio"><?php echo esc_html__( 'Radio', 'lsitingpro' ); ?></option>
-                                                                        <option value="checkbox"><?php echo esc_html__( 'Checkbox', 'lsitingpro' ); ?></option>
-                                                                        <option value="dropdown"><?php echo esc_html__( 'Dropdown', 'lsitingpro' ); ?></option>
-                                                                        <option value="range"><?php echo esc_html__( 'Range', 'lsitingpro' ); ?></option>
-                                                                        <option value="file"><?php echo esc_html__( 'File', 'lsitingpro' ); ?></option>
+                                                                        <option value="text"><?php echo esc_html__( 'Text', 'listingpro' ); ?></option>
+                                                                        <option value="email"><?php echo esc_html__( 'Email', 'listingpro' ); ?></option>
+                                                                        <option value="tel"><?php echo esc_html__( 'Phone', 'listingpro' ); ?></option>
+                                                                        <option value="url"><?php echo esc_html__( 'Url', 'listingpro' ); ?></option>
+                                                                        <option value="date"><?php echo esc_html__( 'Date', 'listingpro' ); ?></option>
+                                                                        <option value="time"><?php echo esc_html__( 'Time', 'listingpro' ); ?></option>
+                                                                        <option value="datetime-local"><?php echo esc_html__( 'Date-Time Local', 'listingpro' ); ?></option>
+                                                                        <option value="radio"><?php echo esc_html__( 'Radio', 'listingpro' ); ?></option>
+                                                                        <option value="checkbox"><?php echo esc_html__( 'Checkbox', 'listingpro' ); ?></option>
+                                                                        <option value="dropdown"><?php echo esc_html__( 'Dropdown', 'listingpro' ); ?></option>
+                                                                        <option value="range"><?php echo esc_html__( 'Range', 'listingpro' ); ?></option>
+                                                                        <option value="file"><?php echo esc_html__( 'File', 'listingpro' ); ?></option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -259,18 +259,18 @@ if( function_exists( 'popup_notification' ) )
                                         <div class="form-group col-sm-6 ">
                                             <div class="lp-listing-selecter-drop">
                                                 <select class="form-control select2 field-type" name="field-type" id="field-type">
-                                                    <option value="text"><?php echo esc_html__( 'Text', 'lsitingpro' ); ?></option>
-                                                    <option value="email"><?php echo esc_html__( 'Email', 'lsitingpro' ); ?></option>
-                                                    <option value="tel"><?php echo esc_html__( 'Phone', 'lsitingpro' ); ?></option>
-                                                    <option value="url"><?php echo esc_html__( 'Url', 'lsitingpro' ); ?></option>
-                                                    <option value="date"><?php echo esc_html__( 'Date', 'lsitingpro' ); ?></option>
-                                                    <option value="time"><?php echo esc_html__( 'Time', 'lsitingpro' ); ?></option>
-                                                    <option value="datetime-local"><?php echo esc_html__( 'Date-Time Local', 'lsitingpro' ); ?></option>
-                                                    <option value="radio"><?php echo esc_html__( 'Radio', 'lsitingpro' ); ?></option>
-                                                    <option value="checkbox"><?php echo esc_html__( 'Checkbox', 'lsitingpro' ); ?></option>
-                                                    <option value="dropdown"><?php echo esc_html__( 'Dropdown', 'lsitingpro' ); ?></option>
-                                                    <option value="range"><?php echo esc_html__( 'Range', 'lsitingpro' ); ?></option>
-                                                    <option value="file"><?php echo esc_html__( 'File', 'lsitingpro' ); ?></option>
+                                                    <option value="text"><?php echo esc_html__( 'Text', 'listingpro' ); ?></option>
+                                                    <option value="email"><?php echo esc_html__( 'Email', 'listingpro' ); ?></option>
+                                                    <option value="tel"><?php echo esc_html__( 'Phone', 'listingpro' ); ?></option>
+                                                    <option value="url"><?php echo esc_html__( 'Url', 'listingpro' ); ?></option>
+                                                    <option value="date"><?php echo esc_html__( 'Date', 'listingpro' ); ?></option>
+                                                    <option value="time"><?php echo esc_html__( 'Time', 'listingpro' ); ?></option>
+                                                    <option value="datetime-local"><?php echo esc_html__( 'Date-Time Local', 'listingpro' ); ?></option>
+                                                    <option value="radio"><?php echo esc_html__( 'Radio', 'listingpro' ); ?></option>
+                                                    <option value="checkbox"><?php echo esc_html__( 'Checkbox', 'listingpro' ); ?></option>
+                                                    <option value="dropdown"><?php echo esc_html__( 'Dropdown', 'listingpro' ); ?></option>
+                                                    <option value="range"><?php echo esc_html__( 'Range', 'listingpro' ); ?></option>
+                                                    <option value="file"><?php echo esc_html__( 'File', 'listingpro' ); ?></option>
                                                 </select>
                                             </div>
                                         </div>

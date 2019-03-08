@@ -128,7 +128,7 @@ if(!function_exists('listingpro_get_all_reviews')){
                                     <?php
                                     if( $lp_multi_rating_state == 1 && !empty( $lp_multi_rating_state ) )
                                     {
-                                        echo '<a href="#" data-rate-box="multi-box-'.$post->ID.'" class="open-multi-rate-box"><i class="fa fa-chevron-down" aria-hidden="true"></i>'. esc_html__( 'View All' ) .'</a>';
+                                        echo '<a href="#" data-rate-box="multi-box-'.$post->ID.'" class="open-multi-rate-box"><i class="fa fa-chevron-down" aria-hidden="true"></i>'. esc_html__( 'View All', 'listingpro' ) .'</a>';
                                         $post_rating_data   =   get_post_meta( $post->ID, 'lp_listingpro_options', true );
                                         ?>
                                         <div class="lp-multi-star-wrap" id="multi-box-<?php echo $post->ID; ?>">
@@ -141,7 +141,7 @@ if(!function_exists('listingpro_get_all_reviews')){
                                                    $field_rating_val   =   $post_rating_data[$k];
                                                }
                                                 ?>
-                                                <div class="lp-multi-star-field">
+                                                <div class="lp-multi-star-field rating-with-colors <?php echo review_rating_color_class($field_rating_val); ?>">
                                                     <label><?php echo $v['label'];  ?></label>
                                                     <p>
                                                         <i class="fa <?php if( $field_rating_val > 0 ){echo 'fa-star'; }else{echo 'fa-star-o';} ?>" aria-hidden="true"></i>
@@ -160,7 +160,12 @@ if(!function_exists('listingpro_get_all_reviews')){
                                         <?php
                                     }
                                     ?>
-									<div class="rating">
+									<?php
+
+										$review_rating = listing_get_metabox_by_ID('rating' ,get_the_ID());
+
+                                   ?>
+									<div class="rating rating-with-colors <?php echo review_rating_color_class($review_rating); ?>">
 										<?php
 											listingpro_ratings_stars('rating', get_the_ID());
 										?>
@@ -386,7 +391,7 @@ if(!function_exists('listingpro_get_all_reviews_app_view')){
                                     <?php
                                     if( $lp_multi_rating_state == 1 && !empty( $lp_multi_rating_state ) )
                                     {
-                                        echo '<a href="#" data-rate-box="multi-box-'.$post->ID.'" class="open-multi-rate-box"><i class="fa fa-chevron-down" aria-hidden="true"></i>'. esc_html__( 'View All' ) .'</a>';
+                                        echo '<a href="#" data-rate-box="multi-box-'.$post->ID.'" class="open-multi-rate-box"><i class="fa fa-chevron-down" aria-hidden="true"></i>'. esc_html__( 'View All', 'listingpro' ) .'</a>';
                                         $post_rating_data   =   get_post_meta( $post->ID, 'lp_listingpro_options', true );
                                         ?>
                                         <div class="lp-multi-star-wrap" id="multi-box-<?php echo $post->ID; ?>">
@@ -399,7 +404,7 @@ if(!function_exists('listingpro_get_all_reviews_app_view')){
                                                     $field_rating_val   =   $post_rating_data[$k];
                                                 }
                                                 ?>
-                                                <div class="lp-multi-star-field">
+                                                <div class="lp-multi-star-field rating-with-colors <?php echo review_rating_color_class($field_rating_val); ?>">
                                                     <label><?php echo $v['label'];  ?></label>
                                                     <p>
                                                         <i class="fa <?php if( $field_rating_val > 0 ){echo 'fa-star'; }else{echo 'fa-star-o';} ?>" aria-hidden="true"></i>
@@ -418,7 +423,12 @@ if(!function_exists('listingpro_get_all_reviews_app_view')){
                                         <?php
                                     }
                                     ?>
-                                    <div class="rating">
+									<?php
+
+										$review_rating = listing_get_metabox_by_ID('rating' ,get_the_ID());
+
+                                   ?>
+                                    <div class="rating rating-with-colors <?php echo review_rating_color_class($review_rating); ?>">
                                         <?php
                                         listingpro_ratings_stars('rating', get_the_ID());
                                         ?>

@@ -325,11 +325,13 @@ if ( ! class_exists('wp_PayPalAPI') ) {
 					if(!empty($claimPost)){
 						
 						$new_author = listing_get_metabox_by_ID('claimer', $claimPost);
+						$exMetaboxes = get_post_meta($post_id, 'lp_' . strtolower(THEMENAME) . '_options', true);
 						$argListing = array(
 							'ID' => $post_id,
 							'post_author' => $new_author,
 						);
 						wp_update_post($argListing);
+						update_post_meta($post_id, 'lp_' . strtolower(THEMENAME) . '_options', $exMetaboxes);
 						
 						lp_update_paid_claim_metas($claimPost, $post_id, 'paypal');
 						delete_post_meta($post_id, 'claimpID');

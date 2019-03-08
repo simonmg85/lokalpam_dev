@@ -74,7 +74,7 @@ if (!function_exists('ajax_search_term')) {
 					}
 					if($hasfeature==true && $showdivwrap == true){
 						if($listing_style == '4'){
-							$tagsHTML = '<div class="form-inline tags-area add-border">
+							$tagsHTML = '<div class="form-inline lp-features-filter tags-area add-border">
 														<div class="form-group">
 														<div class="input-group margin-right-0">
 														<strong class="col-sm-2">'.esc_html__("Features", "listingpro").'</strong>
@@ -88,9 +88,8 @@ if (!function_exists('ajax_search_term')) {
 					}
 
 					if(!empty($featurCount)){
-
 						$tagsHTML .= '<li>';
-						$tagsHTML .= '<div class="pad-bottom-10 checkbox">';
+						$tagsHTML .= '<div class="pad-bottom-10 checkbox ">';
 						$tagsHTML .= '<input type="checkbox" name="searchtags[' . $count . ']" id="check_' . $count . '" class="searchtags" value="' . $terms->term_id . '">';
 						$tagsHTML .= '<label for="' . $terms->term_id . '">' . $terms->name . '</label>';
 						$tagsHTML .= '</div>';
@@ -114,7 +113,9 @@ if (!function_exists('ajax_search_term')) {
 		}
 		if(lp_theme_option('listing_style')=="4"){
 			/* style 4 */
-			$htmlFilter = lp_gett_extrafield_in_filterAjax($term_id);
+			$htmlFilter = '<div class="lp-features-filter lp-head-withfilter4">';
+			$htmlFilter .= lp_gett_extrafield_in_filterAjax($term_id);
+			$htmlFilter .= '</div>';
 
 		}else{
 			/* style 1 and 2 */

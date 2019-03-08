@@ -8833,3 +8833,27 @@ float: inherit;
     border-top: solid 1px #e3e3e3 !important;
 
 }
+
+/*rating star colors*/
+
+.rating.rating-with-colors.lp-star-satisfactory .fa-star,
+.lp-multi-star-wrap .lp-multi-star-field.rating-with-colors.lp-star-satisfactory p i.fa-star{
+    color: #c5de35;
+}
+.rating.rating-with-colors.lp-star-bad .fa-star,
+.lp-multi-star-wrap .lp-multi-star-field.rating-with-colors.lp-star-bad p i.fa-star{
+    color: #ffc800;
+}
+.rating.rating-with-colors.lp-star-good .fa-star,
+.lp-multi-star-wrap .lp-multi-star-field.rating-with-colors.lp-star-good p i.fa-star{
+    color: #73cf42;
+}
+.lp-rating-num.rating-with-colors.lp-star-satisfactory{
+    background-color: #c5de35;
+}
+.lp-rating-num.rating-with-colors.lp-star-bad{
+    background-color: #ffc800;
+}
+.lp-rating-num.rating-with-colors.lp-star-good{
+    background-color: #73cf42;
+}

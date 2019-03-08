@@ -532,7 +532,7 @@ jQuery(document).ready(function($){
         jQuery(".chosen-select").val('').trigger('chosen:updated');
         jQuery("#searchtags").prop('disabled', true).trigger('chosen:updated');
         jQuery(".outer_all_page_overflow").html('');
-        //jQuery(".lp-features-filter").eq(1).html('');
+        jQuery(".lp-head-withfilter4").html('');
         //jQuery(".header-container.4 .lp-features-filter").html('');
         //jQuery(".lp-features-filter").html('');
 
@@ -547,9 +547,12 @@ jQuery(document).ready(function($){
             success: function(data){
                 if(data){
                     jQuery(".search-row .form-inline").after( data.html );
+                    jQuery(".header-more-filters.form-inline").prepend( data.html );
                     jQuery(".lp-features-filter").css( 'opacity','1' );
-                    jQuery(".header-more-filters .lp-features-filter").prepend( data.html );
-                    //jQuery(".outer_all_page_overflow").html(data.htmlfilter);
+                    //jQuery(".header-more-filters .lp-features-filter").html( data.htmlfilter );
+					
+					jQuery(".lp-head-withfilter4").html(data.htmlfilter);
+                    jQuery(".outer_all_page_overflow").html(data.htmlfilter);
 					//alert(data.htmlfilter);
                     //jQuery(".lp-features-filter").eq(1).html(data.htmlfilter);
 					//jQuery(".header-container.4 .lp-features-filter").eq(1).html('1');
@@ -2547,14 +2550,32 @@ function decode_utf8(utf8String) {
 
                         jQuery('#content-grids').hide();
                         jQuery('#content-grids').html(parsHtml);
-                        if( listStyle == 'grid-style' )
-                        {
-                            jQuery('.lp-listings-inner-wrap .loop-switch-class').removeClass('col-md-12').addClass('col-md-6');
-                        }
-                        if( listStyle == 'list-style' )
-                        {
-                            jQuery('.lp-listings-inner-wrap .loop-switch-class').removeClass('col-md-6').addClass('col-md-12');
-                        }
+                        
+						if( listStyle == 'grid-style' ){
+
+                           if( jQuery('.lp-sidebar').length != 0 || jQuery('.sidemap-fixed').length != 0 )
+
+                           {
+
+                               jQuery('.lp-listings-inner-wrap .loop-switch-class').removeClass('col-md-12').addClass('col-md-6');
+
+                            }
+
+                            else
+
+                            {
+
+                               jQuery('.lp-listings-inner-wrap .loop-switch-class').removeClass('col-md-12').addClass('col-md-4');
+
+                            }                        
+						}
+
+						if( listStyle == 'list-style' ){
+
+						   jQuery('.lp-listings-inner-wrap .loop-switch-class').removeClass('col-md-6').addClass('col-md-12');
+
+						}
+						
                         jQuery('.loop-switch-class:last').find('.lp-listing').addClass('last');
 
                         //jQuery('#listing_found').html('<p>'+data.found+' '+data.foundtext+'</p>');

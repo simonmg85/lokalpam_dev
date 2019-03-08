@@ -136,7 +136,7 @@ echo '<div class="list-discount-outer">';
                             <span class="close-right-icon" data-target="deal-copy-<?php echo $deal_counter; ?>"><i class="fa fa-times"></i></span>
                             <div class="dis-code-copy-pop-inner">
                                 <div class="dis-code-copy-pop-inner-cell">
-                                    <p><?php echo esc_html__( 'Copy to clipboard', 'lsitingpro' ); ?></p>
+                                    <p><?php echo esc_html__( 'Copy to clipboard', 'listingpro' ); ?></p>
                                     <p class="dis-code-copy-wrap"><input class="code-top-copy-<?php echo $deal_counter; ?>" type="text" value="<?php echo $discount_data['disCod']; ?>"> <a data-target-code="dicount-copy-<?php echo $deal_counter; ?>" href="#" class="copy-now" data-coppied-label="<?php echo esc_html__( 'Copied', 'listingpro' ); ?>"><?php echo esc_html__( 'Copy', 'listingpro' ); ?></a></p>
                                 </div>
                             </div>

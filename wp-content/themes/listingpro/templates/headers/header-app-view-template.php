@@ -82,6 +82,13 @@
     .listing-app-view .col-sm-12{
         padding: 0;
     }
+	.lp-search-toggle{
+
+	   <?php if( wp_is_mobile() ){ ?>
+		   width: 30%;
+	   <?php } ?>
+
+	}
 </style>
 <script>
     jQuery(document).ready(function(e){

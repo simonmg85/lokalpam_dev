@@ -346,6 +346,7 @@
 		wp_enqueue_script('Main', THEME_DIR. '/assets/js/main.js', 'jquery', '', true);
 		
 		if ( is_singular('post') && comments_open() ) wp_enqueue_script( 'comment-reply' );
+		wp_enqueue_script('dynamic-js', THEME_DIR. '/assets/js/dynamic-js.js', 'jquery', '', true);
 
 	}
 	
@@ -373,12 +374,14 @@
 
 
 	/* ============== ListingPro Options ============ */
-
-	if ( !isset( $listingpro_options ) && file_exists( dirname( __FILE__ ) . '/include/options-config.php' ) ) {
-		require_once( dirname( __FILE__ ) . '/include/options-config.php' );
+	add_action( 'after_setup_theme', 'listingpro_include_redux_options' );
+	if(!function_exists('listingpro_include_redux_options')){
+		function listingpro_include_redux_options(){
+			if ( !isset( $listingpro_options ) && file_exists( dirname( __FILE__ ) . '/include/options-config.php' ) ) {
+				require_once( dirname( __FILE__ ) . '/include/options-config.php' );
+			}
+		}
 	}
-	
-	
 	
 	/* ============== ListingPro Load media ============ */
 	if ( ! function_exists( 'listingpro_load_media' ) ) {
@@ -3078,9 +3081,47 @@ if(!function_exists('lp_expire_this_ad')){
 		function count_user_posts_by_status($post_type = 'listing',$post_status = 'publish',$user_id = 0, $userListing=false){
 			global $wpdb;
 			$count = 0;
-			$where = "WHERE post_type = '$post_type' AND post_status = '$post_status'";
+			$where = "WHERE post_type = '$post_type' AND post_status = '$post_status' AND post_author = '$user_id'";
 			$count = $wpdb->get_var( "SELECT COUNT(*) FROM $wpdb->posts $where" );
 			return apply_filters( 'get_usernumposts', $count, $user_id );
+        }
+    }
+	
+	
+	if( !function_exists( 'reviews_sum_against_author_listings' ) )
+	{
+	    function reviews_sum_against_author_listings( $author, $listing_status )
+        {
+            if( empty( $author ) )
+            {
+                return $counter =   0;
+            }
+            else
+            {
+                if( empty( $listing_status ) )
+                {
+                    $listing_status =   'publish';
+                }
+                $args=array(
+                    'post_type' => 'listing',
+                    'post_status' => $listing_status,
+                    'posts_per_page' => -1,
+                    'author' => $author,
+                );
+
+                $my_query = null;
+                $my_query = new WP_Query($args);
+                $count_reviews  =   array();
+                if( $my_query->have_posts() ):while ($my_query->have_posts()) : $my_query->the_post();
+                    global $post;
+                    $review_idss = listing_get_metabox_by_ID( 'reviews_ids', $post->ID );
+                    if( !empty($review_idss) ){
+                        $review_ids = explode(",",$review_idss);
+                        $count_reviews[]  =   count( $review_ids );
+                    }
+                endwhile; wp_reset_postdata(); endif;
+                return array_sum( $count_reviews );
+            }
         }
     }
 
@@ -3211,7 +3252,7 @@ if(!function_exists('lp_expire_this_ad')){
 	}
 
     /* get lat and long from address and set for listing */
-    if(!function_exists('lp_get_lat_long_from_address')){
+     if(!function_exists('lp_get_lat_long_from_address')){
         function lp_get_lat_long_from_address($address, $listing_id){
             $exLat = listing_get_metabox_by_ID('latitude', $listing_id);
             $exLong = listing_get_metabox_by_ID('longitude', $listing_id);
@@ -3219,28 +3260,20 @@ if(!function_exists('lp_expire_this_ad')){
             if(empty($exLat) && empty($exLong)){
                 if( !empty($address) && !empty($listing_id) ){
                     $address = str_replace(" ", "+", $address);
-                    $url = "https://maps.google.com/maps/api/geocode/json?address=$address&key=$mapkey";
-                    $ch = curl_init();
-                    curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
-                    curl_setopt($ch, CURLOPT_HEADER, 0);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                    curl_setopt($ch, CURLOPT_URL, $url);
-                    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-
-                    $data = curl_exec($ch);
-                    curl_close($ch);
-
-                    $json = json_decode($data);
-                    if(!empty($json)){
-                        $lat = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
-                        $long = $json->{'results'}[0]->{'geometry'}->{'location'}->{'lng'};
-                        if(!empty($lat) && !empty($long)){
-                            //set lat and long for listing
-                            listing_set_metabox('latitude', $lat, $listing_id);
-                            listing_set_metabox('longitude', $long, $listing_id);
-                        }
-                    }
-
+                    $url = "https://maps.googleapis.com/maps/api/geocode/json?address=$address&key=$mapkey";
+					
+					$json = file_get_contents($url);
+					$data=json_decode($json);
+					$status = $data->status;
+					if($status=="OK"){
+							$lat = $data->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
+							$long = $data->{'results'}[0]->{'geometry'}->{'location'}->{'lng'};
+							if(!empty($lat) && !empty($long)){
+								listing_set_metabox('latitude', $lat, $listing_id);
+								listing_set_metabox('longitude', $long, $listing_id);
+							}
+					}
+					
                 }
             }
         }
@@ -3416,12 +3449,12 @@ add_action( 'admin_notices', 'lp_notice_plugin_version' );
 			if (!is_wp_error( $termObj )){
 				$postcounts = $termObj->count;
 			}
-			$term_children = get_terms("$taxonomy", array('child_of' => $termid));
+			/* $term_children = get_terms("$taxonomy", array('child_of' => $termid));
 			if(!empty($term_children) && !is_wp_error($term_children)){
 				foreach($term_children as $singleTermObj){
 					$postcounts = $postcounts + $singleTermObj->count;
 				}
-			}
+			} */
 			return $postcounts;
 		}
 	}
@@ -4211,6 +4244,7 @@ if(!function_exists('listingpro_select_plan_by_cat')){
 				}
 				$lpTodayTime = date('Y-m-d');
 				$lpTodayTime = strtotime($lpTodayTime);
+				
 				/* main function */
 				lp_create_stats_table_views();
 				lp_create_stats_table_reviews();
@@ -4219,33 +4253,36 @@ if(!function_exists('listingpro_select_plan_by_cat')){
 				$allCounts = '';
 				/* check if already have */
 				$ndatDta = array();
+				//$ndatDta2 = array();
 				$condition = "listing_id='$listing_id' AND action_type='$type'";
 				$ifDataExist = lp_get_data_from_db($table, '*', $condition);
 				if(!empty($ifDataExist)){
 					/* already exists */
-					$hasData = false;
 					foreach($ifDataExist as $indx=>$val){
 						$datDta  = $val->month;
 						$datDta = unserialize($datDta);
-						$ndatDta = $datDta;
+						//$ndatDta = $datDta;
+						$hasData = false;
+						$resCount = '';
 						if(!empty($datDta)){
 							foreach($datDta as $ind=>$singleData){
 								$savedDate = $singleData['date'];
 								$savedcount = $singleData['count'];
+								$ndatDta[$ind]['count'] = $savedcount;
+								$ndatDta[$ind]['date'] = $savedDate;
+								$allCounts = $val->count;
 								if($savedDate=="$lpTodayTime"){
 									$hasData = true;
 									$ndatDta[$ind]['count'] = $savedcount+1;
-									$allCounts = $val->count;
 								}
+								$resCount = $ind;
 							}
 						
 							if(empty($hasData)){
-								$ndatDta = array(
-									array(
-										'date'=>$lpTodayTime,
-										'count'=>1,
-										)
-								);
+								//$allCounts = $allCounts + 1;
+								$resCount++;
+								$ndatDta[$resCount]['date'] =$lpTodayTime;
+								$ndatDta[$resCount]['count'] =1;
 							}
 						
 						}
@@ -4293,28 +4330,6 @@ if(!function_exists('listingpro_select_plan_by_cat')){
 				}
 				
 				
-				
-				
-				
-			
-				/* $condition = "user_id='$authorID' AND listing_id='$listing_id' AND action_type='$type' AND date='$lpTodayTime'";
-				$getRow = lp_get_data_from_db($table, '*', $condition);
-				if(!empty($getRow)){
-					$counts = $getRow[0]->counts;
-					$counts++;
-					$data = array(
-						'counts'=> $counts,
-					);
-					$where = array(
-						'user_id'=> $authorID,
-						'listing_id'=> $listing_id,
-						'action_type'=> $type,
-						'date'=> $lpTodayTime,
-					);
-					lp_update_data_in_db($table, $data, $where);
-				}else{
-					lp_insert_data_in_db($table, $dataArray);
-				} */
 			}
 		}
 
@@ -4734,6 +4749,11 @@ if(!function_exists('lp_preview_this_message_thread')){
             $extras = $latestLeadArray['extras'];
             if(!empty($latestRepliesArray)){
                 $replytimes = $latestRepliesArray['time'];
+				if(!empty($replytimes)){
+					if(is_array($replytimes)){
+						$replytimes = array_reverse($replytimes);
+					}
+				}
                 $replymessages = $latestRepliesArray['message'];
             }
 
@@ -4754,7 +4774,7 @@ if(!function_exists('lp_preview_this_message_thread')){
 					';
 
             $outputcenter .='
-<div class="lp_all_messages_box clearfix">';
+		<div class="lp_all_messages_box clearfix">';
 
             if(!empty($messages)){
                 $messages = array_reverse($messages);
@@ -4817,23 +4837,7 @@ if(!function_exists('lp_preview_this_message_thread')){
 					}
 				}
 				$outputcenter .= $outputcenterr;
-                /* replies */
-                /* if(!empty($replymessages)){
-                    foreach($replymessages as $key=>$singleReply){
-
-                        $outputcenter .= '<div class="lpQest-outer lpreplyQest-outer">';
-
-                            $outputcenter .= '<div class="lpQest"><div></div><p>'.$singleReply.'</p></div>';
-
-                            $outputcenter .= '<div class="lpQest-img-outer">';
-                                    $outputcenter .= '<div class="lpQest-image"></div>';
-                                    $outputcenter .= '<p>admin</p>';
-                            $outputcenter .= '</div>';
-                            $outputcenter .= '<div class="lpQestdate"><p>'.$replytimes[$key].'</p></div>';
-                        $outputcenter .= '</div>';
-                        $outputcenter .= PHP_EOL;
-                    }
-                } */
+                
                 $outputcenter .= '</div>';
 
 
@@ -4901,6 +4905,8 @@ if(!function_exists('lp_preview_this_message_thread')){
         exit(json_encode($statusReponse));
     }
 }
+
+/* ===============get total click ==================== */
 
 if(!function_exists('lp_get_total_ads_clicks')){
     function lp_get_total_ads_clicks(){
@@ -5416,3 +5422,78 @@ if(!function_exists('lp_ammend_tax_campains_table')){
 	}
 }
 add_action('init', 'lp_ammend_tax_campains_table');
+
+/* ===============for dynamic cdd================================ */
+add_action( "redux/options/listingpro_options/saved", 'lp_compile_custom_css', 10, 2 );
+add_action( "redux/options/listingpro_options/reset", 'lp_compile_custom_css', 10, 2 );
+add_action( "redux/options/listingpro_options/section/reset", 'lp_compile_custom_css', 10, 2 );
+
+
+add_action("init", 'check_for_custom_css_js');
+
+if( !function_exists( 'check_for_custom_css_js' ) )
+
+{
+
+   function check_for_custom_css_js()
+
+   {
+
+       $css_js_option_check    =   get_option('lp-css-js-generated');
+
+       if( !$css_js_option_check )
+
+       {
+
+           lp_compile_custom_css();
+
+           update_option('lp-css-js-generated', 'generated');
+
+       }
+
+   }
+
+}
+
+
+if( !function_exists( 'lp_compile_custom_css' ) )
+{
+    function lp_compile_custom_css()
+    {
+        ob_start();
+        LP_dynamic_options_v2();
+        listingpro_dynamic_options();
+        listingpro_dynamic_css_options();
+
+        $lp_custom_css = ob_get_contents();
+        ob_end_clean();
+        $lp_custom_css = str_replace(': ', ':', $lp_custom_css);
+        $lp_custom_css = str_replace(array("\r\n", "\r", "\n", "\t", '  ', '    ', '    '), '', $lp_custom_css);
+        if( file_exists(get_template_directory().'/assets/css/dynamic-css.css') )
+        {
+            $file = fopen(get_template_directory().'/assets/css/dynamic-css.css',"w");
+            fwrite($file,$lp_custom_css);
+        }
+
+        ob_start();
+        listingpro_dynamic_js_options();
+        $lp_custom_js   =   ob_get_contents();
+        ob_end_clean();
+        if( file_exists( get_template_directory().'/assets/js/dynamic-js.js') )
+        {
+            $file = fopen(get_template_directory().'/assets/js/dynamic-js.js',"w");
+            fwrite($file,$lp_custom_js);
+        }
+
+    }
+}
+
+/* =================== front end image delete cap=========== */
+add_action( 'init', 'allow_sbuscriber_to_delete_posts');
+if(!function_exists('allow_sbuscriber_to_delete_posts')){
+	function allow_sbuscriber_to_delete_posts()
+	{
+		$role = get_role( 'subscriber' );
+		$role->add_cap( 'delete_posts' );
+	}
+}

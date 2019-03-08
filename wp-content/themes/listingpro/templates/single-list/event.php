@@ -33,7 +33,7 @@ if( isset( $event_id ) && !empty( $event_id ) ):
 			$event_img  =   get_the_post_thumbnail_url( $event_id, 'large' );
 		}
 	}
-	
+	global $listingpro_options;
 	$lp_default_map_pin = $listingpro_options['lp_map_pin']['url'];
 
 	if(empty($lp_default_map_pin)){

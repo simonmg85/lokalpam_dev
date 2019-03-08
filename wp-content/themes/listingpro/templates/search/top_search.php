@@ -70,6 +70,8 @@
 		$queried_object = get_queried_object();
 
 		$sLocation = $queried_object->name;
+		
+		$sLoc = $sLocation;
 
 	}
 

@@ -251,7 +251,7 @@ if( !empty( $searchfilter ) && $searchfilter == '1' ) :
 
 					<?php } ?>
 
-                    <div class="lp-features-filter">
+                    <div class="lp-features-filter lp-head-withfilter4">
                         <strong class="col-sm-2"><?php echo esc_html__( 'Other Filters', 'listingpro' ); ?></strong>
 						<?php
 						/* multicheck */
