@@ -301,3 +301,7 @@
 0005.971 (0) Rescheduling resumption 1: moving to 120 seconds from now (1551663210)
 0005.976 (0) No email will/can be sent - the user has not configured an email address.
 0005.978 (0) The backup has not finished; a resumption is scheduled
+349185.079 (1) Opened log file at time: Fri, 08 Mar 2019 02:31:09 +0000 on http://dev-lokalpam.test
+349185.083 (1) UpdraftPlus WordPress backup plugin (https://updraftplus.com): 1.14.12 WP: 5.0.3 PHP: 7.1.1 (apache2handler, Darwin netero.local 18.2.0 Darwin Kernel Version 18.2.0: Thu Dec 20 20:46:53 PST 2018; root:xnu-4903.241.1~1/RELEASE_X86_64 x86_64) MySQL: 5.6.35 WPLANG: en_US Server: Apache/2.2.31 (Unix) mod_wsgi/3.5 Python/2.7.13 PHP/7.1.1 mod_ssl/2.2.31 OpenSSL/1.0.2j DAV/2 mod_fastcgi/2.4.6 mod_perl/2.0.9 Perl/v5.24.0 safe_mode: 0 max_execution_time: 900 memory_limit: 256M (used: 53.7M | 30M) multisite: N openssl: OpenSSL 1.0.2j  26 Sep 2016 mcrypt: Y LANG:  ZipArchive::addFile: Y
+349185.085 (1) Free space on disk containing Updraft's temporary directory: 9510.1 MB
+349185.088 (1) This backup task (94e10c828884) is either complete or began over 2 days ago: ending (1552012269.35, 1551663084) (existing jobdata keys: resume_interval, job_type, jobstatus, backup_time, job_time_ms, service, split_every, maxzipbatch, job_file_entities, option_cache, uploaded_lastreset, one_shot, followsups_allowed, backup_database, backup_files, runs_started, current_resumption, binsqldump, dbcreating_substatus, run_times, useful_checkin, warnings, sha1-db0, sha256-db0, uploading_substatus, prune)
