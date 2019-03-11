@@ -3,28 +3,49 @@ use sgpb\AdminHelper;
 use sgpb\PopupBuilderActivePackage;
 $defaultData = ConfigDataHelper::defaultData();
 $enablePopupOverlay = PopupBuilderActivePackage::canUseOption('sgpb-enable-popup-overlay');
+$removedOptions = $popupTypeObj->getRemoveOptions();
+$popupTheme = $popupTypeObj->getOptionValue('sgpb-popup-themes');
+$hidePopupBorderOption = ' sg-hide';
+if ($popupTheme == 'sgpb-theme-2' || $popupTheme == 'sgpb-theme-3') {
+	$hidePopupBorderOption = '';
+}
+
 ?>
 <div class="sgpb-wrapper">
 	<div class="row">
 		<div class="col-md-8">
+			<?php if (empty($removedOptions['sgpb-force-rtl'])) :?>
+				<div class="row form-group">
+					<label for="sgpb-force-rtl" class="col-md-5 control-label sgpb-static-padding-top">
+						<?php _e('Force RTL', SG_POPUP_TEXT_DOMAIN)?>:
+					</label>
+					<div class="col-md-6">
+						<input type="checkbox" id="sgpb-force-rtl" name="sgpb-force-rtl" <?php echo $popupTypeObj->getOptionValue('sgpb-force-rtl'); ?>>
+					</div>
+				</div>
+			<?php endif; ?>
+			<?php if (empty($removedOptions['sgpb-content-padding'])) :?>
+				<div class="row form-group">
+					<label for="content-padding" class="col-md-5 control-label sgpb-static-padding-top">
+						<?php _e('Padding', SG_POPUP_TEXT_DOMAIN)?>:
+					</label>
+					<div class="col-md-6"><input type="number" min="0" class="form-control sgpb-full-width-events" id="content-padding" name="sgpb-content-padding" value="<?php echo esc_html((int)$popupTypeObj->getOptionValue('sgpb-content-padding')); ?>"></div>
+					<div class="col-md-1 sgpb-info-wrapper">
+						<span class="dashicons dashicons-editor-help sgpb-info-icon sgpb-info-icon-align"></span>
+						<span class="infoSelectRepeat samefontStyle sgpb-info-text" style="display: none;">
+							<?php _e('Add some space, in pixels, around your popup content.', SG_POPUP_TEXT_DOMAIN);?>
+						</span>
+	 				</div>
+				</div>
+			<?php endif; ?>
+
+			<?php if (empty($removedOptions['sgpb-popup-z-index'])) :?>
 			<div class="row form-group">
-				<label for="content-padding" class="col-md-5 control-label sgpb-static-padding-top">
-					<?php _e('Padding', SG_POPUP_TEXT_DOMAIN)?>:
-				</label>
-				<div class="col-md-6"><input type="number" min="0" class="form-control sgpb-full-width-events" id="content-padding" name="sgpb-content-padding" value="<?php echo esc_html((int)$popupTypeObj->getOptionValue('sgpb-content-padding')); ?>"></div>
-				<div class="col-md-1 sgpb-info-wrapper">
-					<span class="dashicons dashicons-editor-help sgpb-info-icon sgpb-info-icon-align"></span>
-					<span class="infoSelectRepeat samefontStyle sgpb-info-text" style="display: none;">
-						<?php _e('Add some space, in pixels, around your popup content.', SG_POPUP_TEXT_DOMAIN);?>
-					</span>
- 				</div>
-			</div>
-			<div class="row form-group">
-				<label class="col-md-5 sgpb-static-padding-top" for="sgpb-popup-order">
+				<label class="col-md-5 sgpb-static-padding-top" for="sgpb-popup-z-index">
 					<?php _e('Popup z-index', SG_POPUP_TEXT_DOMAIN)  ?>:
 				</label>
 				<div class="col-md-6">
-					<input type="number" min="1" name="sgpb-popup-z-index" id="sgpb-popup-order" class="form-control sgpb-full-width-events" value="<?php echo $popupTypeObj->getOptionValue('sgpb-popup-z-index'); ?>">
+					<input type="number" min="1" name="sgpb-popup-z-index" id="sgpb-popup-z-index" class="form-control sgpb-full-width-events" value="<?php echo $popupTypeObj->getOptionValue('sgpb-popup-z-index'); ?>">
 				</div>
 				<div class="col-md-1 sgpb-info-wrapper">
 					<span class="dashicons dashicons-editor-help sgpb-info-icon sgpb-info-icon-align"></span>
@@ -33,11 +54,13 @@ $enablePopupOverlay = PopupBuilderActivePackage::canUseOption('sgpb-enable-popup
 					</span>
 				</div>
 			</div>
+			<?php endif; ?>
+
 			<div class="row form-group">
 				<label for="sgpb-popup-themes" class="col-md-5 control-label sgpb-static-padding-top">
 					<?php _e('Theme', SG_POPUP_TEXT_DOMAIN)?>:
 				</label>
-				<div class="col-md-7"><?php AdminHelper::createRadioButtons($defaultData['theme'], "sgpb-popup-themes", esc_html($popupTypeObj->getOptionValue('sgpb-popup-themes')), true); ?></div>
+				<div class="col-md-7"><?php AdminHelper::createRadioButtons($defaultData['theme'], "sgpb-popup-themes", esc_html($popupTheme), true); ?></div>
 			</div>
 			<div class="row">
 				<div class="col-md-10">
@@ -49,7 +72,16 @@ $enablePopupOverlay = PopupBuilderActivePackage::canUseOption('sgpb-enable-popup
 					<div class="themes-preview theme-preview-6" style="display: none;"></div>
 				</div>
 			</div>
+			<div class="row form-group sgpb-disable-border-wrapper<?php echo $hidePopupBorderOption ;?>">
+				<label for="sgpb-force-rtl" class="col-md-5 control-label sgpb-static-padding-top">
+					<?php _e('Disable popup border', SG_POPUP_TEXT_DOMAIN)?>:
+				</label>
+				<div class="col-md-6">
+					<input type="checkbox" id="sgpb-disable-border" name="sgpb-disable-border" <?php echo $popupTypeObj->getOptionValue('sgpb-disable-border', true); ?>>
+				</div>
+			</div>
 			<!-- popup overlay start -->
+			<?php if (empty($removedOptions['sgpb-enable-popup-overlay'])) :?>
 				<div class="row form-group">
 					<label for="sgpb-enable-popup-overlay" class="col-md-5 control-label sgpb-static-padding-top">
 						<?php _e('Enable popup overlay', SG_POPUP_TEXT_DOMAIN)?>:
@@ -67,7 +99,7 @@ $enablePopupOverlay = PopupBuilderActivePackage::canUseOption('sgpb-enable-popup
 					</div>
 					<?php if (!$enablePopupOverlay): ?>
 						<div class="col-md-2 sgpb-pro-options-label-wrapper">
-							<a href="<?php echo SG_POPUP_PRO_URL;?>" target="_blank" class="btn btn-warning btn-xs sgpb-pro-label-sm"><?php _e('Upgrade to PRO', SG_POPUP_TEXT_DOMAIN) ?></a>
+							<a href="<?php echo SG_POPUP_ADVANCED_CLOSING_URL;?>" target="_blank" class="btn btn-warning btn-xs sgpb-pro-label-sm sgpb-advanced-closing-pro-label"><?php _e('UNLOCK OPTION', SG_POPUP_TEXT_DOMAIN) ?></a>
 						</div>
 					<?php endif; ?>
 				</div>
@@ -109,6 +141,7 @@ $enablePopupOverlay = PopupBuilderActivePackage::canUseOption('sgpb-enable-popup
 						</div>
 					</div>
 				</div>
+			<?php endif; ?>
 			<!-- popup overlay end -->
 			<div class="row form-group">
 				<label for="content-custom-class" class="col-md-5 control-label sgpb-static-padding-top">
@@ -124,6 +157,7 @@ $enablePopupOverlay = PopupBuilderActivePackage::canUseOption('sgpb-enable-popup
 					</span>
 				</div>
 			</div>
+			<?php if (empty($removedOptions['sgpb-show-background'])) :?>
 			<div class="row form-group">
 				<label for="content-padding" class="col-md-10 control-label sgpb-static-padding-top">
 					<?php _e('Background options', SG_POPUP_TEXT_DOMAIN)?>
@@ -160,6 +194,9 @@ $enablePopupOverlay = PopupBuilderActivePackage::canUseOption('sgpb-enable-popup
 						</div>
 					</div>
 				</div>
+				<?php endif; ?>
+
+				<?php if (empty($removedOptions['sgpb-background-image'])) :?>
 				<div class="row">
 					<label for="redirect-to-url" class="col-md-5 control-label sgpb-static-padding-top sgpb-double-sub-option">
 						<?php _e('Image', SG_POPUP_TEXT_DOMAIN)?>:
@@ -188,6 +225,9 @@ $enablePopupOverlay = PopupBuilderActivePackage::canUseOption('sgpb-enable-popup
 						</div>
 					</div>
 				</div>
+				<?php endif; ?>
+
+				<?php if (empty($removedOptions['sgpb-background-image-mode'])) :?>
 				<div class="row form-group">
 					<label for="content-padding" class="col-md-5 control-label sgpb-static-padding-top sgpb-double-sub-option">
 						<?php _e('Mode', SG_POPUP_TEXT_DOMAIN)?>:
@@ -202,6 +242,7 @@ $enablePopupOverlay = PopupBuilderActivePackage::canUseOption('sgpb-enable-popup
 						</span>
 					</div>
 				</div>
+				<?php endif; ?>
 			</div>
 		</div>
 	</div>

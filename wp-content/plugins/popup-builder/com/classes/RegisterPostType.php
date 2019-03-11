@@ -2,7 +2,6 @@
 namespace sgpb;
 use \SgpbDataConfig;
 use \SgpbPopupConfig;
-
 class RegisterPostType
 {
 	private $popupTypeObj;
@@ -58,20 +57,21 @@ class RegisterPostType
 		$labels = $this->getPostTypeLabels();
 
 		$args = array(
-			'labels'             => $labels,
-			'description'        => __('Description.', 'your-plugin-textdomain'),
+			'labels'              => $labels,
+			'description'         => __('Description.', 'your-plugin-textdomain'),
 			// Exclude_from_search
-			'public'             => true,
-			'has_archive'        => true,
+			'exclude_from_search' => true,
+			'public'              => true,
+			'has_archive'         => false,
 			// Where to show the post type in the admin menu
-			'show_ui'            => true,
-			'query_var'          => false,
-			'rewrite'            => array('slug' => SG_POPUP_POST_TYPE),
-			'map_meta_cap'       => true,
-			'capability_type'    => array('sgpb_popup', 'sgpb_popups'),
-			'menu_position'      => 10,
-			'supports'           => apply_filters('sgpbPostTypeSupport', array('title', 'editor')),
-			'menu_icon'          => 'dashicons-menu-icon-sgpb'
+			'show_ui'             => true,
+			'query_var'           => false,
+			'rewrite'             => array('slug' => SG_POPUP_POST_TYPE),
+			'map_meta_cap'        => true,
+			'capability_type'     => array('sgpb_popup', 'sgpb_popups'),
+			'menu_position'       => 10,
+			'supports'            => apply_filters('sgpbPostTypeSupport', array('title', 'editor')),
+			'menu_icon'           => 'dashicons-menu-icon-sgpb'
 		);
 
 		if (is_admin()) {
@@ -142,19 +142,6 @@ class RegisterPostType
 
 		register_taxonomy(SG_POPUP_CATEGORY_TAXONOMY, SG_POPUP_POST_TYPE, $args);
 		register_taxonomy_for_object_type(SG_POPUP_CATEGORY_TAXONOMY, SG_POPUP_POST_TYPE);
-
-		if (SGPB_POPUP_PKG >= SGPB_POPUP_PKG_SILVER) {
-			wp_insert_term(
-				__('Random popups', SG_POPUP_TEXT_DOMAIN),
-				SG_POPUP_CATEGORY_TAXONOMY, // the taxonomy
-				array(
-					'description' => __('Random popups', SG_POPUP_TEXT_DOMAIN),
-					'slug' => SG_RANDOM_TAXONOMY_SLUG,
-					'parent' => '',
-					'can_disable_terms' => false,
-				)
-			);
-		}
 	}
 
 	public function postTypeSupportForPopupTypes($supports)
@@ -261,6 +248,7 @@ class RegisterPostType
 		$popupClassName = __NAMESPACE__.'\\'.$popupClassName;
 		$popupTypeObj = new $popupClassName();
 		$popupTypeObj->setId($popupId);
+		$popupTypeObj->setType($popupType);
 		$this->setPopupTypeObj($popupTypeObj);
 
 		$popupTypeMainView = $popupTypeObj->getPopupTypeMainView();
@@ -272,6 +260,26 @@ class RegisterPostType
 		if (!empty($popupTypeViewData)) {
 			add_action('add_meta_boxes', array($this, 'popupTypeOptions'));
 		}
+		if ($popupType == 'subscription') {
+			add_action('add_meta_boxes', array($this, 'rightBannerMetabox'));
+		}
+	}
+
+	public function rightBannerMetabox()
+	{
+		$banner = AdminHelper::getRightMetaboxBannerText();
+		$isSubscriptionPlusActive = is_plugin_active(SGPB_POPUP_SUBSCRIPTION_PLUS_EXTENSION_KEY);
+		if ($banner == '' || $isSubscriptionPlusActive) {
+			return;
+		}
+		add_meta_box(
+			'popupTypeRightBannerView',
+			__('News', SG_POPUP_TEXT_DOMAIN),
+			array($this, 'popupTypeRightBannerView'),
+			SG_POPUP_POST_TYPE,
+			'side',
+			'low'
+		);
 	}
 
 	public function popupTypeMain()
@@ -302,6 +310,27 @@ class RegisterPostType
 		);
 	}
 
+	public function supportLinks()
+	{
+		add_submenu_page(
+			'edit.php?post_type='.SG_POPUP_POST_TYPE,
+			__('Extend', SG_POPUP_TEXT_DOMAIN),
+			__('Extend', SG_POPUP_TEXT_DOMAIN),
+			'sgpb_manage_options',
+			SG_POPUP_EXTEND_PAGE,
+			array($this, 'extendLink')
+		);
+
+		add_submenu_page(
+			'edit.php?post_type='.SG_POPUP_POST_TYPE,
+			__('Support', SG_POPUP_TEXT_DOMAIN),
+			__('Support', SG_POPUP_TEXT_DOMAIN),
+			'sgpb_manage_options',
+			SG_POPUP_SUPPORT_PAGE,
+			array($this, 'supportLink')
+		);
+	}
+
 	public function addSubMenu()
 	{
 		add_submenu_page(
@@ -318,7 +347,7 @@ class RegisterPostType
 			__('Subscribers', SG_POPUP_TEXT_DOMAIN),
 			__('Subscribers', SG_POPUP_TEXT_DOMAIN),
 			'sgpb_manage_options',
-			'subscribers',
+			SG_POPUP_SUBSCRIBERS_PAGE,
 			array($this, 'subscribersPage')
 		);
 
@@ -341,96 +370,14 @@ class RegisterPostType
 		);
 	}
 
-	public function addTargetMetaBox()
+	public function supportLink()
 	{
-		add_meta_box(
-			'targetMetaboxView',
-			__('Popup Display Rules', SG_POPUP_TEXT_DOMAIN),
-			array($this, 'targetMetaboxView'),
-			SG_POPUP_POST_TYPE,
-			'normal',
-			'low'
-		);
+		wp_redirect(SG_POPUP_SUPPORT_URL);
 	}
 
-	public function addEventMetaBox()
+	public function extendLink()
 	{
-		add_meta_box(
-			'eventsMetaboxView',
-			__('Popup Events', SG_POPUP_TEXT_DOMAIN),
-			array($this, 'eventsMetaboxView'),
-			SG_POPUP_POST_TYPE,
-			'normal',
-			'low'
-		);
-	}
-
-	public function addConditionsMetaBox()
-	{
-		$prolabel = '';
-		$conditionsCanBeUsed = PopupBuilderActivePackage::canUseSection('popupConditionsSection');
-		if (!$conditionsCanBeUsed) {
-			$prolabel .= '<a href="'.SG_POPUP_PRO_URL.'" target="_blank" class="sgpb-pro-label-metabox">';
-			$prolabel .= __('Upgrade to PRO', SG_POPUP_TEXT_DOMAIN).'</a>';
-		}
-		add_meta_box(
-			'conditionsMetaboxView',
-			__('Popup Conditions', SG_POPUP_TEXT_DOMAIN).$prolabel,
-			array($this, 'conditionsView'),
-			SG_POPUP_POST_TYPE,
-			'normal',
-			'low'
-		);
-	}
-
-	public function addBehaviorAfterSpecialEventsMetaBox()
-	{
-		add_meta_box(
-			'behaviorAfterSpecialEventsMetaboxView',
-			__('Behavior After Special Events', SG_POPUP_TEXT_DOMAIN),
-			array($this, 'behaviorAfterSpecialEventsView'),
-			SG_POPUP_POST_TYPE,
-			'normal',
-			'low'
-		);
-	}
-
-	public function popupDesignMetaBox()
-	{
-		add_meta_box(
-			'popupDesignMetaBoxView',
-			__('Design', SG_POPUP_TEXT_DOMAIN),
-			array($this, 'popupDesignMetaBoxView'),
-			SG_POPUP_POST_TYPE,
-			'normal',
-			'low'
-		);
-	}
-
-	public function addCloseSettingsMetaBox()
-	{
-		if (Functions::getPopupTypeToAllowToShowMetabox() != 'ageRestriction') {
-			add_meta_box(
-				'closeSettings',
-				__('Close Settings', SG_POPUP_TEXT_DOMAIN),
-				array($this, 'closeSettings'),
-				SG_POPUP_POST_TYPE,
-				'normal',
-				'low'
-			);
-		}
-	}
-
-	public function addDimensionsSettingsMetaBox()
-	{
-		add_meta_box(
-			'spgdimension',
-			__('Dimensions', SG_POPUP_TEXT_DOMAIN),
-			array($this, 'dimensionsSettings'),
-			SG_POPUP_POST_TYPE,
-			'normal',
-			'low'
-		);
+		wp_redirect(SG_POPUP_EXTENSIONS_URL);
 	}
 
 	public function addOptionsMetaBox()
@@ -445,71 +392,43 @@ class RegisterPostType
 		);
 	}
 
-	public function addOtherConditions()
+	public function addPopupMetaboxes()
 	{
-		$prolabel = '';
-		$conditionsCanBeUsed = PopupBuilderActivePackage::canUseSection('popupOtherConditionsSection');
-		if (!$conditionsCanBeUsed) {
-			$prolabel .= '<a href="'.SG_POPUP_PRO_URL.'" target="_blank" class="sgpb-pro-label-metabox">';
-			$prolabel .= __('Upgrade to PRO', SG_POPUP_TEXT_DOMAIN).'</a>';
-		}
-		add_meta_box(
-			'otherConditionsMetaBoxView',
-			__('Popup other Conditions',
-			SG_POPUP_TEXT_DOMAIN).$prolabel,
-			array($this, 'otherConditionsView'),
-			SG_POPUP_POST_TYPE,
-			'normal',
-			'low'
-		);
-	}
+		$additionalMetaboxes = apply_filters('sgpbAdditionalMetaboxes', array());
 
-	public function targetMetaboxView()
-	{
-		$popupTypeObj = $this->getPopupTypeObj();
-		if (file_exists(SG_POPUP_VIEWS_PATH.'targetView.php')) {
-			require_once(SG_POPUP_VIEWS_PATH.'targetView.php');
+		if (empty($additionalMetaboxes)) {
+			return false;
 		}
-	}
 
-	public function eventsMetaboxView()
-	{
-		$popupTypeObj = $this->getPopupTypeObj();
-		if (file_exists(SG_POPUP_VIEWS_PATH.'eventsView.php')) {
-			require_once(SG_POPUP_VIEWS_PATH.'eventsView.php');
-		}
-	}
+		foreach ($additionalMetaboxes as $additionalMetabox) {
+			if (empty($additionalMetabox)) {
+				continue;
+			}
+			$context = 'normal';
+			$priority = 'low';
+			$filepath = $additionalMetabox['filePath'];
+			$popupTypeObj = $this->getPopupTypeObj();
 
-	public function conditionsView()
-	{
-		$popupTypeObj = $this->getPopupTypeObj();
-		if (file_exists(SG_POPUP_VIEWS_PATH.'conditionsView.php')) {
-			require_once(SG_POPUP_VIEWS_PATH.'conditionsView.php');
-		}
-	}
+			if (!empty($additionalMetabox['context'])) {
+				$context = $additionalMetabox['context'];
+			}
+			if (!empty($additionalMetabox['priority'])) {
+				$priority = $additionalMetabox['priority'];
+			}
 
-	public function behaviorAfterSpecialEventsView()
-	{
-		$popupTypeObj = $this->getPopupTypeObj();
-		if (file_exists(SG_POPUP_VIEWS_PATH.'behaviorAfterSpecialEventsView.php')) {
-			require_once(SG_POPUP_VIEWS_PATH.'behaviorAfterSpecialEventsView.php');
+			add_meta_box(
+				$additionalMetabox['key'],
+				__($additionalMetabox['displayName'], SG_POPUP_TEXT_DOMAIN),
+				function() use ($filepath, $popupTypeObj) {
+					require_once $filepath;
+				},
+				SG_POPUP_POST_TYPE,
+				$context,
+				$priority
+			);
 		}
-	}
 
-	public function popupDesignMetaBoxView()
-	{
-		$popupTypeObj = $this->getPopupTypeObj();
-		if (file_exists(SG_POPUP_VIEWS_PATH.'popupDesignView.php')) {
-			require_once(SG_POPUP_VIEWS_PATH.'popupDesignView.php');
-		}
-	}
-
-	public function closeSettings()
-	{
-		$popupTypeObj = $this->getPopupTypeObj();
-		if (file_exists(SG_POPUP_VIEWS_PATH.'closeSettingsView.php')) {
-			require_once(SG_POPUP_VIEWS_PATH.'closeSettingsView.php');
-		}
+		return true;
 	}
 
 	public function popupTypesPage()
@@ -540,30 +459,6 @@ class RegisterPostType
 		}
 	}
 
-	public function optionsMetaboxView()
-	{
-		$popupTypeObj = $this->getPopupTypeObj();
-		if (file_exists(SG_POPUP_VIEWS_PATH.'optionsView.php')) {
-			require_once(SG_POPUP_VIEWS_PATH.'optionsView.php');
-		}
-	}
-
-	public function dimensionsSettings()
-	{
-		$popupTypeObj = $this->getPopupTypeObj();
-		if (file_exists(SG_POPUP_VIEWS_PATH.'dimensionsView.php')) {
-			require_once(SG_POPUP_VIEWS_PATH.'dimensionsView.php');
-		}
-	}
-
-	public function otherConditionsView()
-	{
-		$popupTypeObj = $this->getPopupTypeObj();
-		if (file_exists(SG_POPUP_VIEWS_PATH.'otherConditionsView.php')) {
-			require_once(SG_POPUP_VIEWS_PATH.'otherConditionsView.php');
-		}
-	}
-
 	public function popupTypeOptionsView()
 	{
 		$popupTypeObj = $this->getPopupTypeObj();
@@ -580,5 +475,11 @@ class RegisterPostType
 		if (file_exists($optionsView['filePath'])) {
 			require_once($optionsView['filePath']);
 		}
+	}
+
+	public function popupTypeRightBannerView()
+	{
+		$banner = AdminHelper::getRightMetaboxBannerText();
+		echo $banner;
 	}
 }

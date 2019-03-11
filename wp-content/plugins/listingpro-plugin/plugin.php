@@ -3,7 +3,7 @@
 Plugin Name: ListingPro Plugin
 Plugin URI: 
 Description: This plugin Only compatible With listingpro Theme By CridioStudio.
-Version: 2.0.2
+Version: 2.0.12
 Author: CridioStudio (Dev Team)
 Author URI: http://www.cridio.io
 Author Email: support@cridio.com
@@ -28,6 +28,7 @@ Author Email: support@cridio.com
 		wp_register_script( 'main', plugins_url( '/assets/js/main.js', __FILE__ ), array( 'jquery' ) );
 		
 		wp_enqueue_script( 'main' );
+		wp_enqueue_script('lpAutoPlaces', LISTINGPRO_PLUGIN_URI. 'assets/js/auto-places.js', 'jquery', '', true);
 	}
 	add_action( 'wp_enqueue_scripts', 'listingpro_plugin_uploader' );
 	
@@ -289,7 +290,6 @@ Author Email: support@cridio.com
 						'rewrite' => array( 'slug' => $listing_features_slug ),
 						'query_var'     => true,
 						'public'            => true,
-						'show_in_rest'       => true,
 						'capabilities' => array(
 							'assign_terms' => 'assign_features',
 						)
@@ -352,6 +352,7 @@ Author Email: support@cridio.com
 			 'show_ui' => true,
                 'query_var' => true,
                 'rewrite'   => array( 'slug' => $listing_loc_slug ),
+				'show_in_rest'       => true,
 				'capabilities' => array(
 					'assign_terms' => 'assign_location',
 				)
@@ -371,7 +372,10 @@ add_action( 'init', 'listing_location', 0 );
 		 include_once(WP_PLUGIN_DIR.'/listingpro-plugin/inc/metaboxes/location-meta.php');
 		 include_once(WP_PLUGIN_DIR.'/listingpro-plugin/inc/metaboxes/category-meta.php');
 		 include_once(WP_PLUGIN_DIR.'/listingpro-plugin/inc/metaboxes/features-meta.php');		
-		 include_once(WP_PLUGIN_DIR.'/listingpro-plugin/inc/recaptcha.php');
+		 
+		 if(!empty(lp_theme_option('lp_recaptcha_switch'))){
+			include_once(WP_PLUGIN_DIR.'/listingpro-plugin/inc/recaptcha.php');
+		 }
 		 include_once(WP_PLUGIN_DIR.'/listingpro-plugin/inc/field-types.php');
 		 
 		 include_once(WP_PLUGIN_DIR.'/listingpro-plugin/inc/claims.php');

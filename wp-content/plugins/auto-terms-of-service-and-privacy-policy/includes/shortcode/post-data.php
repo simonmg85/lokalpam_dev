@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Post_Data extends Post_Base {
 	protected $_data;
 
-	function __construct( $name, $data ) {
+	public function __construct( $name, $data ) {
 		parent::__construct( $name );
 		$this->_data = $data;
 	}
@@ -20,7 +20,7 @@ class Post_Data extends Post_Base {
 			return '';
 		}
 
-		return esc_html( $post->$name );
+		return do_shortcode( $post->$name );
 	}
 
 }

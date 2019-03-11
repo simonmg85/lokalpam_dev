@@ -30,7 +30,7 @@ $twocheckout_img_url = wp_get_attachment_url($twocheckout_img);
 //$output .='<h2 class="lp_select_listing_heading">'.esc_html__('SELECT A GATEWAY', 'listingpro-plugin').'</h2>';
 
 $output .='<div class="lp-rightbnk-transfer-msg lp-rightbnk-transfer-msg-new">';
-if($wireStatus==true){
+	if($wireStatus==true){
 		$output .='<div class="lp-method-wrap">';
 		$output .='<label>';
 		
@@ -48,7 +48,6 @@ if($wireStatus==true){
 					}
 		$bankinfo = '';
 		$bankinfo = $listingpro_options['direct_payment_instruction'];
-		//$output .= esc_html__('Bank Transfer', 'listingpro-plugin');
 		$output .='</label>';
 		$output .='<div class="lp-tranfer-info">';
 			
@@ -145,7 +144,7 @@ if($wireStatus==true){
                                     </span>
                                 </label>
                             </div>
-                            <span class="lp-text-switch-checkbox">Recurring Payment</span>
+                            <span class="lp-text-switch-checkbox">'.esc_html__("Recurring Payment", "listingpro-plugin").'</span>
                         </div>';
             $output .='</div>';
         }

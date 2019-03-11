@@ -50,18 +50,99 @@ class Ajax
 		add_action('wp_ajax_select2_search_data', array($this, 'select2SearchData'));
 		add_action('wp_ajax_sgpb_subscription_submission', array($this, 'subscriptionSubmission'));
 		add_action('wp_ajax_nopriv_sgpb_subscription_submission', array($this, 'subscriptionSubmission'));
+		add_action('wp_ajax_sgpb_process_after_submission', array($this, 'sgpbSubsciptionFormSubmittedAction'));
+		add_action('wp_ajax_nopriv_sgpb_process_after_submission', array($this, 'sgpbSubsciptionFormSubmittedAction'));
 		add_action('wp_ajax_change_popup_status', array($this, 'changePopupStatus'));
-		// proStartGoldproEndGold
+		// proStartGold
+		add_action('wp_ajax_check_same_origin', array($this, 'checkSameOrigin'));
+		// proEndGold
 		add_action('wp_ajax_sgpb_subscribers_delete', array($this, 'deleteSubscribers'));
 		add_action('wp_ajax_sgpb_add_subscribers', array($this, 'addSubscribers'));
 		add_action('wp_ajax_sgpb_send_newsletter', array($this, 'sendNewsletter'));
 		add_action('wp_ajax_sgpb_send_to_open_counter', array($this, 'addToCounter'));
+		add_action('wp_ajax_sgpb_change_review_popup_show_period', array($this, 'changeReviewPopupPeriod'));
+		add_action('wp_ajax_nopriv_sgpb_change_review_popup_show_period', array($this, 'changeReviewPopupPeriod'));
+		add_action('wp_ajax_sgpb_dont_show_review_popup', array($this, 'dontShowReviewPopup'));
+		add_action('wp_ajax_nopriv_sgpb_dont_show_review_popup', array($this, 'dontShowReviewPopup'));
 		add_action('wp_ajax_nopriv_sgpb_send_to_open_counter', array($this, 'addToCounter'));
-		add_action('wp_ajax_sgpb_send_to_open_counter', array($this, 'addToCounter'));
 		add_action('wp_ajax_sgpb_close_banner', array($this, 'closeMainRateUsBanner'));
+		add_action('wp_ajax_sgpb_hide_ask_review_popup', array($this, 'dontShowAskReviewBanner'));
+		add_action('wp_ajax_sgpb_reset_popup_opening_count', array($this, 'resetPopupOpeningCount'));
 		/*Extension notification panel*/
 		add_action('wp_ajax_sgpb_dont_show_extension_panel', array($this, 'extensionNotificationPanel'));
 		add_action('wp_ajax_sgpb_dont_show_problem_alert', array($this, 'dontShowProblemAlert'));
+	}
+
+	public function dontShowReviewPopup()
+	{
+		check_ajax_referer(SG_AJAX_NONCE, 'nonce');
+		update_option('SGPBCloseReviewPopup', true);
+		wp_die();
+	}
+
+	public function changeReviewPopupPeriod()
+	{
+		check_ajax_referer(SG_AJAX_NONCE, 'nonce');
+		$messageType = sanitize_text_field($_POST['messageType']);
+
+		if ($messageType == 'count') {
+			$maxPopupCount = get_option('SGPBMaxOpenCount');
+			if (!$maxPopupCount) {
+				$maxPopupCount = SGPB_ASK_REVIEW_POPUP_COUNT;
+			}
+			$maxPopupData = AdminHelper::getMaxOpenPopupId();
+			if (!empty($maxPopupData['maxCount'])) {
+				$maxPopupCount = $maxPopupData['maxCount'];
+			}
+
+			$maxPopupCount += SGPB_ASK_REVIEW_POPUP_COUNT;
+			update_option('SGPBMaxOpenCount', $maxPopupCount);
+			wp_die();
+		}
+
+		$popupTimeZone = get_option('timezone_string');
+		if (!$popupTimeZone) {
+			$popupTimeZone = SG_POPUP_DEFAULT_TIME_ZONE;
+		}
+		$timeDate = new \DateTime('now', new \DateTimeZone($popupTimeZone));
+		$timeDate->modify('+'.SGPB_REVIEW_POPUP_PERIOD.' day');
+
+		$timeNow = strtotime($timeDate->format('Y-m-d H:i:s'));
+		update_option('SGPBOpenNextTime', $timeNow);
+		$usageDays = get_option('SGPBUsageDays');
+		$usageDays += SGPB_REVIEW_POPUP_PERIOD;
+		update_option('SGPBUsageDays', $usageDays);
+		wp_die();
+	}
+
+	public function resetPopupOpeningCount()
+	{
+		check_ajax_referer(SG_AJAX_NONCE, 'nonce');
+
+		global $wpdb;
+		$popupId = (int)$_POST['popupId'];
+		$allPopupsCount = get_option('SgpbCounter');
+		if (empty($allPopupsCount)) {
+			echo SGPB_AJAX_STATUS_FALSE;
+			wp_die();
+		}
+		if (isset($allPopupsCount[$popupId])) {
+			$allPopupsCount[$popupId] = 0;
+		}
+		// 7, 12, 13 => exclude close, subscription success, contact success events
+		$stmt = $wpdb->prepare(' DELETE FROM '.$wpdb->prefix.'sgpb_analytics WHERE target_id = %d AND event_id NOT IN (7, 12, 13)', $popupId);
+		$popupAnalyticsData = $wpdb->get_var($stmt);
+
+		update_option('SgpbCounter', $allPopupsCount);
+
+	}
+
+	public function dontShowAskReviewBanner()
+	{
+		check_ajax_referer(SG_AJAX_NONCE, 'nonce');
+		update_option('sgpbDontShowAskReviewBanner', 1);
+		echo SGPB_AJAX_STATUS_TRUE;
+		wp_die();
 	}
 
 	public function dontShowProblemAlert()
@@ -92,17 +173,22 @@ class Ajax
 		check_ajax_referer(SG_AJAX_NONCE, 'nonce');
 
 		$popupParams = $_POST['params'];
-		$popupId = (int)$popupParams['popupId'];
+		$popupsIdCollection = $popupParams['popupsIdCollection'];
+
 		$popupsCounterData = get_option('SgpbCounter');
 
 		if ($popupsCounterData === false) {
 			$popupsCounterData = array();
 		}
 
-		if (empty($popupsCounterData[$popupId])) {
-			$popupsCounterData[$popupId] = 0;
+		if (!empty($popupsIdCollection)) {
+			foreach ($popupsIdCollection as $popupId => $popupCount) {
+				if (empty($popupsCounterData[$popupId])) {
+					$popupsCounterData[$popupId] = 0;
+				}
+				$popupsCounterData[$popupId] += $popupCount;
+			}
 		}
-		$popupsCounterData[$popupId] += 1;
 
 		update_option('SgpbCounter', $popupsCounterData);
 		wp_die();
@@ -144,7 +230,7 @@ class Ajax
 			}
 			// edit existing
 			else {
-				$sql = $wpdb->prepare('UPDATE '.$wpdb->prefix.SGPB_SUBSCRIBERS_TABLE_NAME.' SET firstName = %s, lastName = %s, email = %s, cDate = %s, subscriptionType = %d WHERE id = %d', $firstName, $lastName, $email, $date, $subscriptionPopupId, $res['id']);
+				$sql = $wpdb->prepare('UPDATE '.$wpdb->prefix.SGPB_SUBSCRIBERS_TABLE_NAME.' SET firstName = %s, lastName = %s, email = %s, cDate = %s, subscriptionType = %d, unsubscribered = 0 WHERE id = %d', $firstName, $lastName, $email, $date, $subscriptionPopupId, $res['id']);
 				$wpdb->query($sql);
 				$res = 1;
 			}
@@ -176,7 +262,50 @@ class Ajax
 		wp_die();
 	}
 
-	// proStartGoldproEndGold
+	// proStartGold
+	public function checkSameOrigin()
+	{
+		check_ajax_referer(SG_AJAX_NONCE, 'nonce');
+
+		$url = esc_url($_POST['iframeUrl']);
+		$status = SGPB_AJAX_STATUS_FALSE;
+
+		$remoteGet = wp_remote_get($url);
+
+		if (is_array($remoteGet) && !empty($remoteGet['headers']['x-frame-options'])) {
+			$siteUrl = esc_url($_POST['siteUrl']);
+			$xFrameOptions = $remoteGet['headers']['x-frame-options'];
+			$mayNotShow = false;
+
+			if ($xFrameOptions == 'deny') {
+				$mayNotShow = true;
+			}
+			else if ($xFrameOptions == 'SAMEORIGIN') {
+				if (strpos($url, $siteUrl) === false) {
+					$mayNotShow = true;
+				}
+			}
+			else {
+				if (strpos($xFrameOptions, $siteUrl) === false) {
+					$mayNotShow = true;;
+				}
+			}
+
+			if ($mayNotShow) {
+				echo $status;
+				wp_die();
+			}
+		}
+
+		// $remoteGet['response']['code'] < 400 it's mean correct status
+		if (is_array($remoteGet) && isset($remoteGet['response']['code']) && $remoteGet['response']['code'] < 400) {
+			$status = SGPB_AJAX_STATUS_TRUE;
+		}
+
+		echo $status;
+		wp_die();
+	}
+	// proEndGold
 
 	public function changePopupStatus()
 	{
@@ -238,13 +367,72 @@ class Ajax
 			$wpdb->query($sql);
 			$res = 1;
 		}
-
 		if ($res) {
 			$status = SGPB_AJAX_STATUS_TRUE;
 		}
 
 		echo $status;
 		wp_die();
+	}
+
+	public function sgpbSubsciptionFormSubmittedAction()
+    {
+        check_ajax_referer(SG_AJAX_NONCE, 'nonce');
+        $this->setPostData($_POST);
+
+        $submissionData = $this->getValueFromPost('formData');
+        $popupPostId = (int)$this->getValueFromPost('popupPostId');
+        parse_str($submissionData, $formData);
+        if (empty($_POST)) {
+            echo SGPB_AJAX_STATUS_FALSE;
+            wp_die();
+        }
+        $email = sanitize_email($_POST['emailValue']);
+        $firstName = sanitize_text_field($_POST['firstNameValue']);
+        $lastName = sanitize_text_field($_POST['lastNameValue']);
+        $userData = array(
+            'email' => $email,
+            'firstName' => $firstName,
+            'lastName' => $lastName
+        );
+        $this->sendSuccessEmails($popupPostId, $userData);
+        do_action('sgpbProcessAfterSuccessfulSubmission', $popupPostId, $userData);
+    }
+
+	public function sendSuccessEmails($popupPostId, $subscriptionDetails)
+	{
+		global $wpdb;
+		$popup = SGPopup::find($popupPostId);
+
+		if (!is_object($popup)) {
+			return false;
+		}
+		$subscribersTableName = $wpdb->prefix.SGPB_SUBSCRIBERS_TABLE_NAME;
+
+		$getSubscriberCountQuery = $wpdb->prepare('SELECT COUNT(id) as countIds FROM '.$subscribersTableName.' WHERE subscriptionType = %d', $popupPostId);
+		$count = $wpdb->get_row($getSubscriberCountQuery, ARRAY_A);
+
+		$popupOptions = $popup->getOptions();
+		$adminUserName = 'admin';
+
+		$adminEmail = get_option('admin_email');
+		$userData = @get_user_by_email($adminEmail);
+
+		if (!empty($userData)) {
+			$adminUserName = $userData->display_name;
+		}
+
+		$newSubscriberEmailHeader = AdminHelper::getEmailHeader($adminEmail);
+		$takeReviewAfterFirstSubscription = get_option('sgpb-new-subscriber');
+
+		if ($count['countIds'] == 1 && !$takeReviewAfterFirstSubscription) {
+			// take review
+			update_option('sgpb-new-subscriber', 1);
+			$newSubscriberEmailTitle = __('Congrats! You have already 1 subscriber!', SG_POPUP_TEXT_DOMAIN);
+			$reviewEmailTemplate = AdminHelper::getFileFromURL(SG_POPUP_EMAIL_TEMPLATES_URL.'takeReviewAfterSubscribe.html');
+			$reviewEmailTemplate = preg_replace('/\[adminUserName]/', $adminUserName, $reviewEmailTemplate);
+			$sendStatus = wp_mail($adminEmail, $newSubscriberEmailTitle, $reviewEmailTemplate, $newSubscriberEmailHeader); //return true or false
+		}
 	}
 
 	public function select2SearchData()
@@ -258,7 +446,7 @@ class Ajax
 			's'              => $search,
 			'post__in'       => ! empty( $_REQUEST['include'] ) ? array_map( 'intval', $_REQUEST['include'] ) : null,
 			'page'           => ! empty( $_REQUEST['page'] ) ? absint( $_REQUEST['page'] ) : null,
-			'posts_per_page' => 10,
+			'posts_per_page' => 100,
 			'post_type'      => $postTypeName
 		);
 		$searchResults = ConfigDataHelper::getPostTypeData($args);
@@ -334,6 +522,7 @@ class Ajax
 		$conditionConfig = $SGPB_DATA_CONFIG_ARRAY[$targetType];
 		$groupId = (int)$_POST['groupId'];
 		$ruleId = (int)$_POST['ruleId'];
+		$popupId = (int)$_POST['popupId'];
 		$paramName = sanitize_text_field($_POST['paramName']);
 
 		$savedData = array(
@@ -343,13 +532,34 @@ class Ajax
 		if ($targetType == 'target' || $targetType == 'conditions') {
 			$savedData['operator'] = '==';
 		}
-		else if ($targetType == 'behavior-after-special-events') {
+		else if ($conditionConfig['specialDefaultOperator']) {
 			$savedData['operator'] = $paramName;
 		}
 
-		$savedData['value'] = @$conditionConfig['paramsData'][$paramName];
+		if (!empty($_POST['paramValue'])) {
+			$savedData['tempParam'] = sanitize_text_field($_POST['paramValue']);
+			$savedData['operator'] = $paramName;
+		}
+		// change operator value related to condition value
+		if (!empty($conditionConfig['operatorAllowInConditions']) && in_array($paramName, $conditionConfig['operatorAllowInConditions'])) {
+			$conditionConfig['paramsData']['operator'] = array();
+
+			if (!empty($conditionConfig['paramsData'][$paramName.'Operator'])) {
+				$operatorData = $conditionConfig['paramsData'][$paramName.'Operator'];
+				$SGPB_DATA_CONFIG_ARRAY[$targetType]['paramsData']['operator'] = $operatorData;
+				// change take value related to condition value
+				$operatorDataKeys = array_keys($operatorData);
+				if (!empty($operatorDataKeys[0])) {
+					$savedData['operator'] = $operatorDataKeys[0];
+					$builderObj->setTakeValueFrom('operator');
+				}
+			}
+		}
+		// by default set empty value for users' role (adv. tar.)
+		$savedData['value'] = array();
 		$savedData['hiddenOption'] = @$conditionConfig['hiddenOptionData'][$paramName];
 
+		$builderObj->setPopupId($popupId);
 		$builderObj->setGroupId($groupId);
 		$builderObj->setRuleId($ruleId);
 		$builderObj->setSavedData($savedData);

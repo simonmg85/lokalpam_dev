@@ -105,9 +105,11 @@ function listingpro_shortcode_pricing($atts, $content = null) {
 		'pricing_views'   	=> 'horizontal_view',
 		'pricing_horizontal_view'  => 'horizontal_view_1',
 		'pricing_vertical_view'  => 'vertical_view_1',
+		'plan_status'  => '',
 	), $atts));
 	$output = null;
 	global $listingpro_options;
+	
 		//set_query_var('pricing_plan_style', $pricing_views);
 	
 		$GLOBALS['pricing_views'] = $pricing_views;
@@ -116,10 +118,6 @@ function listingpro_shortcode_pricing($atts, $content = null) {
 	
 		$lp_plans_cats = lp_theme_option('listingpro_plans_cats');
 		$lp_plans_cats_position = lp_theme_option('listingpro_plans_cats');
-		$lp_include_default_plans = lp_theme_option('listingpro_plans_include_default_plans');
-		$listingpro_swith_default_plan = lp_theme_option('listingpro_swith_default_plan');
-
-		
 		
 		$output .= '<div class="col-md-10 col-md-offset-1 padding-bottom-40 lp-margin-top-case '.$pricing_views.'">';
 		//Title and subtitle field optional
@@ -133,29 +131,35 @@ function listingpro_shortcode_pricing($atts, $content = null) {
             </div>';
 		}
 		
-		if($lp_plans_cats=='yes'){
+		if($plan_status!='claim'){
+			if($lp_plans_cats=='yes'){
 
-			ob_start();
-			include_once( LISTINGPRO_PLUGIN_PATH . 'templates/pricing/by_category.php');
-			$output .= ob_get_contents();
-			ob_end_clean();
-			ob_flush();
-			//if($lp_include_default_plans=='yes'){
+				ob_start();
+				include_once( LISTINGPRO_PLUGIN_PATH . 'templates/pricing/by_category.php');
+				$output .= ob_get_contents();
+				ob_end_clean();
+				ob_flush();
+					ob_start();
+						include_once( LISTINGPRO_PLUGIN_PATH . "templates/pricing/".$pricing_views.'.php');
+						$output .= ob_get_contents();
+					ob_end_clean();
+					ob_flush();
+
+			}else{
+
 				ob_start();
 					include_once( LISTINGPRO_PLUGIN_PATH . "templates/pricing/".$pricing_views.'.php');
 					$output .= ob_get_contents();
 				ob_end_clean();
 				ob_flush();
-			//}
 
+			}
 		}else{
-
-			ob_start();
-				include_once( LISTINGPRO_PLUGIN_PATH . "templates/pricing/".$pricing_views.'.php');
+				ob_start();
+				include_once( LISTINGPRO_PLUGIN_PATH . 'templates/pricing/loop/claim_plans.php');
 				$output .= ob_get_contents();
-			ob_end_clean();
-			ob_flush();
-
+				ob_end_clean();
+				ob_flush();
 		}
 		$output .='	</div>';
 	

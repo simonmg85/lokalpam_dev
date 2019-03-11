@@ -315,6 +315,17 @@ class OMAPI_Save {
 	 * @param array $optins Array of optin objects to store.
 	 */
 	public function store_optins( $optins ) {
+		/**
+		 * Allows the filtering of what campaigns are stored locally.
+		 *
+		 * @since 1.6.3
+		 *
+		 * @param array  $optins An array of `WP_Post` objects.
+		 * @param object $this   The OMAPI object.
+		 *
+		 * @return array The filtered `WP_Post` objects array.
+		 */
+		$optins = apply_filters( 'optin_monster_pre_store_options', $optins, $this );
 
 		// Do nothing if this is just a success message.
 		if ( isset( $optins->success ) ) {
@@ -421,7 +432,7 @@ class OMAPI_Save {
 			'post_type'    => 'omapi',
 		) );
 
-		if ( OMAPI_Utils::is_inline_type( $optin->type ) ) {
+		if ( 'post' === $optin->type ) {
 			update_post_meta( $post_id, '_omapi_automatic', 1 );
 		}
 

@@ -19,7 +19,7 @@ class UpdraftCentral_Theme_Commands extends UpdraftCentral_Commands {
 	 *
 	 * link to udrpc_action main function in class UpdraftPlus_UpdraftCentral_Listener
 	 */
-	public function _pre_action($command, $data, $extra_info) {
+	public function _pre_action($command, $data, $extra_info) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		// Here we assign the current blog_id to a variable $blog_id
 		$blog_id = get_current_blog_id();
 		if (!empty($data['site_id'])) $blog_id = $data['site_id'];
@@ -38,7 +38,7 @@ class UpdraftCentral_Theme_Commands extends UpdraftCentral_Commands {
 	 *
 	 * link to udrpc_action main function in class UpdraftPlus_UpdraftCentral_Listener
 	 */
-	public function _post_action($command, $data, $extra_info) {
+	public function _post_action($command, $data, $extra_info) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		// Here, we're restoring to the current (default) blog before we switched
 		if ($this->switched) restore_current_blog();
 	}
@@ -265,6 +265,48 @@ class UpdraftCentral_Theme_Commands extends UpdraftCentral_Commands {
 	}
 
 	/**
+	 * Enables theme for network
+	 *
+	 * @param array $query Parameter array containing the name of the theme to activate
+	 * @return array Contains the result of the current process
+	 */
+	public function network_enable_theme($query) {
+
+		$error = $this->_validate_fields_and_capabilities($query, array('theme'), array('switch_themes'));
+		if (!empty($error)) {
+			return $error;
+		}
+
+		$result = $this->_apply_theme_action('network_enable', $query);
+		if (empty($result['enabled'])) {
+			return $result;
+		}
+
+		return $this->_response($result);
+	}
+
+	/**
+	 * Disables theme from network
+	 *
+	 * @param array $query Parameter array containing the name of the theme to activate
+	 * @return array Contains the result of the current process
+	 */
+	public function network_disable_theme($query) {
+
+		$error = $this->_validate_fields_and_capabilities($query, array('theme'), array('switch_themes'));
+		if (!empty($error)) {
+			return $error;
+		}
+
+		$result = $this->_apply_theme_action('network_disable', $query);
+		if (empty($result['disabled'])) {
+			return $result;
+		}
+
+		return $this->_response($result);
+	}
+
+	/**
 	 * Download, install and activates the theme
 	 *
 	 * @param array $query Parameter array containing the filesystem credentials entered by the user along with the theme name and slug
@@ -452,6 +494,7 @@ class UpdraftCentral_Theme_Commands extends UpdraftCentral_Commands {
 			$theme->status = (wp_get_theme()->get('Name') === $value->Name) ? 'active' : 'inactive';
 			$theme->child_theme = ($slug !== $value->Template) ? true : false;
 			$theme->website = $website;
+			$theme->multisite = is_multisite();
 
 			if ($theme->child_theme) {
 				$theme->parent = wp_get_theme($value->Template)->get('Name');

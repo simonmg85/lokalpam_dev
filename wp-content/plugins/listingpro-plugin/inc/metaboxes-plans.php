@@ -27,7 +27,7 @@
 
 		echo '<label for="plan_package_type"></label>';
 		
-		echo '<select name="plan_package_type" id="plan_package_type">';
+		echo '<select name="plan_package_type" id="plan_package_type" data-alertmsg="'.esc_html__('Please Make sure to add no. of posts in this package', 'listingpro-plugin').'">';
 		
 		if( !empty ( $plan_package_type ) ){
 			
@@ -55,7 +55,9 @@
 
 	add_action( 'save_post', 'plan_package_type_save' );
 	function plan_package_type_save( $post_id ) {		
-		
+		if (!isset($_POST['lp_metaplans_hidden'])) {
+			return;
+		}
 		$post_type = get_post_type($post_id);
 		if ( "price_plan" != $post_type ){
 			return;
@@ -69,8 +71,47 @@
 		}
 
 	}
-	
-	
+
+/* for style 3 */
+add_action( 'add_meta_boxes', 'plan_desc_box_fun' );
+function plan_desc_box_fun() {
+	add_meta_box(
+		'plan_desc_box',
+		__( 'Enter Description here(Will only work with "Virtical View 3" of Pricing Plan Page Style)', 'listingpro-plugin' ),
+		'plan_desc_box_content',
+		'price_plan'
+	);
+}
+
+function plan_desc_box_content( $post ) {
+
+	$plan_desc_content= get_post_meta( $post->ID, 'plan_desc_content', true );
+	?>
+    <label for="plan_desc_content"></label>
+    <textarea id="plan_desc_content" name="plan_desc_content" placeholder="<?php echo esc_html__('Plan Description...', 'listingpro-plugin'); ?>"><?php echo $plan_desc_content; ?></textarea>
+	<?php
+}
+
+add_action( 'save_post', 'plan_desc_box_content_save' );
+function plan_desc_box_content_save( $post_id ) {
+	if (!isset($_POST['plan_desc_content'])) {
+		return;
+	}
+	$post_type = get_post_type($post_id);
+	if ( "price_plan" != $post_type ){
+		return;
+	}
+	else{
+		global $plan_desc_content;
+
+		if(isset($_POST["plan_desc_content"]))
+			$plan_desc_content = $_POST['plan_desc_content'];
+		update_post_meta( $post_id, 'plan_desc_content', $plan_desc_content );
+	}
+
+}
+
+/* end for style 3 */
 		
 	
 	add_action( 'add_meta_boxes', 'plan_text_box' );
@@ -96,7 +137,10 @@
 
 
 	add_action( 'save_post', 'plan_text_save' );
-	function plan_text_save( $post_id ) {		
+	function plan_text_save( $post_id ) {
+		if (!isset($_POST['lp_metaplans_hidden'])) {
+			return;
+		}
 		$post_type = get_post_type($post_id);
 		if ( "price_plan" != $post_type ){
 			return;
@@ -132,7 +176,10 @@
 		
 	}
 	add_action( 'save_post', 'plan_text_save_color' );
-	function plan_text_save_color( $post_id ) {		
+	function plan_text_save_color( $post_id ) {
+		if (!isset($_POST['lp_metaplans_hidden'])) {
+			return;
+		}
 		$post_type = get_post_type($post_id);
 		if ( "price_plan" != $post_type ){
 			return;
@@ -202,7 +249,9 @@
 
 		add_action( 'save_post', 'plan_duration_type_save' );
 		function plan_duration_type_save( $post_id ) {
-
+			if (!isset($_POST['lp_metaplans_hidden'])) {
+				return;
+			}
 			$post_type = get_post_type($post_id);
 			if ( "price_plan" != $post_type ){
 				return;
@@ -242,7 +291,10 @@
 
 
 	add_action( 'save_post', 'plan_price_save' );
-	function plan_price_save( $post_id ) {		
+	function plan_price_save( $post_id ) {
+		if (!isset($_POST['lp_metaplans_hidden'])) {
+			return;
+		}
 		$post_type = get_post_type($post_id);
 		if ( "price_plan" != $post_type ){
 			return;
@@ -291,7 +343,9 @@
 
 	add_action( 'save_post', 'plan_time_save' );
 	function plan_time_save( $post_id ) {		
-		
+		if (!isset($_POST['lp_metaplans_hidden'])) {
+			return;
+		}
 		$post_type = get_post_type($post_id);
 		if ( "price_plan" != $post_type ){
 			return;
@@ -334,7 +388,9 @@
 
 	add_action( 'save_post', 'plan_free_save' );
 	function plan_free_save( $post_id ) {
-
+		if (!isset($_POST['lp_metaplans_hidden'])) {
+			return;
+		}
 		$post_type = get_post_type($post_id);
 		if ( "price_plan" != $post_type ){
 			return;
@@ -378,7 +434,9 @@
 
 	add_action( 'save_post', 'plan_hot_save' );
 	function plan_hot_save( $post_id ) {
-
+		if (!isset($_POST['lp_metaplans_hidden'])) {
+			return;
+		}
 		$post_type = get_post_type($post_id);
 		if ( "price_plan" != $post_type ){
 			return;
@@ -442,7 +500,9 @@
 
 		add_action( 'save_post', 'plan_usage_save' );
 		function plan_usage_save( $post_id ) {
-
+			if (!isset($_POST['lp_metaplans_hidden'])) {
+				return;
+			}
 			$post_type = get_post_type($post_id);
 			if ( "price_plan" != $post_type ){
 				return;
@@ -513,7 +573,9 @@
 
 		add_action( 'save_post', 'plan_cats_save' );
 		function plan_cats_save( $post_id ) {
-
+			if (!isset($_POST['lp_metaplans_hidden'])) {
+				return;
+			}
 			$post_type = get_post_type($post_id);
 			if ( "price_plan" != $post_type ){
 				return;
@@ -1063,7 +1125,7 @@
 			</div>
 			<br clear="all" />
 		</div>
-		<div style="border-bottom: 1px solid #ccc;padding: 10px 0px;">
+		<div style="border-bottom: 1px solid #ccc;padding: 10px 0px; display:none">
 			<div style="width:60%;float:left">
 		<?php
 		$lp_featured_imageplan    = get_post_meta( $post->ID, 'lp_featured_imageplan', true );
@@ -1099,7 +1161,7 @@
 		}
 		?>
 		<input <?php echo $checked ?> type="checkbox" id="lp_eventsplan" name="lp_eventsplan" value="<?php echo wp_kses_post($lp_eventsplan); ?>" />
-		<label for="lp_eventsplan"><?php echo __('Check it if you want this plan to hide <b>Events</b> on Listing Detail Page', 'listingpro-plugin'); ?></label>
+		<label for="lp_eventsplan"><?php echo __('Check if you want this plan to allow <b>Events in listings', 'listingpro-plugin'); ?></label>
 		<?php
 		$checked =get_post_meta( $post->ID, 'events_show_hide', 'true' );
 			if(!empty($checked)){
@@ -1122,13 +1184,19 @@
 		<input type="hidden" id="lp_ads_wih_plan" placeholder="5" name="lp_ads_wih_plan" value="<?php echo wp_kses_post($lp_adswithplan); ?>" />
 		
 		<?php
+		wp_nonce_field( '', 'lp_metaplans_hidden' );
 	}
 
 	add_action( 'save_post', 'plan_contact_box_save' );
 	function plan_contact_box_save( $post_id ) {
-
+		if (!isset($_POST['lp_metaplans_hidden'])) {
+			return;
+		}
 		$post_type = get_post_type($post_id);
 		if ( "price_plan" != $post_type ){
+			return;
+		}
+		if (!isset($_POST['lp_metaplans_hidden'])) {
 			return;
 		}
 		else{

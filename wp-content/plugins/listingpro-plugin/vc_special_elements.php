@@ -1985,19 +1985,45 @@ function listingpro_shortcode_listing_options($atts, $content = null) {
         $GLOBALS['grid_col_class']  =   4;
         $GLOBALS['trending_el']  =   true;
         ob_start();
-        if( $listing_query->have_posts() )
-        {
-            $output .=  '<div class="lp-section-content-container"><div class="lp-listings">';
-            $output .=  '    <div class="row listing-slider">';
-            while ($listing_query->have_posts()) : $listing_query->the_post();
-                ob_start();
-                get_template_part('templates/loop-grid-view');
-                $output .= ob_get_contents();
-                ob_end_clean();
-                ob_flush();
-            endwhile;
-            $output .=  '   </div></div>';
-            $output .=  '</div>';
+		if( $listing_mobile_view == 'app_view' && wp_is_mobile() )
+       {
+           if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3'|| $listing_views == 'grid_view_v2'|| $listing_views == 'list_view_v2')) {
+               $output .= '<div class="map-view-list-container2">';
+           }else{
+               $output .= '<div class="map-view-list-container">';
+           }
+           if( $listing_query->have_posts() ) {
+          while ($listing_query->have_posts()) : $listing_query->the_post();
+              ob_start();
+                get_template_part('mobile/listing-loop-app-view');
+
+               $output .= ob_get_contents();
+                   ob_end_clean();
+                   ob_flush();
+               endwhile;
+           }
+           if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3'|| $listing_views == 'grid_view_v2'|| $listing_views == 'list_view_v2')) {
+               $output .= '</div>';
+           }else{
+
+               $output .= '</div>';
+           }
+
+       }else{
+			if( $listing_query->have_posts() )
+			{
+				$output .=  '<div class="lp-section-content-container"><div class="lp-listings">';
+				$output .=  '    <div class="row listing-slider">';
+				while ($listing_query->have_posts()) : $listing_query->the_post();
+					ob_start();
+					get_template_part('templates/loop-grid-view');
+					$output .= ob_get_contents();
+					ob_end_clean();
+					ob_flush();
+				endwhile;
+				$output .=  '   </div></div>';
+				$output .=  '</div>';
+			}
         }
         ob_end_clean();
         ob_flush();
@@ -2005,28 +2031,53 @@ function listingpro_shortcode_listing_options($atts, $content = null) {
     elseif( $listing_grid_style == 'grid_view3' && $listing_layout == 'grid_view' )
     {
         $GLOBALS['grid_col_class'] = 4;
+		if( $listing_mobile_view == 'app_view' && wp_is_mobile() )
+       {
+           if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3'|| $listing_views == 'grid_view_v2'|| $listing_views == 'list_view_v2')) {
+               $output .= '<div class="map-view-list-container2">';
+           }else{
+               $output .= '<div class="map-view-list-container">';
+           }
+           if( $listing_query->have_posts() ) {
+          while ($listing_query->have_posts()) : $listing_query->the_post();
+              ob_start();
+                get_template_part('mobile/listing-loop-app-view');
 
-        $output .= '<div class="lp-section-content-container listingcampaings"> <div class="lp-listings grid-style">';
-        $output .= '    <div class="row">';
-        if ($listing_query->have_posts()) {
-            while ($listing_query->have_posts()) : $listing_query->the_post();
-                ob_start();
-                get_template_part('templates/loop-grid-view');
-                $output .= ob_get_contents();
-                ob_end_clean();
-                ob_flush();
-            endwhile;
-        }
-        $output .= '    <div class="clearfix"></div> </div>';
-        if (!empty($grid3_button_text) && isset($grid3_button_text)) {
-            $btn_href = '';
-            if (!empty($grid3_button_link)) {
-                $btn_href = ' href="' . $grid3_button_link . '"';
-            }
-            $output .= '    <div class="more-listings"><a' . $btn_href . '>' . $grid3_button_text . '</a></div>';
-        }
+               $output .= ob_get_contents();
+                   ob_end_clean();
+                   ob_flush();
+               endwhile;
+           }
+           if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3'|| $listing_views == 'grid_view_v2'|| $listing_views == 'list_view_v2')) {
+               $output .= '</div>';
+           }else{
 
-        $output .= '</div></div>';
+               $output .= '</div>';
+           }
+
+       }else{	
+			$output .= '<div class="lp-section-content-container listingcampaings"> <div class="lp-listings grid-style">';
+			$output .= '    <div class="row">';
+			if ($listing_query->have_posts()) {
+				while ($listing_query->have_posts()) : $listing_query->the_post();
+					ob_start();
+					get_template_part('templates/loop-grid-view');
+					$output .= ob_get_contents();
+					ob_end_clean();
+					ob_flush();
+				endwhile;
+			}
+			$output .= '    <div class="clearfix"></div> </div>';
+			if (!empty($grid3_button_text) && isset($grid3_button_text)) {
+				$btn_href = '';
+				if (!empty($grid3_button_link)) {
+					$btn_href = ' href="' . $grid3_button_link . '"';
+				}
+				$output .= '    <div class="more-listings"><a' . $btn_href . '>' . $grid3_button_text . '</a></div>';
+			}
+
+			$output .= '</div></div>';
+	   }
         wp_reset_postdata();
 
     }
@@ -2039,7 +2090,7 @@ function listingpro_shortcode_listing_options($atts, $content = null) {
             if( $listing_query->have_posts() ) {
                 if( $listing_mobile_view == 'app_view' && wp_is_mobile() )
                 {
-                    if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3')) {
+                    if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3'|| $listing_views == 'grid_view_v2'|| $listing_views == 'list_view_v2')) {
                         $output .= '<div class="map-view-list-container2">';
 
                     }else{
@@ -2063,7 +2114,7 @@ function listingpro_shortcode_listing_options($atts, $content = null) {
                 endwhile;
                 if( $listing_mobile_view == 'app_view' && wp_is_mobile() )
                 {
-                    if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3')) {
+                    if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3'|| $listing_views == 'grid_view_v2'|| $listing_views == 'list_view_v2')) {
                         $output .= '</div>';
                     }else{
 
@@ -2077,7 +2128,7 @@ function listingpro_shortcode_listing_options($atts, $content = null) {
             if( $listing_query->have_posts() ) {
                 if( $listing_mobile_view == 'app_view' && wp_is_mobile() )
                 {
-                    if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3')) {
+                    if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3'|| $listing_views == 'grid_view_v2'|| $listing_views == 'list_view_v2')) {
                         $output .= '<div class="map-view-list-container2">';
 
                     }else{
@@ -2102,7 +2153,7 @@ function listingpro_shortcode_listing_options($atts, $content = null) {
                 endwhile;
                 if( $listing_mobile_view == 'app_view' && wp_is_mobile() )
                 {
-                    if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3')) {
+                    if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3'|| $listing_views == 'grid_view_v2'|| $listing_views == 'list_view_v2')) {
                         $output .= '</div>';
                     }else{
 
@@ -2118,7 +2169,7 @@ function listingpro_shortcode_listing_options($atts, $content = null) {
                 if( $listing_mobile_view == 'app_view' && wp_is_mobile() )
                 {
 
-                    if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3')) {
+                    if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3'|| $listing_views == 'grid_view_v2'|| $listing_views == 'list_view_v2')) {
                         $output .= '<div class="map-view-list-container2">';
 
                     }else{
@@ -2145,7 +2196,7 @@ function listingpro_shortcode_listing_options($atts, $content = null) {
                 endwhile;
                 if( $listing_mobile_view == 'app_view' && wp_is_mobile() )
                 {
-                    if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3')) {
+                   if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3'|| $listing_views == 'grid_view_v2'|| $listing_views == 'list_view_v2')) {
                         $output .= '</div>';
                     }else{
 
@@ -2155,6 +2206,7 @@ function listingpro_shortcode_listing_options($atts, $content = null) {
                 $output .= '<div class="md-overlay"></div>';
             }
         }
+	    $output .= '</div></div>';
     }
 
 
@@ -2333,19 +2385,45 @@ function listingpro_shortcode_listing_grids($atts, $content = null) {
         $GLOBALS['grid_col_class']  =   4;
         $GLOBALS['trending_el']  =   true;
         ob_start();
-        if( $listing_query->have_posts() )
-        {
-            $output .=  '<div class="lp-section-content-container"><div class="lp-listings">';
-            $output .=  '    <div class="row listing-slider">';
-            while ($listing_query->have_posts()) : $listing_query->the_post();
-                ob_start();
-                get_template_part('templates/loop-grid-view');
-                $output .= ob_get_contents();
-                ob_end_clean();
-                ob_flush();
-            endwhile;
-            $output .=  '   </div></div>';
-            $output .=  '</div>';
+		if( $listing_mobile_view == 'app_view' && wp_is_mobile() )
+       {
+           if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3'|| $listing_views == 'grid_view_v2'|| $listing_views == 'list_view_v2')) {
+               $output .= '<div class="map-view-list-container2">';
+           }else{
+               $output .= '<div class="map-view-list-container">';
+           }
+           if( $listing_query->have_posts() ) {
+          while ($listing_query->have_posts()) : $listing_query->the_post();
+              ob_start();
+                get_template_part('mobile/listing-loop-app-view');
+
+               $output .= ob_get_contents();
+                   ob_end_clean();
+                   ob_flush();
+               endwhile;
+           }
+           if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3'|| $listing_views == 'grid_view_v2'|| $listing_views == 'list_view_v2')) {
+               $output .= '</div>';
+           }else{
+
+               $output .= '</div>';
+           }
+
+       }else{
+			if( $listing_query->have_posts() )
+			{
+				$output .=  '<div class="lp-section-content-container"><div class="lp-listings">';
+				$output .=  '    <div class="row listing-slider">';
+				while ($listing_query->have_posts()) : $listing_query->the_post();
+					ob_start();
+					get_template_part('templates/loop-grid-view');
+					$output .= ob_get_contents();
+					ob_end_clean();
+					ob_flush();
+				endwhile;
+				$output .=  '   </div></div>';
+				$output .=  '</div>';
+			}
         }
         ob_end_clean();
         ob_flush();
@@ -2353,13 +2431,43 @@ function listingpro_shortcode_listing_grids($atts, $content = null) {
     if( $listing_grid_style == 'grid_view3' && $listing_layout == 'grid_view' )
     {
         $GLOBALS['grid_col_class']  =   4;
+				if( $listing_mobile_view == 'app_view' && wp_is_mobile() )
+       {
+           if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3'|| $listing_views == 'grid_view_v2'|| $listing_views == 'list_view_v2')) {
+               $output .= '<div class="map-view-list-container2">';
+           }else{
+               $output .= '<div class="map-view-list-container">';
+           }
+           if( $listing_query->have_posts() ) {
+          while ($listing_query->have_posts()) : $listing_query->the_post();
+              ob_start();
+                get_template_part('mobile/listing-loop-app-view');
 
+               $output .= ob_get_contents();
+                   ob_end_clean();
+                   ob_flush();
+               endwhile;
+           }
+           if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3'|| $listing_views == 'grid_view_v2'|| $listing_views == 'list_view_v2')) {
+               $output .= '</div>';
+           }else{
+
+               $output .= '</div>';
+           }
+
+       }else{
         $output .=  '<div class="lp-section-content-container listingcampaings"> <div class="lp-listings grid-style">';
         $output .=  '    <div class="row">';
         if( $listing_query->have_posts() ) {
+	        $home_grid_counter  =   0;
             while ($listing_query->have_posts()) : $listing_query->the_post();
                 ob_start();
                 get_template_part('templates/loop-grid-view');
+	            if( $home_grid_counter%3 == 0 )
+	            {
+		            $output .=  '<div class="clearfix"></div>';
+	            }
+	            $home_grid_counter++;
                 $output .= ob_get_contents();
                 ob_end_clean();
                 ob_flush();
@@ -2377,7 +2485,9 @@ function listingpro_shortcode_listing_grids($atts, $content = null) {
         }
 
         $output .=  '</div></div>';
+		}
         wp_reset_postdata();
+	  
     }
     else
     {
@@ -2388,7 +2498,7 @@ function listingpro_shortcode_listing_grids($atts, $content = null) {
             if( $listing_query->have_posts() ) {
                 if( $listing_mobile_view == 'app_view' && wp_is_mobile() )
                 {
-                    if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3')) {
+                    if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3'|| $listing_views == 'grid_view_v2'|| $listing_views == 'list_view_v2')) {
                         $output .= '<div class="map-view-list-container2">';
 
                     }else{
@@ -2412,7 +2522,7 @@ function listingpro_shortcode_listing_grids($atts, $content = null) {
                 endwhile;
                 if( $listing_mobile_view == 'app_view' && wp_is_mobile() )
                 {
-                    if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3')) {
+                    if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3'|| $listing_views == 'grid_view_v2'|| $listing_views == 'list_view_v2')) {
                         $output .= '</div>';
                     }else{
 
@@ -2426,7 +2536,7 @@ function listingpro_shortcode_listing_grids($atts, $content = null) {
             if( $listing_query->have_posts() ) {
                 if( $listing_mobile_view == 'app_view' && wp_is_mobile() )
                 {
-                    if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3')) {
+                   if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3'|| $listing_views == 'grid_view_v2'|| $listing_views == 'list_view_v2')) {
                         $output .= '<div class="map-view-list-container2">';
 
                     }else{
@@ -2451,7 +2561,7 @@ function listingpro_shortcode_listing_grids($atts, $content = null) {
                 endwhile;
                 if( $listing_mobile_view == 'app_view' && wp_is_mobile() )
                 {
-                    if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3')) {
+                    if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3'|| $listing_views == 'grid_view_v2'|| $listing_views == 'list_view_v2')) {
                         $output .= '</div>';
                     }else{
 
@@ -2467,7 +2577,7 @@ function listingpro_shortcode_listing_grids($atts, $content = null) {
                 if( $listing_mobile_view == 'app_view' && wp_is_mobile() )
                 {
 
-                    if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3')) {
+                    if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3'|| $listing_views == 'grid_view_v2'|| $listing_views == 'list_view_v2')) {
                         $output .= '<div class="map-view-list-container2">';
 
                     }else{
@@ -2494,7 +2604,7 @@ function listingpro_shortcode_listing_grids($atts, $content = null) {
                 endwhile;
                 if( $listing_mobile_view == 'app_view' && wp_is_mobile() )
                 {
-                    if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3')) {
+                    if(($listing_layout == 'grid_view') && ($listing_views == 'grid_view' || $listing_views == 'grid_view2' || $listing_views == 'grid_view3' || $listing_views == 'list_view' || $listing_views == 'list_view3'|| $listing_views == 'grid_view_v2'|| $listing_views == 'list_view_v2')) {
                         $output .= '</div>';
                     }else{
 
@@ -2841,8 +2951,8 @@ vc_map( array(
             "param_name"  => "blog_style",
             'value' => array(
                 __( 'Blog Grid ', 'js_composer' ) => 'style1',
-                __( 'Blog Masnory ', 'js_composer' ) => 'style2',
-                __( 'Blog Cirlce ', 'js_composer' ) => 'style3',
+                __( 'Blog Masonery ', 'js_composer' ) => 'style2',
+                __( 'Blog Circle ', 'js_composer' ) => 'style3',
 
             ),
             'save_always' => true,
@@ -2875,7 +2985,7 @@ function listingpro_shortcode_blog_grids($atts, $content = null) {
     ), $atts));
 
     $output = null;
-
+	$post_count =1;
     if($blog_style == 'style1'){
         $output .= '<div class="lp-section-content-container lp-blog-grid-container row">';
 
@@ -2948,6 +3058,14 @@ function listingpro_shortcode_blog_grids($atts, $content = null) {
                                         </div>
                                     </div>
                                 </div>';
+								
+								if($post_count==3){
+									$output .='<div class="clearfix"></div>';
+									$post_count=1;
+								}
+								else{
+									$post_count++;
+								}
             endwhile;
         }
 
@@ -3423,8 +3541,6 @@ vc_map( array(
                 esc_html__( '3 Posts', 'js_composer' ) => '3',
                 esc_html__( '4 Posts', 'js_composer' ) => '4',
                 esc_html__( '5 Posts', 'js_composer' ) => '5',
-                esc_html__( '6 Posts', 'js_composer' ) => '6',
-                esc_html__( '7 Posts', 'js_composer' ) => '7',
             ),
             'save_always' => true,
             "description" => "Select number of activities you want to show"
@@ -3433,200 +3549,251 @@ vc_map( array(
 ) );
 
 function listingpro_shortcode_lp_activities($atts, $content = null) {
-    extract(shortcode_atts(array(
-        'number_posts'   => '5',
-    ), $atts));
-    require_once (THEME_PATH . "/include/aq_resizer.php");
-    $output = null;
+	extract(shortcode_atts(array(
+		'number_posts'   => '5',
+	), $atts));
+	require_once (THEME_PATH . "/include/aq_resizer.php");
+	$output = null;
 
-    $args   =   array(
-        'post_type' => 'lp-reviews',
-        'post_status' => 'publish',
-        'posts_per_page' => 5,
-    );
-    $activities  =   new WP_Query( $args );
-    if( $activities->have_posts() ) :
-        $counter    =   1;
-        $output .=  '<div class="lp-activities"><div class="lp-section-content-container"> ';
-        $output .=  '    <div class="row">';
-        while ( $activities->have_posts() ) : $activities->the_post();
-            global $post;
-            $r_meta     =   get_post_meta( get_the_ID(), 'lp_listingpro_options', true );
-            $LID        =   $r_meta['listing_id'];
-            $rating     =   $r_meta['rating'];
+	$args   =   array(
+		'post_type' => 'lp-reviews',
+		'post_status' => 'publish',
+		'posts_per_page' => $number_posts,
+	);
+	$activities  =   new WP_Query( $args );
+	if( $activities->have_posts() ) :
+		$counter    =   1;
+		$output .=  '<div class="lp-activities"><div class="lp-section-content-container"> ';
+		$output .=  '    <div class="row">';
+		while ( $activities->have_posts() ) : $activities->the_post();
+			global $post;
+			$r_meta     =   get_post_meta( get_the_ID(), 'lp_listingpro_options', true );
+			$LID        =   $r_meta['listing_id'];
+			$rating     =   $r_meta['rating'];
 
-            $adStatus = get_post_meta( $LID, 'campaign_status', true );
-            $CHeckAd = '';
-            $adClass = '';
-            if($adStatus == 'active'){
-                $CHeckAd = '<span>'.esc_html__('Ad','listingpro').'</span>';
-                $adClass = 'promoted';
-            }
-            $author_avatar_url = get_user_meta( $post->post_author, "listingpro_author_img_url", true);
-            $avatar;
-            if( !empty( $author_avatar_url ) )
-            {
-                $avatar =  $author_avatar_url;
+			$adStatus = get_post_meta( $LID, 'campaign_status', true );
+			$CHeckAd = '';
+			$adClass = '';
+			if($adStatus == 'active'){
+				$CHeckAd = '<span>'.esc_html__('Ad','listingpro-plugin').'</span>';
+				$adClass = 'promoted';
+			}
+			$author_avatar_url = get_user_meta( $post->post_author, "listingpro_author_img_url", true);
+			$avatar;
+			if( !empty( $author_avatar_url ) )
+			{
+				$avatar =  $author_avatar_url;
 
-            }
-            else
-            {
-                $avatar_url = listingpro_get_avatar_url ( $post->post_author, $size = '55' );
-                $avatar =  $avatar_url;
-            }
-            $interests = '';
-            $Lols = '';
-            $loves = '';
-            $interVal = esc_html__('Interesting', 'listingpro');
-            $lolVal = esc_html__('Lol', 'listingpro');
-            $loveVal = esc_html__('Love', 'listingpro');
+			}
+			else
+			{
+				$avatar_url = listingpro_get_avatar_url ( $post->post_author, $size = '55' );
+				$avatar =  $avatar_url;
+			}
+			$interests = '';
+			$Lols = '';
+			$loves = '';
+			$interVal = esc_html__('Interesting', 'listingpro-plugin');
+			$lolVal = esc_html__('Lol', 'listingpro-plugin');
+			$loveVal = esc_html__('Love', 'listingpro-plugin');
 
-            $interests = listing_get_metabox_by_ID('review_'.$interVal.'',get_the_ID());
-            $Lols = listing_get_metabox_by_ID('review_'.$lolVal.'',get_the_ID());
-            $loves = listing_get_metabox_by_ID('review_'.$loveVal.'',get_the_ID());
+			$interests = listing_get_metabox_by_ID('review_'.$interVal.'',get_the_ID());
+			$Lols = listing_get_metabox_by_ID('review_'.$lolVal.'',get_the_ID());
+			$loves = listing_get_metabox_by_ID('review_'.$loveVal.'',get_the_ID());
 
 
-            if( empty( $interests ) )
-            {
-                $interests = 0;
-            }
-            if( empty( $Lols ) )
-            {
-                $Lols = 0;
-            }
-            if( empty( $loves ) )
-            {
-                $loves = 0;
-            }
-            $reacted_msg    =   esc_html__('You already reacted', 'listingpro');
-            $gallery = get_post_meta(get_the_ID(), 'gallery_image_ids', true);
+			if( empty( $interests ) )
+			{
+				$interests = 0;
+			}
+			if( empty( $Lols ) )
+			{
+				$Lols = 0;
+			}
+			if( empty( $loves ) )
+			{
+				$loves = 0;
+			}
+			$reacted_msg    =   esc_html__('You already reacted', 'listingpro-plugin');
+			$gallery = get_post_meta(get_the_ID(), 'gallery_image_ids', true);
 
-            $img_url    =   'https://placeholdit.imgix.net/~text?txtsize=33&w=360&h=267';
-            $img_url2   =   'https://placeholdit.imgix.net/~text?txtsize=33&w=165&h=97';
-            $img_url3   =   'https://placeholdit.imgix.net/~text?txtsize=33&w=500&h=300';
-            if( !empty( $gallery ) )
-            {
-                $imagearray = explode(',', $gallery);
-                $image      = wp_get_attachment_image_src( $imagearray[0], 'full');
-                $first_img  =   $imagearray[0];
-                if ( !empty( $image[0] ) )
-                {
-                    $img_url = aq_resize( $image[0], '360', '267', true, true, true);
-                    $img_url2 = aq_resize( $image[0], '165', '97', true, true, true);
-                    $img_url3 = aq_resize( $image[0], '500', '300', true, true, true);
-                }
-            }
-            $lp_liting_title    =   get_the_title( $LID );
-            if( strlen( $lp_liting_title ) > 35 )
-            {
-                $lp_liting_title    =   substr( $lp_liting_title, 0, 35 ).'...';
-            }
+			$img_url    =   'https://placeholdit.imgix.net/~text?txtsize=33&w=360&h=267';
+			$img_url2   =   'https://placeholdit.imgix.net/~text?txtsize=33&w=165&h=97';
+			$img_url3   =   'https://placeholdit.imgix.net/~text?txtsize=33&w=500&h=300';
+			$img_url4   =   'https://placeholdit.imgix.net/~text?txtsize=33&w=295&h=150';
+			if( !empty( $gallery ) )
+			{
+				$imagearray = explode(',', $gallery);
+				$image      = wp_get_attachment_image_src( $imagearray[0], 'full');
+				$first_img  =   $imagearray[0];
+				if ( !empty( $image[0] ) )
+				{
+					$img_url    = aq_resize( $image[0], '360', '267', true, true, true);
+					$img_url2   = aq_resize( $image[0], '165', '97', true, true, true);
+					$img_url3   = aq_resize( $image[0], '500', '300', true, true, true);
+					$img_url4   = aq_resize( $image[0], '295', '150', true, true, true);
+				}
+			}
+			$lp_liting_title    =   get_the_title( $LID );
+			if( strlen( $lp_liting_title ) > 35 )
+			{
+				$lp_liting_title    =   substr( $lp_liting_title, 0, 35 ).'...';
+			}
 
-            $rating_num_bg  =   '';
-            $rating_num_clr  =   '';
+			$rating_num_bg  =   '';
+			$rating_num_clr  =   '';
 
-            if( $rating < 3 ){ $rating_num_bg  =   'num-level1'; $rating_num_clr  =   'level1'; }
-            if( $rating < 4 ){ $rating_num_bg  =   'num-level2'; $rating_num_clr  =   'level2'; }
-            if( $rating < 5 ){ $rating_num_bg  =   'num-level3'; $rating_num_clr  =   'level3'; }
-            if( $rating >= 5 ){ $rating_num_bg  =   'num-level4'; $rating_num_clr  =   'level4'; }
-            if( $counter == 1 )
-            {
-
-                $output .=  '
+			if( $rating < 2 ){ $rating_num_bg  =   'num-level1'; $rating_num_clr  =   'level1'; }
+			if( $rating < 3 ){ $rating_num_bg  =   'num-level2'; $rating_num_clr  =   'level2'; }
+			if( $rating < 4 ){ $rating_num_bg  =   'num-level3'; $rating_num_clr  =   'level3'; }
+			if( $rating >= 4 ){ $rating_num_bg  =   'num-level4'; $rating_num_clr  =   'level4'; }
+			if( $number_posts == 3 )
+			{
+				$output .=  '
                 <div class="col-md-4"> 
                     <div class="lp-activity">
                         <div class="lp-activity-top">
-                            <a href="'. get_permalink( $LID ) .'" class="lp-activity-author-thumb"><img src="'. esc_attr($avatar) .'" alt="'. get_the_title() .'"></a>
+                            <a href="'. get_author_posts_url( get_the_author_meta( 'ID' ) ) .'" class="lp-activity-author-thumb"><img src="'. esc_attr($avatar) .'" alt="'. get_the_title() .'"></a>
                             <a href="'. get_permalink( $LID ) .'" class="lp-activity-thumb"><img class="hidden-md hidden-lg" src="'. $img_url3 .'" alt="'. get_the_title() .'"><img class="hidden-sm hidden-xs" src="'. $img_url .'" alt="'. get_the_title() .'"></a>
                         </div>
                         <div class="lp-activity-bottom">
                             <div class="lp-activity-review-writer">
-                                <a href="'. get_permalink( $LID ) .'">'. get_the_author() .'</a> 
-                                <p>'.esc_html__('Wrote a review', 'listingpro' ).'</p>
+                                <a href="'. get_author_posts_url( get_the_author_meta( 'ID' ) ) .'">'. get_the_author() .'</a> 
+                                <p>'.esc_html__('Wrote a review', 'listingpro-plugin' ).'</p>
                             </div>
                             <div class="lp-listing-stars clearfix">
                            <div class="lp-rating-stars-outer">
                                 <span class="lp-star-box ';
-                if( $rating > 0 ){ $output .= 'filled'.' '.$rating_num_clr; }
-                $output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
+				if( $rating > 0 ){ $output .= 'filled'.' '.$rating_num_clr; }
+				$output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
                                 <span class="lp-star-box ';
-                if( $rating > 1 ){ $output .= 'filled'.' '.$rating_num_clr; }
-                $output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
+				if( $rating > 1 ){ $output .= 'filled'.' '.$rating_num_clr; }
+				$output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
                                 <span class="lp-star-box ';
-                if( $rating > 2  ){ $output .= 'filled'.' '.$rating_num_clr; }
-                $output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
+				if( $rating > 2  ){ $output .= 'filled'.' '.$rating_num_clr; }
+				$output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
                                 <span class="lp-star-box ';
-                if( $rating > 3 ){ $output .= 'filled'.' '.$rating_num_clr; }
-                $output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
+				if( $rating > 3 ){ $output .= 'filled'.' '.$rating_num_clr; }
+				$output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
                                 <span class="lp-star-box ';
-                if( $rating > 4 ){ $output .= 'filled'.' '.$rating_num_clr; }
-                $output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
+				if( $rating > 4 ){ $output .= 'filled'.' '.$rating_num_clr; }
+				$output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
 </div>
-                                <span class="lp-rating-num">'. $rating .'</span>
+                                <span class="lp-rating-num rating-with-colors '. review_rating_color_class($rating) .'">'. $rating .'</span>
                             </div>
                             <h3><a href="'. get_permalink( $LID ) .'">'. $lp_liting_title .'</a></h3>
                             <strong>'. substr( get_the_title(), 0, 35 ) .'</strong>
                             <div class="lp-activity-description">
-                                <p>'. substr( $post->post_content, '0', '130' ) .' <a href="'. get_permalink( $LID ) .'">'.esc_html__('Continue Reading', 'listingpro' ).'</a></p>
+                                <p>'. substr( $post->post_content, '0', '100' ) .' <a href="'. get_permalink( $LID ) .'">'.esc_html__('Continue Reading', 'listingpro-plugin' ).'</a></p>
                                 <div class="activity-reactions">
-                                    <a href="#" data-restype="'.$interVal.'" data-reacted ="'.$reacted_msg.'" data-id="'.get_the_ID().'" data-score="'.esc_attr($interests).'" class="review-interesting review-reaction"><i class="fa fa-thumbs-o-up"></i><span class="react-msg"></span>'.esc_html('Interesting','listingpro').' <span class="react-count">'. $interests .'</span></a>
-                                    <a href="#" data-restype="'.$lolVal.'" data-reacted ="'.$reacted_msg.'" data-id="'.get_the_ID().'" data-score="'.esc_attr($Lols).'" class="review-lol review-reaction"><i class="fa fa-smile-o"></i> <span class="react-msg"></span> <span class="react-msg"></span>'.esc_html('LOL','listingpro').' <span class="react-count">'.$Lols.'</span></a>
-                                    <a href="#" data-restype="'.$loveVal.'" data-reacted ="'.$reacted_msg.'" data-id="'.get_the_ID().'" data-score="'.esc_attr($loves).'" class="review-love review-reaction"><i class="fa fa-heart-o"></i><span class="react-msg"></span> <span class="react-msg"></span>'.esc_html('Love','listingpro').' <span class="react-count">'.$loves.'</span></a>
+                                    <a href="#" data-restype="'.$interVal.'" data-reacted ="'.$reacted_msg.'" data-id="'.get_the_ID().'" data-score="'.esc_attr($interests).'" class="review-interesting review-reaction"><i class="fa fa-thumbs-o-up"></i><span class="react-msg"></span>'.esc_html__('Interesting','listingpro-plugin').' <span class="react-count">'. $interests .'</span></a>
+                                    <a href="#" data-restype="'.$lolVal.'" data-reacted ="'.$reacted_msg.'" data-id="'.get_the_ID().'" data-score="'.esc_attr($Lols).'" class="review-lol review-reaction"><i class="fa fa-smile-o"></i> <span class="react-msg"></span> <span class="react-msg"></span>'.esc_html__('LOL','listingpro-plugin').' <span class="react-count">'.$Lols.'</span></a>
+                                    <a href="#" data-restype="'.$loveVal.'" data-reacted ="'.$reacted_msg.'" data-id="'.get_the_ID().'" data-score="'.esc_attr($loves).'" class="review-love review-reaction"><i class="fa fa-heart-o"></i><span class="react-msg"></span> <span class="react-msg"></span>'.esc_html__('Love','listingpro-plugin').' <span class="react-count">'.$loves.'</span></a>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>';
+			}
+
+			if( $counter == 1 && $number_posts == 5 )
+			{
+
+				$output .=  '
+                <div class="col-md-4">
+                    <div class="lp-activity">
+                        <div class="lp-activity-top">
+                            <a href="'. get_author_posts_url( get_the_author_meta( 'ID' ) ) .'" class="lp-activity-author-thumb"><img src="'. esc_attr($avatar) .'" alt="'. get_the_title() .'"></a>
+                            <a href="'. get_permalink( $LID ) .'" class="lp-activity-thumb"><img class="hidden-md hidden-lg" src="'. $img_url3 .'" alt="'. get_the_title() .'"><img class="hidden-sm hidden-xs" src="'. $img_url .'" alt="'. get_the_title() .'"></a>
+                        </div>
+                        <div class="lp-activity-bottom">
+                            <div class="lp-activity-review-writer">
+                                <a href="'. get_author_posts_url( get_the_author_meta( 'ID' ) ) .'">'. get_the_author() .'</a>
+                                <p>'.esc_html__('Wrote a review', 'listingpro-plugin' ).'</p>
+                            </div>
+                            <div class="lp-listing-stars clearfix">
+                           <div class="lp-rating-stars-outer">
+                                <span class="lp-star-box ';
+				if( $rating > 0 ){ $output .= 'filled'.' '.$rating_num_clr; }
+				$output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
+                                <span class="lp-star-box ';
+				if( $rating > 1 ){ $output .= 'filled'.' '.$rating_num_clr; }
+				$output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
+                                <span class="lp-star-box ';
+				if( $rating > 2  ){ $output .= 'filled'.' '.$rating_num_clr; }
+				$output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
+                                <span class="lp-star-box ';
+				if( $rating > 3 ){ $output .= 'filled'.' '.$rating_num_clr; }
+				$output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
+                                <span class="lp-star-box ';
+				if( $rating > 4 ){ $output .= 'filled'.' '.$rating_num_clr; }
+				$output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
+</div>
+                                <span class="lp-rating-num rating-with-colors '. review_rating_color_class($rating) .'">'. $rating .'</span>
+                            </div>
+                            <h3><a href="'. get_permalink( $LID ) .'">'. $lp_liting_title .'</a></h3>
+                            <strong>'. substr( get_the_title(), 0, 35 ) .'</strong>
+                            <div class="lp-activity-description">
+                                <p>'. substr( $post->post_content, '0', '130' ) .' <a href="'. get_permalink( $LID ) .'">'.esc_html__('Continue Reading', 'listingpro-plugin' ).'</a></p>
+                                <div class="activity-reactions">
+                                    <a href="#" data-restype="'.$interVal.'" data-reacted ="'.$reacted_msg.'" data-id="'.get_the_ID().'" data-score="'.esc_attr($interests).'" class="review-interesting review-reaction"><i class="fa fa-thumbs-o-up"></i><span class="react-msg"></span>'.esc_html__('Interesting','listingpro-plugin').' <span class="react-count">'. $interests .'</span></a>
+                                    <a href="#" data-restype="'.$lolVal.'" data-reacted ="'.$reacted_msg.'" data-id="'.get_the_ID().'" data-score="'.esc_attr($Lols).'" class="review-lol review-reaction"><i class="fa fa-smile-o"></i> <span class="react-msg"></span> <span class="react-msg"></span>'.esc_html__('LOL','listingpro-plugin').' <span class="react-count">'.$Lols.'</span></a>
+                                    <a href="#" data-restype="'.$loveVal.'" data-reacted ="'.$reacted_msg.'" data-id="'.get_the_ID().'" data-score="'.esc_attr($loves).'" class="review-love review-reaction"><i class="fa fa-heart-o"></i><span class="react-msg"></span> <span class="react-msg"></span>'.esc_html__('Love','listingpro-plugin').' <span class="react-count">'.$loves.'</span></a>
                             </div>
                             </div>
                         </div>
                     </div>
                 </div>';
 
-            }
-            if( $counter > 1 )
-            {
-                $bottom_class   =   '';
-                if( $counter == 4 || $counter == 5 )
-                {
-                    $bottom_class   =   'bottom0';
-                }
-                if( $counter == 2 )
-                {
-                    $output .=  '<div class="col-md-8">';
-                    $output .=  '    <div class="row">';
-                }
-                $output .=  '
+			}
+			if( $counter > 1 && $number_posts == 5 )
+			{
+				$bottom_class   =   '';
+				if( $counter == $number_posts-1 || $counter == $number_posts )
+				{
+					$bottom_class   =   'bottom0';
+				}
+				if( $counter == 2 )
+				{
+					$output .=  '<div class="col-md-8">';
+					$output .=  '    <div class="row">';
+				}
+				$output .=  '
                 <div class="col-md-6">
                     <div class="lp-activity style2 '. $bottom_class .'">
                         <div class="lp-activity-top">
                             <div class="row">
                                 <div class="lp-activity-thumb col-md-6">
-                                    <a href="#" class="lp-activity-author-thumb"><img src="'. esc_attr($avatar) .'" alt=""></a>
-                                    <a href="' . get_permalink( $LID ) . '"><img class="hidden-xs hidden-sm" src="'. $img_url2 .'" alt="'. get_the_title() .'"><img class="hidden-md hidden-lg" src="'. $img_url3 .'" alt="'. get_the_title() .'"></a>
+                                    <a href="'. get_author_posts_url( get_the_author_meta( 'ID' ) ) .'" class="lp-activity-author-thumb"><img src="'. esc_attr($avatar) .'" alt=""></a>
+                                    <a href="' . get_author_posts_url( get_the_author_meta( 'ID' ) ) . '"><img class="hidden-xs hidden-sm" src="'. $img_url2 .'" alt="'. get_the_title() .'"><img class="hidden-md hidden-lg" src="'. $img_url3 .'" alt="'. get_the_title() .'"></a>
                                 </div>
                                 <div class="lp-activity-top-right col-md-6">
                                     <div class="lp-activity-review-writer">
-                                        <a href="'. get_permalink( $LID ) .'">'. get_the_author() .'</a> 
-                                <p>'.esc_html__('Wrote a review', 'listingpro' ).'</p>
+                                        <a href="'. get_author_posts_url( get_the_author_meta( 'ID' ) ) .'">'. get_the_author() .'</a>
+                                <p>'.esc_html__('Wrote a review', 'listingpro-plugin' ).'</p>
                                     </div>
                                     <div class="lp-listing-stars clearfix">
                            <div class="lp-rating-stars-outer">
                                         <span class="lp-star-box ';
-                if( $rating > 0 ){ $output .= 'filled'.' '.$rating_num_clr; }
-                $output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
+				if( $rating > 0 ){ $output .= 'filled'.' '.$rating_num_clr; }
+				$output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
                                         <span class="lp-star-box ';
-                if( $rating > 1 ){ $output .= 'filled'.' '.$rating_num_clr; }
-                $output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
+				if( $rating > 1 ){ $output .= 'filled'.' '.$rating_num_clr; }
+				$output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
                                         <span class="lp-star-box ';
-                if( $rating > 2  ){ $output .= 'filled'.' '.$rating_num_clr; }
-                $output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
+				if( $rating > 2  ){ $output .= 'filled'.' '.$rating_num_clr; }
+				$output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
                                         <span class="lp-star-box ';
-                if( $rating > 3 ){ $output .= 'filled'.' '.$rating_num_clr; }
-                $output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
+				if( $rating > 3 ){ $output .= 'filled'.' '.$rating_num_clr; }
+				$output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
                                         <span class="lp-star-box ';
-                if( $rating > 4 ){ $output .= 'filled'.' '.$rating_num_clr; }
-                $output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
+				if( $rating > 4 ){ $output .= 'filled'.' '.$rating_num_clr; }
+				$output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
 </div>
-                                        <span class="lp-rating-num">'. $rating;
-                if( $rating == '' ){ $output   .=  0; }
-                if( $rating == 1 || $rating == 2 || $rating == 3 || $rating == 4 || $rating == 5 ){ $output .= '.0';}
-                $output.= '</span>
+                                        <span class="lp-rating-num rating-with-colors '. review_rating_color_class($rating) .'">'. $rating;
+				if( $rating == '' ){ $output   .=  0; }
+				if( $rating == 1 || $rating == 2 || $rating == 3 || $rating == 4 || $rating == 5 ){ $output .= '.0';}
+				$output.= '</span>
                                     </div>
                                 </div>
                                 <div class="clearfix"></div>
@@ -3636,36 +3803,165 @@ function listingpro_shortcode_lp_activities($atts, $content = null) {
                             <h3><a href="'. get_permalink( $LID ) .'">'. $lp_liting_title .'</a></h3>
                             <strong>'. substr( get_the_title(), 0, 35 ) .'</strong>
                         </div>
-                        
+
                         <div class="lp-activity-description">
-                            <p>'. substr( $post->post_content, 0, 80 ) .' <a href="'. get_permalink( $LID ) .'">'.esc_html__('Continue Reading', 'listingpro' ).'</a></p>
+                            <p>'. substr( $post->post_content, 0, 80 ) .' <a href="'. get_permalink( $LID ) .'">'.esc_html__('Continue Reading', 'listingpro-plugin' ).'</a></p>
                             <div class="activity-reactions small-btns">
-                                <a href="#" data-restype="'.$interVal.'" data-reacted ="'.$reacted_msg.'" data-id="'.get_the_ID().'" data-score="'.esc_attr($interests).'" class="review-interesting review-reaction"><i class="fa fa-thumbs-o-up"></i><span class="react-msg"></span>'.esc_html('Interesting','listingpro').' <span class="react-count">'. $interests .'</span></a>
-                                <a href="#" data-restype="'.$lolVal.'" data-reacted ="'.$reacted_msg.'" data-id="'.get_the_ID().'" data-score="'.esc_attr($Lols).'" class="review-lol review-reaction"><i class="fa fa-smile-o"></i> <span class="react-msg"></span> <span class="react-msg"></span>'.esc_html('LOL','listingpro').' <span class="react-count">'.$Lols.'</span></a>
-                                <a href="#" data-restype="'.$loveVal.'" data-reacted ="'.$reacted_msg.'" data-id="'.get_the_ID().'" data-score="'.esc_attr($loves).'" class="review-love review-reaction"><i class="fa fa-heart-o"></i><span class="react-msg"></span> <span class="react-msg"></span>'.esc_html('Love','listingpro').' <span class="react-count">'.$loves.'</span></a>
-                            </div> 
+                                <a href="#" data-restype="'.$interVal.'" data-reacted ="'.$reacted_msg.'" data-id="'.get_the_ID().'" data-score="'.esc_attr($interests).'" class="review-interesting review-reaction"><i class="fa fa-thumbs-o-up"></i><span class="react-msg"></span>'.esc_html__('Interesting','listingpro-plugin').' <span class="react-count">'. $interests .'</span></a>
+                                <a href="#" data-restype="'.$lolVal.'" data-reacted ="'.$reacted_msg.'" data-id="'.get_the_ID().'" data-score="'.esc_attr($Lols).'" class="review-lol review-reaction"><i class="fa fa-smile-o"></i> <span class="react-msg"></span> <span class="react-msg"></span>'.esc_html__('LOL','listingpro-plugin').' <span class="react-count">'.$Lols.'</span></a>
+                                <a href="#" data-restype="'.$loveVal.'" data-reacted ="'.$reacted_msg.'" data-id="'.get_the_ID().'" data-score="'.esc_attr($loves).'" class="review-love review-reaction"><i class="fa fa-heart-o"></i><span class="react-msg"></span> <span class="react-msg"></span>'.esc_html__('Love','listingpro-plugin').' <span class="react-count">'.$loves.'</span></a>
+                            </div>
                         </div>
                     </div>
                 </div>';
-                if( $counter == 5 || $counter == $activities->found_posts )
-                {
-                    $output .=  '    </div>';
-                    $output .=  '</div>';
-                }
+				if( $counter == $number_posts || $counter == $activities->found_posts )
+				{
+					$output .=  '    </div>';
+					$output .=  '</div>';
+				}
+			}
+			if( $number_posts == 4 )
+			{
+				$output .=  '
+                <div class="col-md-6">
+                    <div class="lp-activity style2">
+                        <div class="lp-activity-top">
+                            <div class="row">
+                                <div class="lp-activity-thumb col-md-6">
+                                    <a href="'. get_author_posts_url( get_the_author_meta( 'ID' ) ) .'" class="lp-activity-author-thumb"><img src="'. esc_attr($avatar) .'" alt=""></a>
+                                    <a href="' . get_author_posts_url( get_the_author_meta( 'ID' ) ) . '"><img class="hidden-xs hidden-sm" src="'. $img_url4 .'" alt="'. get_the_title() .'"><img class="hidden-md hidden-lg" src="'. $img_url3 .'" alt="'. get_the_title() .'"></a>
+                                </div>
+                                <div class="lp-activity-top-right col-md-6">
+                                    <div class="lp-activity-review-writer">
+                                        <a href="'. get_author_posts_url( get_the_author_meta( 'ID' ) ) .'">'. get_the_author() .'</a>
+                                <p>'.esc_html__('Wrote a review', 'listingpro-plugin' ).'</p>
+                                    </div>
+                                    <div class="lp-listing-stars clearfix">
+                           <div class="lp-rating-stars-outer">
+                                        <span class="lp-star-box ';
+				if( $rating > 0 ){ $output .= 'filled'.' '.$rating_num_clr; }
+				$output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
+                                        <span class="lp-star-box ';
+				if( $rating > 1 ){ $output .= 'filled'.' '.$rating_num_clr; }
+				$output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
+                                        <span class="lp-star-box ';
+				if( $rating > 2  ){ $output .= 'filled'.' '.$rating_num_clr; }
+				$output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
+                                        <span class="lp-star-box ';
+				if( $rating > 3 ){ $output .= 'filled'.' '.$rating_num_clr; }
+				$output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
+                                        <span class="lp-star-box ';
+				if( $rating > 4 ){ $output .= 'filled'.' '.$rating_num_clr; }
+				$output .=  '"><i class="fa fa-star" aria-hidden="true"></i></span>
+</div>
+                                        <span class="lp-rating-num rating-with-colors '. review_rating_color_class($rating) .'">'. $rating;
+				if( $rating == '' ){ $output   .=  0; }
+				if( $rating == 1 || $rating == 2 || $rating == 3 || $rating == 4 || $rating == 5 ){ $output .= '.0';}
+				$output.= '</span>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        <div class="lp-activity-bottom">
+                            <h3><a href="'. get_permalink( $LID ) .'">'. $lp_liting_title .'</a></h3>
+                            <strong>'. substr( get_the_title(), 0, 35 ) .'</strong>
+                        </div>
+                        <div class="lp-activity-description">
+                            <p>'. substr( $post->post_content, 0, 120 ) .' <a href="'. get_permalink( $LID ) .'">'.esc_html__('Continue Reading', 'listingpro-plugin' ).'</a></p>
+                            <div class="activity-reactions small-btns">
+                                <a href="#" data-restype="'.$interVal.'" data-reacted ="'.$reacted_msg.'" data-id="'.get_the_ID().'" data-score="'.esc_attr($interests).'" class="review-interesting review-reaction"><i class="fa fa-thumbs-o-up"></i><span class="react-msg"></span>'.esc_html__('Interesting','listingpro-plugin').' <span class="react-count">'. $interests .'</span></a>
+                                <a href="#" data-restype="'.$lolVal.'" data-reacted ="'.$reacted_msg.'" data-id="'.get_the_ID().'" data-score="'.esc_attr($Lols).'" class="review-lol review-reaction"><i class="fa fa-smile-o"></i> <span class="react-msg"></span> <span class="react-msg"></span>'.esc_html__('LOL','listingpro-plugin').' <span class="react-count">'.$Lols.'</span></a>
+                                <a href="#" data-restype="'.$loveVal.'" data-reacted ="'.$reacted_msg.'" data-id="'.get_the_ID().'" data-score="'.esc_attr($loves).'" class="review-love review-reaction"><i class="fa fa-heart-o"></i><span class="react-msg"></span> <span class="react-msg"></span>'.esc_html__('Love','listingpro-plugin').' <span class="react-count">'.$loves.'</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>';
+			}
+			$counter++;
+		endwhile; wp_reset_postdata();
+		$output .=  '   </div></div>';
+		$output .=  '</div>';
+	endif;
 
-            }
-
-            $counter++;
-        endwhile; wp_reset_postdata();
-        $output .=  '   </div></div>';
-        $output .=  '</div>';
-    endif;
-
-
-    return $output;
+	return $output;
 }
 add_shortcode('lp_activities', 'listingpro_shortcode_lp_activities');
 
+/*------------------------------------------------------*/
+/* Events
+/*------------------------------------------------------*/
+
+vc_map( array(
+    "name"                      => __("Events", "js_composer"),
+    "base"                      => 'lp_events',
+    "category"                  => __('Listingpro', 'js_composer'),
+    "description"               => '',
+    "params"                    => array(
+
+        array(
+            "type"        => "dropdown",
+            "class"       => "",
+            "heading"     => esc_html__("Number of Activities","js_composer"),
+            "param_name"  => "number_events",
+            'value' => array(
+                esc_html__( '3 Events', 'js_composer' ) => '3',
+                esc_html__( '4 Events', 'js_composer' ) => '4',
+                esc_html__( '5 Events', 'js_composer' ) => '5',
+                esc_html__( '6 Events', 'js_composer' ) => '6',
+                esc_html__( '7 Events', 'js_composer' ) => '7',
+                esc_html__( 'All Events', 'js_composer' ) => '-1',
+            ),
+            'save_always' => true,
+            "description" => "Select number of activities you want to show"
+        ),
+    ),
+) );
+
+function listingpro_shortcode_lp_events($atts, $content = null) {
+    extract(shortcode_atts(array(
+        'number_events'   => '3',
+    ), $atts));
+    $output = null;
+	$time_now   =   strtotime("-1 day");
+    $args   =   array(
+        'post_type' => 'events',
+        'posts_per_page' => $number_events,
+        'meta_key'   => 'event-date',
+		'orderby'    => 'meta_value_num',
+		'order'      => 'ASC',
+        'meta_query' => array(
+            array(
+                'key'     => 'event-date',
+                'value'   => $time_now,
+                'compare' => '>',
+            ),
+        ),
+    );
+
+    $lp_events  =   new WP_Query( $args );
+    ob_start();
+    ?>
+    <div class="lp-section-content-container listingcampaings">
+        <div class="lp-listings grid-style">
+            <div class="row">
+    <?php
+    if( $lp_events->have_posts() ):
+
+        while ( $lp_events->have_posts() ): $lp_events->the_post();
+            get_template_part( 'templates/loop-events' );
+        endwhile; wp_reset_postdata();
+    else:
+        echo  '<p>'.esc_html__( 'No Events Found' ).'</p>';
+    endif;
+    ?>
+            </div>
+        </div>
+    </div>
+    <?php
+    return ob_get_clean();
+}
+add_shortcode('lp_events', 'listingpro_shortcode_lp_events');
 
 /*------------------------------------------------------*/
 /* Trending Listings
@@ -3886,82 +4182,7 @@ add_shortcode('lp_activities', 'listingpro_shortcode_lp_activities');
 //}
 //add_shortcode('trending_listings', 'listingpro_shortcode_trending');
 
-/*------------------------------------------------------*/
-/* LP DISCOUNTS
-/*------------------------------------------------------*/
-vc_map( array(
-    "name"                      => __("ListingPro Discounts", "js_composer"),
-    "base"                      => 'lp_discounts',
-    "category"                  => __('Listingpro', 'js_composer'),
-    "description"               => 'A list of all available discounts',
-) );
 
-function listingpro_shortcode_discounts($atts, $content = null) {
-    extract(shortcode_atts(array(
-
-    ), $atts));
-    $output = null;
-
-    $d_args =   array(
-        'post_type' => 'listing',
-        'post_status' => 'publish',
-        'posts_per_page' => -1,
-        'meta_key' => 'listing_discount_data',
-        'meta_compare' => 'EXISTS'
-    );
-    $d_listings  =   new WP_Query($d_args);
-    if( $d_listings->have_posts() ) :
-        $output .=  '<div class="lp-listings-discounts">';
-        $output .=  '    <div class="row">';
-        while ( $d_listings->have_posts() ) : $d_listings->the_post();
-            global $post;
-            $lid    =   get_the_ID();
-            $listing_discount_data  =   get_post_meta( $post->ID, 'listing_discount_data', true );
-
-            if( isset( $listing_discount_data ) && is_array( $listing_discount_data ) && !empty( $listing_discount_data ) ):
-                $GLOBALS['listing_discount_data']  =   $listing_discount_data;
-                ob_start();
-                get_template_part('templates/discount-template');
-                $output .= ob_get_contents();
-                ob_end_clean();
-                ob_flush();
-            endif;
-        endwhile; wp_reset_postdata();
-        $output .=  '    </div>';
-        $output .=  '</div>';
-    endif;
-    return $output;
-}
-add_shortcode('lp_discounts', 'listingpro_shortcode_discounts');
-
-vc_map( array(
-    "name"                      => esc_html__("ListingPro Venders Element", "js_composer"),
-    "base"                      => 'listingpro_venders',
-    "category"                  => esc_html__('Listingpro', 'js_composer'),
-    "description"               => '',
-    "params"                    => array(
-
-        array(
-            "type"			=> "textfield",
-            "class"			=> "",
-            "heading"		=> esc_html__("First Column Title","js_composer"),
-            "param_name"	=> "listing_first_title",
-            "value"			=> "520156",
-            'save_always' => true,
-        ),
-
-        array(
-            "type"			=> "textfield",
-            "class"			=> "",
-            "heading"		=> esc_html__("Second Column Title","js_composer"),
-            "param_name"	=> "listing_second_title",
-            "value"			=> "Vendors/Entertainer Hired",
-            'save_always' => true,
-        ),
-
-
-    ),
-) );
 function listingpro_shortcode_venders($atts, $content = null) {
     extract(shortcode_atts(array(
 

@@ -3,6 +3,7 @@
 namespace wpautoterms\box;
 
 use wpautoterms\admin\Menu;
+use wpautoterms\frontend\Links;
 use wpautoterms\option;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -30,12 +31,14 @@ class Links_Box extends Box {
 		new option\Color_Option( $this->id() . '_links_color', __( 'Links color', WPAUTOTERMS_SLUG ), '', $page_id, $section_id );
 		new option\Text_Option( $this->id() . '_separator', __( 'Links separator', WPAUTOTERMS_SLUG ), '',
 			$page_id, $section_id );
-		$this->_custom_css_options($page_id, $section_id);
+		new option\Checkbox_Option( $this->id() . '_target_blank', __( 'Links to open in a new page', WPAUTOTERMS_SLUG ),
+			'', $page_id, $section_id );
+		$this->_custom_css_options( $page_id, $section_id );
 	}
 
 	public function defaults() {
 		return array(
-			$this->id() => false,
+			$this->id() => true,
 			$this->id() . '_bg_color' => '#ffffff',
 			$this->id() . '_font' => 'Arial, sans-serif',
 			$this->id() . '_font_size' => '14px',
@@ -43,6 +46,15 @@ class Links_Box extends Box {
 			$this->id() . '_text_align' => 'center',
 			$this->id() . '_links_color' => '#000000',
 			$this->id() . '_separator' => '-',
+			$this->id() . '_target_blank' => false,
+		);
+	}
+
+	protected function _class_hints() {
+		return array(
+			__( 'Links bar class:', WPAUTOTERMS_SLUG ) => '.'.Links::FOOTER_CLASS,
+			__( 'Separator class:', WPAUTOTERMS_SLUG ) => '.'.Links::FOOTER_CLASS . ' .' . Links::SEPARATOR_CLASS,
+			__( 'Link class:', WPAUTOTERMS_SLUG ) => '.'.Links::FOOTER_CLASS . ' a',
 		);
 	}
 }

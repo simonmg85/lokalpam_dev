@@ -9,7 +9,17 @@ SGPBExtensionsNotification.prototype.init = function()
 	this.dontShowAgain();
 
 	this.closeProblemAlert();
-	this.dontShowAgainProblemAlert()
+	this.dontShowAgainProblemAlert();
+
+	this.addToPopupMenuLinkColor();
+};
+
+SGPBExtensionsNotification.prototype.addToPopupMenuLinkColor = function()
+{
+	jQuery('a[href="edit.php?post_type='+SGPB_JS_EXTENSIONS_PARAMS.popupPostType+'&page='+SGPB_JS_EXTENSIONS_PARAMS.extendPage+'"]').css({color: "#55efc4"})
+	jQuery('a[href="edit.php?post_type='+SGPB_JS_EXTENSIONS_PARAMS.popupPostType+'&page='+SGPB_JS_EXTENSIONS_PARAMS.extendPage+'"]').attr('href', SGPB_JS_EXTENSIONS_PARAMS.allExtensionsUrl);
+	/*support*/
+	jQuery('a[href="edit.php?post_type='+SGPB_JS_EXTENSIONS_PARAMS.popupPostType+'&page=support"]').attr('href', SGPB_JS_EXTENSIONS_PARAMS.supportUrl);
 };
 
 SGPBExtensionsNotification.prototype.closeProblemAlert = function()

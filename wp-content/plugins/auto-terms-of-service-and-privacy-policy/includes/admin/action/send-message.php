@@ -10,7 +10,7 @@ class Send_Message extends Action_Base {
 	const SITE_INFO_SHORT = 1;
 	const SITE_INFO_EXTENDED = 2;
 
-	const DEFAULT_SITE_INFO = 1;
+	const DEFAULT_SITE_INFO = 2;
 
 	const MAX_TEXT_LENGTH = 2500;
 
@@ -35,11 +35,12 @@ class Send_Message extends Action_Base {
 			return $x['Name'] . ': ' . $x['Version'] . ' (' . $x['PluginURI'] . ')';
 		}, get_plugins() );
 
+		$prefix = 'Plugin version: ' . WPAUTOTERMS_VERSION . "\nPHP version: " . phpversion();
+
 		return array(
 			static::SITE_INFO_NONE => '',
-			static::SITE_INFO_SHORT => 'PHP version: ' . phpversion() . "\nWP version: " . $wp_version . "\nWPDB version: " . $wp_db_version,
-			static::SITE_INFO_EXTENDED => 'PHP version: ' . phpversion() .
-			                              "\nPHP extensions:\n" . join( "\n", $ext ) .
+			static::SITE_INFO_SHORT => $prefix . "\nWP version: " . $wp_version . "\nWPDB version: " . $wp_db_version,
+			static::SITE_INFO_EXTENDED => $prefix . "\nPHP extensions:\n" . join( "\n", $ext ) .
 			                              "\nWP version: " . $wp_version . "\nWPDB version: " . $wp_db_version .
 			                              "\nWP plugins:\n" . join( "\n", $plugins ),
 		);
@@ -60,7 +61,7 @@ class Send_Message extends Action_Base {
 		$text = static::_request_var( 'text' );
 		$site_info = static::_request_var( 'site_info' );
 		if ( empty( $site_name ) || empty( $site_url ) || empty( $email ) || empty( $text ) ) {
-			$message = __( 'Please, fill all form fields to submit.', WPAUTOTERMS_SLUG );
+			$message = __( 'Please fill in the required information in order to send the message.', WPAUTOTERMS_SLUG );
 		} else if ( count( explode( '@', $email ) ) != 2 ) {
 			$message = __( 'Wrong email address', WPAUTOTERMS_SLUG );
 		} else if ( count( explode( '.', $site_url ) ) < 2 || count( explode( '..', $site_url ) ) > 1 ) {

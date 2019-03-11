@@ -10,117 +10,6 @@
  */
 
 /**
- * Deactivate addon.
- *
- * @since 1.0.0
- */
-function wpforms_deactivate_addon() {
-
-	// Run a security check.
-	check_ajax_referer( 'wpforms-admin', 'nonce' );
-
-	if ( isset( $_POST['plugin'] ) ) {
-		deactivate_plugins( $_POST['plugin'] );
-		wp_send_json_success( esc_html__( 'Addon deactivated.', 'wpforms' ) );
-	} else {
-		wp_send_json_error( esc_html__( 'Could not deactivate addon. Please deactivate from the Plugins page.', 'wpforms' ) );
-	}
-}
-
-add_action( 'wp_ajax_wpforms_deactivate_addon', 'wpforms_deactivate_addon' );
-
-/**
- * Activate addon.
- *
- * @since 1.0.0
- */
-function wpforms_activate_addon() {
-
-	// Run a security check.
-	check_ajax_referer( 'wpforms-admin', 'nonce' );
-
-	if ( isset( $_POST['plugin'] ) ) {
-
-		$activate = activate_plugins( $_POST['plugin'] );
-
-		if ( ! is_wp_error( $activate ) ) {
-			wp_send_json_success( esc_html__( 'Addon activated.', 'wpforms' ) );
-		}
-	}
-
-	wp_send_json_error( esc_html__( 'Could not activate addon. Please activate from the Plugins page.', 'wpforms' ) );
-}
-
-add_action( 'wp_ajax_wpforms_activate_addon', 'wpforms_activate_addon' );
-
-/**
- * Install addon.
- *
- * @since 1.0.0
- */
-function wpforms_install_addon() {
-
-	// Run a security check.
-	check_ajax_referer( 'wpforms-admin', 'nonce' );
-
-	if ( empty( $_POST['plugin'] ) ) {
-		wp_send_json_error( esc_html__( 'Could not install addon. Please download from wpforms.com and install manually.', 'wpforms' ) );
-	}
-
-	// Set the current screen to avoid undefined notices.
-	set_current_screen();
-
-	// Prepare variables.
-	$download_url = $_POST['plugin'];
-	$url          = esc_url_raw(
-		add_query_arg(
-			array(
-				'page' => 'wpforms-addons',
-			),
-			admin_url( 'admin.php' )
-		)
-	);
-
-	$creds = request_filesystem_credentials( $url, '', false, false, null );
-
-	// Check for file system permissions.
-	if ( false === $creds ) {
-		wp_send_json_error( esc_html__( 'Could not install addon. Please download from wpforms.com and install manually.', 'wpforms' ) );
-	}
-
-	if ( ! WP_Filesystem( $creds ) ) {
-		wp_send_json_error( esc_html__( 'Could not install addon. Please download from wpforms.com and install manually.', 'wpforms' ) );
-	}
-
-	// We do not need any extra credentials if we have gotten this far, so let's install the plugin.
-	require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
-	require_once WPFORMS_PLUGIN_DIR . 'pro/includes/admin/class-install-skin.php';
-
-	// Create the plugin upgrader with our custom skin.
-	$installer = new Plugin_Upgrader( new WPForms_Install_Skin() );
-	$installer->install( $download_url );
-
-	// Flush the cache and return the newly installed plugin basename.
-	wp_cache_flush();
-
-	if ( $installer->plugin_info() ) {
-
-		$plugin_basename = $installer->plugin_info();
-
-		wp_send_json_success(
-			array(
-				'msg'      => esc_html__( 'Addon installed.', 'wpforms' ),
-				'basename' => $plugin_basename,
-			)
-		);
-	}
-
-	wp_send_json_error( esc_html__( 'Could not install addon. Please download from wpforms.com and install manually.', 'wpforms' ) );
-}
-
-add_action( 'wp_ajax_wpforms_install_addon', 'wpforms_install_addon' );
-
-/**
  * Toggle entry stars from Entries table.
  *
  * @since 1.1.6
@@ -282,72 +171,136 @@ add_action( 'wp_ajax_wpforms_refresh_license', 'wpforms_refresh_license' );
  * Save a single notification state (opened or closed) for a form for a currently logged in user.
  *
  * @since 1.4.1
+ * @deprecated 1.4.8
  */
 function wpforms_builder_notification_state_save() {
 
-	// Run a security check.
+	_deprecated_function( __FUNCTION__, '1.4.8 of WPForms plugin', 'wpforms_builder_settings_block_state_save()' );
+
 	check_ajax_referer( 'wpforms-builder', 'nonce' );
 
-	if ( empty( $_POST ) ) {
-		wp_send_json_error();
+	if ( empty( $_POST['block_type'] ) ) {
+		$_POST['block_type'] = 'notification';
 	}
-
-	$form_id         = absint( $_POST['form_id'] );
-	$notification_id = absint( $_POST['notification_id'] );
-	$state           = sanitize_key( $_POST['state'] );
-
-	if (
-		empty( $form_id ) ||
-		empty( $notification_id ) ||
-		( empty( $state ) || ! in_array( $state, array( 'opened', 'closed' ), true ) )
-	) {
-		wp_send_json_error();
-	}
-
-	$all_states = get_user_meta( get_current_user_id(), 'wpforms_builder_notification_states', true );
-
-	$all_states[ $form_id ][ $notification_id ] = $state;
-
-	update_user_meta( get_current_user_id(), 'wpforms_builder_notification_states', $all_states );
-
-	wp_send_json_success();
+	wpforms_builder_settings_block_state_save();
 }
 
 add_action( 'wp_ajax_wpforms_builder_notification_state_save', 'wpforms_builder_notification_state_save' );
 
 /**
- * Remove a single notification state (opened or closed) for a form for a currently logged in user.
+ * Save a single settings block state (opened or closed) for a form for a currently logged in user.
  *
- * @since 1.4.1
+ * @since 1.4.8
  */
-function wpforms_builder_notification_state_remove() {
+function wpforms_builder_settings_block_state_save() {
 
 	// Run a security check.
 	check_ajax_referer( 'wpforms-builder', 'nonce' );
 
-	if ( empty( $_POST ) ) {
+	if ( empty( $_POST ) || ! wpforms_current_user_can() ) {
 		wp_send_json_error();
 	}
 
-	$form_id         = absint( $_POST['form_id'] );
-	$notification_id = absint( $_POST['notification_id'] );
+	$form_id    = ! empty( $_POST['form_id'] ) ? absint( $_POST['form_id'] ) : 0;
+	$block_id   = ! empty( $_POST['block_id'] ) ? absint( $_POST['block_id'] ) : 0;
+	$block_type = ! empty( $_POST['block_type'] ) ? sanitize_key( $_POST['block_type'] ) : '';
+	$state      = ! empty( $_POST['state'] ) ? sanitize_key( $_POST['state'] ) : '';
 
-	if ( empty( $form_id ) || empty( $notification_id ) ) {
+	if (
+		empty( $form_id ) ||
+		empty( $block_id ) ||
+		empty( $block_type ) ||
+		( empty( $state ) || ! in_array( $state, array( 'opened', 'closed' ), true ) )
+	) {
 		wp_send_json_error();
 	}
 
-	$all_states = get_user_meta( get_current_user_id(), 'wpforms_builder_notification_states', true );
+	$all_states = (array) get_user_meta( get_current_user_id(), 'wpforms_builder_settings_collapsable_block_states', true );
 
-	if ( isset( $all_states[ $form_id ] ) && isset( $all_states[ $form_id ][ $notification_id ] ) ) {
-		unset( $all_states[ $form_id ][ $notification_id ] );
+	$all_states[ $form_id ][ $block_type ][ $block_id ] = $state;
 
-		update_user_meta( get_current_user_id(), 'wpforms_builder_notification_states', $all_states );
+	update_user_meta( get_current_user_id(), 'wpforms_builder_settings_collapsable_block_states', $all_states );
 
-		wp_send_json_success();
+	wp_send_json_success();
+}
+
+add_action( 'wp_ajax_wpforms_builder_settings_block_state_save', 'wpforms_builder_settings_block_state_save' );
+
+/**
+ * Remove a single notification state (opened or closed) for a form for a currently logged in user.
+ *
+ * @since 1.4.1
+ * @deprecated 1.4.8
+ */
+function wpforms_builder_notification_state_remove() {
+
+	_deprecated_function( __FUNCTION__, '1.4.8 of WPForms plugin', 'wpforms_builder_settings_block_state_remove()' );
+
+	check_ajax_referer( 'wpforms-builder', 'nonce' );
+
+	if ( empty( $_POST['block_type'] ) ) {
+		$_POST['block_type'] = 'notification';
 	}
-
-	wp_send_json_error();
+	wpforms_builder_settings_block_state_remove();
 }
 
 add_action( 'wp_ajax_wpforms_builder_notification_state_remove', 'wpforms_builder_notification_state_remove' );
 
+/**
+ * Remove a single settings block state (opened or closed) for a form for a currently logged in user.
+ *
+ * @since 1.4.8
+ */
+function wpforms_builder_settings_block_state_remove() {
+
+	// Run a security check.
+	check_ajax_referer( 'wpforms-builder', 'nonce' );
+
+	if ( empty( $_POST ) || ! wpforms_current_user_can() ) {
+		wp_send_json_error();
+	}
+
+	$form_id    = ! empty( $_POST['form_id'] ) ? absint( $_POST['form_id'] ) : 0;
+	$block_id   = ! empty( $_POST['block_id'] ) ? absint( $_POST['block_id'] ) : 0;
+	$block_type = ! empty( $_POST['block_type'] ) ? sanitize_key( $_POST['block_type'] ) : '';
+
+	if ( empty( $form_id ) || empty( $block_id ) ) {
+		wp_send_json_error();
+	}
+
+	$all_states = get_user_meta( get_current_user_id(), 'wpforms_builder_settings_collapsable_block_states', true );
+
+	// Backward compatibility for notifications.
+	if ( 'notification' === $block_type && empty( $all_states[ $form_id ][ $block_type ][ $block_id ] ) ) {
+		$notification_states_meta = get_user_meta( get_current_user_id(), 'wpforms_builder_notification_states', true );
+		$notification_states      = $notification_states_meta;
+	}
+
+	if (
+		empty( $all_states[ $form_id ][ $block_type ][ $block_id ] ) &&
+		empty( $notification_states[ $form_id ][ $block_id ] )
+	) {
+		wp_send_json_error();
+	}
+
+	// Backward compatibility for notifications.
+	if ( 'notification' === $block_type && ! empty( $notification_states[ $form_id ][ $block_id ] ) ) {
+		unset( $notification_states[ $form_id ][ $block_id ] );
+	}
+	if ( ! empty( $notification_states_meta ) && ! empty( $notification_states ) ) {
+		update_user_meta( get_current_user_id(), 'wpforms_builder_notification_states', $notification_states );
+	}
+	if ( ! empty( $notification_states_meta ) && empty( $notification_states ) ) {
+		delete_user_meta( get_current_user_id(), 'wpforms_builder_notification_states' );
+	}
+
+	if ( ! empty( $all_states[ $form_id ][ $block_type ][ $block_id ] ) ) {
+		unset( $all_states[ $form_id ][ $block_type ][ $block_id ] );
+	}
+
+	update_user_meta( get_current_user_id(), 'wpforms_builder_settings_collapsable_block_states', $all_states );
+
+	wp_send_json_success();
+}
+
+add_action( 'wp_ajax_wpforms_builder_settings_block_state_remove', 'wpforms_builder_settings_block_state_remove' );

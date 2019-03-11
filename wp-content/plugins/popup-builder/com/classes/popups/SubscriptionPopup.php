@@ -1,17 +1,29 @@
 <?php
 namespace sgpb;
 require_once(dirname(__FILE__).'/SGPopup.php');
+require_once(ABSPATH.'wp-admin/includes/plugin.php');
 
 class SubscriptionPopup extends SGPopup
 {
 	private $data;
+	private $formContent = '';
 
 	public function __construct()
 	{
-		add_filter('sgpbFrontendJsFiles', array($this, 'frontJsFilter'), 1, 1);
-		add_filter('sgpbFrontendCssFiles', array($this, 'frontCssFilter'), 1, 1);
+		add_filter('sgpbPopupRenderOptions', array($this, 'renderOptions'), 12, 1);
 		add_filter('sgpbAdminJsFiles', array($this, 'adminJsFilter'), 1, 1);
 		add_filter('sgpbAdminCssFiles', array($this, 'adminCssFilter'), 1, 1);
+		add_filter('sgpbSubscriptionForm', array($this, 'subscriptionForm'), 1, 1);
+	}
+
+	private function frontendFilters()
+	{
+		$isSubscriptionPlusActive = is_plugin_active(SGPB_POPUP_SUBSCRIPTION_PLUS_EXTENSION_KEY);
+
+		if (!$isSubscriptionPlusActive) {
+			add_filter('sgpbFrontendJsFiles', array($this, 'frontJsFilter'), 1, 1);
+		}
+		add_filter('sgpbFrontendCssFiles', array($this, 'frontCssFilter'), 1, 1);
 	}
 
 	public function setData($data)
@@ -24,9 +36,20 @@ class SubscriptionPopup extends SGPopup
 		return $this->data;
 	}
 
+	public function setFormContent($formContent)
+	{
+		$this->formContent = $formContent;
+	}
+
+	public function getFormContent()
+	{
+		return $this->formContent;
+	}
+
 	public static function getTablesSql()
 	{
 		$tablesSql = array();
+		$dbEngine = Functions::getDatabaseEngine();
 
 		$tablesSql[] = SGPB_SUBSCRIBERS_TABLE_NAME.' (
 					`id` int(12) NOT NULL AUTO_INCREMENT,
@@ -36,8 +59,9 @@ class SubscriptionPopup extends SGPopup
 					`subscriptionType` int(12),
 					`cDate` date,
 					`status` varchar(255),
+					`unsubscribed` int(11) default 0,
 					PRIMARY KEY (id)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8;';
+			) ENGINE='.$dbEngine.' DEFAULT CHARSET=utf8;';
 
 		$tablesSql[] = SGPB_SUBSCRIBERS_ERROR_TABLE_NAME.' (
 					`id` int(12) NOT NULL AUTO_INCREMENT,
@@ -46,7 +70,7 @@ class SubscriptionPopup extends SGPopup
 					`email` varchar(255),
 					`date` varchar(255),
 					PRIMARY KEY (id)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8;';
+			) ENGINE='.$dbEngine.' DEFAULT CHARSET=utf8;';
 
 		return $tablesSql;
 	}
@@ -117,7 +141,12 @@ class SubscriptionPopup extends SGPopup
 	public function addAdditionalSettings($postData = array(), $obj = null)
 	{
 		$this->setData($postData);
-		$postData['sgpb-subs-fields'] = $this->createFormFieldsData();
+		$this->setPostData($postData);
+		$isSubscriptionPlusActive = is_plugin_active(SGPB_POPUP_SUBSCRIPTION_PLUS_EXTENSION_KEY);
+
+		if (!$isSubscriptionPlusActive) {
+			$postData['sgpb-subs-fields'] = $this->createFormFieldsData();
+		}
 
 		return $postData;
 	}
@@ -136,7 +165,7 @@ class SubscriptionPopup extends SGPopup
 	private function getFieldValue($optionName)
 	{
 		$optionValue = '';
-		$postData = $this->getData();
+		$postData = $this->getPostData();
 
 		if (!empty($postData[$optionName])) {
 			return $postData[$optionName];
@@ -164,7 +193,6 @@ class SubscriptionPopup extends SGPopup
 		$formData = array();
 		$inputStyles = array();
 		$submitStyles = array();
-		$postData = $this->getData();
 		$emailPlaceholder = $this->getFieldValue('sgpb-subs-email-placeholder');
 		if ($this->getFieldValue('sgpb-subs-text-width'))  {
 			$inputWidth = $this->getFieldValue('sgpb-subs-text-width');
@@ -220,7 +248,8 @@ class SubscriptionPopup extends SGPopup
 		);
 
 		$firstNamePlaceholder = $this->getFieldValue('sgpb-subs-first-placeholder');
-		$firstNameRequired = (!empty($postData['sgpb-subs-first-name-required'])) ? true : false;
+		$firstNameRequired = $this->getOptionValueFromSavedData('sgpb-subs-first-name-required');
+		$firstNameRequired = (!empty($firstNameRequired)) ? true : false;
 		$isShow = ($this->getFieldValue('sgpb-subs-first-name-status')) ? true : false;
 
 		$formData['first-name'] = array(
@@ -238,7 +267,8 @@ class SubscriptionPopup extends SGPopup
 		);
 
 		$lastNamePlaceholder = $this->getFieldValue('sgpb-subs-last-placeholder');
-		$lastNameRequired = (!empty($postData['sgpb-subs-last-name-required'])) ? true : false;
+		$lastNameRequired = $this->getOptionValueFromSavedData('sgpb-subs-last-name-required');
+		$lastNameRequired = (!empty($lastNameRequired)) ? true : false;
 		$isShow = ($this->getFieldValue('sgpb-subs-last-name-status')) ? true : false;
 
 		$formData['last-name'] = array(
@@ -256,14 +286,14 @@ class SubscriptionPopup extends SGPopup
 		);
 
 		/* GDPR checkbox */
-		$gdprLabel = $this->getFieldValue('sgpb-subs-gdpr-label');
-		$gdprRequired = ($this->getFieldValue('sgpb-subs-gdpr-status')) ? true : false;
-		$isShow = ($this->getFieldValue('sgpb-subs-gdpr-status')) ? true : false;
+		$gdprLabel = $this->getOptionValueFromSavedData('sgpb-subs-gdpr-label');
+		$gdprRequired = ($this->getOptionValueFromSavedData('sgpb-subs-gdpr-status')) ? true : false;
+		$isShow = ($this->getOptionValueFromSavedData('sgpb-subs-gdpr-status')) ? true : false;
 
 		$formData['gdpr'] = array(
 			'isShow' => $isShow,
 			'attrs' => array(
-				'type' => 'checkbox',
+				'type' => 'customCheckbox',
 				'data-required' => $gdprRequired,
 				'name' => 'sgpb-subs-gdpr',
 				'class' => 'js-subs-gdpr-inputs js-subs-gdpr-label',
@@ -324,13 +354,18 @@ class SubscriptionPopup extends SGPopup
 	private function createValidateObj($subsFields, $validationMessages)
 	{
 		$validateObj = '';
+		$id = $this->getId();
+		$requiredMessage = $this->getOptionValue('sgpb-subs-validation-message');
+		$emailMessage = $this->getOptionValue('sgpb-subs-invalid-message');
 
 		if (empty($subsFields)) {
 			return $validateObj;
 		}
 
 		$rules = 'rules: { ';
-		$validateObj = 'var sgpbSubsValidateObj = { ';
+		$messages = 'messages: { ';
+
+		$validateObj = 'var sgpbSubsValidateObj'.$id.' = { ';
 		foreach ($subsFields as $subsField) {
 
 			if (empty($subsField['attrs'])) {
@@ -354,6 +389,10 @@ class SubscriptionPopup extends SGPopup
 
 			if ($type == 'email') {
 				$rules .= '"'.$name.'": {required: true, email: true},';
+				$messages .= '"'.$name.'": {
+					"required": "'.$requiredMessage.'",
+					"email": "'.$emailMessage.'"
+				},';
 				continue;
 			}
 
@@ -361,17 +400,20 @@ class SubscriptionPopup extends SGPopup
 				continue;
 			}
 
+			$messages .= '"'.$name.'": "'.$requiredMessage.'",';
 			$rules .= '"'.$name.'" : "required",';
 
 		}
 		$rules = rtrim($rules, ',');
+		$messages = rtrim($messages, ',');
 
 		$rules .= '},';
+		$messages .= '}';
+
 		$validateObj .= $rules;
+		$validateObj .= $messages;
+
 		$validateObj .= '};';
-		$validateObj .= 'jQuery.extend(jQuery.validator.messages, { ';
-		$validateObj .= 'required: "'.$validationMessages['requiredMessage'].'"';
-		$validateObj .= ' });';
 
 		return $validateObj;
 	}
@@ -431,6 +473,12 @@ class SubscriptionPopup extends SGPopup
 			'metaboxTitle' => 'Subscription Options'
 		);
 
+		$isSubscriptionPlusActive = is_plugin_active(SGPB_POPUP_SUBSCRIPTION_PLUS_EXTENSION_KEY);
+
+		if ($isSubscriptionPlusActive) {
+			return array();
+		}
+
 		return $optionsViewData;
 	}
 
@@ -464,18 +512,43 @@ class SubscriptionPopup extends SGPopup
 		return $messages;
 	}
 
+	public function renderOptions($options)
+	{
+		// for old popups
+		if (isset($options['sgpb-subs-success-popup']) && function_exists('sgpb\sgpGetCorrectPopupId')) {
+			$options['sgpb-subs-success-popup'] = sgpGetCorrectPopupId($options['sgpb-subs-success-popup']);
+		}
+
+		return $options;
+	}
+
 	public function getPopupTypeContent()
 	{
+		$this->frontendFilters();
+
+		apply_filters('sgpbSubscriptionForm', $this);
 		$popupContent = $this->getContent();
-		$popupOptions = $this->getOptions();
-		$subsFields = $this->getOptionValue('sgpb-subs-fields');
+		$formContent = $this->getFormContent();
+
+		return $popupContent.$formContent;
+	}
+
+	public function subscriptionForm($popupObj)
+	{
+		if (!is_object($popupObj)) {
+			return '';
+		}
+		$popupContent = '';
+		$popupOptions = $popupObj->getOptions();
+		$subsFields = $popupObj->getOptionValue('sgpb-subs-fields');
+
+		if (empty($subsFields)) {
+			$subsFields = $popupObj->createFormFieldsData();
+		}
+
 		$subsRequiredMessages = '';
 		if (!empty($popupOptions['sgpb-subs-validation-message'])) {
 			$subsRequiredMessages = $popupOptions['sgpb-subs-validation-message'];
-		}
-
-		if (empty($subsFields)) {
-			return $popupContent;
 		}
 
 		$validationMessages = array(
@@ -485,16 +558,18 @@ class SubscriptionPopup extends SGPopup
 		$styleData = array(
 			'placeholderColor' => $popupOptions['sgpb-subs-text-placeholder-color'],
 			'formColor' => $popupOptions['sgpb-subs-form-bg-color'],
-			'formPadding' => $popupOptions['sgpb-subs-form-padding'],
-			'formBackgroundOpacity' => $popupOptions['sgpb-subs-form-bg-opacity']
+			'formPadding' => @$popupOptions['sgpb-subs-form-padding'],
+			'formBackgroundOpacity' => @$popupOptions['sgpb-subs-form-bg-opacity']
 		);
 
-		$validateScript = $this->createValidateObj($subsFields, $validationMessages);
-		$popupContent .= $this->getSubscriptionForm($subsFields);
-		$popupContent .= $this->getSubscriptionValidationScripts($validateScript);
-		$popupContent .= $this->getFormCustomStyles($styleData);
+		$validateScript = $popupObj->createValidateObj($subsFields, $validationMessages);
+		$popupContent .= $popupObj->getSubscriptionForm($subsFields);
+		$popupContent .= $popupObj->getSubscriptionValidationScripts($validateScript);
+		$popupContent .= $popupObj->getFormCustomStyles($styleData);
 
-		return $popupContent;
+		$popupObj->setFormContent($popupContent);
+
+		return $popupObj;
 	}
 
 	public function getSubPopupObj()
@@ -506,6 +581,11 @@ class SubscriptionPopup extends SGPopup
 
 			if (empty($subPopupId)) {
 				return $subPopups;
+			}
+
+			// for old popups
+			if (function_exists('sgpb\sgpGetCorrectPopupId')) {
+				$subPopupId = sgpGetCorrectPopupId($subPopupId);
 			}
 
 			$subPopupObj = SGPopup::find($subPopupId);

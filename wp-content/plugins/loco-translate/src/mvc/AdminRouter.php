@@ -244,17 +244,20 @@ class Loco_mvc_AdminRouter extends Loco_hooks_Hookable {
             }
             catch( Exception $_e ){
                 // avoid errors during error rendering
+                Loco_error_AdminNotices::debug( $_e->getMessage() );
             }
             echo $ctrl->renderError($e);
         }
         // ensure session always shutdown cleanly after render
         Loco_data_Session::close();
+        do_action('loco_admin_shutdown');
     }
-
 
 
     /**
      * Generate a routable link to Loco admin page
+     * @param string
+     * @param array
      * @return string
      */
     public static function generate( $route, array $args = array() ){

@@ -1,11 +1,12 @@
 <?php
 	namespace sgpb;
 	$defaultData = \ConfigDataHelper::defaultData();
-	$excludedPopups = array(@$_GET['post']);
+	$excludePostId = @$_GET['post'];
+	$excludedPopups = array($excludePostId);
 	$allPopups = AdminHelper::getPopupsIdAndTitle($excludedPopups);
 ?>
 
-<div class="sgpb-hide">
+<div class="sgpb-hide" style="display: none">
 	<div id="sgpb-hidden-media-popup" class="sgpb-wrapper">
 		<div class="row">
 			<div class="col-sm-10">

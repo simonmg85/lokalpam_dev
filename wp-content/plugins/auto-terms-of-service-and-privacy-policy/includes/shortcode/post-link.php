@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Post_Link extends Post_Data {
 
-	function __construct( $name ) {
+	public function __construct( $name ) {
 		parent::__construct( $name, 'ID' );
 	}
 

@@ -105,3 +105,27 @@ $subscribersSelectbox = AdminHelper::createSelectBox(
 	</div>
 </div>
 <!-- add subscribers popup end -->
+
+<div id="sgpb-subscriber-data">
+	<div class="sgpb-subscriber-data-wrapper">
+		<div class="sgpb-wrapper">
+			<div class="row">
+				<div class="col-sm-8 sgpb-add-subscriber-header-column">
+					<h4>
+						<?php _e('Subscriber submitted data', SG_POPUP_TEXT_DOMAIN)?>
+					</h4>
+				</div>
+				<div class="col-sm-1 sgpb-add-subscriber-header-spinner-column">
+					<img src="<?php echo SG_POPUP_IMG_URL.'ajaxSpinner.gif'; ?>" alt="gif" class="sgpb-subscribers-add-spinner js-sg-spinner js-sgpb-add-spinner sg-hide-element js-sg-import-gif" width="20px">
+				</div>
+				<img src="<?php echo SG_POPUP_IMG_URL.'subscribers_close.png'; ?>" alt="gif" class="sgpb-add-subscriber-popup-close-btn sgpb-subscriber-data-popup-close-btn-js" width="20px">
+			</div>
+		</div>
+	</div>
+</div>
+
+<style type="text/css">
+	.select2-container {
+		z-index: 9999;
+	}
+</style>

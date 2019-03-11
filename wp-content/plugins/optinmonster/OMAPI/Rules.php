@@ -97,6 +97,15 @@ class OMAPI_Rules {
 	protected $is_inline_check = false;
 
 	/**
+	 * The advanced settings for the campaign that should override inline.
+	 *
+	 * @since 1.6.2
+	 *
+	 * @var array
+	 */
+	protected $advanced_settings = array();
+
+	/**
 	 * The current post id.
 	 *
 	 * @since 1.5.0
@@ -230,6 +239,17 @@ class OMAPI_Rules {
 	}
 
 	/**
+	 * Checks if current campaign is a non-shortcode inline type on a post.
+	 *
+	 * @since  1.6.2
+	 *
+	 * @return bool
+	 */
+	public function is_inline_post_type() {
+		return $this->is_inline_check && 'shortcode' !== $this->is_inline_check && is_singular( 'post' );
+	}
+
+	/**
 	 * Determines if given campaign should show.
 	 *
 	 * @since  1.5.0
@@ -259,10 +279,11 @@ class OMAPI_Rules {
 			$this->exclude_if_not_enabled();
 			$this->exclude_on_campaign_types();
 			$this->exclude_on_user_logged_in_checks();
+			$this->exclude_if_inline_and_not_automatic();
 
 			$this->default_checks();
 			$this->woocommerce_checks();
-			$this->include_if_inline_and_automatic();
+			$this->include_if_inline_and_automatic_and_no_advanced_settings();
 			$this->output_if_global_override();
 
 			// If we get this far, include it.
@@ -271,6 +292,11 @@ class OMAPI_Rules {
 		} catch ( OMAPI_Rules_Exception $e ) {
 			$this->caught = $e;
 			$should_output = $e instanceof OMAPI_Rules_True;
+		}
+
+		// If query var is set and user can manage OM, output debug data.
+		if ( ! empty( $_GET['omwpdebug'] ) && is_user_logged_in() && apply_filters( 'optin_monster_api_menu_cap', 'manage_options' ) ) {
+			$this->output_debug();
 		}
 
 		return $should_output;
@@ -381,6 +407,7 @@ class OMAPI_Rules {
 		// Set flag for possibly not loading globally.
 		if ( $this->field_not_empty_array( 'only' ) ) {
 			$this->global_override = false;
+			$this->advanced_settings['show'] = $this->get_field_value( 'only' );
 
 			// If the optin is only to be shown on specific post IDs...
 			if ( $this->item_in_field( $this->post_id, 'only' ) ) {
@@ -415,6 +442,7 @@ class OMAPI_Rules {
 		if ( $this->field_not_empty_array( 'show' ) ) {
 			// Set flag for not loading globally.
 			$this->global_override = false;
+			$this->advanced_settings['show'] = $this->get_field_value( 'show' );
 		}
 
 		if (
@@ -463,21 +491,35 @@ class OMAPI_Rules {
 	}
 
 	/**
-	 * Enable campaign to show if it is being checked inline and is set to automatic.
+	 * Disable campaign from showing if it is being checked inline and is NOT set to automatic.
 	 *
-	 * @since  1.5.0
+	 * @since  1.5.3
 	 *
 	 * @throws OMAPI_Rules_False
 	 * @return void
 	 */
-	public function include_if_inline_and_automatic() {
+	public function exclude_if_inline_and_not_automatic() {
 		if (
-			$this->is_inline_check
-			// We don't want to output the shortcode version if it is set to show automatically,
-			// as they will conflict.
-			&& 'shortcode' !== $this->is_inline_check
+			$this->is_inline_post_type()
+			&& $this->field_empty( 'automatic' )
+		) {
+			throw new OMAPI_Rules_False( 'exclude inline if not automatic on singular post' );
+		}
+	}
+
+	/**
+	 * Enable campaign to show if it is being checked inline and is set to automatic.
+	 *
+	 * @since 1.6.2
+	 *
+	 * @throws OMAPI_Rules_True
+	 * @return void
+	 */
+	public function include_if_inline_and_automatic_and_no_advanced_settings() {
+		if (
+			empty( $this->advanced_settings )
+			&& $this->is_inline_post_type()
 			&& ! $this->field_empty( 'automatic' )
-			&& is_singular( 'post' )
 		) {
 			throw new OMAPI_Rules_True( 'include inline automatic on singular post' );
 		}
@@ -508,6 +550,7 @@ class OMAPI_Rules {
 		if ( $this->field_not_empty_array( 'categories' ) ) {
 			// Set flag for possibly not loading globally.
 			$this->global_override = false;
+			$this->advanced_settings['categories'] = $categories;
 		}
 
 		// If the optin is only to be shown on particular categories...
@@ -532,7 +575,6 @@ class OMAPI_Rules {
 		// 	return $html;
 		// }
 
-		$taxonomy = 'category';
 		if ( $this->post_id ) {
 			$all_cats = get_the_category( $this->post_id );
 
@@ -559,7 +601,7 @@ class OMAPI_Rules {
 			throw new OMAPI_Rules_True( 'post on category' );
 		}
 
-		throw new OMAPI_Rules_False( 'categories check failed' );
+		throw new OMAPI_Rules_False( 'no category matches found' );
 	}
 
 	protected function check_taxonomies_field() {
@@ -573,6 +615,7 @@ class OMAPI_Rules {
 			foreach ( $values as $i => $value ) {
 				if ( OMAPI_Utils::field_not_empty_array( $values, $i ) ) {
 					$this->global_override = false;
+					$this->advanced_settings['taxonomies'] = $values;
 					break;
 				}
 			}
@@ -610,7 +653,7 @@ class OMAPI_Rules {
 
 		}
 
-		throw new OMAPI_Rules_False( 'taxonomies check failed' );
+		throw new OMAPI_Rules_False( 'no taxonomy matches found' );
 	}
 
 	protected function check_is_home_and_show_on_index() {
@@ -645,6 +688,7 @@ class OMAPI_Rules {
 			}
 
 			$this->global_override = false;
+			$this->advanced_settings[ $field ] = $this->get_field_value( $field );
 
 			if ( call_user_func_array( array_shift( $callback ), $callback ) ) {
 				// If it passes, send it back.
@@ -672,10 +716,36 @@ class OMAPI_Rules {
 			case 'field_values':
 			case 'caught':
 			case 'global_override':
+			case 'advanced_settings':
 				return $this->$property;
 		}
 
 		throw new Exception( sprintf( esc_html__( 'Invalid %1$s property: %2$s', 'optin-monster-api' ), __CLASS__, $property ) );
+	}
+
+	/**
+	 * Outputs some debug data for the current campaign object.
+	 *
+	 * @since  1.6.2
+	 *
+	 * @return void
+	 */
+	protected function output_debug() {
+		$show = $this->caught instanceof OMAPI_Rules_True;
+
+		echo '<xmp class="_om-campaign-status" style="color: '. ( $show ? 'green' : 'red' ) . ';">'. $this->optin->post_name . ":\n" . print_r( $this->caught->getMessage(), true ) .'</xmp>';
+
+		if ( ! empty( $this->advanced_settings ) ) {
+			echo '<xmp class="_om-advanced-settings">$advanced_settings: '. print_r( $this->advanced_settings, true ) .'</xmp>';
+		}
+
+		if ( ! empty( $this->field_values ) ) {
+			echo '<xmp class="_om-field-values" style="display:none;">$field_values: '. print_r( $this->field_values, true ) .'</xmp>';
+		}
+
+		echo '<xmp class="_om-is-inline-check" style="display:none;">$is_inline_check?: '. print_r( $this->is_inline_check, true ) .'</xmp>';
+		echo '<xmp class="_om-global-override" style="display:none;">$global_override?: '. print_r( $this->global_override, true ) .'</xmp>';
+		echo '<xmp class="_om-optin" style="display:none;">$optin: '. print_r( $this->optin, true ) .'</xmp>';
 	}
 
 }

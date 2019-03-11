@@ -10,7 +10,7 @@ if ( ! class_exists( 'AM_Notification' ) ) {
 	 * @author     Benjamin Rojas
 	 * @license    GPL-2.0+
 	 * @copyright  Copyright (c) 2017, Retyp LLC
-	 * @version    1.0.0
+	 * @version    1.0.7
 	 */
 	class AM_Notification {
 		/**
@@ -75,7 +75,9 @@ if ( ! class_exists( 'AM_Notification' ) ) {
 		 */
 		public function custom_post_type() {
 			register_post_type( 'amn_' . $this->plugin, array(
-				'supports' => false,
+				'can_export'      => false,
+				'supports'        => false,
+				'capability_type' => 'manage_options'
 			) );
 		}
 
@@ -85,7 +87,7 @@ if ( ! class_exists( 'AM_Notification' ) ) {
 		 * @since 1.0.0
 		 */
 		public function get_remote_notifications() {
-			if ( ! current_user_can( apply_filters( 'am_notifications_display', 'manage_options' ) ) ) {
+			if ( ! apply_filters( 'am_notifications_display', is_super_admin() ) ) {
 				return;
 			}
 
@@ -180,7 +182,7 @@ if ( ! class_exists( 'AM_Notification' ) ) {
 		 * @since 1.0.0
 		 */
 		public function display_notifications() {
-			if ( ! current_user_can( apply_filters( 'am_notifications_display', 'manage_options' ) ) ) {
+			if ( ! apply_filters( 'am_notifications_display', is_super_admin() ) ) {
 				return;
 			}
 
@@ -197,15 +199,15 @@ if ( ! class_exists( 'AM_Notification' ) ) {
 					$dismissable = get_post_meta( $notification->ID, 'dismissable', true );
 					$type        = get_post_meta( $notification->ID, 'type', true );
 					?>
-                    <div class="am-notification am-notification-<?php echo $notification->ID; ?> notice notice-<?php echo $type; ?><?php echo $dismissable ? ' is-dismissible' : ''; ?>">
-						<?php echo $notification->post_content; ?>
+                    <div class="am-notification am-notification-<?php echo absint( $notification->ID ); ?> notice notice-<?php echo esc_attr( $type ); ?><?php echo $dismissable ? ' is-dismissible' : ''; ?>">
+						<?php echo wp_kses_post( $notification->post_content ); ?>
                     </div>
                     <script type="text/javascript">
 						jQuery(document).ready(function ($) {
-							$(document).on('click', '.am-notification-<?php echo $notification->ID; ?> button.notice-dismiss', function (event) {
+							$(document).on('click', '.am-notification-<?php echo absint( $notification->ID ); ?> button.notice-dismiss', function (event) {
 								$.post(ajaxurl, {
 									action: 'am_notification_dismiss',
-									notification_id: '<?php echo $notification->ID; ?>'
+									notification_id: '<?php echo absint( $notification->ID ); ?>'
 								});
 							});
 						});
@@ -337,14 +339,28 @@ if ( ! class_exists( 'AM_Notification' ) ) {
 						$key = WPFORMS_LICENSE_KEY;
 					}
 					break;
+				case 'mi-lite' :
 				case 'mi' :
-					$option = get_option( 'monsterinsights_license' );
-					$key    = is_array( $option ) && isset( $option['key'] ) ? $option['key'] : '';
-					$level  = is_array( $option ) && isset( $option['type'] ) ? $option['type'] : '';
-
-					// Possibly check for a constant.
-					if ( empty( $key ) && defined( 'MONSTERINSIGHTS_LICENSE_KEY' ) && is_string( MONSTERINSIGHTS_LICENSE_KEY ) && strlen( MONSTERINSIGHTS_LICENSE_KEY ) > 10 ) {
-						$key = MONSTERINSIGHTS_LICENSE_KEY;
+					if ( version_compare( MONSTERINSIGHTS_VERSION, '6.9.0', '>=' ) ) {
+						if ( MonsterInsights()->license->get_site_license_type() ) {
+							$key  = MonsterInsights()->license->get_site_license_key();
+							$type = MonsterInsights()->license->get_site_license_type();
+						} else if ( MonsterInsights()->license->get_network_license_type() ) {
+							$key  = MonsterInsights()->license->get_network_license_key();
+							$type = MonsterInsights()->license->get_network_license_type();
+						}
+						// Check key fallbacks
+						if ( empty( $key ) ) {
+							$key = MonsterInsights()->license->get_license_key();
+						}
+					} else {
+						$option = get_option( 'monsterinsights_license' );
+						$key    = is_array( $option ) && isset( $option['key'] ) ? $option['key'] : '';
+						$level  = is_array( $option ) && isset( $option['type'] ) ? $option['type'] : '';
+						// Possibly check for a constant.
+						if ( empty( $key ) && defined( 'MONSTERINSIGHTS_LICENSE_KEY' ) && is_string( MONSTERINSIGHTS_LICENSE_KEY ) && strlen( MONSTERINSIGHTS_LICENSE_KEY ) > 10 ) {
+							$key = MONSTERINSIGHTS_LICENSE_KEY;
+						}
 					}
 					break;
 				case 'om' :
@@ -366,6 +382,11 @@ if ( ! class_exists( 'AM_Notification' ) ) {
 			// Possibly set the level to 'none' if the key is empty and no level has been set.
 			if ( empty( $key ) && empty( $level ) ) {
 				$level = 'none';
+			}
+
+			// Possibly set the level to 'unknown' if a key is entered, but no level can be determined (such as manually entered key)
+			if ( ! empty( $key ) && empty( $level ) ) {
+				$level = 'unknown';
 			}
 
 			// Normalize the level.
@@ -398,7 +419,7 @@ if ( ! class_exists( 'AM_Notification' ) ) {
 		 * @since 1.0.0
 		 */
 		public function dismiss_notification() {
-			if ( ! current_user_can( apply_filters( 'am_notifications_display', 'manage_options' ) ) ) {
+			if ( ! apply_filters( 'am_notifications_display', is_super_admin() ) ) {
 				die;
 			}
 

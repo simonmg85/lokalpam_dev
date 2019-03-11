@@ -31,6 +31,7 @@ class SgpbDataConfig
 
 		$targetParams = array(
 			'not_rule' => __('Select rule', SG_POPUP_TEXT_DOMAIN),
+			'everywhere' => __('Everywhere', SG_POPUP_TEXT_DOMAIN),
 			'Post' => array(
 				'post_all' => __('All posts', SG_POPUP_TEXT_DOMAIN),
 				'post_selected' => __('Selected posts', SG_POPUP_TEXT_DOMAIN),
@@ -68,10 +69,11 @@ class SgpbDataConfig
 		$targetDataParams['post_selected'] = apply_filters('sgPopupTargetPostData', array());
 		$targetDataParams['page_selected'] = apply_filters('sgPopupTargetPageSelected', array());
 		$targetDataParams['post_type'] = apply_filters('sgPopupTargetPostType', ConfigDataHelper::getAllCustomPostTypes());
-		$targetDataParams['post_category'] = apply_filters('sgPopupTargetPostType', ConfigDataHelper::getPostsAllCategories());
-		$targetDataParams['page_type'] = apply_filters('sgPopupTargetPostType', ConfigDataHelper::getPageTypes());
+		$targetDataParams['post_category'] = apply_filters('sgPopupTargetPostCategory', ConfigDataHelper::getPostsAllCategories());
+		$targetDataParams['page_type'] = apply_filters('sgPopupTargetPageType', ConfigDataHelper::getPageTypes());
 		$targetDataParams['page_template'] = apply_filters('sgPopupPageTemplates', array());
 		$targetDataParams['post_tags_ids'] = apply_filters('sgPopupTags', ConfigDataHelper::getAllTags());
+		$targetDataParams['everywhere'] = null;
 		$targetDataParams['not_rule'] = null;
 		$targetDataParams['post_all'] = null;
 		$targetDataParams['page_all'] = null;
@@ -204,7 +206,7 @@ class SgpbDataConfig
 		$popupTarget['columnTypes'] = apply_filters('sgPopupTargetTypes', $targetElementTypes);
 		$popupTarget['paramsData'] = apply_filters('sgPopupTargetData', $targetDataParams);
 		$popupTarget['initialData'] = apply_filters('sgPopupTargetInitialData', $targetInitialData);
-		$popupTarget['operators'] = apply_filters('sgPopupTargetOperators', $targetOperators);
+		$popupTarget['operators'] = apply_filters('sgpbPopupEventsOperators', $targetOperators);
 		$popupTarget['attrs'] = apply_filters('sgPopupTargetAttrs', $targetAttrs);
 
 		$SGPB_DATA_CONFIG_ARRAY['target'] = $popupTarget;
@@ -221,18 +223,25 @@ class SgpbDataConfig
 
 		$eventsRowTypes = array(
 			'param' => 'select',
+			'operator' => 'select',
 			'value' => 'text',
 			'load' => 'number',
-			'onScroll' => 'number',
-			'inactivity' => 'number',
 			'repetitive' => 'checkbox',
 			'repetitivePeriod' => 'text',
+			SGPB_CLICK_ACTION_KEY => 'select',
+			'clickActionCustomClass' => 'text',
+			'hoverActionCustomClass' => 'text',
+			'defaultClickClassName' => 'conditionalText',
+			'defaultHoverClassName' => 'conditionalText'
 		);
 
 		$params = array(
 			'load' => 'On load',
-			'inactivity'=>'Inactivity',
-			'onScroll'=> 'On scroll'
+			SGPB_CSS_CLASS_ACTIONS_KEY => __('Set by CSS class', SG_POPUP_TEXT_DOMAIN),
+			SGPB_CLICK_ACTION_KEY => __('On Click', SG_POPUP_TEXT_DOMAIN),
+			SGPB_HOVER_ACTION_KEY => __('On Hover', SG_POPUP_TEXT_DOMAIN),
+			'inactivity' => __('Inactivity', SG_POPUP_TEXT_DOMAIN),
+			'onScroll' => __('On Scroll', SG_POPUP_TEXT_DOMAIN)
 		);
 
 		$hiddenOptionData['load'] = array(
@@ -242,13 +251,17 @@ class SgpbDataConfig
 		);
 
 		$onLoadData = 0;
-		$inactivityData = 0;
-		$onScroll = 0;
 
 		$eventsDataParams['param'] = $params;
+		$eventsDataParams['operator'] = array();
 		$eventsDataParams['load'] = $onLoadData;
-		$eventsDataParams['onScroll'] = $onScroll;
-		$eventsDataParams['inactivity'] = $inactivityData;
+		$eventsDataParams['clickActionCustomClass'] = '';
+		$eventsDataParams['hoverActionCustomClass'] = '';
+		$eventsDataParams['defaultClickClassName'] = 'sg-popup-id-';
+		$eventsDataParams['defaultHoverClassName'] = 'sg-popup-hover-';
+		$eventsDataParams[SGPB_CSS_CLASS_ACTIONS_KEY] = null;
+		$eventsDataParams[SGPB_CLICK_ACTION_KEY.'Operator'] = ConfigDataHelper::getClickActionOptions();
+		$eventsDataParams[SGPB_HOVER_ACTION_KEY.'Operator'] = ConfigDataHelper::getHoverActionOptions();
 		/*Hidden params data*/
 		$eventsDataParams['repetitive'] = '';
 		$eventsDataParams['repetitivePeriod'] = 0;
@@ -282,8 +295,8 @@ class SgpbDataConfig
 					'data-select-type' => 'basic'
 				),
 				'infoAttrs' => array(
-					'label' => 'Select operator',
-					'info' => __('This is info', SG_POPUP_TEXT_DOMAIN)
+					'label' => 'Options',
+					'info' => __('Select the condition for the current event.', SG_POPUP_TEXT_DOMAIN)
 				)
 			),
 			'load' => array(
@@ -293,18 +306,66 @@ class SgpbDataConfig
 					'info' => __('Specify how long the popup appearance should be delayed after loading the page (in sec).', SG_POPUP_TEXT_DOMAIN)
 				)
 			),
-			'onScroll' => array(
-				'htmlAttrs' => array('class' => 'js-sg-onScroll-text', 'min' => 0),
+			SGPB_CLICK_ACTION_KEY => array(
+				'htmlAttrs' => array(
+					'class' => 'js-sg-select2 js-select-basic',
+					'data-select-class' => 'js-select-basic',
+					'data-select-type' => 'basic'
+				),
 				'infoAttrs' => array(
-					'label' => 'After x percent',
+					'label' => 'Click Event',
 					'info' => __('Specify the part of the page, in percentages, where the popup should appear after scrolling.', SG_POPUP_TEXT_DOMAIN)
 				)
 			),
-			'inactivity' => array(
+			SGPB_HOVER_ACTION_KEY => array(
+				'htmlAttrs' => array(
+					'class' => 'js-sg-select2 js-select-basic',
+					'data-select-class' => 'js-select-basic',
+					'data-select-type' => 'basic'
+				),
+				'infoAttrs' => array(
+					'label' => 'Hover Event',
+					'info' => __('Specify the part of the page, in percentages, where the popup should appear after scrolling.', SG_POPUP_TEXT_DOMAIN)
+				)
+			),
+			'clickActionCustomClass' => array(
 				'htmlAttrs' => array('class' => 'js-sg-inactivity-text', 'min' => 0),
 				'infoAttrs' => array(
-					'label' => 'Delay',
-					'info' => __('Show the popup after some time of inactivity. The popup will appear if a user does nothing for some specific time mentioned.', SG_POPUP_TEXT_DOMAIN)
+					'label' => 'Custom Class',
+					'info' => __('Add the CSS class name of your HTML element which will trigger this popup after click.', SG_POPUP_TEXT_DOMAIN)
+				)
+			),
+			'hoverActionCustomClass' => array(
+				'htmlAttrs' => array('class' => 'js-sg-inactivity-text', 'min' => 0),
+				'infoAttrs' => array(
+					'label' => 'Custom Class',
+					'info' => __('Add the CSS class name of your HTML element which will trigger this popup after click.', SG_POPUP_TEXT_DOMAIN)
+				)
+			),
+			'defaultClickClassName' => array(
+				'htmlAttrs' => array(
+					'class' => 'js-sg-click-event',
+					'min' => 0,
+					'readonly' => '',
+					'value' => 'sg-popup-id-',
+					'beforeSaveLabel' => __('Please save popup to generate class name.', SG_POPUP_TEXT_DOMAIN)
+					),
+				'infoAttrs' => array(
+					'label' => 'Default Class',
+					'info' => __('Add the following CSS class into your HTML element.', SG_POPUP_TEXT_DOMAIN)
+				)
+			),
+			'defaultHoverClassName' => array(
+				'htmlAttrs' => array(
+					'class' => 'js-sg-hover-event',
+					'min' => 0,
+					'readonly' => '',
+					'value' => 'sg-popup-hover-',
+					'beforeSaveLabel' => __('Please save popup to generate class name.', SG_POPUP_TEXT_DOMAIN)
+					),
+				'infoAttrs' => array(
+					'label' => 'Default Class',
+					'info' => __('Add the following CSS class into your HTML element.', SG_POPUP_TEXT_DOMAIN)
 				)
 			),
 			'repetitive' => array(
@@ -339,6 +400,9 @@ class SgpbDataConfig
 		$popupEvents['hiddenOptionData'] = apply_filters('sgEventsHiddenData', $hiddenOptionData);
 		$popupEvents['attrs'] = apply_filters('sgPopupEventAttrs', $eventsAttrs);
 
+		$popupEvents['specialDefaultOperator'] = apply_filters('sgPopupEventsOperators', ' ');
+		$popupEvents['operatorAllowInConditions'] = apply_filters('sgPopupEventsOperatorAllowInConditions', array(SGPB_CLICK_ACTION_KEY, SGPB_HOVER_ACTION_KEY));
+
 		$SGPB_DATA_CONFIG_ARRAY['events'] = $popupEvents;
 
 		/*Target condition config*/
@@ -347,19 +411,11 @@ class SgpbDataConfig
 			'param' => 'select',
 			'operator' => 'select',
 			'value' => 'select',
-			'groups_user_role' => 'select',
 			'select_role' => 'select',
-			'groups_countries' => 'select',
-			'groups_devices' => 'select'
 		);
 
 		$targetParams = array(
-			'select_role' => __('Select role', SG_POPUP_TEXT_DOMAIN),
-			'Groups' => array(
-				'groups_user_role' => __('User status', SG_POPUP_TEXT_DOMAIN),
-				'groups_countries' => __('Countries', SG_POPUP_TEXT_DOMAIN),
-				'groups_devices' =>  __('Devices', SG_POPUP_TEXT_DOMAIN)
-			)
+			'select_role' => __('Select role', SG_POPUP_TEXT_DOMAIN)
 		);
 
 		$targetOperators = array(
@@ -376,21 +432,10 @@ class SgpbDataConfig
 			array('param' => 'select_role', 'operator' => '==', 'value' => '')
 		);
 
-		$userStatus = array(
-			'loggedIn' => 	__('logged in', SG_POPUP_TEXT_DOMAIN)
-		);
-		$userStatusCanBeUsed = PopupBuilderActivePackage::canUseSection('userStatus');
-		if (!$userStatusCanBeUsed) {
-			unset($targetParams['Groups']['groups_user_role']);
-			$userStatus = array();
-		}
+		$targetDataParams['param'] = apply_filters('sgpbPopupSpecialEventsParams', $targetParams);
+		$targetDataParams['operator'] = apply_filters('sgpbPopupConditionsOperator', $targetDataOperator);
 
-		$targetDataParams['param'] = apply_filters('sgPopupTargetParams', $targetParams);
-		$targetDataParams['operator'] = apply_filters('sgPopupTargetOperator', $targetDataOperator);
 		$targetDataParams['select_role'] = null;
-		$targetDataParams['groups_user_role'] = apply_filters('sgPopupConditionsUserStatus', $userStatus);
-		$targetDataParams['groups_countries'] = apply_filters('sgPopupConditionsCountries', ConfigDataHelper::countriesIsoData());
-		$targetDataParams['groups_devices'] = apply_filters('sgPopupConditionsDevices', ConfigDataHelper::getDevices());
 
 		$targetAttrs = array(
 			'param' => array(
@@ -415,41 +460,6 @@ class SgpbDataConfig
 					'label' => 'Page operator',
 					'info' => __('Allow or Disallow popup showing for the selected conditions.', SG_POPUP_TEXT_DOMAIN)
 				)
-			),
-			'groups_user_role' => array(
-				'htmlAttrs' => 	array(
-					'class' => 'js-sg-select2 js-select-basic',
-					'data-select-class' => 'js-select-basic',
-					'data-select-type' => 'basic'
-				),
-				'infoAttrs' => array(
-					'label' => 'Select user role',
-					'info' => __('Set up the popup to allow it for logged-in or logged-out users.', SG_POPUP_TEXT_DOMAIN)
-				)
-			),
-			'groups_countries' => array(
-				'htmlAttrs' => array(
-					'class' => 'js-sg-select2 js-select-basic',
-					'data-select-class' => 'js-select-basic',
-					'data-select-type' => 'basic',
-					'multiple' => 'multiple'
-				),
-				'infoAttrs' => array(
-					'label' => 'Select countries',
-					'info' => __('Select the countries for which the popup will be shown or hidden.', SG_POPUP_TEXT_DOMAIN)
-				)
-			),
-			'groups_devices' => array(
-				'htmlAttrs' => array(
-					'class' => 'js-sg-select2 js-select-basic',
-					'data-select-class' => 'js-select-basic',
-					'data-select-type' => 'basic',
-					'multiple' => 'multiple'
-				),
-				'infoAttrs' => array(
-					'label' => 'Select user devices',
-					'info' => __('Select the device for which the popup will be available.', SG_POPUP_TEXT_DOMAIN)
-				)
 			)
 		);
 
@@ -460,9 +470,13 @@ class SgpbDataConfig
 		$popupConditions['operators'] = apply_filters('sgPopupConditionsOperators', $targetOperators);
 		$popupConditions['attrs'] = apply_filters('sgPopupConditionsAttrs', $targetAttrs);
 
+		$popupConditions['specialDefaultOperator'] = apply_filters('sgPopupConditionsOperators', $targetDataOperator);
+		$popupConditions['operatorAllowInConditions'] = apply_filters('sgPopupConditionsOperatorAllowInConditions', array());
+
 		$SGPB_DATA_CONFIG_ARRAY['conditions'] = $popupConditions;
 
 		$SGPB_DATA_CONFIG_ARRAY['behavior-after-special-events'] = self::getBehaviorAfterSpecialEventsConfig();
+		$SGPB_DATA_CONFIG_ARRAY = apply_filters('sgpbConfigArray', $SGPB_DATA_CONFIG_ARRAY);
 		/*Target condition config*/
 	}
 
@@ -471,10 +485,70 @@ class SgpbDataConfig
 		$keys = array();
 
 		$keys[] = array(
+			'label' => __('Scheduling', SG_POPUP_TEXT_DOMAIN),
+			'pluginKey' => 'popupbuilder-scheduling/PopupBuilderScheduling.php',
+			'key' => 'scheduling',
+			'url' => SG_POPUP_SCHEDULING_URL
+		);
+		$keys[] = array(
+			'label' => __('Geo Targeting', SG_POPUP_TEXT_DOMAIN),
+			'pluginKey' => 'popupbuilder-geo-targeting/PopupBuilderGeoTargeting.php',
+			'key' => 'geo-targeting',
+			'url' => SG_POPUP_GEO_TARGETING_URL
+		);
+		$keys[] = array(
+			'label' => __('Iframe', SG_POPUP_TEXT_DOMAIN),
+			'pluginKey' => 'popupbuilder-iframe/PopupBuilderIframe.php',
+			'key' => 'iframe',
+			'url' => SG_POPUP_IFRAME_URL
+		);
+		$keys[] = array(
+			'label' => __('Social', SG_POPUP_TEXT_DOMAIN),
+			'pluginKey' => 'popupbuilder-social/PopupBuilderSocial.php',
+			'key' => 'social',
+			'url' => SG_POPUP_SOCIAL_URL
+		);
+		$keys[] = array(
+			'label' => __('Video', SG_POPUP_TEXT_DOMAIN),
+			'pluginKey' => 'popupbuilder-video/PopupBuilderVideo.php',
+			'key' => 'video',
+			'url' => SG_POPUP_VIDEO_URL
+		);
+		$keys[] = array(
+			'label' => __('Countdown', SG_POPUP_TEXT_DOMAIN),
+			'pluginKey' => 'popupbuilder-countdown/PopupBuilderCountdown.php',
+			'key' => 'countdown',
+			'url' => SG_POPUP_COUNTDOWN_URL
+		);
+		$keys[] = array(
+			'label' => __('Restriction', SG_POPUP_TEXT_DOMAIN),
+			'pluginKey' => 'popupbuilder-restriction/PopupBuilderAgerestriction.php',
+			'key' => 'ageRestriction',
+			'url' => SG_POPUP_RESTRICTION_URL
+		);
+		$keys[] = array(
+			'label' => __('Contact Form', SG_POPUP_TEXT_DOMAIN),
+			'pluginKey' => 'popupbuilder-contact-form/PopupBuilderContactForm.php',
+			'key' => 'contactForm',
+			'url' => SG_POPUP_CONTACT_FORM_URL
+		);
+		$keys[] = array(
 			'label' => __('AdBlock', SG_POPUP_TEXT_DOMAIN),
 			'pluginKey' => 'popupbuilder-adblock/PopupBuilderAdBlock.php',
 			'key' => 'sgpbAdBlock',
 			'url' => SG_POPUP_AD_BLOCK_URL
+		);
+		$keys[] = array(
+			'label' => __('Scroll', SG_POPUP_TEXT_DOMAIN),
+			'pluginKey' => 'popupbuilder-scroll/PopupBuilderScroll.php',
+			'key' => 'sgpbScroll',
+			'url' => SG_POPUP_SCROLL_URL
+		);
+		$keys[] = array(
+			'label' => __('Advanced Closing', SG_POPUP_TEXT_DOMAIN),
+			'pluginKey' => 'popupbuilder-advanced-closing/PopupBuilderAdvancedClosing.php',
+			'key' => 'advancedClosing',
+			'url' => SG_POPUP_ADVANCED_CLOSING_URL
 		);
 		$keys[] = array(
 			'label' => __('Analytics', SG_POPUP_TEXT_DOMAIN),
@@ -483,13 +557,19 @@ class SgpbDataConfig
 			'url' => SG_POPUP_ANALYTICS_URL
 		);
 		$keys[] = array(
+			'label' => __('Inactivity', SG_POPUP_TEXT_DOMAIN),
+			'pluginKey' => 'popupbuilder-inactivity/PopupBuilderInactivity.php',
+			'key' => 'sgpbInactivity',
+			'url' => SG_POPUP_INACTIVITY_URL
+		);
+		$keys[] = array(
 			'label' => __('Exit Intent',SG_POPUP_TEXT_DOMAIN),
 			'pluginKey' => 'popupbuilder-exit-intent/PopupBuilderExitIntent.php',
 			'key' => 'sgpbExitIntent',
 			'url' => SG_POPUP_EXIT_INTENT_URL
 		);
 		$keys[] = array(
-			'label' => __('MailChimp', SG_POPUP_TEXT_DOMAIN),
+			'label' => __('Mailchimp', SG_POPUP_TEXT_DOMAIN),
 			'pluginKey' => 'popupbuilder-mailchimp/PopupBuilderMailchimp.php',
 			'key' => 'sgpbMailchimp',
 			'url' => SG_POPUP_MAILCHIMP_URL
@@ -499,6 +579,54 @@ class SgpbDataConfig
 			'pluginKey' =>  'popupbuilder-aweber/PopupBuilderAWeber.php',
 			'key' => 'sgpbAWeber',
 			'url' => SG_POPUP_AWEBER_URL
+		);
+		$keys[] = array(
+			'label' => __('Random', SG_POPUP_TEXT_DOMAIN),
+			'pluginKey' => 'popupbuilder-random/PopupBuilderRandom.php',
+			'key' => 'sgpbRandom',
+			'url' => SG_POPUP_RANDOM_URL
+		);
+		$keys[] = array(
+			'label' => __('WooCommerce', SG_POPUP_TEXT_DOMAIN),
+			'pluginKey' =>  'popupbuilder-woocommerce/popupbuilderWoocommerce.php',
+			'key' => 'sgpbWOO',
+			'url' => SG_POPUP_WOOCOMMERCE_URL
+		);
+		$keys[] = array(
+			'label' => __('Recent Sales', SG_POPUP_TEXT_DOMAIN),
+			'pluginKey' =>  'popupbuilder-recent-sales/PopupBuilderRecentSales.php',
+			'key' => 'sgpbRecentSales',
+			'url' => SG_POPUP_RECENT_SALES_URL
+		);
+		$keys[] = array(
+			'label' => __('Advanced Targeting', SG_POPUP_TEXT_DOMAIN),
+			'pluginKey' =>  'popupbuilder-advanced-targeting/PopupBuilderAdvancedTargeting.php',
+			'key' => 'sgpbAdvancedTargeting',
+			'url' => SG_POPUP_ADVANCED_TARGETING_URL
+		);
+		$keys[] = array(
+			'label' => __('Log In', SG_POPUP_TEXT_DOMAIN),
+			'pluginKey' =>  'popupbuilder-login/PopupBuilderLogin.php',
+			'key' => 'login',
+			'url' => SG_POPUP_LOGIN_URL
+		);
+		$keys[] = array(
+			'label' => __('Registration', SG_POPUP_TEXT_DOMAIN),
+			'pluginKey' =>  'popupbuilder-registration/PopupBuilderRegistration.php',
+			'key' => 'registration',
+			'url' => SG_POPUP_REGISTRATION_URL
+		);
+		$keys[] = array(
+			'label' => __('Subscription Plus', SG_POPUP_TEXT_DOMAIN),
+			'pluginKey' =>  'popupbuilder-subscription-plus/PopupBuilderSubscriptionPlus.php',
+			'key' => 'subscriptionPlus',
+			'url' => SG_POPUP_SUBSCRIPTION_PLUS_URL
+		);
+		$keys[] = array(
+			'label' => __('Push Notification', SG_POPUP_TEXT_DOMAIN),
+			'pluginKey' =>  'popupbuilder-push-notification/PopupBuilderPushNotification.php',
+			'key' => 'pushNotification',
+			'url' => SG_POPUP_PUSH_NOTIFICATION_URL
 		);
 
 		return apply_filters('sgpbExtensionsKeys', $keys);
@@ -619,7 +747,8 @@ class SgpbDataConfig
 		$config['paramsData'] = apply_filters('sgPopupSpecialEventsParams', $params);
 		$config['initialData'] = apply_filters('sgPopupSpecialEventsInitialData', $initialData);
 		$config['attrs'] = apply_filters('sgPopupSpecialEventsAttrs', $attrs);
-		$config['operators'] = apply_filters('sgPopupSpecialEventsOperators', array());
+		$config['operators'] = apply_filters('sgpbPopupSpecialEventsOperators', array());
+		$config['specialDefaultOperator'] = apply_filters('sgpbPopupSpecialEventsDefaultOperators', ' ');
 
 		return $config;
 	}
@@ -651,6 +780,9 @@ class SgpbDataConfig
 		$options[] = array('name' => 'sgpb-click-redirect-to-url', 'type' => 'text', 'defaultValue' => '');
 		$options[] = array('name' => 'sgpb-redirect-to-new-tab', 'type' => 'checkbox', 'defaultValue' => '');
 		$options[] = array('name' => 'sgpb-copy-to-clipboard-text', 'type' => 'text', 'defaultValue' => '');
+		$options[] = array('name' => 'sgpb-copy-to-clipboard-close-popup', 'type' => 'checkbox', 'defaultValue' => 'on');
+		$options[] = array('name' => 'sgpb-copy-to-clipboard-alert', 'type' => 'checkbox', 'defaultValue' => 'on');
+		$options[] = array('name' => 'sgpb-copy-to-clipboard-message', 'type' => 'text', 'defaultValue' => __('Copied to Clipboard!', SG_POPUP_TEXT_DOMAIN));
 		$options[] = array('name' => 'sgpb-disable-popup-closing', 'type' => 'checkbox', 'defaultValue' => '', 'min-version' => SGPB_POPUP_PRO_MIN_VERSION, 'min-pkg' => SGPB_POPUP_PKG_SILVER);
 		$options[] = array('name' => 'sgpb-popup-dimension-mode', 'type' => 'text', 'defaultValue' => 'responsiveMode');
 		$options[] = array('name' => 'sgpb-popup-dimension-mode', 'type' => 'text', 'defaultValue' => '100');
@@ -660,10 +792,6 @@ class SgpbDataConfig
 		$options[] = array('name' => 'sgpb-max-height', 'type' => 'text', 'defaultValue' => '');
 		$options[] = array('name' => 'sgpb-min-width', 'type' => 'text', 'defaultValue' => '120');
 		$options[] = array('name' => 'sgpb-min-height', 'type' => 'text', 'defaultValue' => '');
-		$options[] = array('name' => 'sgpb-schedule-status', 'type' => 'checkbox', 'defaultValue' => '');
-		$options[] = array('name' => 'sgpb-schedule-weeks', 'type' => 'array', 'defaultValue' => '');
-		$options[] = array('name' => 'sgpb-schedule-start-time', 'type' => 'text', 'defaultValue' => '');
-		$options[] = array('name' => 'sgpb-schedule-end-time', 'type' => 'text', 'defaultValue' => '');
 		$options[] = array('name' => 'sgpb-popup-timer-status', 'type' => 'checkbox', 'defaultValue' => '');
 		$options[] = array('name' => 'sgpb-popup-start-timer', 'type' => 'text', 'defaultValue' => '');
 		$options[] = array('name' => 'sgpb-popup-end-timer', 'type' => 'text', 'defaultValue' => '');
@@ -681,7 +809,9 @@ class SgpbDataConfig
 		$options[] = array('name' => 'sgpb-open-sound', 'type' => 'checkbox', 'defaultValue' => '');
 		$options[] = array('name' => 'sgpb-sound-url', 'type' => 'text', 'defaultValue' => SG_POPUP_SOUND_URL.SGPB_POPUP_DEFAULT_SOUND);
 		$options[] = array('name' => 'sgpb-open-animation', 'type' => 'checkbox', 'defaultValue' => '');
+		$options[] = array('name' => 'sgpb-close-animation', 'type' => 'checkbox', 'defaultValue' => '');
 		$options[] = array('name' => 'sgpb-open-animation-speed', 'type' => 'text', 'defaultValue' => 1);
+		$options[] = array('name' => 'sgpb-close-animation-speed', 'type' => 'text', 'defaultValue' => 1);
 		$options[] = array('name' => 'sgpb-popup-themes', 'type' => 'text', 'defaultValue' => 'sgpb-theme-1');
 		$options[] = array('name' => 'sgpb-enable-popup-overlay', 'type' => 'checkbox', 'defaultValue' => 'on', 'min-version' => SGPB_POPUP_PRO_MIN_VERSION, 'min-pkg' => SGPB_POPUP_PKG_SILVER);
 		$options[] = array('name' => 'sgpb-overlay-custom-class', 'type' => 'text', 'defaultValue' => 'sgpb-popup-overlay');
@@ -689,23 +819,19 @@ class SgpbDataConfig
 		$options[] = array('name' => 'sgpb-background-color', 'type' => 'text', 'defaultValue' => '');
 		$options[] = array('name' => 'sgpb-overlay-opacity', 'type' => 'text', 'defaultValue' => 0.8);
 		$options[] = array('name' => 'sgpb-content-opacity', 'type' => 'text', 'defaultValue' => 0.8);
-		$options[] = array('name' => 'sgpb-iframe-url', 'type' => 'text', 'defaultValue' => '');
-		$options[] = array('name' => 'sgpb-iframe-invalid-url', 'type' => 'text', 'defaultValue' => __('Invalid URL.', SG_POPUP_TEXT_DOMAIN));
-		$options[] = array('name' => 'sgpb-iframe-protocol-warning', 'type' => 'text', 'defaultValue' => __('This url may not work, as it is HTTP and you are running HTTPS.', SG_POPUP_TEXT_DOMAIN));
-		$options[] = array('name' => 'sgpb-iframe-same-origin-warning', 'type' => 'text', 'defaultValue' => __('This url may not work, as it doesn\'t allow embedding in iframes.', SG_POPUP_TEXT_DOMAIN));
 		$options[] = array('name' => 'sgpb-background-image', 'type' => 'text', 'defaultValue' => '');
 		$options[] = array('name' => 'sgpb-show-background', 'type' => 'checkbox', 'defaultValue' => '');
+		$options[] = array('name' => 'sgpb-force-rtl', 'type' => 'checkbox', 'defaultValue' => '');
+		$options[] = array('name' => 'sgpb-disable-border', 'type' => 'checkbox', 'defaultValue' => '');
 		$options[] = array('name' => 'sgpb-background-image-mode', 'type' => 'text', 'defaultValue' => 'no-repeat');
 		$options[] = array('name' => 'sgpb-image-url', 'type' => 'text', 'defaultValue' => '');
 		$options[] = array('name' => 'sgpb-close-button-delay', 'type' => 'number', 'defaultValue' => 0);
+		$options[] = array('name' => 'sgpb-button-position-bottom', 'type' => 'number', 'defaultValue' => 9);
+		$options[] = array('name' => 'sgpb-button-position-right', 'type' => 'number', 'defaultValue' => 9);
 		$options[] = array('name' => 'sgpb-button-image', 'type' => 'text', 'defaultValue' => '');
 		$options[] = array('name' => 'sgpb-button-image-width', 'type' => 'text', 'defaultValue' => 21);
 		$options[] = array('name' => 'sgpb-button-image-height', 'type' => 'text', 'defaultValue' => 21);
-		$options[] = array('name' => 'sgpb-video-autoplay', 'type' => 'checkbox', 'defaultValue' => '');
-		$options[] = array('name' => 'sgpb-video-invalid-url', 'type' => 'text', 'defaultValue' => __('Invalid URL', SG_POPUP_TEXT_DOMAIN).'.');
-		$options[] = array('name' => 'sgpb-video-not-supported-url', 'type' => 'text', 'defaultValue' => __('This video URL is not supported', SG_POPUP_TEXT_DOMAIN).'.');
 		$options[] = array('name' => 'sgpb-is-active', 'type' => 'checkbox', 'defaultValue' => 'on');
-		// proStartSilverproEndSilver
 		$options[] = array('name' => 'sgpb-subs-form-bg-color', 'type' => 'text', 'defaultValue' => '#FFFFFF');
 		$options[] = array('name' => 'sgpb-subs-form-bg-opacity', 'type' => 'text', 'defaultValue' => 0.8);
 		$options[] = array('name' => 'sgpb-subs-form-padding', 'type' => 'number', 'defaultValue' => 2);
@@ -739,12 +865,10 @@ class SgpbDataConfig
 		$options[] = array('name' => 'sgpb-subs-gdpr-status', 'type' => 'checkbox', 'defaultValue' =>  '');
 		$options[] = array('name' => 'sgpb-subs-gdpr-label', 'type' => 'text', 'defaultValue' =>  __('Accept Terms', SG_POPUP_TEXT_DOMAIN));
 		$options[] = array('name' => 'sgpb-subs-gdpr-text', 'type' => 'text', 'defaultValue' =>  __(get_bloginfo().' will use the information you provide on this form to be in touch with you and to provide updates and marketing.', SG_POPUP_TEXT_DOMAIN));
-		// proStartSilverproEndSilver
+		$options[] = array('name' => 'sgpb-subs-fields', 'type' => 'sgpb', 'defaultValue' => '');
 		$options[] = array('name' => 'sgpb-fblike-like-url', 'type' => 'text', 'defaultValue' => '');
 		$options[] = array('name' => 'sgpb-fblike-layout', 'type' => 'text', 'defaultValue' => 'standard');
 		$options[] = array('name' => 'sgpb-fblike-dont-show-share-button', 'type' => 'checkbox', 'defaultValue' => '');
-		$options[] = array('name' => 'sgpb-subs-fields', 'type' => 'sgpb', 'defaultValue' => '');
-		$options[] = array('name' => 'sgpb-contact-fields', 'type' => 'sgpb', 'defaultValue' => '');
 		$options[] = array('name' => 'sgpb-border-color', 'type' => 'text', 'defaultValue' => '#000000');
 		$options[] = array('name' => 'sgpb-border-radius', 'type' => 'text', 'defaultValue' => 0);
 		$options[] = array('name' => 'sgpb-show-popup-same-user', 'type' => 'checkbox', 'defaultValue' => '');
@@ -772,7 +896,7 @@ class SgpbDataConfig
 			),
 			array(
 				'folderName' => 'popup-builder-mailchimp',
-				'label' => __('MailChimp', SG_POPUP_TEXT_DOMAIN)
+				'label' => __('Mailchimp', SG_POPUP_TEXT_DOMAIN)
 			),
 			array(
 				'folderName' => 'popup-builder-aweber',

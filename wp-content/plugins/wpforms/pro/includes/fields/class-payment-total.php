@@ -22,7 +22,7 @@ class WPForms_Field_Payment_Total extends WPForms_Field {
 		$this->name  = esc_html__( 'Total', 'wpforms' );
 		$this->type  = 'payment-total';
 		$this->icon  = 'fa-money';
-		$this->order = 11;
+		$this->order = 110;
 		$this->group = 'payment';
 
 		// Define additional field properties.
@@ -37,9 +37,9 @@ class WPForms_Field_Payment_Total extends WPForms_Field {
 	 *
 	 * @since 1.3.7
 	 *
-	 * @param array $properties
-	 * @param array $field
-	 * @param array $form_data
+	 * @param array $properties Field properties.
+	 * @param array $field      Field data and settings.
+	 * @param array $form_data  Form data and settings.
 	 *
 	 * @return array
 	 */
@@ -60,15 +60,31 @@ class WPForms_Field_Payment_Total extends WPForms_Field {
 	}
 
 	/**
+	 * @inheritdoc
+	 */
+	public function is_dynamic_population_allowed( $properties, $field ) {
+
+		return false;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function is_fallback_population_allowed( $properties, $field ) {
+
+		return false;
+	}
+
+	/**
 	 * Do not trust the posted total since that relies on javascript
 	 *
 	 * Instead we re-calculate server side.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $fields
-	 * @param array $entry
-	 * @param array $form_data
+	 * @param array $fields    List of fields with their data.
+	 * @param array $entry     Submitted form data.
+	 * @param array $form_data Form data and settings.
 	 *
 	 * @return array
 	 */
@@ -95,7 +111,7 @@ class WPForms_Field_Payment_Total extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field
+	 * @param array $field Field data and settings.
 	 */
 	public function field_options( $field ) {
 		/*
@@ -151,7 +167,7 @@ class WPForms_Field_Payment_Total extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field
+	 * @param array $field Field data and settings.
 	 */
 	public function field_preview( $field ) {
 
@@ -170,9 +186,9 @@ class WPForms_Field_Payment_Total extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field
-	 * @param array $deprecated
-	 * @param array $form_data
+	 * @param array $field      Field data and settings.
+	 * @param array $deprecated Deprecated, not used parameter.
+	 * @param array $form_data Form data and settings.
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
 
@@ -197,9 +213,9 @@ class WPForms_Field_Payment_Total extends WPForms_Field {
 	 *
 	 * @since 1.3.7
 	 *
-	 * @param int $field_id
-	 * @param string $field_submit
-	 * @param array $form_data
+	 * @param int    $field_id     Field ID.
+	 * @param string $field_submit Field value submitted by a user.
+	 * @param array  $form_data    Form data and settings.
 	 */
 	public function validate( $field_id, $field_submit, $form_data ) {
 
@@ -214,9 +230,9 @@ class WPForms_Field_Payment_Total extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int $field_id
-	 * @param string $field_submit
-	 * @param array $form_data
+	 * @param int    $field_id     Field ID.
+	 * @param string $field_submit Field value submitted by a user.
+	 * @param array  $form_data    Form data and settings.
 	 */
 	public function format( $field_id, $field_submit, $form_data ) {
 
@@ -236,4 +252,4 @@ class WPForms_Field_Payment_Total extends WPForms_Field {
 	}
 }
 
-new WPForms_Field_Payment_Total;
+new WPForms_Field_Payment_Total();

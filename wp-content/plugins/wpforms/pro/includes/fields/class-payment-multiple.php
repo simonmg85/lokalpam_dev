@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Multiple item payment field.
+ * Payment Radio Field.
  *
  * @package    WPForms
  * @author     WPForms
@@ -22,7 +22,7 @@ class WPForms_Field_Payment_Multiple extends WPForms_Field {
 		$this->name     = esc_html__( 'Multiple Items', 'wpforms' );
 		$this->type     = 'payment-multiple';
 		$this->icon     = 'fa-list-ul';
-		$this->order    = 5;
+		$this->order    = 50;
 		$this->group    = 'payment';
 		$this->defaults = array(
 			1 => array(
@@ -59,7 +59,7 @@ class WPForms_Field_Payment_Multiple extends WPForms_Field {
 	 *
 	 * @param string $value     Field value.
 	 * @param array  $field     Field settings.
-	 * @param array  $form_data Form data.
+	 * @param array  $form_data Form data and settings.
 	 * @param string $context   Value display context.
 	 *
 	 * @return string
@@ -70,19 +70,17 @@ class WPForms_Field_Payment_Multiple extends WPForms_Field {
 		// choices enabled, and exclude the entry table display. Lastly,
 		// provides a filter to disable fancy display.
 		if (
-			! empty( $field['value'] ) &&
-			'payment-multiple' === $field['type'] &&
-			! empty( $field['image'] ) &&
 			'entry-table' !== $context &&
+			'payment-multiple' === $field['type'] &&
+			! empty( $field['value'] ) &&
+			! empty( $field['image'] ) &&
 			apply_filters( 'wpforms_payment-multiple_field_html_value_images', true, $context )
 		) {
-
-			if ( ! empty( $field['image'] ) ) {
-				return sprintf( '<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%s" style="max-width:100%%;display:block;margin:0;"></span>%s',
-					esc_url( $field['image'] ),
-					$value
-				);
-			}
+			return sprintf(
+				'<span style="max-width:200px;display:block;margin:0 0 5px 0;"><img src="%s" style="max-width:100%%;display:block;margin:0;"></span>%s',
+				esc_url( $field['image'] ),
+				$value
+			);
 		}
 
 		return $value;
@@ -95,7 +93,7 @@ class WPForms_Field_Payment_Multiple extends WPForms_Field {
 	 *
 	 * @param array $properties Field properties.
 	 * @param array $field      Field settings.
-	 * @param array $form_data  Form data.
+	 * @param array $form_data  Form data and settings.
 	 *
 	 * @return array
 	 */
@@ -155,7 +153,7 @@ class WPForms_Field_Payment_Multiple extends WPForms_Field {
 			$properties['input_container']['class'][] = 'wpforms-field-required';
 		}
 
-		// Custom properties if image choices is enabled.
+		// Custom properties if image choices are enabled.
 		if ( ! empty( $field['choices_images'] ) ) {
 
 			$properties['input_container']['class'][] = 'wpforms-image-choices';
@@ -181,6 +179,49 @@ class WPForms_Field_Payment_Multiple extends WPForms_Field {
 	}
 
 	/**
+	 * @inheritdoc
+	 */
+	protected function get_field_populated_single_property_value( $raw_value, $input, $properties, $field ) {
+		/*
+		 * When the form is submitted we get only values (prices) from the Fallback.
+		 * As payment-multiple (radio) field doesn't support 'show_values' option -
+		 * we should transform value into label to check against using general logic in parent method.
+		 */
+
+		if (
+			! is_string( $raw_value ) ||
+			empty( $field['choices'] ) ||
+			! is_array( $field['choices'] )
+		) {
+			return $properties;
+		}
+
+		// The form submits only the sum, so shortcut for Dynamic.
+		if ( ! is_numeric( $raw_value ) ) {
+			return parent::get_field_populated_single_property_value( $raw_value, $input, $properties, $field );
+		}
+
+		$get_value = wpforms_format_amount( wpforms_sanitize_amount( $raw_value ) );
+
+		foreach ( $field['choices'] as $choice ) {
+			if (
+				isset( $choice['label'], $choice['value'] ) &&
+				wpforms_format_amount( wpforms_sanitize_amount( $choice['value'] ) ) === $get_value
+			) {
+				$trans_value = $choice['label'];
+				// Stop iterating over choices.
+				break;
+			}
+		}
+
+		if ( empty( $trans_value ) ) {
+			return $properties;
+		}
+
+		return parent::get_field_populated_single_property_value( $trans_value, $input, $properties, $field );
+	}
+
+	/**
 	 * Field options panel inside the builder.
 	 *
 	 * @since 1.0.0
@@ -188,15 +229,18 @@ class WPForms_Field_Payment_Multiple extends WPForms_Field {
 	 * @param array $field Field settings.
 	 */
 	public function field_options( $field ) {
-
-		// -------------------------------------------------------------------//
-		// Basic field options.
-		// -------------------------------------------------------------------//
+		/*
+		 * Basic field options.
+		 */
 
 		// Options open markup.
-		$this->field_option( 'basic-options', $field, array(
-			'markup' => 'open',
-		) );
+		$this->field_option(
+			'basic-options',
+			$field,
+			array(
+				'markup' => 'open',
+			)
+		);
 
 		// Label.
 		$this->field_option( 'label', $field );
@@ -214,18 +258,26 @@ class WPForms_Field_Payment_Multiple extends WPForms_Field {
 		$this->field_option( 'required', $field );
 
 		// Options close markup.
-		$this->field_option( 'basic-options', $field, array(
-			'markup' => 'close',
-		) );
+		$this->field_option(
+			'basic-options',
+			$field,
+			array(
+				'markup' => 'close',
+			)
+		);
 
-		// -------------------------------------------------------------------//
-		// Advanced field options.
-		// -------------------------------------------------------------------//
+		/*
+		 * Advanced field options.
+		 */
 
 		// Options open markup.
-		$this->field_option( 'advanced-options', $field, array(
-			'markup' => 'open',
-		) );
+		$this->field_option(
+			'advanced-options',
+			$field,
+			array(
+				'markup' => 'open',
+			)
+		);
 
 		// Choices Images Style (theme).
 		$this->field_option( 'choices_images_style', $field );
@@ -240,9 +292,13 @@ class WPForms_Field_Payment_Multiple extends WPForms_Field {
 		$this->field_option( 'css', $field );
 
 		// Options close markup.
-		$this->field_option( 'advanced-options', $field, array(
-			'markup' => 'close',
-		) );
+		$this->field_option(
+			'advanced-options',
+			$field,
+			array(
+				'markup' => 'close',
+			)
+		);
 	}
 
 	/**
@@ -271,7 +327,7 @@ class WPForms_Field_Payment_Multiple extends WPForms_Field {
 	 *
 	 * @param array $field      Field settings.
 	 * @param array $deprecated Deprecated array.
-	 * @param array $form_data  Form data.
+	 * @param array $form_data  Form data and settings.
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
 
@@ -279,32 +335,41 @@ class WPForms_Field_Payment_Multiple extends WPForms_Field {
 		$container = $field['properties']['input_container'];
 		$choices   = $field['properties']['inputs'];
 
-		printf( '<ul %s>',
+		printf(
+			'<ul %s>',
 			wpforms_html_attributes( $container['id'], $container['class'], $container['data'] )
 		);
 
 			foreach ( $choices as $key => $choice ) {
 
-				printf( '<li %s>',
+				printf(
+					'<li %s>',
 					wpforms_html_attributes( $choice['container']['id'], $choice['container']['class'], $choice['container']['data'], $choice['container']['attr'] )
 				);
 
 					if ( empty( $field['dynamic_choices'] ) && ! empty( $field['choices_images'] ) ) {
 
 						// Image choices.
-						printf( '<label %s>',
+						printf(
+							'<label %s>',
 							wpforms_html_attributes( $choice['label']['id'], $choice['label']['class'], $choice['label']['data'], $choice['label']['attr'] )
 						);
 
 							if ( ! empty( $choice['image'] ) ) {
-								echo '<span class="wpforms-image-choices-image"><img src="' . esc_url( $choice['image'] ) . '"></span>';
+								printf(
+									'<span class="wpforms-image-choices-image"><img src="%s" alt="%s"%s></span>',
+									esc_url( $choice['image'] ),
+									esc_attr( $choice['label']['text'] ),
+									! empty( $choice['label']['text'] ) ? ' title="' . esc_attr( $choice['label']['text'] ) . '"' : ''
+								);
 							}
 
 							if ( 'none' === $field['choices_images_style'] ) {
 								echo '<br>';
 							}
 
-							printf( '<input type="radio" %s %s %s>',
+							printf(
+								'<input type="radio" %s %s %s>',
 								wpforms_html_attributes( $choice['id'], $choice['class'], $choice['data'], $choice['attr'] ),
 								esc_attr( $choice['required'] ),
 								checked( '1', $choice['default'], false )
@@ -317,13 +382,15 @@ class WPForms_Field_Payment_Multiple extends WPForms_Field {
 					} else {
 
 						// Normal display.
-						printf( '<input type="radio" %s %s %s>',
+						printf(
+							'<input type="radio" %s %s %s>',
 							wpforms_html_attributes( $choice['id'], $choice['class'], $choice['data'], $choice['attr'] ),
 							esc_attr( $choice['required'] ),
 							checked( '1', $choice['default'], false )
 						);
 
-						printf( '<label %s>%s</label>',
+						printf(
+							'<label %s>%s</label>',
 							wpforms_html_attributes( $choice['label']['id'], $choice['label']['class'], $choice['label']['data'], $choice['label']['attr'] ),
 							wp_kses_post( $choice['label']['text'] )
 						); // WPCS: XSS ok.
@@ -342,7 +409,7 @@ class WPForms_Field_Payment_Multiple extends WPForms_Field {
 	 *
 	 * @param int   $field_id     Field ID.
 	 * @param array $field_submit Submitted form data.
-	 * @param array $form_data    Form data.
+	 * @param array $form_data    Form data and settings.
 	 */
 	public function validate( $field_id, $field_submit, $form_data ) {
 
@@ -363,9 +430,9 @@ class WPForms_Field_Payment_Multiple extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int   $field_id     Field ID.
-	 * @param array $field_submit Submitted form data.
-	 * @param array $form_data    Form data.
+	 * @param int    $field_id     Field ID.
+	 * @param string $field_submit Submitted form data.
+	 * @param array  $form_data    Form data and settings.
 	 */
 	public function format( $field_id, $field_submit, $form_data ) {
 
@@ -374,7 +441,6 @@ class WPForms_Field_Payment_Multiple extends WPForms_Field {
 		$value        = '';
 		$amount       = 0;
 		$choice_label = '';
-		$choice_key   = '';
 		$image        = '';
 
 		if ( ! empty( $field_submit ) && ! empty( $field['choices'][ $field_submit ]['value'] ) ) {
@@ -406,4 +472,5 @@ class WPForms_Field_Payment_Multiple extends WPForms_Field {
 		);
 	}
 }
+
 new WPForms_Field_Payment_Multiple();

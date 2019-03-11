@@ -39,7 +39,7 @@ if ( ! empty( $agreement_data ) ) {
             <p>
 				<?php _e( 'Please make sure the website information is correct at the', WPAUTOTERMS_SLUG ); ?>
                 <strong><a href="<?php
-					echo esc_url( admin_url( 'edit.php?post_type=' . WPAUTOTERMS_CPT . '&page=' . WPAUTOTERMS_SLUG . '_' . Menu::PAGE_SETTINGS ) );
+					echo esc_url( admin_url( 'edit.php?post_type=' . \wpautoterms\cpt\CPT::type() . '&page=' . WPAUTOTERMS_SLUG . '_' . Menu::PAGE_SETTINGS ) );
 					?>"><?php _e( 'Settings page', WPAUTOTERMS_SLUG ); ?></a></strong>
 				<?php _e( 'before you create a legal page.', WPAUTOTERMS_SLUG ); ?>
             </p>

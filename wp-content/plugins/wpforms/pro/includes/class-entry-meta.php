@@ -22,6 +22,7 @@ class WPForms_Entry_Meta_Handler extends WPForms_DB {
 
 		$this->table_name  = $wpdb->prefix . 'wpforms_entry_meta';
 		$this->primary_key = 'id';
+		$this->type        = 'entry_meta';
 	}
 
 	/**
@@ -51,7 +52,13 @@ class WPForms_Entry_Meta_Handler extends WPForms_DB {
 	public function get_column_defaults() {
 
 		return array(
-			'date' => date( 'Y-m-d H:i:s' ),
+			'entry_id' => '',
+			'form_id'  => '',
+			'user_id'  => '',
+			'type'     => '',
+			'status'   => '',
+			'data'     => '',
+			'date'     => date( 'Y-m-d H:i:s' ),
 		);
 	}
 

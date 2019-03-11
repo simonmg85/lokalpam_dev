@@ -18,7 +18,7 @@ jQuery(document).ready(function ($) {
         if ($("[data-type='permanent-dismiss'][data-name='" + el.data('name') + "']").prop('checked')) {
             $.post(ajaxurl, {
                 action: 'settings_warning_disable',
-                nonce: wpautotermsPostNew.settings_warning_disable_nonce,
+                nonce: wpautotermsCommon.nonce['settings_warning_disable'],
                 state: 1
             })
         }

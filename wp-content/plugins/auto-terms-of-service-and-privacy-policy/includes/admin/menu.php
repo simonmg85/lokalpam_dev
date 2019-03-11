@@ -11,6 +11,7 @@ use wpautoterms\admin\page\License_Settings;
 use wpautoterms\admin\page\Settings_Page;
 use wpautoterms\admin\page;
 use wpautoterms\api;
+use wpautoterms\cpt\CPT;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -20,7 +21,7 @@ abstract class Menu {
 	const VERSION = 'version';
 	const LEGACY_OPTIONS = 'legacy_options';
 
-	const PAGE_CONTACT = 'contact';
+	const PAGE_HELP = 'help';
 	const PAGE_SETTINGS = 'settings';
 	const PAGE_COMPLIANCE_KITS = 'compliancekits';
 	const PAGE_LICENSE_SETTINGS = 'license_settings';
@@ -31,7 +32,7 @@ abstract class Menu {
 	/**
 	 * @var Settings_Base[]
 	 */
-	static protected $_pages;
+	static public $pages;
 
 	public static function font_sizes() {
 		return array(
@@ -52,42 +53,31 @@ abstract class Menu {
 		);
 	}
 
-	public static function init( api\License $license, api\Query $query ) {
+	public static function init( api\License $license ) {
 		$ls = new License_Settings( static::PAGE_LICENSE_SETTINGS, __( 'License Settings', WPAUTOTERMS_SLUG ),
 			__( 'License', WPAUTOTERMS_SLUG ) );
 		$ls->set_license( $license );
-		$contact = new page\Contact( static::PAGE_CONTACT, __( 'Contact', WPAUTOTERMS_SLUG ) );
-		$sm = new Send_Message( 'manage_options', null, $contact->id(), null,
+		$contact = new page\Help( static::PAGE_HELP, __( 'Help', WPAUTOTERMS_SLUG ) );
+		$sm = new Send_Message( CPT::edit_cap(), null, $contact->id(), null,
 			__( 'Access denied', WPAUTOTERMS_SLUG ), true );
 		$contact->action = $sm;
+		$sp = new Settings_Page( static::PAGE_SETTINGS, __( 'Settings', WPAUTOTERMS_SLUG ) );
+		$sp->set_license( $license );
 
-		static::$_pages = array(
+		static::$pages = array(
 			new Compliancekits( static::PAGE_COMPLIANCE_KITS, __( 'Compliance Kits', WPAUTOTERMS_SLUG ), $license ),
-			new Settings_Page( static::PAGE_SETTINGS, __( 'Settings', WPAUTOTERMS_SLUG ) ),
+			$sp,
 			$ls,
 			new Legacy_Settings( static::PAGE_LEGACY_SETTINGS, __( 'Legacy Auto TOS & PP', WPAUTOTERMS_SLUG ) ),
 			$contact,
 		);
-		if ( ! get_option( WPAUTOTERMS_OPTION_PREFIX . 'options_activated' ) ) {
-			/**
-			 * @var $page page\Base
-			 */
-			foreach ( static::$_pages as $page ) {
-				if ( $page instanceof Settings_Base ) {
-					foreach ( $page->defaults() as $k => $v ) {
-						add_option( WPAUTOTERMS_OPTION_PREFIX . $k, $v );
-					}
-				}
-			}
-			update_option( WPAUTOTERMS_OPTION_PREFIX . 'options_activated', true );
-		}
 		add_action( 'admin_init', array( __CLASS__, 'register_settings' ) );
 		add_action( 'admin_menu', array( __CLASS__, 'admin_menu' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_scripts' ) );
 	}
 
 	public static function register_settings() {
-		foreach ( static::$_pages as $page ) {
+		foreach ( static::$pages as $page ) {
 			if ( $page instanceof Settings_Base ) {
 				$page->define_options();
 			}
@@ -95,18 +85,18 @@ abstract class Menu {
 	}
 
 	public static function admin_menu() {
-		foreach ( static::$_pages as $page ) {
+		foreach ( static::$pages as $page ) {
 			$page->register_menu();
 		}
 	}
 
 	public static function enqueue_scripts( $page ) {
-		$prefix = WPAUTOTERMS_CPT . '_page_';
+		$prefix = CPT::type() . '_page_';
 		if ( 0 != strncmp( $page, $prefix, strlen( $prefix ) ) ) {
 			return;
 		}
 		$page = substr( $page, strlen( $prefix ) );
-		foreach ( static::$_pages as $p ) {
+		foreach ( static::$pages as $p ) {
 			if ( $p->id() == $page ) {
 				$p->enqueue_scripts();
 			}

@@ -70,6 +70,12 @@
 				if ( isset( $_POST['post_nonce_field'] ) && wp_verify_nonce( $_POST['post_nonce_field'], 'post_nonce' ) ) {
 					
 					$response = '';
+					$preselctedCat = false;
+					if(isset($_POST['lppre_plan_cats'])){
+						if(!empty($_POST['lppre_plan_cats'])){
+							$preselctedCat = true;
+						}
+					}
 					$errors = array();
 					if(empty($_POST['postTitle'])){
 						$errors['postTitle'] = 'postTitle';
@@ -94,17 +100,84 @@
 							}
 						}
 					}
+
+					/* for size validations */
+					$counterLimit = null;
+					$sizeLimit = null;
+
+					$totalGalSize = null;
+					$totalGalCount = null;
+					$msg2 = '';
+					$counterSwitch = lp_theme_option('lp_listing_images_count_switch');
+					$sizeSwitch = lp_theme_option('lp_listing_images_size_switch');
+					if($counterSwitch=="yes" || $sizeSwitch=="yes"){
+						if($counterSwitch=="yes"){
+							$counterLimit = lp_theme_option('lp_listing_images_counter');
+						}
+						if($sizeSwitch=="yes"){
+							$sizeLimit = lp_theme_option('lp_listing_images_size_switch');
+							$sizeLimit = $sizeLimit * 1000000;
+						}
+
+
+						if ( isset($_FILES["listingfiles"]) ) {
+
+							if($_FILES['listingfiles']['size'] != 0) {
+
+								if ( isset($_FILES["listingfiles"]) ) {
+									if($_FILES['listingfiles']['size'] != 0) {
+										$files = $_FILES["listingfiles"];
+										$totalGalCount = 0;
+										foreach ($files['name'] as $key => $value) {
+											if ($files['name'][$key]) {
+												$singleGal = $files['size'][$key];
+												$totalGalSize = $totalGalSize + $singleGal;
+												$totalGalCount++;
+											}
+										}
+									}
+								}
+
+
+								if( !empty($counterLimit) && !empty($totalGalCount) ){
+									if($totalGalCount > $counterLimit){
+										$errors['listingfiles'] = 'listingfiles';
+										$msg2 = esc_html__('Max. allowed images are ', 'listingpro-plugin');
+										$msg2 .= $counterLimit;
+									}
+								}
+								if( !empty($sizeLimit) && !empty($totalGalSize) ){
+									if($totalGalSize > $sizeLimit){
+										$errors['listingfiles'] = 'listingfiles';
+										$msg2 = esc_html__('Max. allowed images size is ', 'listingpro-plugin');
+										$msg2 .= $sizeLimit. '';
+										$msg2 .= 'Mb';
+									}
+								}
+
+							}
+
+						}
+					}
+					/* end for size validation */
+
 					/* PLAN ID */
 					$lp_paid_mode = $listingpro_options['enable_paid_submission'];
+					$planHavePrice = false;
 					$plan_id = 'none';
 					if(isset($_POST['plan_id'])){
 						$plan_id = $_POST['plan_id'];
+						$plan_price = get_post_meta($plan_id, 'plan_price', true);
+                        if(!empty($plan_price)){
+                            $planHavePrice = true;
+                        }
 					}else{
 						$plan_id = 'none';
 					}
 					if( !empty($errors) && count($errors)>0 ){
+						$msg = esc_html__('Sorry! There is problem in your submission', 'listingpro-plugin');
 						
-						die(json_encode(array('response'=>'fail', 'status'=>$errors)));	
+						die(json_encode(array('response'=>'fail', 'status'=>$errors, 'msg'=>$msg )));	
 					}
 					else{
 						
@@ -252,6 +325,7 @@
 							$listLongitude = sanitize_text_field($_POST['longitude']);
 							$listPhone = sanitize_text_field($_POST['phone']);
 							$listWebsite = sanitize_text_field($_POST['website']);
+							$listWhatsapp = sanitize_text_field($_POST['whatsapp']);
 							$listTwitter = sanitize_text_field($_POST['twitter']);
 							$listFacebook = sanitize_text_field($_POST['facebook']);
 							$listLinkedin= sanitize_text_field($_POST['linkedin']);
@@ -270,6 +344,7 @@
 							listing_set_metabox('latitude', $listLatitude, $postID);
 							listing_set_metabox('longitude', $listLongitude, $postID);
 							listing_set_metabox('phone', $listPhone, $postID);
+							listing_set_metabox('whatsapp', $listWhatsapp, $postID);
 							listing_set_metabox('email', $useremail, $postID);
 							listing_set_metabox('website', $listWebsite, $postID);
 							listing_set_metabox('twitter', $listTwitter, $postID);
@@ -283,6 +358,10 @@
 							listing_set_metabox('list_price_to', $listPText, $postID);
 							listing_set_metabox('video', $listPostVideo, $postID);
 							listing_set_metabox('claimed_section', 'not_claimed', $postID);
+							if(!empty($preselctedCat)){
+								//for pre selected category
+								update_post_meta($postID, 'preselected', true);
+							}
 							
                             if ( isset($_FILES["business_logo"]) )  {
                                 if($_FILES['business_logo']['size'] != 0) {
@@ -312,8 +391,10 @@
                                     }
                                 }
                             }
+							$featuredimageset = false;
 							if ( isset($_FILES["lp-featuredimage"]) )  {
 								if($_FILES['lp-featuredimage']['size'] != 0) {
+									$featuredimageset = true;
 									$files2 = $_FILES["listingfiles"];  
 									$files = $_FILES["lp-featuredimage"];  			
 									$b_logo = $_FILES["business_logo"];
@@ -356,7 +437,8 @@
 											$count = 0;					
 											foreach ($_FILES as $file => $array) {	
 											
-												if( $featImgFromGal==true && !isset($_FILES["lp-featuredimage"]) ){
+												if( empty($featuredimageset) && $featImgFromGal==true && !isset($_FILES["lp-featuredimage"
+												]) ){
 													$newupload = listingpro_handle_attachment($file,$postID,$set_thu=true); 
 												}else{
 													$newupload = listingpro_handle_attachment($file,$postID,$set_thu=false); 
@@ -428,12 +510,13 @@
 							wp_mail( $admin_email, $a_mail_subject_a, $a_mail_body_a, $headers);
 							
 
-							if( $lp_paid_mode == "yes" ){
+							if( $lp_paid_mode == "yes" && $planHavePrice == true ){
 								listing_draft_save( $postID, null );
 							}
 							
 							$response = get_the_permalink($postID);
-							die(json_encode(array('response'=>'success', 'status'=>$response)));
+							$msg = esc_html__('Success! Submission is successful', 'listingpro-plugin');
+							die(json_encode(array('response'=>'success', 'status'=>$response, 'msg'=>$msg)));
 						}
 						else{
 							
@@ -453,12 +536,12 @@
                                 }
 
                                 if( !empty($errors) && count($errors)>0 ){
-
-                                    die(json_encode(array('response'=>'fail', 'status'=>$errors)));
+									$msg = esc_html__('Sorry! There is problem in your submission', 'listingpro-plugin');
+                                    die(json_encode(array('response'=>'fail', 'status'=>$errors, 'msg'=>$msg)));
                                 }
                                 $user_name = $_POST['email'];
                                 list($user_name) = explode('@', $email);
-                                $user_name .=rand(1,100);
+                                $user_name .=rand(1,10000);
 								if(!empty($enableUsernameField)){
 									$user_name = sanitize_text_field($_POST['customUname']);
 								}
@@ -466,13 +549,15 @@
 								$existinUserId = username_exists( $user_name );
 								if(!empty($existinUserId)){
 									$response = '<span class="email-exist-error">'.esc_html__("UserName already exists", "listingpro-plugin").'</span>';
-                                    die(json_encode(array('response'=>'failure', 'status'=>$response)));
+									$msg = esc_html__('Sorry! There is problem in your submission', 'listingpro-plugin');
+                                    die(json_encode(array('response'=>'failure', 'status'=>$response, 'msg'=>$msg)));
 								}
 								
 								
                                 if( email_exists($email)==true || username_exists($user_name)==true ){
                                     $response = '<span class="email-exist-error">'.esc_html__("Email already exists", "listingpro-plugin").'</span>';
-                                    die(json_encode(array('response'=>'failure', 'status'=>$response)));
+									$msg = esc_html__('Sorry! There is problem in your submission', 'listingpro-plugin');
+                                    die(json_encode(array('response'=>'failure', 'status'=>$response, 'msg'=>$msg)));
                                 }
                                 else{
 
@@ -527,7 +612,7 @@
                                         if(isset($_POST['location'])){
                                             if(!empty($_POST['location'])){
                                                 //$listLocation = sanitize_text_field($_POST['location']);
-												$listLocation = array_map( 'sanitize_text_field', wp_unslash( $_POST['location'] ) );
+												$listLocation = $_POST['location'];
 												if(is_array($listLocation)){
 													foreach($listLocation as $singlelistLoc){
 														$insertLoc[$singlelistLoc] = listingpro_insert_term($singlelistLoc,'location');
@@ -627,6 +712,7 @@
                                     $listLatitude = sanitize_text_field($_POST['latitude']);
                                     $listLongitude = sanitize_text_field($_POST['longitude']);
                                     $listPhone = sanitize_text_field($_POST['phone']);
+									$listWhatsapp = sanitize_text_field($_POST['whatsapp']);
                                     $listWebsite = sanitize_text_field($_POST['website']);
                                     $listTwitter = sanitize_text_field($_POST['twitter']);
                                     $listFacebook = sanitize_text_field($_POST['facebook']);
@@ -646,6 +732,7 @@
                                     listing_set_metabox('latitude', $listLatitude, $postID);
                                     listing_set_metabox('longitude', $listLongitude, $postID);
                                     listing_set_metabox('phone', $listPhone, $postID);
+									listing_set_metabox('whatsapp', $listWhatsapp, $postID);
                                     listing_set_metabox('email', $email, $postID);
                                     listing_set_metabox('website', $listWebsite, $postID);
                                     listing_set_metabox('twitter', $listTwitter, $postID);
@@ -660,8 +747,38 @@
                                     listing_set_metabox('video', $listPostVideo, $postID);
                                     listing_set_metabox('claimed_section', 'not_claimed', $postID);
 									
+									if ( isset($_FILES["business_logo"]) )  {
+										if($_FILES['business_logo']['size'] != 0) {
+											$files2 = $_FILES["listingfiles"];
+											$files3 = $_FILES["lp-featuredimage"];
+											$files = $_FILES["business_logo"];
+											foreach ($files['name'] as $key => $value) {
+												if ($files['name'][$key]) {
+													$file = array( 'name' => $files['name'][$key],
+														'type' => $files['type'][$key],
+														'tmp_name' => $files['tmp_name'][$key],
+														'error' => $files['error'][$key],
+														'size' => $files['size'][$key] );
+													$_FILES = array ("business_logo" => $file);
+													$count = 0;
+													foreach ($_FILES as $file => $array) {
+														//$newupload = listingpro_handle_attachment_featured($file,$postID);
+														$newupload = listingpro_handle_attachment($file,$postID,$set_thu=false);
+														$b_logo_url = wp_get_attachment_url( $newupload );
+
+														listing_set_metabox('business_logo', $b_logo_url, $postID);
+													}
+												}
+												$_FILES["listingfiles"] = '';
+												$_FILES["listingfiles"] = $files2;
+												$_FILES["lp-featuredimage"] = $files3;
+											}
+										}
+									}
+									$featuredimageset = false;
 									if ( isset($_FILES["lp-featuredimage"]) )  {
 										if($_FILES['lp-featuredimage']['size'] != 0) {
+											$featuredimageset = true;
 											$files2 = $_FILES["listingfiles"];  
 											$files = $_FILES["lp-featuredimage"];  			
 											foreach ($files['name'] as $key => $value) { 							
@@ -699,7 +816,7 @@
 													$count = 0;					
 													foreach ($_FILES as $file => $array) {	
 														
-														if( $featImgFromGal==true && !isset($_FILES["lp-featuredimage"]) ){
+														if( empty($featuredimageset) && $featImgFromGal==true && !isset($_FILES["lp-featuredimage"]) ){
 															$newupload = listingpro_handle_attachment($file,$postID,$set_thu=true);
 														}else{
 															$newupload = listingpro_handle_attachment($file,$postID,$set_thu=false);
@@ -767,12 +884,13 @@
                                     wp_mail( $admin_email, $a_mail_subject_a, $a_mail_body_a, $headers);
 									
 
-                                    if( $lp_paid_mode == "yes" ){
+                                    if( $lp_paid_mode == "yes" && $planHavePrice == true ){
                                         listing_draft_save( $postID, $user_id );
                                     }
 
                                     $response = get_the_permalink($postID);
-                                    die(json_encode(array('response'=>'success', 'status'=>$response, 'newuser'=>$user_id )));
+									$msg = esc_html__('Success! Submission is successful', 'listingpro-plugin');
+                                    die(json_encode(array('response'=>'success', 'status'=>$response, 'newuser'=>$user_id, 'msg'=>$msg )));
 
                                 }
                             }
@@ -790,7 +908,8 @@
                                     if( is_wp_error( $user ) )
                                     {
                                         $response = '<span class="invalid-cred-error">'.esc_html__("Invalid username or password", "listingpro-plugin").'</span>';
-                                        die(json_encode(array('response'=>'failure', 'status'=>$response)));
+										$msg = esc_html__('Sorry! There is problem in your submission', 'listingpro-plugin');
+                                        die(json_encode(array('response'=>'failure', 'status'=>$response, 'msg'=>$msg)));
                                     }
                                     else{
 										
@@ -876,6 +995,7 @@
                                         $listLatitude = sanitize_text_field($_POST['latitude']);
                                         $listLongitude = sanitize_text_field($_POST['longitude']);
                                         $listPhone = sanitize_text_field($_POST['phone']);
+										$listWhatsapp = sanitize_text_field($_POST['whatsapp']);
                                         $listWebsite = sanitize_text_field($_POST['website']);
                                         $listTwitter = sanitize_text_field($_POST['twitter']);
                                         $listFacebook = sanitize_text_field($_POST['facebook']);
@@ -895,6 +1015,7 @@
                                         listing_set_metabox('latitude', $listLatitude, $postID);
                                         listing_set_metabox('longitude', $listLongitude, $postID);
                                         listing_set_metabox('phone', $listPhone, $postID);
+										listing_set_metabox('whatsapp', $listWhatsapp, $postID);
                                         listing_set_metabox('email', $email, $postID);
                                         listing_set_metabox('website', $listWebsite, $postID);
                                         listing_set_metabox('twitter', $listTwitter, $postID);
@@ -908,9 +1029,43 @@
                                         listing_set_metabox('list_price_to', $listPText, $postID);
                                         listing_set_metabox('video', $listPostVideo, $postID);
                                         listing_set_metabox('claimed_section', 'not_claimed', $postID);
+										if(!empty($preselctedCat)){
+											//for pre selected category
+											update_post_meta($postID, 'preselected', true);
+										}
+										
+										if ( isset($_FILES["business_logo"]) )  {
+											if($_FILES['business_logo']['size'] != 0) {
+												$files2 = $_FILES["listingfiles"];
+												$files3 = $_FILES["lp-featuredimage"];
+												$files = $_FILES["business_logo"];
+												foreach ($files['name'] as $key => $value) {
+													if ($files['name'][$key]) {
+														$file = array( 'name' => $files['name'][$key],
+															'type' => $files['type'][$key],
+															'tmp_name' => $files['tmp_name'][$key],
+															'error' => $files['error'][$key],
+															'size' => $files['size'][$key] );
+														$_FILES = array ("business_logo" => $file);
+														$count = 0;
+														foreach ($_FILES as $file => $array) {
+															//$newupload = listingpro_handle_attachment_featured($file,$postID);
+															$newupload = listingpro_handle_attachment($file,$postID,$set_thu=false);
+															$b_logo_url = wp_get_attachment_url( $newupload );
 
+															listing_set_metabox('business_logo', $b_logo_url, $postID);
+														}
+													}
+													$_FILES["listingfiles"] = '';
+													$_FILES["listingfiles"] = $files2;
+													$_FILES["lp-featuredimage"] = $files3;
+												}
+											}
+										}
+										$featuredimageset = false;
                                         if ( isset($_FILES["lp-featuredimage"]) )  {
 											if($_FILES['lp-featuredimage']['size'] != 0) {
+												$featuredimageset = true;
 												$files2 = $_FILES["listingfiles"];  
 												$files = $_FILES["lp-featuredimage"];  			
 												foreach ($files['name'] as $key => $value) { 							
@@ -948,7 +1103,7 @@
 													$count = 0;					
 													foreach ($_FILES as $file => $array) {	
 														
-														if( $featImgFromGal==true && !isset($_FILES["lp-featuredimage"]) ){
+														if( empty($featuredimageset) && $featImgFromGal==true && !isset($_FILES["lp-featuredimage"]) ){
 															$newupload = listingpro_handle_attachment($file,$postID,$set_thu=true);
 														}else{
 															$newupload = listingpro_handle_attachment($file,$postID,$set_thu=false);
@@ -1019,12 +1174,13 @@
 									
 									
 
-                                        if( $lp_paid_mode == "yes" ){
+                                        if( $lp_paid_mode == "yes" && $planHavePrice == true ){
                                             listing_draft_save( $postID, $user_id );
                                         }
 
                                         $response = get_the_permalink($postID);
-                                        die(json_encode(array('response'=>'success', 'status'=>$response, 'newuser'=>$user_id )));
+										$msg = esc_html__('Success! Submission is successful', 'listingpro-plugin');
+                                        die(json_encode(array('response'=>'success', 'status'=>$response, 'newuser'=>$user_id, 'msg'=>$msg )));
 
                                     }
                                 //}
@@ -1063,6 +1219,9 @@
 					$lp_post = sanitize_text_field($_POST['lp_post']);
 					$prevAddress = listing_get_metabox_by_ID('gAddress', $lp_post);
 					
+					
+					$exGalIds = $_POST['listingeditfiles'];
+					
 					/* for validations */
 					$errors = array();
 					if(empty($_POST['postTitle'])){
@@ -1078,10 +1237,83 @@
 					if(empty($_POST['postContent'])){
 						$errors['postContent'] = 'postContent';
 					}
+					/* for size validations */
+					$counterLimit = null;
+					$sizeLimit = null;
+
+					$totalGalSize = null;
+					$totalGalCount = null;
+					$msg2 = '';
+					$counterSwitch = lp_theme_option('lp_listing_images_count_switch');
+					$sizeSwitch = lp_theme_option('lp_listing_images_size_switch');
+					if($counterSwitch=="yes" || $sizeSwitch=="yes"){
+						if($counterSwitch=="yes"){
+							$counterLimit = lp_theme_option('lp_listing_images_counter');
+						}
+						if($sizeSwitch=="yes"){
+							$sizeLimit = lp_theme_option('lp_listing_images_size_switch');
+							$sizeLimit = $sizeLimit * 1000000;
+						}
+
+
+						if ( isset($_FILES["listingfiles"]) ) {
+
+							if($_FILES['listingfiles']['size'] != 0) {
+
+								if ( isset($_FILES["listingfiles"]) ) {
+									if($_FILES['listingfiles']['size'] != 0) {
+										$files = $_FILES["listingfiles"];
+										$totalGalCount = 0;
+										foreach ($files['name'] as $key => $value) {
+											if ($files['name'][$key]) {
+												$singleGal = $files['size'][$key];
+												$totalGalSize = $totalGalSize + $singleGal;
+												$totalGalCount++;
+											}
+										}
+									}
+								}
+
+
+								if( !empty($counterLimit) && !empty($totalGalCount) ){
+                                    $galleryImagesIDS = get_post_meta( $lp_post, 'gallery_image_ids', true);
+                                    if(!empty($galleryImagesIDS)){
+                                        $galleryImagesIDS = explode( ',', $galleryImagesIDS );
+                                        $galleryImagesIDS_count =   count( $galleryImagesIDS );
+
+                                        $total_new_images   =   $totalGalCount+$galleryImagesIDS_count;
+                                        if( $total_new_images > $counterLimit )
+                                        {
+                                            $errors['listingfiles'] = 'listingfiles';
+                                            $msg2 = esc_html__('Max. allowed images are ', 'listingpro-plugin');
+                                            $msg2 .= $counterLimit;
+                                        }
+                                    }
+
+									if($totalGalCount > $counterLimit){
+										$errors['listingfiles'] = 'listingfiles';
+										$msg2 = esc_html__('Max. allowed images are ', 'listingpro-plugin');
+										$msg2 .= $counterLimit;
+									}
+								}
+								if( !empty($sizeLimit) && !empty($totalGalSize) ){
+									if($totalGalSize > $sizeLimit){
+										$errors['listingfiles'] = 'listingfiles';
+										$msg2 = esc_html__('Max. allowed images size is ', 'listingpro-plugin');
+										$msg2 .= $sizeLimit. '';
+										$msg2 .= 'Mb';
+									}
+								}
+
+							}
+
+						}
+					}
+					/* end for size validation */
 					
 					if( !empty($errors) && count($errors)>0 ){
-						
-						die(json_encode(array('response'=>'fail', 'status'=>$errors)));	
+						$msg = esc_html__('Sorry! There is problem in your submission', 'listingpro-plugin');
+						die(json_encode(array('response'=>'fail', 'status'=>$errors, 'msg'=>$msg)));	
 					}
 					else{
 					
@@ -1241,6 +1473,7 @@
 						$listLatitude = sanitize_text_field($_POST['latitude']);
 						$listLongitude = sanitize_text_field($_POST['longitude']);
 						$listPhone = sanitize_text_field($_POST['phone']);
+						$listWhatsapp = sanitize_text_field($_POST['whatsapp']);
 						$listEmail = '';
 						if(isset($_POST['email'])){
 							$listEmail = sanitize_email($_POST['email']);
@@ -1267,6 +1500,7 @@
 						listing_set_metabox('latitude', $listLatitude, $postID);
 						listing_set_metabox('longitude', $listLongitude, $postID);
 						listing_set_metabox('phone', $listPhone, $postID);
+						listing_set_metabox('whatsapp', $listWhatsapp, $postID);
 						listing_set_metabox('email', $listEmail, $postID);
 						listing_set_metabox('website', $listWebsite, $postID);
 						listing_set_metabox('twitter', $listTwitter, $postID);
@@ -1286,9 +1520,36 @@
 						
 						/* print_r($_FILES["listingfiles"]);
 						exit; */
-						
+						if ( isset($_FILES["business_logo"]) ) {
+								if($_FILES['business_logo']['size'] != 0) {
+									$files = $_FILES["business_logo"];
+									$files1 = $_FILES["lp-featuredimage"];
+									$files2 = $_FILES["listingfiles"];								
+									foreach ($files['name'] as $key => $value) { 							
+										if ($files['name'][$key]) { 					
+											$file = array( 'name' => $files['name'][$key],	 					
+											'type' => $files['type'][$key], 						
+											'tmp_name' => $files['tmp_name'][$key], 						
+											'error' => $files['error'][$key], 						
+											'size' => $files['size'][$key] ); 					
+											$_FILES = array ("business_logo" => $file); 					
+											$count = 0;					
+											foreach ($_FILES as $file => $array) {	
+												//$newupload = listingpro_handle_attachment_featured($file,$postID);
+												$newupload = listingpro_handle_attachment($file,$postID,$set_thu=false);
+                                                $b_logo_url = wp_get_attachment_url( $newupload );
+                                                listing_set_metabox('business_logo', $b_logo_url, $postID);
+											}
+										}
+										$_FILES["lp-featuredimage"] = $files1;
+										$_FILES["listingfiles"] = $files2;
+									}
+								}									
+							}
+							$featuredimageset = false;
 							if ( isset($_FILES["lp-featuredimage"]) ) {
 								if($_FILES['lp-featuredimage']['size'] != 0) {
+									$featuredimageset = true;
 									$files = $_FILES["lp-featuredimage"];
 									$files2 = $_FILES["listingfiles"];								
 									foreach ($files['name'] as $key => $value) { 							
@@ -1310,9 +1571,21 @@
 								}									
 							}
 							
+							//previous images in galleryImagesIDS
+							$galleryImagesIDS = get_post_meta( $postID, 'gallery_image_ids', true);
+							if(!empty($exGalIds)){
+								$gallIDArr = explode(",",$galleryImagesIDS);
+								$gallIDArr = array_intersect($exGalIds,$gallIDArr);
+								if(!empty($gallIDArr)){
+									$img_ids = implode(",", $gallIDArr);
+									update_post_meta($postID, 'gallery_image_ids', $img_ids);
+								}
+							}else{
+								//remove all images from gallery
+								delete_post_meta( $postID, 'gallery_image_ids');
+							}
 							
 							$result;
-							$galleryImagesIDS;
 							if ( isset($_FILES["listingfiles"]) ) {
 								if($_FILES['listingfiles']['size'] != 0) {
 									$files = $_FILES["listingfiles"]; 
@@ -1330,7 +1603,7 @@
 											if(!empty($_FILES)) {
 												foreach ($_FILES as $file => $array) {
 
-													if( $featImgFromGal==true && !isset($_FILES["lp-featuredimage"]) ){
+													if( empty($featuredimageset) && $featImgFromGal==true && !isset($_FILES["lp-featuredimage"]) ){
 														$newupload = listingpro_handle_attachment($file,$postID,$set_thu=true);
 													}else{
 														$newupload = listingpro_handle_attachment($file,$postID,$set_thu=false);
@@ -1343,7 +1616,6 @@
 										} 
 									}					
 									if(!empty($ids)){
-										$galleryImagesIDS = get_post_meta( $postID, 'gallery_image_ids', true);
 										if(!empty($galleryImagesIDS)){
 											$galleryImagesIDS = explode( ',', $galleryImagesIDS );
 											$result = array_merge($galleryImagesIDS, $ids);
@@ -1356,6 +1628,8 @@
 									}					
 								}
 							}
+							
+							
 							
 							/* print_r($result);
 							exit; */
@@ -1376,15 +1650,17 @@
 							update_post_meta($postID, 'gallery_image_ids', $fIDS);
 						}
 						$response = get_the_permalink($postID);
-						die(json_encode(array('llllc'=>$lp_listing_locations, 'response'=>'success', 'status'=>$response, 'responsed'=>$count, 'responsedds'=>$galleryImagesIDS )));
+						$msg = esc_html__('Success! Submission is successful', 'listingpro-plugin');
+						die(json_encode(array('llllc'=>$lp_listing_locations, 'response'=>'success', 'status'=>$response, 'responsed'=>$count, 'responsedds'=>$galleryImagesIDS, 'msg'=>$msg )));
 
 							
 					}
 				}
 			}
 			else{
+					$msg = esc_html__('Sorry! There is problem in your submission', 'listingpro-plugin');
 					$response = '<span class="email-exist-error error-msg">'.esc_html__("Please check captcha", "listingpro-plugin").'</span>';
-					die(json_encode(array('response'=>'failure', 'status'=>$response, 'dff'=>$processSubmission)));
+					die(json_encode(array('response'=>'failure', 'status'=>$response, 'dff'=>$processSubmission, 'msg'=>$msg)));
 			}
 				
 			

@@ -199,7 +199,7 @@
         <li><strong>Domain Names.</strong> If you are registering a domain name, using or transferring a previously
             registered domain name, you acknowledge and agree that use of the domain name is also subject to the
             policies of the Internet Corporation for Assigned Names and Numbers (&quot;ICANN&quot;), including their <a
-                    href=\"http://www.icann.org/en/registrars/registrant-rights-responsibilities-en.htm\">Registration
+                    href='http://www.icann.org/en/registrars/registrant-rights-responsibilities-en.htm'>Registration
                 Rights and Responsibilities</a>.
         </li>
         <li><strong>Changes. </strong><?php echo $atospp_name; ?> reserves the right, at its sole discretion, to modify

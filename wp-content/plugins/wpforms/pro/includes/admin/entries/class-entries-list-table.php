@@ -223,7 +223,7 @@ class WPForms_Entries_Table extends WP_List_Table {
 					$x ++;
 				}
 			}
-		} else {
+		} else if ( ! empty( $entry_columns ) ) {
 			foreach ( $entry_columns as $id ) {
 				// Check to make sure the field as not been removed.
 				if ( empty( $this->form_data['fields'][ $id ] ) ) {
@@ -267,7 +267,7 @@ class WPForms_Entries_Table extends WP_List_Table {
 
 		if (
 			! empty( $entry_fields[ $field_id ] ) &&
-			! empty( $entry_fields[ $field_id ]['value'] )
+			! wpforms_is_empty_string( $entry_fields[ $field_id ]['value'] )
 		) {
 
 			$value = $entry_fields[ $field_id ]['value'];
@@ -325,7 +325,7 @@ class WPForms_Entries_Table extends WP_List_Table {
 					} else {
 						$value = esc_html__( 'Unknown', 'wpforms' );
 					}
-					$value .= ' <img src="' . WPFORMS_PLUGIN_URL . '/assets/images/icon-dollar.png" alt="Payment"> ';
+					$value .= ' <i class="fa fa-money" aria-hidden="true" style="color:green;font-size: 16px;margin-left:4px;" title="' . esc_html__( 'Payment', 'wpforms' ) . '"></i>';
 				} else {
 					if ( ! empty( $entry->status ) ) {
 						$value = ucwords( sanitize_text_field( $entry->status ) );
@@ -340,6 +340,11 @@ class WPForms_Entries_Table extends WP_List_Table {
 					$amount = wpforms_sanitize_amount( $entry_meta['payment_total'], $entry_meta['payment_currency'] );
 					$total  = wpforms_format_amount( $amount, true, $entry_meta['payment_currency'] );
 					$value  = $total;
+
+					if ( ! empty( $entry_meta['payment_subscription'] ) ) {
+						$value .= ' <i class="fa fa-refresh" aria-hidden="true" style="color:#ccc;margin-left:4px;" title="' . esc_html__( 'Recurring', 'wpforms' ) . '"></i>';
+					}
+
 				} else {
 					$value = '-';
 				}
@@ -461,21 +466,34 @@ class WPForms_Entries_Table extends WP_List_Table {
 			$dates = explode( ' - ', $_GET['date'] );
 
 			if ( is_array( $dates ) && count( $dates ) === 2 ) {
-				$default_date = 'defaultDate: [ "' . $dates[0] . '", "' . $dates[1] . '" ],';
+				$default_date = 'defaultDate: [ "' . sanitize_text_field( $dates[0] ) . '", "' . sanitize_text_field( $dates[1] ) . '" ],';
 			}
 		}
 		?>
 
 		<script>
+			var wpforms_lang_code = '<?php echo sanitize_key( wpforms_get_language_code() ); ?>',
+				flatpickr_locale = {
+					rangeSeparator: ' - '
+				};
+
+			if (
+				Flatpickr !== 'undefined' &&
+				Flatpickr.hasOwnProperty( 'l10ns' ) &&
+				Flatpickr.l10ns.hasOwnProperty( wpforms_lang_code )
+			) {
+				flatpickr_locale = Flatpickr.l10ns[ wpforms_lang_code ];
+				// Rewrite separator for all locales to make filtering work.
+				flatpickr_locale.rangeSeparator = ' - ';
+			}
+
 			jQuery(".wpforms-filter-date-selector").flatpickr({
 				altInput: true,
 				altFormat: "M j, Y",
 				dateFormat: "Y-m-d",
+				locale: flatpickr_locale,
+				mode: "range",
 				<?php echo $default_date; ?>
-				locale: {
-					rangeSeparator: ' - '
-				},
-				mode: "range"
 			});
 		</script>
 

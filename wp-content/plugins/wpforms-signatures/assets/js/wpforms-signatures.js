@@ -61,11 +61,11 @@ var WPFormsSignatures = window.WPFormsSignatures || ( function( document, window
 		/**
 		 * Returns the canvas element from jQuery signature object.
 		 *
-		 * Also makes necessary adjustements for high-res diplays.
+		 * Also makes necessary adjustments for high-res displays.
 		 *
 		 * @since 1.1.0
 		 *
-		 * @param object jQuery signature object.
+		 * @param $signature Signature object.
 		 *
 		 * @return object
 		 */
@@ -86,7 +86,7 @@ var WPFormsSignatures = window.WPFormsSignatures || ( function( document, window
 		 *
 		 * @since 1.1.0
 		 *
-		 * @param object canvas Signature canvas.
+		 * @param canvas Signature canvas.
 		 *
 		 * @return string
 		 */
@@ -213,7 +213,7 @@ var WPFormsSignatures = window.WPFormsSignatures || ( function( document, window
 			// Bind window resize to reset signatures.
 			$( window ).resize( app.resetSignatures );
 
-			// If we have hidden signatures, enable the visiblity watching.
+			// If we have hidden signatures, enable the visibility watching.
 			if ( __private.signaturesDisabled.length > 0 ) {
 				__private.config.watching = setInterval( __private.watchSignatures, __private.config.watchingRate );
 			}
@@ -236,7 +236,7 @@ var WPFormsSignatures = window.WPFormsSignatures || ( function( document, window
 		 *
 		 * @since 1.1.0
 		 *
-		 * @param object jQuery signature object.
+		 * @param $signature jQuery signature object.
 		 */
 		loadSignature: function( $signature ) {
 
@@ -285,7 +285,7 @@ var WPFormsSignatures = window.WPFormsSignatures || ( function( document, window
 		 *
 		 * @since 1.1.0
 		 *
-		 * @param object jQuery signature object.
+		 * @param $signature jQuery signature object.
 		 */
 		resetSignature: function( $signature ) {
 

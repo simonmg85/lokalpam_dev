@@ -6,6 +6,8 @@
  * This handy class originated from Pippin's Easy Digital Downloads.
  * https://github.com/easydigitaldownloads/easy-digital-downloads/blob/master/includes/class-edd-db.php
  *
+ * Sub-classes should define $table_name, $version, and $primary_key in __construct() method.
+ *
  * @package    WPForms
  * @author     WPForms
  * @since      1.1.6
@@ -42,13 +44,13 @@ abstract class WPForms_DB {
 	public $primary_key;
 
 	/**
-	 * Primary class constructor.
-	 * Sub-classes should define $table_name, $version, and $primary_key here.
+	 * Database type type identifier.
 	 *
-	 * @since 1.1.6
+	 * @since 1.5.1
+	 *
+	 * @var string
 	 */
-	public function __construct() {
-	}
+	public $type;
 
 	/**
 	 * Retrieves the list of columns for the database table.
@@ -310,6 +312,7 @@ abstract class WPForms_DB {
 		}
 
 		do_action( 'wpforms_post_delete', $row_id );
+		do_action( 'wpforms_post_delete_' . $this->type, $row_id );
 
 		return true;
 	}
@@ -339,6 +342,7 @@ abstract class WPForms_DB {
 		}
 
 		do_action( 'wpforms_post_delete', $row_id );
+		do_action( 'wpforms_post_delete_' . $this->type, $row_id );
 
 		return true;
 	}

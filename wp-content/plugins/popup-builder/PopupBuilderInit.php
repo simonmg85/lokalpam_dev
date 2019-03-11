@@ -38,6 +38,7 @@ class PopupBuilderInit
 	private function includeData()
 	{
 		require_once(SG_POPUP_EXTENSION_PATH.'SgpbPopupExtensionRegister.php');
+		require_once(SG_POPUP_EXTENSION_PATH.'SgpbPopupExtensionActivator.php');
 		require_once(SG_POPUP_CLASSES_PATH.'Installer.php');
 		require_once(SG_POPUP_HELPERS_PATH.'AdminHelper.php');
 		require_once(SG_POPUP_HELPERS_PATH.'Functions.php');

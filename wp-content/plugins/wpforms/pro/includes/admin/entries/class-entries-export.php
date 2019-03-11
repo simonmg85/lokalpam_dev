@@ -54,7 +54,7 @@ class WPForms_Entries_Export {
 	public $form_id;
 
 	/**
-	 * Form data.
+	 * Form data and settings.
 	 *
 	 * @since 1.1.5
 	 * @var int
@@ -86,6 +86,7 @@ class WPForms_Entries_Export {
 				'select',
 				'radio',
 				'checkbox',
+				'gdpr-checkbox',
 				'email',
 				'address',
 				'url',
@@ -95,11 +96,15 @@ class WPForms_Entries_Export {
 				'phone',
 				'number',
 				'file-upload',
+				'rating',
+				'likert_scale',
 				'payment-single',
 				'payment-multiple',
+				'payment-checkbox',
 				'payment-select',
 				'payment-total',
 				'signature',
+				'net_promoter_score',
 			)
 		);
 
@@ -183,6 +188,7 @@ class WPForms_Entries_Export {
 					'content_only' => true,
 				)
 			);
+
 			$this->fields = $this->form_data['fields'];
 		}
 
@@ -204,7 +210,7 @@ class WPForms_Entries_Export {
 		$cols['date_gmt'] = esc_html__( 'Date GMT', 'wpforms' );
 		$cols['entry_id'] = esc_html__( 'ID', 'wpforms' );
 
-		return $cols;
+		return apply_filters( 'wpforms_export_get_csv_cols', $cols, $this->entry_type );
 	}
 
 	/**
@@ -232,7 +238,7 @@ class WPForms_Entries_Export {
 		$allowed = $this->allowed_fields();
 		$data    = array();
 
-		if ( $this->is_single_entry() ) {
+		if ( $this->is_single_entry() ) :
 
 			// For single entry exports we have the needed fields already
 			// and no more queries are necessary.
@@ -246,7 +252,7 @@ class WPForms_Entries_Export {
 			$data[1]['date_gmt'] = date_i18n( $date_format, strtotime( $this->entry->date ) );
 			$data[1]['entry_id'] = absint( $this->entry->entry_id );
 
-		} else {
+		else :
 
 			// All or multiple entry export.
 			$args        = array(
@@ -262,7 +268,7 @@ class WPForms_Entries_Export {
 				$fields = wpforms_decode( $entry->fields );
 
 				foreach ( $form_fields as $form_field ) {
-					if ( in_array( $form_field['type'], $allowed, true ) ) {
+					if ( in_array( $form_field['type'], $allowed, true ) && array_key_exists( $form_field['id'], $fields ) ) {
 						$data[ $entry->entry_id ][ $form_field['id'] ] = wpforms_decode_string( $fields[ $form_field['id'] ]['value'] );
 					}
 				}
@@ -271,7 +277,8 @@ class WPForms_Entries_Export {
 				$data[ $entry->entry_id ]['date_gmt'] = date_i18n( $date_format, strtotime( $entry->date ) );
 				$data[ $entry->entry_id ]['entry_id'] = absint( $entry->entry_id );
 			}
-		} // End if().
+
+		endif;
 
 		$data = apply_filters( 'wpforms_export_get_data', $data, $this->entry_type );
 

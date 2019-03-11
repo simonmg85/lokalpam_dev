@@ -112,6 +112,7 @@ class PopupChecker
 		//If permissive for current page check conditions
 		if ($isPermissive) {
 			$conditions = $this->divideConditionsData();
+			$conditions = apply_filters('sgpbFilterDividedConditions', $conditions);
 			$isSatisfyForConditions = $this->isSatisfyForConditions($conditions);
 
 			if ($isSatisfyForConditions === false) {
@@ -154,12 +155,14 @@ class PopupChecker
 			foreach ($permissiveOptions as $permissiveOption) {
 				$isPermissiveConditions = $this->isSatisfyForConditionsOptions($permissiveOption);
 
-				if ($isPermissiveConditions === false) {
+				if ($isPermissiveConditions) {
 					return $isPermissiveConditions;
 				}
 			}
+
+			return false;
 		}
-		// proEndSilver
+
 		return true;
 	}
 
@@ -168,49 +171,23 @@ class PopupChecker
 		global $post;
 		$paramName  = $option['param'];
 		$defaultStatus = false;
+		$isAllowedConditionFilters = array();
 
 		// proStartSilver
 		if ($paramName == 'select_role') {
 			return true;
 		}
 
-		if ($paramName == 'groups_devices' && !empty($option['value'])) {
-
-			if (is_array($option['value'])) {
-				$device = Functions::getUserDevice();
-				if (in_array($device, $option['value'])) {
-					return true;
-				}
- 			}
-		}
-		// proEndSilver
-
-		// proStartPlatinum
-		else if ($paramName == 'groups_countries' && !empty($option['value'])) {
-			if (is_array($option['value'])) {
-				$ipAddress = Functions::getIpAddress();
-				$country = Functions::getCountryName($ipAddress);
-
-				if (in_array($country, $option['value'])) {
-					return true;
-				}
-			}
-
-		}
-		// proEndPlatinum
-		// proStartSilver
-		else if ($paramName == 'groups_user_role' && !empty($option['value'])) {
-			$userStatus = is_user_logged_in();
-
-			if ($userStatus) {
-				return true;
-			}
-		}
-
 		if (!$defaultStatus && do_action('isAllowedForConditions', $option, $post)) {
 			$defaultStatus = true;
 		}
 		// proEndSilver
+		if (!isset($isAllowedConditionFilters['status']) || $isAllowedConditionFilters['status'] == false) {
+			$isAllowedConditionFilters = apply_filters('isAllowedConditionFilters', array($option));
+		}
+		if (isset($isAllowedConditionFilters['status']) && $isAllowedConditionFilters['status'] === true) {
+			$defaultStatus = true;
+		}
 
 		return $defaultStatus;
 	}
@@ -313,12 +290,15 @@ class PopupChecker
 		if (empty($targetData['param'])) {
 			return $isSatisfy;
 		}
-
+		$targetParam = $targetData['param'];
 		$post = $this->getPost();
 		if (isset($post) && empty($postId)) {
 			$postId = $post->ID;
 		}
 
+		if ($targetParam == 'everywhere') {
+			return true;
+		}
 		if (strpos($targetData['param'], '_all')) {
 			$endIndex = strpos($targetData['param'], '_all');
 			$postType = substr($targetData['param'], 0, $endIndex);
@@ -339,6 +319,33 @@ class PopupChecker
 				$isSatisfy = true;
 			}
 		}
+		else if (strpos($targetData['param'], '_categories')) {
+			$values = array();
+			$isSatisfy = false;
+
+			if (!empty($targetData['value'])) {
+				$values = array_values($targetData['value']);
+			}
+
+			global $post;
+			// get current all taxonomies of the current post
+			$taxonomies = get_post_taxonomies($post);
+			foreach ($taxonomies as $taxonomy) {
+				// get current post all categories
+				$terms = get_the_terms($post->ID, $taxonomy);
+				if (!empty($terms)) {
+					foreach ($terms as $term) {
+						if (empty($term)) {
+							continue;
+						}
+						if (in_array($term->term_id, $values)) {
+							$isSatisfy = true;
+							break;
+						}
+					}
+				}
+			}
+		}
 		else if ($targetData['param'] == 'post_type' && !empty($targetData['value'])) {
 			$selectedCustomPostTypes = array_values($targetData['value']);
 			$currentPostType = get_post_type($postId);
@@ -350,6 +357,10 @@ class PopupChecker
 		else if ($targetData['param'] == 'post_category' && !empty($targetData['value'])) {
 			$values = $targetData['value'];
 			$currentPostCategories = get_the_category($postId);
+			$currentPostType = get_post_type($postId);
+			if (empty($currentPostCategories) && $currentPostType == 'product') {
+				$currentPostCategories = get_the_terms($postId, 'product_cat');
+			}
 
 			foreach ($currentPostCategories as $categoryName) {
 				if (in_array($categoryName->term_id, $values)) {
@@ -371,7 +382,7 @@ class PopupChecker
 					} else if ( is_front_page() ) {
 						// static homepage
 						$isSatisfy = true;
-					    break;
+						break;
 					}
 				}
 				else if ($postType()) {
@@ -393,7 +404,8 @@ class PopupChecker
 		}
 		else if ($targetData['param'] == 'post_tags_ids') {
 			$tagsObj = wp_get_post_tags($postId);
-			$selectedTags = array_values($targetData['value']);
+			$postTagsValues = (array)@$targetData['value'];
+			$selectedTags = array_values($postTagsValues);
 
 			foreach ($tagsObj as $tagObj) {
 				if (in_array($tagObj->slug, $selectedTags)) {
@@ -402,7 +414,6 @@ class PopupChecker
 				}
 			}
 		}
-
 
 		if (!$isSatisfy && do_action('isAllowedForTarget', $targetData, $post)) {
 			$isSatisfy = true;
@@ -513,9 +524,9 @@ class PopupChecker
 		$popupOptions = $popup->getOptions();
 		$popupId = $popup->getId();
 
-		$dontAlowOpenPopup = apply_filters('sgpbOtherConditions', array('id' => $popupId, 'popupOptions' => $popupOptions));
+		$dontAlowOpenPopup = apply_filters('sgpbOtherConditions', array('id' => $popupId, 'popupOptions' => $popupOptions, 'popupObj' => $popup));
 
-		return $dontAlowOpenPopup;
+		return $dontAlowOpenPopup['status'];
 	}
 
 	public static function checkUserStatus($savedStatus)
@@ -528,65 +539,6 @@ class PopupChecker
 		}
 
 		return $equalStatus;
-	}
-
-	public static function popupInSchedule($popupOptions)
-	{
-		$scheduleStartWeeks = $popupOptions['sgpb-schedule-weeks'];
-		$outInSchedule = false;
-
-		$scheduleStartTime = $popupOptions['sgpb-schedule-start-time'];
-		$scheduleEndTime = $popupOptions['sgpb-schedule-end-time'];
-
-		$currentWeekDayName = date('D');
-		if (in_array($currentWeekDayName, $scheduleStartWeeks)) {
-
-			$timezone = get_option('timezone_string');
-			if (!$timezone) {
-				$timezone = SG_POPUP_DEFAULT_TIME_ZONE;
-			}
-
-			$date = new DateTime('now', new DateTimeZone($timezone));
-			$currentHour =  $date->format('H:i');
-
-			$currentHour = strtotime($currentHour);
-			$startTime = strtotime($scheduleStartTime);
-			$endTime = strtotime($scheduleEndTime);
-
-			if (empty($scheduleEndTime)) {
-				$endTime = strtotime('23:59:59');
-			}
-
-			if ($currentHour >= $startTime && $currentHour <= $endTime) {
-				return true;
-			}
-		}
-
-		return $outInSchedule;
-	}
-
-	public static function popupInTimeRange($popupOptions)
-	{
-		$finishDate = false;
-
-		$startDate = strtotime($popupOptions['sgpb-popup-start-timer']);
-
-		if (!empty($popupOptions['sgpb-popup-end-timer'])) {
-			$finishDate = strtotime($popupOptions['sgpb-popup-end-timer']);
-		}
-
-		$timezone = ConfigDataHelper::getPopupDefaultTimeZone();
-		$timeDate = new DateTime('now', new DateTimeZone($timezone));
-		$timeNow = strtotime($timeDate->format('Y-m-d H:i:s'));
-
-		if ($finishDate != false && $timeNow > $startDate && $timeNow < $finishDate) {
-			return true;
-		}
-		else if ($finishDate == false && $timeNow > $startDate) {
-			return true;
-		}
-
-		return false;
 	}
 
 	public static function checkOtherConditionsActions($args)
@@ -607,47 +559,9 @@ class PopupChecker
 			}
 		}
 
-		//schedule checking
-		if (!empty($popupOptions['sgpb-schedule-status'])) {
-			$isInSchedule = PopupChecker::popupInSchedule($popupOptions);
-
-			if ($isInSchedule === false) {
-				return $isInSchedule;
-			}
-		}
-
-		/*Date range checking*/
-		if (!empty($popupOptions['sgpb-popup-timer-status'])) {
-			$inTimeRange = PopupChecker::popupInTimeRange($popupOptions);
-
-			if ($inTimeRange === false) {
-				return $inTimeRange;
-			}
-		}
 		// proEndSilver
 
 		// proStartPlatinum
-		if (!empty($popupOptions['sgpb-popup-country-status'])) {
-			$ipAddress = Functions::getIpAddress();
-
-			$country = Functions::getCountryName($ipAddress);
-			$countriesIso = $popupOptions['sgpb-countries-iso'];
-			$allowCountries = $popupOptions['sgpb-allow-countries'];
-			$countriesIsoArray = explode(',', $countriesIso);
-
-			if ($allowCountries  == 'allow') {
-				$isInArray = in_array($country, $countriesIsoArray);
-				if ($isInArray === false) {
-					return $isInArray;
-				}
-			}
-			if ($allowCountries  == 'disallow') {
-				$isInArray = in_array($country, $countriesIsoArray);
-				if ($isInArray === true) {
-					return false;
-				}
-			}
-		}
 		// proEndPlatinum
 
 		// checking by popup type
@@ -656,7 +570,7 @@ class PopupChecker
 			$popupClassName = __NAMESPACE__.'\\'.$popupClassName;
 
 			if (method_exists($popupClassName, 'allowToOpen')) {
-				$allowToOpen = $popupClassName::allowToOpen($popupOptions);
+				$allowToOpen = $popupClassName::allowToOpen($popupOptions, $args);
 				return $allowToOpen;
 			}
 		}

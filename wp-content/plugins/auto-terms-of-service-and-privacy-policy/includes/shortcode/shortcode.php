@@ -6,20 +6,41 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class Shortcode {
+class Shortcode implements I_Shortcode_Handler {
 	protected $_name;
+	/**
+	 * @var I_Shortcode_Handler[]
+	 */
 	protected $_subs = array();
+	/**
+	 * @var false|I_Shortcode_Handler
+	 */
 	protected $_default_handler;
 
-	function __construct( $name, $default_handler = false ) {
+	public function __construct( $name, $default_handler = false ) {
 		$this->_name = $name;
 		$this->_default_handler = $default_handler;
 		add_shortcode( $this->name(), array( $this, 'handle' ) );
 	}
 
-	function handle( $values, $content ) {
-		if ( isset( $values[0] ) && isset( $this->_subs[ $values[0] ] ) ) {
-			return $this->_subs[ $values[0] ]->handle( $values, $content );
+	public static function expand_keys( $a ) {
+		$keys = array_keys( $a );
+		$ret = array();
+		foreach ( $keys as $k ) {
+			if ( is_int( $k ) ) {
+				$ret[ $a[ $k ] ] = $a[ $k ];
+			} else {
+				$ret[ $k ] = $a[ $k ];
+			}
+		}
+
+		return $ret;
+	}
+
+	public function handle( $values, $content ) {
+		$k = array_keys( static::expand_keys( $values ) );
+		if ( isset( $k[0] ) && isset( $this->_subs[ $k[0] ] ) ) {
+			return $this->_subs[ $k[0] ]->handle( $values, $content );
 		}
 		if ( $this->_default_handler ) {
 			return $this->_default_handler->handle( $values, $content );
@@ -28,15 +49,15 @@ class Shortcode {
 		return '';
 	}
 
-	function add_subshortcode( $sub ) {
+	public function add_subshortcode( Sub_Shortcode $sub ) {
 		$this->_subs[ $sub->name() ] = $sub;
 	}
 
-	function remove_subshortcode( $sub ) {
+	public function remove_subshortcode( Sub_Shortcode $sub ) {
 		unset( $this->_subs[ $sub->name() ] );
 	}
 
-	function name() {
+	public function name() {
 		return $this->_name;
 	}
 }

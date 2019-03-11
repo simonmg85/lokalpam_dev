@@ -29,7 +29,7 @@ if (!function_exists('postsettings_admin_scripts')) {
 			if(empty($mapAPI)){
 				$mapAPI = 'AIzaSyDQIbsz2wFeL42Dp9KaL4o4cJKJu4r8Tvg';
 			}
-			wp_enqueue_script('maps', 'https://maps.googleapis.com/maps/api/js?v=3&amp;key='.$mapAPI.'&amp;libraries=places', 'jquery', '', false);
+			wp_enqueue_script('maps', 'https://maps.googleapis.com/maps/api/js?key='.$mapAPI.'&libraries=places', 'jquery', '', false);
 			
 			if (current_user_can('edit_posts') && ($pagenow == 'edit.php' && isset($_GET['page']) && $_GET['page'] == 'listing-claims')) {
 				wp_enqueue_script('bootstrapadmin', get_template_directory_uri() . '/assets/lib/bootstrap/js/bootstrap.min.js', 'jquery', '', true);

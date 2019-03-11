@@ -138,4 +138,16 @@ jQuery(document).ready(function () {
     createCounters(FORM);
 
     validate();
+    jQuery("[data-type=accordion]").accordion();
+    var CONTACT_BUTTON = jQuery("#wpautoterms_contact_button");
+    var HIDE_BUTTON = jQuery("#wpautoterms_form_container_hide");
+    var CONTACT_FORM = jQuery("#wpautoterms_form_container");
+    CONTACT_BUTTON.click(function () {
+        CONTACT_BUTTON.hide();
+        CONTACT_FORM.show();
+    });
+    HIDE_BUTTON.click(function () {
+        CONTACT_BUTTON.show();
+        CONTACT_FORM.hide();
+    });
 });

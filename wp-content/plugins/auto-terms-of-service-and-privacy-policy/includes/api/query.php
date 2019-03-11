@@ -19,22 +19,16 @@ class Query {
 	 * @return Response
 	 */
 	public function get( $ep, $params = array(), $headers = false ) {
-		$params = array_map( function ( $x ) use ( $params ) {
-			return urlencode( $x ) . '=' . urlencode( $params[ $x ] );
-		}, array_keys( $params ) );
-		$suffix = empty( $params ) ? '' : '?' . join( '&', $params );
-		$url = $this->_base_url . $ep . $suffix;
+		$url = $this->_base_url . $ep;
 		$all_headers = array(
-			'Referer: ' . get_site_url(),
-			'X-WP-Locale: ' . get_locale()
+			'Referer' => get_site_url(),
+			'X-WP-Locale' => get_locale()
 		);
 		if ( $headers ) {
 			$all_headers = array_merge( $headers, $all_headers );
 		}
-		$curl = curl_init( $url );
-		curl_setopt( $curl, CURLOPT_HTTPHEADER, $all_headers );
 
-		return $this->_exec( $curl );
+		return $this->_exec( wp_remote_get( $url, array( 'headers' => $all_headers, 'body' => $params ) ), $url );
 	}
 
 	/**
@@ -47,37 +41,27 @@ class Query {
 	public function post_json( $ep, $params, $headers = false ) {
 		$data = json_encode( $params );
 		$url = $this->_base_url . $ep;
-		$curl = curl_init( $url );
 		$all_headers = array(
-			'Content-Type: application/json',
-			'Content-Length: ' . strlen( $data ),
-			'Referer: ' . get_site_url(),
-			'X-WP-Locale: ' . get_locale()
+			'Content-Type' => 'application/json',
+			'Content-Length' => strlen( $data ),
+			'Referer' => get_site_url(),
+			'X-WP-Locale' => get_locale()
 		);
 		if ( $headers ) {
 			$all_headers = array_merge( $headers, $all_headers );
 		}
-		curl_setopt( $curl, CURLOPT_POST, true );
-		curl_setopt( $curl, CURLOPT_POSTFIELDS, $data );
-		curl_setopt( $curl, CURLOPT_HTTPHEADER, $all_headers );
 
-		return $this->_exec( $curl );
+		return $this->_exec( wp_remote_post( $url, array(
+			'headers' => $all_headers,
+			'body' => $data
+		) ), $url );
 	}
 
-	/**
-	 * @param $curl
-	 *
-	 * @return Response
-	 */
-	protected function _exec( $curl ) {
-		$vs = null;
-		curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
-		curl_setopt( $curl, CURLOPT_HEADER, false );
-		$resp = new Response( $curl, $this->_verbose );
-		$resp->response = curl_exec( $curl );
-		$resp->_done();
-		curl_close( $curl );
+	protected function _exec( $resp, $url ) {
+		$ret = new Response( $resp, $url, $this->_verbose );
+		$ret->_done();
 
-		return $resp;
+		return $ret;
+
 	}
 }

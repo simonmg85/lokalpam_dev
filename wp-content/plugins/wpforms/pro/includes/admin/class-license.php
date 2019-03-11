@@ -543,4 +543,27 @@ class WPForms_License {
 		// Return the json decoded content.
 		return json_decode( $response_body );
 	}
+
+	/**
+	 * Checks to see if the site is using an active license.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @return bool
+	 */
+	public function is_active() {
+
+		$license = get_option( 'wpforms_license', false );
+
+		if (
+			empty( $license ) ||
+			! empty( $license['is_expired'] ) ||
+			! empty( $license['is_disabled'] ) ||
+			! empty( $license['is_invalid'] )
+		) {
+			return false;
+		}
+
+		return true;
+	}
 }

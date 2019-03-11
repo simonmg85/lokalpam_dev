@@ -32,7 +32,7 @@ abstract class Base_Notice {
 		if ( ! $this->_is_enabled() ) {
 			return;
 		}
-		add_action( 'wp_head', array( $this, 'head' ) );
+		add_action( WPAUTOTERMS_SLUG . '_registered_cpt', array( $this, 'action_registered_cpt' ) );
 		add_action( 'wp_print_styles', array( $this, 'print_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( WPAUTOTERMS_SLUG . '_container', array( $this, 'container' ), 10, 2 );
@@ -65,7 +65,7 @@ abstract class Base_Notice {
 
 	abstract protected function get_data();
 
-	public function head() {
+	public function action_registered_cpt() {
 		$disable_logged = get_option( WPAUTOTERMS_OPTION_PREFIX . $this->_id . '_disable_logged' );
 		if ( ( ( $disable_logged == 'yes' ) && \is_user_logged_in() ) || ! $this->get_data() ) {
 			$this->_skip = true;

@@ -5,7 +5,7 @@
  * Description: PayPal Standard integration with WPForms.
  * Author:      WPForms
  * Author URI:  https://wpforms.com
- * Version:     1.1.1
+ * Version:     1.2.0
  * Text Domain: wpforms-paypal-standard
  * Domain Path: languages
  *
@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin version.
-define( 'WPFORMS_PAYPAL_STANDARD_VERSION', '1.1.1' );
+define( 'WPFORMS_PAYPAL_STANDARD_VERSION', '1.2.0' );
 
 /**
  * Load the payment class.

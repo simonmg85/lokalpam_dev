@@ -15,7 +15,8 @@
 													</th>
 
 													<th class="manage-column column-tags"><?php echo esc_html__('Discount value %', 'listingpro-plugin'); ?></th>
-													<th class="manage-column column-tags"><?php echo esc_html__('Useage / Limit', 'listingpro-plugin'); ?></th>
+													<th class="manage-column column-tags"><?php echo esc_html__('Total', 'listingpro-plugin'); ?></th>
+													<th class="manage-column column-tags"><?php echo esc_html__('Available', 'listingpro-plugin'); ?></th>
 													<th class="manage-column column-tags"><?php echo esc_html__('Start Date', 'listingpro-plugin'); ?></th>
 													<th class="manage-column column-tags"><?php echo esc_html__('Ends Date', 'listingpro-plugin'); ?></th>
 													<th class="manage-column column-tags"><?php echo esc_html__('Status', 'listingpro-plugin'); ?></th>
@@ -30,6 +31,13 @@
 															$couponStatus = lp_check_coupon_status($signleCoupon['code']);
 															
 															?>
+															
+															<?php
+																$available = $signleCoupon['coponlimit'];
+																if(isset($signleCoupon['used'])){
+																	$available = $signleCoupon['coponlimit'] - $signleCoupon['used'];
+																}
+															?>
 
 															<tr>
 																<th scope="row" class="check-column">			
@@ -43,8 +51,9 @@
 																	<?php echo $signleCoupon['code']; ?></td>
 																	<td class="manage-column column-categories"><?php echo $signleCoupon['discount']; ?></td>
 																	<td class="manage-column column-categories"><?php echo $signleCoupon['coponlimit']; ?></td>
-																	<td class="manage-column column-categories"><?php echo $signleCoupon['starts']; ?></td>
-																	<td class="manage-column column-categories"><?php echo $signleCoupon['ends']; ?></td>
+																	<td class="manage-column column-categories"><?php echo $available; ?></td>
+																	<td class="manage-column column-categories"><?php echo date(get_option("date_format"), strtotime($signleCoupon['starts'])); ?></td>
+																	<td class="manage-column column-categories"><?php echo date(get_option("date_format"), strtotime($signleCoupon['ends'])); ?></td>
 
 
 																	<td class="manage-column column-categories">
@@ -93,7 +102,8 @@
 															<a><span>Code</span>
 																<span class="sorting-indicator"></span></a></th>
 																<th class="manage-column column-tags"><?php echo esc_html__('Discount value %', 'listingpro-plugin'); ?></th>
-																<th class="manage-column column-tags"><?php echo esc_html__('Useage / Limit', 'listingpro-plugin'); ?></th>
+																<th class="manage-column column-tags"><?php echo esc_html__('Total', 'listingpro-plugin'); ?></th>
+																<th class="manage-column column-tags"><?php echo esc_html__('Available', 'listingpro-plugin'); ?></th>
 																<th class="manage-column column-tags"><?php echo esc_html__('Start Date', 'listingpro-plugin'); ?></th>
 																<th class="manage-column column-tags"><?php echo esc_html__('Ends Date', 'listingpro-plugin'); ?></th>
 																<th class="manage-column column-tags"><?php echo esc_html__('Status', 'listingpro-plugin'); ?></th>

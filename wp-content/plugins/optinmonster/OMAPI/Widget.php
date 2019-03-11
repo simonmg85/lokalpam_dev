@@ -82,8 +82,8 @@ class OMAPI_Widget extends WP_Widget {
 	 */
 	public function widget( $args, $instance ) {
 
-		$title    = apply_filters( 'widget_title', $instance['title'] );
-		$optin_id = $instance['optin_monster_id'];
+		$title    = apply_filters( 'widget_title', isset( $instance['title'] ) ? $instance['title'] : '' );
+		$optin_id = isset( $instance['optin_monster_id'] ) ? $instance['optin_monster_id'] : 0;
 
 		do_action( 'optin_monster_api_widget_before_output', $args, $instance );
 
@@ -113,7 +113,9 @@ class OMAPI_Widget extends WP_Widget {
 			}
 
 			// Load the optin.
-			optin_monster( $optin->ID );
+			optin_monster( $optin->ID, 'id', array(
+				'followrules' => ! empty( $instance['followrules'] ) ? 'true' : 'false',
+			) );
 		}
 
 		do_action( 'optin_monster_api_widget_after_optin', $args, $instance );
@@ -141,6 +143,7 @@ class OMAPI_Widget extends WP_Widget {
 
 		// Sanitize user inputs.
 		$instance['title']            = trim( $new_instance['title'] );
+		$instance['followrules']      = ! empty( $new_instance['followrules'] );
 		$instance['optin_monster_id'] = absint( $new_instance['optin_monster_id'] );
 
 		return apply_filters( 'optin_monster_api_widget_update_instance', $instance, $new_instance );
@@ -159,9 +162,10 @@ class OMAPI_Widget extends WP_Widget {
 	public function form( $instance ) {
 
 		// Get all available optins and widget properties.
-		$optins   = $this->base->get_optins();
-		$title    = isset( $instance['title'] ) ? $instance['title'] : '';
-		$optin_id = isset( $instance['optin_monster_id'] ) ? $instance['optin_monster_id'] : false;
+		$optins      = $this->base->get_optins();
+		$title       = isset( $instance['title'] ) ? $instance['title'] : '';
+		$followrules = ! empty( $instance['followrules'] );
+		$optin_id    = isset( $instance['optin_monster_id'] ) ? $instance['optin_monster_id'] : false;
 
 		do_action( 'optin_monster_api_widget_before_form', $instance );
 		?>
@@ -193,7 +197,12 @@ class OMAPI_Widget extends WP_Widget {
 				?>
 			</select>
 		</p>
+		<p>
+			<input id="<?php echo $this->get_field_id( 'followrules' ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'followrules' ) ); ?>" type="checkbox" value="1" <?php checked( $followrules ); ?> />
+			<label for="<?php echo $this->get_field_id( 'followrules' ); ?>"><?php _e( 'Apply Advanced Output Settings?', 'optin-monster-api' ); ?></label>
+		</p>
 		<?php
+
 		do_action( 'optin_monster_api_widget_after_form', $instance );
 
 	}

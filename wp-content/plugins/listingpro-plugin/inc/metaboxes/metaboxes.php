@@ -429,8 +429,12 @@ if (!function_exists('settings_textarea')) {
                 </label>
             </th>
             <td>
-			<?php if( is_array($settings['value'] && count($settings['value'])) ){
-					$value = $settings['value'];
+			<?php if( is_array($settings['value'] ) ){
+					if( $count($settings['value']) ){
+						$value = $settings['value'];
+					}else{
+						$value = '';
+					}
 				}
 				else{
 					$value = $settings['value'];
@@ -586,9 +590,9 @@ if (!function_exists('settings_layout')) {
             </th>
             <td>
                 <div class="type_layout">
-                    <a href="javascript:" data-value="left" class="left-sidebar"></a>
-                    <a href="javascript:" data-value="right" class="right-sidebar"></a>
-                    <a href="javascript:" data-value="full" class="without-sidebar"></a>
+                    <a href="javascript:;" data-value="left" class="left-sidebar"></a>
+                    <a href="javascript:;" data-value="right" class="right-sidebar"></a>
+                    <a href="javascript:;" data-value="full" class="without-sidebar"></a>
                     <input name="<?php echo wp_kses_post($settings['id']);?>" type="hidden" value="<?php echo wp_kses_post($settings['value']);?>" />
                 </div>
             </td>
@@ -685,7 +689,7 @@ if (!function_exists('settings_listing')) {
             </th>
             <td>
                 <div class="type_listing add_item_medium">
-                    <input type="text" name="s" class="form-control search-autocomplete lpautocomplete" placeholder="Search">
+                    <input type="text" name="s" class="form-control search-autocomplete lpautocomplete" placeholder="Search" autocomplete="off">
 					<input type="hidden" name="<?php echo wp_kses_post($settings['id']); ?>" id="lpautocompletSelec" value="<?php echo $settings['value']; ?>">
 					<i class="lp-listing-sping fa-li fa fa-spinner fa-spin"></i>
 					<?php

@@ -109,33 +109,12 @@ class PopupGroupFilter
 	{
 		$popups = $this->getPopups();
 		$groups = array();
-		$randomPopups = SGPopup::getPopupsByTermSlug(SG_RANDOM_TAXONOMY_SLUG);
 
 		if (empty($popups)) {
 			return $popups;
 		}
 
-		foreach ($popups as $popup) {
-			if (in_array($popup->getId(), $randomPopups)) {
-				$groups['randomPopups'][] = $popup;
-			}
-		}
-		$staticPopups = $popups;
-
-		if (!empty($groups['randomPopups'])) {
-			$staticPopups = array();
-			$randomPopupIds = array_map(function ($randomPopup) {
-				return $randomPopup->getId();
-			}, $groups['randomPopups']);
-			foreach ($popups as $popup) {
-				if (empty($popup)) {
-					continue;
-				}
-				if (!in_array($popup->getId(), $randomPopupIds)) {
-					$staticPopups[] = $popup;
-				}
-			}
-		}
+	 	$staticPopups = $popups;
 
 		$groups['staticPopups'] = $staticPopups;
 
@@ -147,10 +126,6 @@ class PopupGroupFilter
 	private function filterGroups()
 	{
 		$groups = $this->getGroups();
-
-		if (!empty($groups['randomPopups'])) {
-			$groups = $this->filterRandomPopups($groups);
-		}
 
 		$this->setGroups($groups);
 

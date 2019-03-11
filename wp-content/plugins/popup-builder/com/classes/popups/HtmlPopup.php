@@ -1,22 +1,8 @@
 <?php
 namespace sgpb;
 require_once(dirname(__FILE__).'/SGPopup.php') ;
-class HtmlPopup extends SGPopup {
-
-	public function __construct() {
-		add_filter('sgpbFrontendJsFiles', array($this, 'popupFrontJsFilter'),1,1);
-		add_filter('sgpbAdminJsFiles', array($this, 'popupAdminJsFilter'),1,1);
-	}
-
-	public function popupFrontJsFilter($jsFiles)
-	{
-		return $jsFiles;
-	}
-
-	public function popupAdminJsFilter($jsFiles)
-	{
-		return $jsFiles;
-	}
+class HtmlPopup extends SGPopup
+{
 
 	public function getOptionValue($optionName, $forceDefaultValue = false)
 	{
@@ -37,7 +23,6 @@ class HtmlPopup extends SGPopup {
 	{
 		$htmlContent = '';
 		$popupContent = $this->getContent();
-
 		$htmlContent .= '<div class="sgpb-main-html-content-wrapper">';
 		$htmlContent .= $popupContent;
 		$htmlContent .= '</div>';

@@ -3,6 +3,7 @@
 namespace wpautoterms\box;
 
 use wpautoterms\admin\Menu;
+use wpautoterms\frontend\Endorsements;
 use wpautoterms\option;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -94,5 +95,16 @@ class Endorsements_Box extends Licensed_Box {
 			$this->id() . '_tag' => '',
 			//$this->id().'_where'=>'',
 		) );
+	}
+
+	protected static function _container_classes() {
+		return array();
+
+	}
+
+	protected function _class_hints() {
+		return array(
+			__( 'Endorsement block class:', WPAUTOTERMS_SLUG ) => '.' . Endorsements::css_class_id(),
+		);
 	}
 }

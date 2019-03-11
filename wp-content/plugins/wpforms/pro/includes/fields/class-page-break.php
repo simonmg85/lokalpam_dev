@@ -25,7 +25,7 @@ class WPForms_Field_Page_Break extends WPForms_Field {
 		$this->name  = esc_html__( 'Page Break', 'wpforms' );
 		$this->type  = 'pagebreak';
 		$this->icon  = 'fa-files-o';
-		$this->order = 17;
+		$this->order = 140;
 		$this->group = 'fancy';
 
 		add_filter( 'wpforms_field_preview_class', array( $this, 'preview_field_class' ), 10, 2 );
@@ -69,7 +69,7 @@ class WPForms_Field_Page_Break extends WPForms_Field {
 	 *
 	 * @since 1.2.1
 	 *
-	 * @param array $form_data
+	 * @param array $form_data Form data and settings.
 	 */
 	public function display_page_indicator( $form_data ) {
 
@@ -160,7 +160,7 @@ class WPForms_Field_Page_Break extends WPForms_Field {
 	 *
 	 * @since 1.3.7
 	 *
-	 * @param array $form_data
+	 * @param array $form_data Form data and settings.
 	 */
 	public function display_fields_before( $form_data ) {
 
@@ -181,7 +181,7 @@ class WPForms_Field_Page_Break extends WPForms_Field {
 	 *
 	 * @since 1.3.7
 	 *
-	 * @param array $form_data
+	 * @param array $form_data Form data and settings.
 	 */
 	public function display_fields_after( $form_data ) {
 
@@ -217,8 +217,8 @@ class WPForms_Field_Page_Break extends WPForms_Field {
 	 *
 	 * @since 1.3.7
 	 *
-	 * @param array $field
-	 * @param array $form_data
+	 * @param array $field     Field data and settings.
+	 * @param array $form_data Form data and settings.
 	 */
 	public function display_field_after( $field, $form_data ) {
 
@@ -572,13 +572,29 @@ class WPForms_Field_Page_Break extends WPForms_Field {
 	}
 
 	/**
+	 * @inheritdoc
+	 */
+	public function is_dynamic_population_allowed( $properties, $field ) {
+
+		return false;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function is_fallback_population_allowed( $properties, $field ) {
+
+		return false;
+	}
+
+	/**
 	 * Field display on the form front-end.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field
-	 * @param array $field_atts
-	 * @param array $form_data
+	 * @param array $field      Field data and settings.
+	 * @param array $field_atts Field attributes.
+	 * @param array $form_data  Form data and settings.
 	 */
 	public function field_display( $field, $field_atts, $form_data ) {
 
@@ -628,12 +644,12 @@ class WPForms_Field_Page_Break extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int $field_id
-	 * @param array $field_submit
-	 * @param array $form_data
+	 * @param int   $field_id     Field ID.
+	 * @param array $field_submit Submitted field value.
+	 * @param array $form_data    Form data and settings.
 	 */
 	public function format( $field_id, $field_submit, $form_data ) {
 	}
 }
 
-new WPForms_Field_Page_Break;
+new WPForms_Field_Page_Break();

@@ -135,10 +135,14 @@ class OMAPI_Actions {
 		$new    = $status ? false : true;
 		$field  = 'global';
 		$type   = get_post_meta( $this->optin_id, '_omapi_type', true );
-		if ( OMAPI_Utils::is_inline_type( $type ) ) {
-			$field = 'automatic';
-		} else if ( 'sidebar' == $type ) {
-			$field = false;
+
+		switch ( $type ) {
+			case 'post':
+				$field = 'automatic';
+				break;
+			case 'sidebar':
+				$field = false;
+				break;
 		}
 
 		// Maybe update the global/automatic status.

@@ -5,4 +5,4 @@ WPForms is a forms plugin for everyone. The rug that really ties the room togeth
 
 ![Rug](https://wpforms.com/images/rug.jpg)
 
-**Copyright &copy; 2017 WPForms, LLC. All rights reserved.**
+**Copyright &copy; 2018 WPForms, LLC. All rights reserved.**

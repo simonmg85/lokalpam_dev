@@ -56,7 +56,7 @@ abstract class WPForms_Payment {
 	public $icon;
 
 	/**
-	 * Form data.
+	 * Form data and settings.
 	 *
 	 * @since 1.1.0
 	 * @var array

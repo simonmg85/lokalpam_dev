@@ -14,7 +14,7 @@ $labels = $SGPB_POPUP_TYPES['typeLabels'];
 						<h2><?php _e('Add New Popup', SG_POPUP_TEXT_DOMAIN); ?></h2>
 					</div>
 					<div class="col-xs-6">
-						<a href="<?php echo SG_POPUP_PRO_URL;?>" target="_blank" class="btn btn-warning sgpb-pro-button"><?php _e('Upgrade to PRO version', SG_POPUP_TEXT_DOMAIN) ?></a>
+						<a href="<?php echo SG_POPUP_ALL_EXTENSIONS_URL;?>" target="_blank" class="btn btn-warning sgpb-pro-button"><?php _e('Get More Extensions', SG_POPUP_TEXT_DOMAIN) ?></a>
 					</div>
 				</div>
 			</div>

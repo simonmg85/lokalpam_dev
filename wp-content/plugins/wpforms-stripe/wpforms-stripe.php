@@ -5,8 +5,8 @@
  * Description: Stripe integration with WPForms.
  * Author:      WPForms
  * Author URI:  https://wpforms.com
- * Version:     1.1.1
- * Text Domain: wpforms_stripe
+ * Version:     2.1.1
+ * Text Domain: wpforms-stripe
  * Domain Path: languages
  *
  * WPForms is free software: you can redistribute it and/or modify
@@ -28,46 +28,61 @@
  * @copyright  Copyright (c) 2016, WP Forms LLC
  */
 
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
-
-// Plugin version
-define( 'WPFORMS_STRIPE_VERSION', '1.1.1' );
+// Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
- * Load the payment class.
- *
- * @since 1.0.0
+ * Requires PHP 5.3.3+.
  */
-function wpforms_stripe() {
+if ( version_compare( PHP_VERSION, '5.3.3', '<' ) ) {
 
-	// WPForms Pro is required
-	if ( !class_exists( 'WPForms_Pro' ) ) {
-		return;
+	/**
+	 * Deactivate plugin.
+	 *
+	 * @since 1.2.0
+	 */
+	function wpforms_stripe_deactivate() {
+		deactivate_plugins( plugin_basename( __FILE__ ) );
 	}
+	add_action( 'admin_init', 'wpforms_stripe_deactivate' );
 
-	load_plugin_textdomain( 'wpforms_stripe', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+	/**
+	 * Display notice after deactivation.
+	 *
+	 * @since 1.2.0
+	 */
+	function wpforms_stripe_deactivate_msg() {
 
-	require_once( plugin_dir_path( __FILE__ ) . 'class-stripe.php' );
+		echo '<div class="notice notice-error"><p>';
+		printf(
+			wp_kses(
+				/* translators: %s - WPForms.com documentation page URL. */
+				__( 'The WPForms Stripe plugin has been deactivated. Your site is running an outdated version of PHP that is no longer supported and is not compatible with the Stripe addon. <a href="%s" target="_blank" rel="noopener noreferrer">Read more</a> for additional information.', 'wpforms-stripe' ),
+				array(
+					'a' => array(
+						'href'   => array(),
+						'rel'    => array(),
+						'target' => array(),
+					),
+				)
+			),
+			'https://wpforms.com/docs/supported-php-version/'
+		);
+		echo '</p></div>';
+
+		if ( isset( $_GET['activate'] ) ) { // WPCS: CSRF ok.
+			unset( $_GET['activate'] ); // WPCS: CSRF ok.
+		}
+	}
+	add_action( 'admin_notices', 'wpforms_stripe_deactivate_msg' );
+
+	return;
 }
-add_action( 'wpforms_loaded', 'wpforms_stripe' );
 
-/**
- * Load the plugin updater.
- *
- * @since 1.0.0
- */
-function wpforms_stripe_updater( $key ) {
+// Plugin constants.
+define( 'WPFORMS_STRIPE_VERSION', '2.1.1' );
+define( 'WPFORMS_STRIPE_FILE', __FILE__ );
 
-	$args = array(
-		'plugin_name' => 'WPForms Stripe',
-		'plugin_slug' => 'wpforms-stripe',
-		'plugin_path' => plugin_basename( __FILE__ ),
-		'plugin_url'  => trailingslashit( plugin_dir_url( __FILE__ ) ),
-		'remote_url'  => WPFORMS_UPDATER_API,
-		'version'     => WPFORMS_STRIPE_VERSION,
-		'key'         => $key,
-	);
-	$updater = new WPForms_Updater( $args );
-}
-add_action( 'wpforms_updater', 'wpforms_stripe_updater' );
+require_once __DIR__ . '/autoloader.php';

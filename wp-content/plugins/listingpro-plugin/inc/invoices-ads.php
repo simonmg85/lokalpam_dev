@@ -15,6 +15,9 @@ if( !empty($_POST['payment_submit']) && isset($_POST['payment_submit']) ){
 	$table = 'listing_campaigns';
 	$order_id = '';
 	$order_id = $_POST['order_id'];
+	$mode = $_POST['mode'];
+	$duration = $_POST['duration'];
+	$budget = $_POST['budget'];
 	
 	$postid= $_POST['post_id'];
 	$price_packages = listing_get_metabox_by_ID('listings_ads_purchase_packages', $postid);
@@ -23,23 +26,26 @@ if( !empty($_POST['payment_submit']) && isset($_POST['payment_submit']) ){
 	$my_post = array( 'post_title'    => $postid, 'post_status'   => 'publish', 'post_type' => 'lp-ads' );
 	$adID = wp_insert_post( $my_post );
 	
-	$data = array('post_id' => $adID,'status' => 'success');
+	$data = array('post_id' => $postid,'status' => 'success');
 	$where = array('transaction_id' => $order_id);
 	lp_update_data_in_db($table, $data, $where);
-
-	
 	listing_set_metabox('ads_listing', $postid, $adID);
-				
 	listing_set_metabox('ad_status', 'Active', $adID);
 	listing_set_metabox('ad_date', $currentdate, $adID);
 	listing_set_metabox('ad_expiryDate', $exprityDate, $adID);
-	
-	listing_set_metabox('campaign_id', $adID, $postid);
+	listing_set_metabox('campaign_id',$postid, $adID);
+	if($mode=="byduration"){}else{
+		//cpc
+		listing_set_metabox('remaining_balance', $budget, $adID);
+	}
+	listing_set_metabox('ads_mode', $mode, $adID);
+	listing_set_metabox('duration', $duration, $adID);
+	listing_set_metabox('budget', $budget, $adID);
 	
 	$packagesDetails = '';
 	$priceKeyArray;
 	if( !empty($price_packages) ){
-		foreach( $price_packages as $type=>$val ){
+		foreach( $price_packages as $type ){
 			if($type=="lp_random_ads"){
 								$packagesDetails .= esc_html__(' Random Ads ', 'listingpro-plugin');
 							}
@@ -54,6 +60,7 @@ if( !empty($_POST['payment_submit']) && isset($_POST['payment_submit']) ){
 		}
 	}
 	update_post_meta( $postid, 'campaign_status', 'active' );
+	update_post_meta( $postid, 'campaign_id', $adID );
 	
 	if( !empty($priceKeyArray) ){
 		listing_set_metabox('ad_type', $priceKeyArray, $adID);
@@ -675,6 +682,27 @@ function ads_invoices_submenu_page_callback() {
 														<input type="submit" name="payment_submit" class="button action" value="Confirm" onclick="return window.confirm('Are you sure you want to proceed action?');" />
 														<input type="hidden" name="order_id" value="<?php echo $data->transaction_id ?>" />
 														<input type="hidden" name="post_id" value="<?php echo $data->post_id; ?>" />
+														<?php
+															if(isset($data->mode)){
+																?>
+																<input type="hidden" name="mode" value="<?php echo $data->mode; ?>" />
+																<?php
+															}
+															?>
+														<?php
+															if(isset($data->duration)){
+																?>
+																<input type="hidden" name="duration" value="<?php echo $data->duration; ?>" />
+																<?php
+															}
+															?>
+														<?php
+															if(isset($data->budget)){
+																?>
+																<input type="hidden" name="budget" value="<?php echo $data->budget; ?>" />
+																<?php
+															}
+														?>
 													
 													</form>
 												</td>

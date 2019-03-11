@@ -2,8 +2,8 @@
 Contributors: ithemes, chrisjean, gerroald, mattdanner, timothyblynjacobs
 Tags: security, security plugin, malware, hack, secure, block, SSL, admin, htaccess, lockdown, login, protect, protection, anti virus, attack, injection, login security, maintenance, permissions, prevention, authentication, administration, password, brute force, ban, permissions, bots, user agents, xml rpc, security log
 Requires at least: 4.7
-Tested up to: 4.9.6
-Stable tag: 7.0.4
+Tested up to: 5.1.0
+Stable tag: 7.3.1
 Requires PHP: 5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -188,6 +188,49 @@ Free support may be available with the help of the community in the <a href="htt
 5. Free malware scan powered by Sucuri SiteCheck.
 
 == Changelog ==
+
+= 7.3.1 =
+* Enhancement: When ITSEC_DISABLE_MODULES is set, prevent hide backend from running.
+* Bug Fix: Tabnapping: Apply noopener to links instead of using blankshield script when available to prevent new pop-up blocker behavior from killing the links.
+
+= 7.3.0 =
+* Enhancement: Add Per-Content SSL toggle to the upcoming Block Editor interface.
+* Enhancement: Add filter to the recipients list for email notifications: "itsec_notification_{$notification}_email_recipients" and "itsec_notification_email_recipients".
+* Enhancement: Add define "ITSEC_DISABLE_TEMP_WHITELIST" to disable the Temporary IP Whitelisting for logged-in administrators.
+* Enhancement: Improve redirecting after processing a login interstitial from a front-end login form.
+* Enhancement: Add loopback IP detection to Security Check.
+* Enhancement: Detect Server IPs in Security Check.
+* Tweak: Add additional safety checks when writing to system config files. This will log a "Critical Issue" when the writing of an empty or partial config file is detected and prevented.
+* Tweak: Improve File Change locking to help prevent failing scans on sites with inconsistent cron scheduling.
+* Tweak: Improve "System Tweaks – Suspicious Query Strings – SQLI" to reduce false positives.
+* Tweak: Improve "System Tweaks – Disable PHP" to block PHP files in apache configurations that serve files with a trailing dot.
+* Tweak: Remove "Seznam Bot" from HackRepair List as it isn't present in the latest version.
+* Bug Fix: Include Hide Backend token when emailing a password reset URL.
+* Bug Fix: Notification Center - Only send notifications to users with an exact role match of selected roles instead of a fuzzy match based on selected capabilities.
+* Bug Fix: Error when trying to edit reusable blocks with per-post SSL enabled.
+* Bug Fix: Resolve warnings on PHP 5.2.
+
+= 7.2.0 =
+* Enhancement: Allow for selecting the particular Proxy header a server is configured to use. Improve the language to indicate the importance of configuring this setting. H/t Filippo Cavallarin CEO at wearesegment.com
+* Enhancement: Block access to git and svn repositories when System Tweaks -> Protect System Files is enabled.
+* Tweak: Update jQuery Validation library to 1.17.0
+* Bug Fix: Improve detection of blocking the File Change Scan from being scheduled if one is already being run.
+* Bug Fix: Prevent infinite recursion error when trying to access directories outside of the allowed file tree.
+
+= 7.1.0 =
+* New Feature: Allow for globally setting recipients for admin-targeted notifications. All new notifications will default to the recipients in this list. Notifications can be set to use the default list or switch to a custom list.
+* Enhancement: Added a setting to enable/disable the Grade Report feature of Pro.
+* Tweak: Check if an IP is blacklisted on page load for compatibility with servers that cannot process server configuration level bans immediately.
+* Tweak: Display a time diff until the next event on the Debug page.
+* Tweak: Use Logging API for tracking Notification Center errors.
+* Tweak: Register Scheduler Events whenever the plugin build changes.
+* Tweak: Allow for filtering logs by any module recorded.
+* Tweak: Account for 3rd-party Backup Plugin in Security Check.
+* Bug Fix: 404 detection for plugins that mark is_404 later in the hook sequence.
+* Bug Fix: REST API Protection blocked the Taxonomies route for all users.
+* Bug Fix: Account for any CLI PHP SAPI instead of just WP-CLI in the SSL Module.
+* Bug Fix: Fixed how the Grade Report enable/disable status is stored to fix admin page loading issues on some sites.
+* Bug Fix: Fix serialization of closure error when a plugin registering a hook with a closure is in the boot-up stack and the notification center is triggered too early in the cycle.
 
 = 7.0.4 =
 * Enhancement: Add mitigation for the WordPress Attachment File Traversal and Deletion vulnerability.
@@ -481,5 +524,5 @@ Free support may be available with the help of the community in the <a href="htt
 
 == Upgrade Notice ==
 
-= 7.0.4 =
-Version 7.0.4 contains an important security bug fix. It is recommended for all users.
+= 7.3.1 =
+Version 7.3.1 contains important bug fixes and improvements. It is recommended for all users.

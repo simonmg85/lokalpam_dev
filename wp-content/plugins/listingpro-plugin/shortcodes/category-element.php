@@ -162,6 +162,7 @@ function listingpro_shortcode_listing_cats($atts, $content = null) {
         'display_main_cats' => ''
 
 	), $atts));
+	$has_child_cats ='';
 	require_once (THEME_PATH . "/include/aq_resizer.php");
 	$output = null;
 	global $listingpro_options;
@@ -497,13 +498,16 @@ function listingpro_shortcode_listing_cats($atts, $content = null) {
         }
         else if ( $catstyles == 'cat_boxed_2' )
         {
-            $ucat = array(
-                'post_type' => 'listing',
-                'hide_empty' => false,
-                'orderby' => 'count',
-                'order' => 'ASC',
-                'parent' => 0
-            );
+			$listingCategories = $category_ids; 
+			$ucat = array(
+				'post_type' => 'listing',
+				'hide_empty' => false,
+				'orderby' => 'count',
+				'order' => 'ASC',
+				'parent' => 0,
+				'include'=> $listingCategories
+			);
+           
             $allLocations = get_terms( 'listing-category',$ucat);
             $output .=  '<div class="lp-category-boxed2">';
             if( $display_sub_cat_box2 == 'show' )

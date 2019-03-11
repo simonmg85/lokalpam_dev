@@ -1,8 +1,21 @@
 <?php
 namespace sgpb;
+use \SgpbPopupConfig;
 
 class Filters
 {
+	private $activePopupsQueryString = '';
+
+	public function setQueryString($activePopupsQueryString)
+	{
+		$this->activePopupsQueryString = $activePopupsQueryString;
+	}
+
+	public function getQueryString()
+	{
+		return $this->activePopupsQueryString;
+	}
+
 	public function __construct()
 	{
 		$this->init();
@@ -14,15 +27,154 @@ class Filters
 		add_filter('admin_menu', array($this, 'removeAddNewSubmenu'), 10, 2);
 		add_filter('manage_'.SG_POPUP_POST_TYPE.'_posts_columns', array($this, 'popupsTableColumns'));
 		add_filter('post_row_actions', array($this, 'quickRowLinksManager'), 10, 2);
-		add_filter('sgpbPopupRenderOptions', array($this, 'renderOptions'), 10, 1);
 		add_filter('sgpbAdminJs', array($this, 'adminJsFilter'), 1, 1);
 		add_filter('sgpbAdminCssFiles', array($this, 'sgpbAdminCssFiles'), 1, 1);
 		add_filter('sgpbPopupContentLoadToPage', array($this, 'filterPopupContent'), 10, 1);
 		add_filter('the_content', array($this, 'clearContentPreviewMode'), 10, 1);
-		add_filter('posts_where' , array($this, 'excludePostsToShow'), 10, 1);
+		// The priority of this action should be higher than the extensions' init priority.
+		add_action('init', array($this, 'excludePostToShowPrepare'), 99999999);
 		add_filter('preview_post_link', array($this, 'editPopupPreviewLink'), 10, 2);
 		add_filter('upgrader_pre_download', array($this, 'maybeShortenEddFilename'), 10, 4);
 		add_filter('sgpbSavedPostData', array($this, 'savedPostData'), 10, 1);
+		add_filter('sgpbPopupEvents', array($this, 'popupEvents'), 10, 1);
+		add_filter('sgpbAdditionalMetaboxes', array($this, 'metaboxes'), 10, 1);
+		add_filter('sgpbOptionAvailable', array($this, 'filterOption'), 10, 1);
+		add_filter('export_wp_filename', array($this, 'exportFileName'), 10, 1);
+	}
+
+	public function excludePostToShowPrepare()
+	{
+		SgpbPopupConfig::popupTypesInit();
+		$queryString = SGPopup::getActivePopupsQueryString();
+		$this->setQueryString($queryString);
+		add_filter('posts_where' , array($this, 'excludePostsToShow'), 10, 1);
+	}
+
+	public function exportFileName($fileName)
+	{
+		if (!empty($_GET['sgpbExportAction'])) {
+			return SGPB_POPUP_EXPORT_FILE_NAME;
+		}
+
+		return $fileName;
+	}
+
+	public function filterOption($filterOption)
+	{
+		$extensionOptionsData = AdminHelper::getExtensionAvaliabilityOptions();
+
+		if (empty($extensionOptionsData)) {
+			return $filterOption;
+		}
+
+		foreach ($extensionOptionsData as $extensionKey => $extensionOptions) {
+			$isAdvancedClosingActive = is_plugin_active($extensionKey);
+			if (isset($filterOption['name']) && !$isAdvancedClosingActive) {
+				$name = $filterOption['name'];
+
+				if (in_array($name, $extensionOptions)) {
+					$filterOption['status'] = false;
+				}
+			}
+		}
+
+		return $filterOption;
+	}
+
+	public function metaboxes($metaboxes)
+	{
+		$otherConditionsProLabel = '';
+		$otherConditionsCanBeUsed = PopupBuilderActivePackage::canUseSection('popupOtherConditionsSection');
+		if (!$otherConditionsCanBeUsed) {
+			$otherConditionsProLabel .= '<a href="'.SG_POPUP_SCHEDULING_URL.'" target="_blank" class="sgpb-pro-label-metabox">';
+			$otherConditionsProLabel .= __('UNLOCK OPTION', SG_POPUP_TEXT_DOMAIN).'</a>';
+		}
+		$metaboxes['targetMetaboxView'] = array(
+			'key' => 'targetMetaboxView',
+			'displayName' => 'Popup Display Rules',
+			'filePath' => SG_POPUP_VIEWS_PATH.'targetView.php',
+			'priority' => 'high'
+		);
+
+		$metaboxes['eventsMetaboxView'] = array(
+			'key' => 'eventsMetaboxView',
+			'displayName' => 'Popup Events',
+			'filePath' => SG_POPUP_VIEWS_PATH.'eventsView.php',
+			'priority' => 'high'
+		);
+
+		$metaboxes['conditionsMetaboxView'] = array(
+			'key' => 'conditionsMetaboxView',
+			'displayName' => 'Popup Conditions',
+			'filePath' => SG_POPUP_VIEWS_PATH.'conditionsView.php',
+			'priority' => 'high'
+		);
+
+		$metaboxes['behaviorAfterSpecialEventsMetaboxView'] = array(
+			'key' => 'behaviorAfterSpecialEventsMetaboxView',
+			'displayName' => 'Behavior After Special Events',
+			'filePath' => SG_POPUP_VIEWS_PATH.'behaviorAfterSpecialEventsView.php',
+			'priority' => 'high'
+		);
+
+		$metaboxes['popupDesignMetaBoxView'] = array(
+			'key' => 'popupDesignMetaBoxView',
+			'displayName' => 'Design',
+			'filePath' => SG_POPUP_VIEWS_PATH.'popupDesignView.php',
+			'priority' => 'high'
+		);
+
+		$metaboxes['closeSettings'] = array(
+			'key' => 'closeSettings',
+			'displayName' => 'Close Settings',
+			'filePath' => SG_POPUP_VIEWS_PATH.'closeSettingsView.php',
+			'priority' => 'high'
+		);
+
+		$metaboxes['spgdimension'] = array(
+			'key' => 'spgdimension',
+			'displayName' => 'Dimensions',
+			'filePath' => SG_POPUP_VIEWS_PATH.'dimensionsView.php',
+			'priority' => 'high'
+		);
+
+		$metaboxes['optionsMetaboxView'] = array(
+			'key' => 'optionsMetaboxView',
+			'displayName' => 'Popup Options',
+			'filePath' => SG_POPUP_VIEWS_PATH.'optionsView.php',
+			'priority' => 'high'
+		);
+
+		$metaboxes['otherConditionsMetaBoxView'] = array(
+			'key' => 'otherConditionsMetaBoxView',
+			'displayName' => 'Popup other Conditions'.$otherConditionsProLabel,
+			'filePath' => SG_POPUP_VIEWS_PATH.'otherConditionsView.php',
+			'priority' => 'high'
+		);
+
+		return $metaboxes;
+	}
+
+	public function popupEvents($events)
+	{
+		foreach ($events as $eventKey => $eventData) {
+			if (isset($eventData['param'])) {
+				if ($eventData['param'] == SGPB_CSS_CLASS_ACTIONS_KEY) {
+					unset($events[$eventKey]);
+					$events[] = array('param' => 'click');
+					$events[] = array('param' => 'hover');
+					$events[] = array('param' => 'confirm');
+				}
+				else if ($eventData['param'] == SGPB_CLICK_ACTION_KEY) {
+					$events[$eventKey]['param'] = 'click';
+				}
+				else if ($eventData['param'] == SGPB_HOVER_ACTION_KEY) {
+					$events[$eventKey]['param'] = 'hover';
+				}
+			}
+		}
+
+		return $events;
 	}
 
 	public function savedPostData($postData)
@@ -68,7 +220,7 @@ class Filters
 		return $filename;
 	}
 
-	public function editPopupPreviewLink($previewLink, $post)
+	public function editPopupPreviewLink($previewLink = '', $post = array())
 	{
 		if (get_option('theme_switched') === false) {
 			if (!empty($post) && $post->post_type == SG_POPUP_POST_TYPE) {
@@ -81,7 +233,7 @@ class Filters
 
 	public function excludePostsToShow($where)
 	{
-		if (is_admin()) {
+		if (function_exists('is_admin') && is_admin()) {
 			if (!function_exists('get_current_screen')) {
 				return $where;
 			}
@@ -95,8 +247,12 @@ class Filters
 			if ($postType == SG_POPUP_POST_TYPE &&
 				$screen instanceof \WP_Screen &&
 				$screen->id === 'edit-popupbuilder') {
-				$activePopupsQuery = SGPopup::getActivePopupsQueryString();
-				$where .= $activePopupsQuery;
+				if (class_exists('sgpb\SGPopup')) {
+					$activePopupsQuery = $this->getQueryString();
+					if ($activePopupsQuery && $activePopupsQuery != '') {
+						$where .= $activePopupsQuery;
+					}
+				}
 			}
 		}
 
@@ -142,15 +298,6 @@ class Filters
 		return do_shortcode($content);
 	}
 
-	public function renderOptions($options = array())
-	{
-		if (isset($options['sgpb-button-image'])) {
-			$options['sgpb-button-image'] = AdminHelper::convertImageToData($options['sgpb-button-image']);
-		}
-
-		return $options;
-	}
-
 	public function addNewPostUrl($url, $path)
 	{
 		if ($path == 'post-new.php?post_type='.SG_POPUP_POST_TYPE) {
@@ -165,10 +312,11 @@ class Filters
 		unset($columns['date']);
 
 		$additionalItems = array();
-		$additionalItems['counter'] = __('Show count', SG_POPUP_TEXT_DOMAIN);
+		$additionalItems['counter'] = __('Views', SG_POPUP_TEXT_DOMAIN);
 		$additionalItems['onOff'] = __('Enabled (show popup)', SG_POPUP_TEXT_DOMAIN);
 		$additionalItems['type'] = __('Type', SG_POPUP_TEXT_DOMAIN);
 		$additionalItems['shortcode'] = __('Shortcode', SG_POPUP_TEXT_DOMAIN);
+		$additionalItems['className'] = __('Class', SG_POPUP_TEXT_DOMAIN);
 
 		return $columns + $additionalItems;
 	}
@@ -246,7 +394,9 @@ class Filters
 				'name' => 'mediaButtonParams',
 				'data' => array(
 					'currentPostType' => get_post_type(),
-					'popupBuilderPostType' => SG_POPUP_POST_TYPE
+					'popupBuilderPostType' => SG_POPUP_POST_TYPE,
+					'ajaxUrl'   => admin_url('admin-ajax.php'),
+					'nonce' => wp_create_nonce(SG_AJAX_NONCE)
 				)
 			);
 		}

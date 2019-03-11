@@ -14,7 +14,9 @@ class Loco_fs_FileWriter {
      */
     private $fs;
 
-
+    /**
+     * @param Loco_fs_File
+     */
     public function __construct( Loco_fs_File $file ){
         $this->file = $file;
         $this->disconnect();
@@ -22,6 +24,7 @@ class Loco_fs_FileWriter {
     
     
     /**
+     * @param Loco_fs_File
      * @return Loco_fs_FileWriter
      */
     public function setFile( Loco_fs_File $file ){
@@ -30,9 +33,11 @@ class Loco_fs_FileWriter {
     }
     
 
-
     /**
      * Connect to alternative file system context
+     * 
+     * @param WP_Filesystem_Base
+     * @param bool whether reconnect required
      * @return Loco_fs_FileWriter
      * @throws Loco_error_WriteException
      */
@@ -71,16 +76,17 @@ class Loco_fs_FileWriter {
 
 
     /**
-     * @internal
      * Map virtual path for remote file system
+     * @param string
+     * @return string
      */
     private function mapPath( $path ){
         if( ! $this->isDirect() ){
-            $base = rtrim( loco_constant('WP_CONTENT_DIR'), '/' );
+            $base = untrailingslashit( Loco_fs_File::abs(loco_constant('WP_CONTENT_DIR')) );
             $snip = strlen($base);
             if( substr( $path, 0, $snip ) !== $base ){
                 // fall back to default path in case of symlinks
-                $base = rtrim(ABSPATH,'/').'/wp-content';
+                $base = trailingslashit(ABSPATH).'wp-content';
                 $snip = strlen($base);
                 if( substr( $path, 0, $snip ) !== $base ){
                     throw new Loco_error_WriteException('Remote path must be under WP_CONTENT_DIR');
@@ -90,7 +96,7 @@ class Loco_fs_FileWriter {
             if( false === $virt ){
                 throw new Loco_error_WriteException('Failed to find WP_CONTENT_DIR via remote connection');
             }
-            $virt = rtrim( $virt, '/' );
+            $virt = untrailingslashit( $virt );
             $path = substr_replace( $path, $virt, 0, $snip );
         }
         return $path;
@@ -115,6 +121,8 @@ class Loco_fs_FileWriter {
 
 
     /**
+     * @param int file mode integer e.g 0664
+     * @param bool whether to set recursively (directories)
      * @return Loco_fs_FileWriter
      * @throws Loco_error_WriteException
      */
@@ -127,8 +135,8 @@ class Loco_fs_FileWriter {
     }
 
 
-
     /**
+     * @param Loco_fs_File target for copy
      * @return Loco_fs_FileWriter
      * @throws Loco_error_WriteException
      */
@@ -150,6 +158,7 @@ class Loco_fs_FileWriter {
 
 
     /**
+     * @param bool
      * @return Loco_fs_FileWriter
      * @throws Loco_error_WriteException
      */
@@ -163,8 +172,8 @@ class Loco_fs_FileWriter {
     }
 
 
-
     /**
+     * @param string
      * @return Loco_fs_FileWriter
      * @throws Loco_error_WriteException
      */
@@ -183,13 +192,16 @@ class Loco_fs_FileWriter {
             $mode = defined('FS_CHMOD_FILE') ? FS_CHMOD_FILE : 0644;
         }
         $path = $this->getPath();
-        if( ! $this->fs->put_contents( $path, $data, $mode ) ){
+        while( ! $this->fs->put_contents( $path, $data, $mode ) ){
             // provide useful reason for failure if possible
             if( $file->exists() && ! $this->fs->is_writable($path) ){
+                Loco_error_AdminNotices::debug( sprintf('File not writable, cannot update %s',$path) );
                 throw new Loco_error_WriteException( __("Permission denied to update file",'loco-translate') );
             }
-            // else check directory exists in which to create a new file
-            else if( ( $dir = $file->getParent() ) && ! $dir->exists() ){
+            // full directory path may not exist. we won't create it, but user should be warned
+            if( ( $dir = $file->getParent() ) && ! $dir->exists() ){
+                $path = $dir->getRelativePath( loco_constant('WP_CONTENT_DIR') );
+                Loco_error_AdminNotices::debug( sprintf('Directory not found via "%s" method, ensure "wp-content/%s" exists and is writable',$this->fs->method,$path) );
                 throw new Loco_error_WriteException( __("Parent directory doesn't exist",'loco-translate') );
             }
             // else reason for failure is not established
@@ -202,7 +214,7 @@ class Loco_fs_FileWriter {
 
 
     /**
-     * @return Loco_fs_FileWriter
+     * @return bool
      * @throws Loco_error_WriteException
      */
      public function mkdir(){

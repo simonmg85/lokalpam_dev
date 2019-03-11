@@ -4,6 +4,7 @@ namespace wpautoterms;
 
 use wpautoterms\admin\Menu;
 use wpautoterms\admin\page\Legacy_Settings;
+use wpautoterms\cpt\CPT;
 
 abstract class Legacy_Shortcodes {
 	public static function my_terms_of_service_and_privacy_policy() {
@@ -46,7 +47,7 @@ abstract class Legacy_Shortcodes {
 		$args = array( 'text' => $text );
 		if ( current_user_can( 'edit_plugins' ) ) {
 			$args['settings_url'] =
-				admin_url( 'edit.php?post_type=' . WPAUTOTERMS_CPT . '&page=' . WPAUTOTERMS_SLUG . '_' . Menu::PAGE_LEGACY_SETTINGS );
+				admin_url( 'edit.php?post_type=' . CPT::type() . '&page=' . WPAUTOTERMS_SLUG . '_' . Menu::PAGE_LEGACY_SETTINGS );
 
 			return \wpautoterms\print_template( 'legacy/coming-soon-admin', $args, true );
 		}

@@ -9,6 +9,23 @@
 		$popupTypeObj->getOptionValue('sgpb-popup-themes')
 	);
 
+	$hideTopPosition = '';
+	if ($closeButtonPosition == 'bottomRight' || $closeButtonPosition == 'bottomLeft') {
+		$hideTopPosition = ' style="display:none;"';
+	}
+	$hideBottomPosition = '';
+	if ($closeButtonPosition == 'topRight' || $closeButtonPosition == 'topLeft') {
+		$hideBottomPosition = ' style="display:none;"';
+	}
+	$hideRightPosition = '';
+	if ($closeButtonPosition == 'topLeft' || $closeButtonPosition == 'bottomLeft') {
+		$hideRightPosition = ' style="display:none;"';
+	}
+	$hideLeftPosition = '';
+	if ($closeButtonPosition == 'topRight' || $closeButtonPosition == 'bottomRight') {
+		$hideLeftPosition = ' style="display:none;"';
+	}
+
 	$defaultCloseButtonPositions = $defaultData['closeButtonPositions'];
 	if ($popupTypeObj->getOptionValue('sgpb-popup-themes') == 'sgpb-theme-1' ||
 		$popupTypeObj->getOptionValue('sgpb-popup-themes') == 'sgpb-theme-4' ||
@@ -24,6 +41,9 @@
 		$popupTypeObj->getOptionValue('sgpb-popup-themes'),
 		$popupTypeObj->getOptionValue('sgpb-button-image')
 	);
+	if (strpos($buttonImage, 'http') === false) {
+		$buttonImage = 'data:image/png;base64,'.$buttonImage;
+	}
 	$disablePopupClosing = PopupBuilderActivePackage::canUseOption('sgpb-disable-popup-closing');
 ?>
 <div class="sgpb-wrapper form-horizontal">
@@ -57,27 +77,74 @@
 				</div>
 			</div>
 			<div class="sg-full-width">
-				<div class="row form-group">
-					<label for="sgpb-close-button-delay" class="col-md-5 control-label sgpb-sub-option">
-						<?php _e('Button delay', SG_POPUP_TEXT_DOMAIN)?>:
-					</label>
-					<div class="col-md-6">
-						<input type="number" min="0" id="sgpb-close-button-delay" class="sgpb-full-width-events form-control" name="sgpb-close-button-delay" value="<?php echo $popupTypeObj->getOptionValue('sgpb-close-button-delay'); ?>" placeholder="e.g.: 1">
+				<?php if (empty($removedOptions['sgpb-close-button-delay'])) :?>
+					<div class="row form-group">
+						<label for="sgpb-close-button-delay" class="col-md-5 control-label sgpb-sub-option">
+							<?php _e('Button delay', SG_POPUP_TEXT_DOMAIN)?>:
+						</label>
+						<div class="col-md-6">
+							<input type="number" min="0" id="sgpb-close-button-delay" class="sgpb-full-width-events form-control" name="sgpb-close-button-delay" value="<?php echo $popupTypeObj->getOptionValue('sgpb-close-button-delay'); ?>" placeholder="e.g.: 1">
+						</div>
+						<div class="col-md-1 sgpb-info-wrapper">
+							<span class="dashicons dashicons-editor-help sgpb-info-icon sgpb-info-icon-align"></span>
+							<span class="infoSelectRepeat samefontStyle sgpb-info-text">
+								<?php _e('Specify the time (in seconds) after which the close button will appear. The close button will be shown by default without any delay if no time is specified', SG_POPUP_TEXT_DOMAIN)?>.
+							</span>
+						</div>
 					</div>
-					<div class="col-md-1 sgpb-info-wrapper">
-						<span class="dashicons dashicons-editor-help sgpb-info-icon sgpb-info-icon-align"></span>
-						<span class="infoSelectRepeat samefontStyle sgpb-info-text">
-							<?php _e('Specify the time (in seconds) after which the close button will appear. The close button will be shown by default without any delay if no time is specified', SG_POPUP_TEXT_DOMAIN)?>.
-						</span>
+				<?php endif; ?>
+				<?php if (empty($removedOptions['sgpb-close-button-position'])) :?>
+					<div class="row form-group">
+						<label for="redirect-to-url" class="col-md-5 control-label sgpb-sub-option">
+							<?php _e('Button position', SG_POPUP_TEXT_DOMAIN)?>:
+						</label>
+						<div class="col-md-6"><?php echo AdminHelper::createSelectBox($defaultCloseButtonPositions, $closeButtonPosition, array('name' => 'sgpb-close-button-position', 'class'=>'js-sg-select2 sgpb-close-button-position')); ?></div>
 					</div>
-				</div>
-				<div class="row form-group">
-					<label for="redirect-to-url" class="col-md-5 control-label sgpb-sub-option">
-						<?php _e('Button position', SG_POPUP_TEXT_DOMAIN)?>:
-					</label>
-					<div class="col-md-6"><?php echo AdminHelper::createSelectBox($defaultCloseButtonPositions, $closeButtonPosition, array('name' => 'sgpb-close-button-position', 'class'=>'js-sg-select2 sgpb-close-button-position')); ?></div>
-				</div>
-
+					<div class="row form-group sgpb-button-position-top-js"<?php echo $hideTopPosition ;?>>
+						<label for="sgpb-button-position-top" class="col-md-5 control-label sgpb-double-sub-option">
+							<?php _e('top', SG_POPUP_TEXT_DOMAIN)?>:
+						</label>
+						<div class="col-md-6">
+							<input id="sgpb-button-position-top" class="sgpb-full-width form-control sgpb-full-width-events" step="0.5" type="number" name="sgpb-button-position-top" value="<?php echo $popupTypeObj->getOptionValue('sgpb-button-position-top'); ?>">
+						</div>
+						<div class="col-md-1">
+							<span class="sgpb-restriction-unit">px</span>
+						</div>
+					</div>
+					<div class="row form-group sgpb-button-position-right-js"<?php echo $hideRightPosition ;?>>
+						<label for="sgpb-button-position-right" class="col-md-5 control-label sgpb-double-sub-option">
+							<?php _e('right', SG_POPUP_TEXT_DOMAIN)?>:
+						</label>
+						<div class="col-md-6">
+							<input id="sgpb-button-position-right" class="sgpb-full-width form-control sgpb-full-width-events" step="0.5" type="number" name="sgpb-button-position-right" value="<?php echo $popupTypeObj->getOptionValue('sgpb-button-position-right'); ?>">
+						</div>
+						<div class="col-md-1">
+							<span class="sgpb-restriction-unit">px</span>
+						</div>
+					</div>
+					<div class="row form-group sgpb-button-position-bottom-js"<?php echo $hideBottomPosition ;?>>
+						<label for="sgpb-button-position-bottom" class="col-md-5 control-label sgpb-double-sub-option">
+							<?php _e('bottom', SG_POPUP_TEXT_DOMAIN)?>:
+						</label>
+						<div class="col-md-6">
+							<input id="sgpb-button-position-bottom" class="sgpb-full-width form-control sgpb-full-width-events" step="0.5" type="number" name="sgpb-button-position-bottom" value="<?php echo $popupTypeObj->getOptionValue('sgpb-button-position-bottom'); ?>">
+						</div>
+						<div class="col-md-1">
+							<span class="sgpb-restriction-unit">px</span>
+						</div>
+					</div>
+					<div class="row form-group sgpb-button-position-left-js"<?php echo $hideLeftPosition ;?>>
+						<label for="sgpb-button-position-left" class="col-md-5 control-label sgpb-double-sub-option">
+							<?php _e('left', SG_POPUP_TEXT_DOMAIN)?>:
+						</label>
+						<div class="col-md-6">
+							<input id="sgpb-button-position-left" class="sgpb-full-width form-control sgpb-full-width-events" step="0.5" type="number" name="sgpb-button-position-left" value="<?php echo $popupTypeObj->getOptionValue('sgpb-button-position-left'); ?>">
+						</div>
+						<div class="col-md-1">
+							<span class="sgpb-restriction-unit">px</span>
+						</div>
+					</div>
+				<?php endif; ?>
 				<div class="<?php echo ($popupTypeObj->getOptionValue('sgpb-popup-themes') == 'sgpb-theme-4') ? 'sg-hide ' : '' ;?>sgpb-close-button-image-option-wrapper">
 					<div class="row form-group">
 						<label for="redirect-to-url" class="col-md-5 control-label sgpb-static-padding-top sgpb-sub-option">
@@ -195,7 +262,7 @@
 				</div>
 				<?php if (!$disablePopupClosing): ?>
 					<div class="col-md-2 sgpb-pro-options-label-wrapper">
-						<a href="<?php echo SG_POPUP_PRO_URL;?>" target="_blank" class="btn btn-warning btn-xs sgpb-pro-label-sm"><?php _e('Upgrade to PRO', SG_POPUP_TEXT_DOMAIN) ?></a>
+						<a href="<?php echo SG_POPUP_ADVANCED_CLOSING_URL;?>" target="_blank" class="btn btn-warning btn-xs sgpb-pro-label-sm sgpb-advanced-closing-pro-label"><?php _e('UNLOCK OPTION', SG_POPUP_TEXT_DOMAIN) ?></a>
 					</div>
 				<?php endif; ?>
 			</div>

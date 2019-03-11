@@ -113,6 +113,8 @@ Super Form Reset
 
 /*Our reset styles*/
 .sgpb-form-wrapper input[type="text"],
+.sgpb-form-wrapper input[type="number"],
+.sgpb-form-wrapper input[type="password"],
 .sgpb-form-wrapper input[type="email"],
 .sgpb-form-wrapper input[type="submit"],
 .sgpb-form-wrapper input[type="button"] {

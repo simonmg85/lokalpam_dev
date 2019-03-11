@@ -1,5 +1,5 @@
 <?php
-	global $wpdb;
+	global $wpdb,$listingpro_options;
 	$plan_package_type = get_post_meta( get_the_ID(), 'plan_package_type', true );
 	$post_price = get_post_meta(get_the_ID(), 'plan_price', true);
 	
@@ -294,10 +294,11 @@
 													$taxprice = (float)(($taxrate/100)*$post_price);
 													$post_price = (float)$post_price + (float)$taxprice;
 												}
+												$post_price = round($post_price,2);
 												$lp_currency_position = $listingpro_options['pricingplan_currency_position'];
 												if(isset($lp_currency_position) && $lp_currency_position=="left"){
 												?>
-													<p>¢<?=round(($post_price*100)/365); ?>/<span>day</span></p>
+													<p><?php echo listingpro_currency_sign().$post_price; ?></p>
 												<?php
 												}
 												else{ ?>
@@ -310,9 +311,7 @@
 											<?php
 											}
 											if(!empty($plan_type_name)){ ?>
-												<span class="package-type">
-                                                    <?=listingpro_currency_sign().$post_price?> / year
-                                                </span><br><br>
+												<span class="package-type"><?php echo $plan_type_name; ?></span><br><br>
 											<?php
 											}
 											
@@ -372,116 +371,145 @@
 											<?php
 												
 												if($listingpro_options['lp_showhide_address']=="1"){
-													echo '
-													<li>
-														<span class="icon icons8-Cancel">'.listingpro_icon8($map_checked).'</span>
-														<span>'.esc_html__('Map Display', 'listingpro-plugin').'</span>
-													</li>';
+													if(get_post_meta(get_the_ID(), 'map_show_hide', true)==''){
+														echo '
+														<li>
+															<span class="icon icons8-Cancel">'.listingpro_icon8($map_checked).'</span>
+															<span>'.esc_html__('Map Display', 'listingpro-plugin').'</span>
+														</li>';
+													}
 												}
 												if($listingpro_options['phone_switch']=="1"){
-													echo '
-															<li>
-																<span class="icon icons8-Cancel">'.listingpro_icon8($contact_checked).'</span>
-																<span>'.esc_html__('Contact Display', 'listingpro-plugin').'</span>
-															</li>
-															';
+													if(get_post_meta(get_the_ID(), 'contact_show_hide', true)==''){
+														echo '
+																<li>
+																	<span class="icon icons8-Cancel">'.listingpro_icon8($contact_checked).'</span>
+																	<span>'.esc_html__('Contact Display', 'listingpro-plugin').'</span>
+																</li>
+																';
+													}
 												}
 												if($listingpro_options['file_switch']=="1"){
-													echo '
-														<li>
-															<span class="icon icons8-Cancel">'.listingpro_icon8($gallery_checked).'</span>
-															<span>'.esc_html__('Image Gallery', 'listingpro-plugin').'</span>
-														</li>
-														';
+													if(get_post_meta(get_the_ID(), 'gall_show_hide', true)==''){
+														echo '
+															<li>
+																<span class="icon icons8-Cancel">'.listingpro_icon8($gallery_checked).'</span>
+																<span>'.esc_html__('Image Gallery', 'listingpro-plugin').'</span>
+															</li>
+															';
+													}
 												}
 												if($listingpro_options['vdo_switch']=="1"){
-													echo '
-														<li>
-															<span class="icon icons8-Cancel">'.listingpro_icon8($video_checked).'</span>
-															<span>'.esc_html__('Video', 'listingpro-plugin').'</span>
-														</li>
-														';
+													if(get_post_meta(get_the_ID(), 'video_show_hide', true)==''){
+														echo '
+															<li>
+																<span class="icon icons8-Cancel">'.listingpro_icon8($video_checked).'</span>
+																<span>'.esc_html__('Video', 'listingpro-plugin').'</span>
+															</li>
+															';
+													}
 												}
-												echo '
-												<li>
-													<span class="icon-text">'.listingpro_icon8($tagline_checked).'</span>
-													<span>'.esc_html__('Business Tagline', 'listingpro-plugin').'</span>
-												</li>
-												';
-												if($listingpro_options['location_switch']=="1"){
-													echo '
-														<li>
-															<span class="icon-text">'.listingpro_icon8($location_checked).'</span>
-															<span>'.esc_html__('Location', 'listingpro-plugin').'</span>
-														</li>';
-												}
-												if($listingpro_options['web_switch']=="1"){
+												if(get_post_meta(get_the_ID(), 'tagline_show_hide', true)==''){
 													echo '
 													<li>
-														<span class="icon-text">'.listingpro_icon8($website_checked).'</span>
-														<span>'.esc_html__('Website', 'listingpro-plugin').'</span>
-													</li>';
+														<span class="icon-text">'.listingpro_icon8($tagline_checked).'</span>
+														<span>'.esc_html__('Business Tagline', 'listingpro-plugin').'</span>
+													</li>
+													';
+												}
+												if($listingpro_options['location_switch']=="1"){
+													if(get_post_meta(get_the_ID(), 'location_show_hide', true)==''){
+														echo '
+															<li>
+																<span class="icon-text">'.listingpro_icon8($location_checked).'</span>
+																<span>'.esc_html__('Location', 'listingpro-plugin').'</span>
+															</li>';
+													}
+												}
+												if($listingpro_options['web_switch']=="1"){
+													if(get_post_meta(get_the_ID(), 'website_show_hide', true)==''){
+														echo '
+														<li>
+															<span class="icon-text">'.listingpro_icon8($website_checked).'</span>
+															<span>'.esc_html__('Website', 'listingpro-plugin').'</span>
+														</li>';
+													}
 													
 												}
 												
 												if($listingpro_options['listin_social_switch']=="1"){
-													echo '
-													<li>
-														<span class="icon-text">'.listingpro_icon8($social_checked).'</span>
-														<span>'.esc_html__('Social Links', 'listingpro-plugin').'</span>
-													</li>
-													';
+													if(get_post_meta(get_the_ID(), 'social_show_hide', true)==''){
+														echo '
+														<li>
+															<span class="icon-text">'.listingpro_icon8($social_checked).'</span>
+															<span>'.esc_html__('Social Links', 'listingpro-plugin').'</span>
+														</li>
+														';
+													}
 												}
 												if($listingpro_options['faq_switch']=="1"){
-													echo '
-														<li>
-															<span class="icon-text">'.listingpro_icon8($faq_checked).'</span>
-															<span>'.esc_html__('FAQ', 'listingpro-plugin').'</span>
-														</li>
-														';
+													if(get_post_meta(get_the_ID(), 'faqs_show_hide', true)==''){
+														echo '
+															<li>
+																<span class="icon-text">'.listingpro_icon8($faq_checked).'</span>
+																<span>'.esc_html__('FAQ', 'listingpro-plugin').'</span>
+															</li>
+															';
+													}
 												}
 												if($listingpro_options['currency_switch']=="1"){
-													echo '
-														<li>
-															<span class="icon-text">'.listingpro_icon8($price_checked).'</span>
-															<span>'.esc_html__('Price Range', 'listingpro-plugin').'</span>
-														</li>
-														';
+													if(get_post_meta(get_the_ID(), 'price_show_hide', true)==''){
+														echo '
+															<li>
+																<span class="icon-text">'.listingpro_icon8($price_checked).'</span>
+																<span>'.esc_html__('Price Range', 'listingpro-plugin').'</span>
+															</li>
+															';
+													}
 												}
 												
 												if($listingpro_options['tags_switch']=="1"){
-													echo '
-														<li>
-															<span class="icon-text">'.listingpro_icon8($tag_key_checked).'</span>
-															<span>'.esc_html__('Tags/Keywords', 'listingpro-plugin').'</span>
-														</li>
-														';
+													if(get_post_meta(get_the_ID(), 'tags_show_hide', true)==''){
+														echo '
+															<li>
+																<span class="icon-text">'.listingpro_icon8($tag_key_checked).'</span>
+																<span>'.esc_html__('Tags/Keywords', 'listingpro-plugin').'</span>
+															</li>
+															';
+													}
 												}
 												if($listingpro_options['oph_switch']=="1"){
-													echo '		
-													<li>
-														<span class="icon-text">'.listingpro_icon8($bhours_checked).'</span>
-														<span>'.esc_html__('Business Hours', 'listingpro-plugin').'</span>
-													</li>
-													';
+													if(get_post_meta(get_the_ID(), 'bhours_show_hide', true)==''){
+														echo '		
+														<li>
+															<span class="icon-text">'.listingpro_icon8($bhours_checked).'</span>
+															<span>'.esc_html__('Business Hours', 'listingpro-plugin').'</span>
+														</li>
+														';
+													}
 												}
 												
 												
 												/* new option */
 											if(lp_theme_option('lp_featured_file_switch')){
+												if(get_post_meta(get_the_ID(), 'reserva_show_hide', true)==''){
+													echo '
+														<li>
+															<span class="icon-text">'.listingpro_icon8($resurva_show).'</span>
+															<span>'.esc_html__('Resurva', 'listingpro-plugin').'</span>
+														</li>
+														';
+												}
+											}
+											if(get_post_meta(get_the_ID(), 'timekit_show_hide', true)==''){
 												echo '
 													<li>
-														<span class="icon-text">'.listingpro_icon8($resurva_show).'</span>
-														<span>'.esc_html__('Resurva', 'listingpro-plugin').'</span>
+														<span class="icon-text">'.listingpro_icon8($timekit_show).'</span>
+														<span>'.esc_html__('Timekit', 'listingpro-plugin').'</span>
 													</li>
 													';
 											}
-											echo '
-												<li>
-													<span class="icon-text">'.listingpro_icon8($timekit_show).'</span>
-													<span>'.esc_html__('Timekit', 'listingpro-plugin').'</span>
-												</li>
-												';
+											if(get_post_meta(get_the_ID(), 'menu_show_hide', true)==''){
 												
 												echo '
 												<li>
@@ -489,36 +517,40 @@
 													<span>'.esc_html__('Menu', 'listingpro-plugin').'</span>
 												</li>
 												';
+											}
+											if(get_post_meta(get_the_ID(), 'announcment_show_hide', true)==''){
 												echo '
 												<li>
 													<span class="icon-text">'.listingpro_icon8($announcment_show).'</span>
 													<span>'.esc_html__('Announcment', 'listingpro-plugin').'</span>
 												</li>
 												';
+											}
+											if(get_post_meta(get_the_ID(), 'deals_show_hide', true)==''){
 												echo '
 												<li>
 													<span class="icon-text">'.listingpro_icon8($deals_show).'</span>
 													<span>'.esc_html__('Deals-Offers-Discounts', 'listingpro-plugin').'</span>
 												</li>
 												';
+											}
+											if(get_post_meta(get_the_ID(), 'metacampaign_show_hide', true)==''){
 												echo '
 												<li>
 													<span class="icon-text">'.listingpro_icon8($competitor_show).'</span>
 													<span>'.esc_html__('Hide competitors Ads', 'listingpro-plugin').'</span>
 												</li>
 												';
-												echo '
-												<li>
-													<span class="icon-text">'.listingpro_icon8($featured_show).'</span>
-													<span>'.esc_html__('Featured Image', 'listingpro-plugin').'</span>
-												</li>
-												';
+											}
+											if(get_post_meta(get_the_ID(), 'events_show_hide', true)==''){
+												
 												echo '
 												<li>
 													<span class="icon-text">'.listingpro_icon8($event_show).'</span>
 													<span>'.esc_html__('Events', 'listingpro-plugin').'</span>
 												</li>
 												';
+											}
 											/* new option emd */
 												
 												
@@ -537,14 +569,12 @@
 											?>
 											
 									</ul>
-									<?php $plan_ids = get_field( "product_id", $post->ID ); ?>
-									<form method="post" name="<?php echo get_the_ID(); ?>" action="<?=site_url()?>/?add-to-cart=<?=$plan_ids[0]?>" class="price-plan-button xxxx0ooo">
+									
+									<form method="post" name="<?php echo get_the_ID(); ?>" action="<?php echo listingpro_url('submit-listing'); ?>" class="price-plan-button">
 									<!-- for button -->
 									<?php
 										echo '<input type="hidden" name="plan_id" value="'.get_the_ID().'" />';
-										echo '<input type="hidden" name="order_type" value="'.$_GET['order_type'].'" />';
-										echo '<input type="hidden" name="claim_listing_id" value="'.$_GET['claim_listing_id'].'" />';
-
+											
 											if(empty($post_price) && $plan_type=="Package"){
 												echo '<p>A <strong>'.esc_html__("Package",'listingpro-plugin').'</strong>'.esc_html__(" should have a price ",'listingpro-plugin').'</p>';
 

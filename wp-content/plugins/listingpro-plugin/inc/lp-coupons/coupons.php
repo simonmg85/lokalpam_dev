@@ -4,7 +4,8 @@
 ----------------------------------------------------*/
 if(!function_exists('listingpro_register_coupons_page')){
 	function listingpro_register_coupons_page() {
-		add_menu_page(
+		add_submenu_page(
+			'edit.php?post_type=price_plan',
 			__( 'Coupons', 'listingpro-plugin' ),
 			'Coupons',
 			'manage_options',

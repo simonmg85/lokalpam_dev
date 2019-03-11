@@ -1,4 +1,4 @@
-# Copyright (C) 2018 WPForms Signatures
+# Copyright (C) 2019 WPForms Signatures
 # This file is distributed under the same license as the WPForms Signatures package.
 msgid ""
 msgstr ""
@@ -18,22 +18,22 @@ msgstr ""
 msgid "Signature"
 msgstr ""
 
-#: class-signatures.php:244
+#: class-signatures.php:288
 msgid "Ink Color"
 msgstr ""
 
-#: class-signatures.php:245
+#: class-signatures.php:289
 msgid "Select the color for the signature ink."
 msgstr ""
 
-#: class-signatures.php:327
+#: class-signatures.php:381
 msgid "Clear Signature"
 msgstr ""
 
-#: class-signatures.php:364, class-signatures.php:374
+#: class-signatures.php:419, class-signatures.php:429
 msgid "Invalid signature image format"
 msgstr ""
 
-#: class-signatures.php:398
+#: class-signatures.php:453
 msgid "signature"
 msgstr ""

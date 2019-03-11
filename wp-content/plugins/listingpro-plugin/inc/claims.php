@@ -141,6 +141,18 @@ function save_lp_claims_meta($post_id)
         
         
         if (!empty($claim_status) && $claim_status == "approved") {
+			
+			$exMetaboxes = get_post_meta($claimed_post, 'lp_' . strtolower(THEMENAME) . '_options', true);
+			$argClaims = array(
+				'ID' => $claimed_post,
+				'post_author' => $new_author,
+			);
+			wp_update_post( $argClaims );
+			update_post_meta($claimed_post, 'lp_' . strtolower(THEMENAME) . '_options', $exMetaboxes);
+			
+			global $wpdb;
+            $prefix = $wpdb->prefix;
+            
             
             $listing_author   = get_post_field('post_author', $claimed_post);
             $oldusermeta      = get_user_by('id', $listing_author);
@@ -156,18 +168,8 @@ function save_lp_claims_meta($post_id)
 			
             
             global $wpdb;
+			
             $prefix = $wpdb->prefix;
-            
-            $update_data   = array(
-                'post_author' => $new_author
-            );
-            $where         = array(
-                'ID' => $claimed_post
-            );
-            $update_format = array(
-                '%s'
-            );
-            $wpdb->update($prefix . 'posts', $update_data, $where, $update_format);
 			
 			/* updte data is listing order db */
 			$orderTable = 'listing_orders';
@@ -175,7 +177,7 @@ function save_lp_claims_meta($post_id)
             
             listing_set_metabox('claimed_listing', $claimed_post, $post_id);
             
-        } else if (!empty($claim_status) && $claim_status == "pending") {
+        }elseif(!empty($claim_status) && $claim_status == "pending") {
             global $wpdb;
             $prefix = $wpdb->prefix;
             
@@ -190,7 +192,7 @@ function save_lp_claims_meta($post_id)
             );
             $wpdb->update($prefix . 'posts', $update_data, $where, $update_format);
            listing_set_metabox('claimed_section', '', $claimed_post);
-        } else {
+        }else{
             listing_set_metabox('claimed_section', '', $claimed_post);
             return;
         }

@@ -36,8 +36,10 @@ class cridio_Recaptcha_Logic {
         curl_setopt( $ch, CURLOPT_URL, $url );
         curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
         curl_setopt( $ch, CURLOPT_TIMEOUT, 10 );
-
+        
         $output = curl_exec( $ch );
+        curl_close( $ch );
+        
         $result = json_decode( $output, true );
 		if ( array_key_exists( 'success', $result ) && 1 == $result['success'] ) {
 			return true;

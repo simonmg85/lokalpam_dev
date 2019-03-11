@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: listingpro-plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-11 02:28+0500\n"
+"POT-Creation-Date: 2019-02-01 17:37+0500\n"
 "POT-Revision-Date: Tue Mar 08 2016 16:05:54 GMT+0500 (Pakistan Standard Time)\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: cland <cland@gmail.com>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Generator: Poedit 2.0.4\n"
+"X-Generator: Poedit 2.2\n"
 "X-Poedit-KeywordsList: _:1;gettext:1;dgettext:2;ngettext:1,2;dngettext:2,3;__:1;"
 "_e:1;_c:1;_n:1,2;_n_noop:1,2;_nc:1,2;__ngettext:1,2;__ngettext_noop:1,2;_x:1,2c;"
 "_ex:1,2c;_nx:1,2,4c;_nx_noop:1,2,3c;_n_js:1,2;_nx_js:1,2,3c;esc_attr__:1;"
@@ -28,9 +28,10 @@ msgstr ""
 msgid "undefined"
 msgstr ""
 
-#: functions.php:576 inc/claims.php:211 shortcodes/checkout.php:15
-#: shortcodes/edit.php:16 shortcodes/pricing.php:25 shortcodes/submit.php:17
-#: vc_special_elements.php:563 vc_special_elements.php:3227
+#: functions.php:576 inc/claims.php:213 shortcodes/checkout.php:15
+#: shortcodes/edit.php:16 shortcodes/edit.php:387 shortcodes/pricing.php:25
+#: shortcodes/submit.php:17 shortcodes/submit.php:390 shortcodes/submit.php:393
+#: vc_special_elements.php:563 vc_special_elements.php:3345
 msgid "Title"
 msgstr ""
 
@@ -39,18 +40,18 @@ msgid "Listing Category"
 msgstr ""
 
 #: functions.php:578 plugin.php:332 plugin.php:333
-#: templates/pricing/loop/horizontal_view_1.php:400
-#: templates/pricing/loop/horizontal_view_2.php:414
-#: templates/pricing/loop/horizontal_view_2_aqib.php:353
-#: templates/pricing/loop/vertical_view_1.php:413
-#: templates/pricing/loop/vertical_view_2.php:532
-#: templates/pricing/loop/vertical_view_3.php:458
-#: templates/pricing/loop/vertical_view_4.php:384
-#: templates/pricing/loop/vertical_view_5.php:460
-#: templates/pricing/loop/vertical_view_6.php:457
-#: templates/pricing/loop/vertical_view_7.php:459
-#: templates/pricing/loop/vertical_view_8.php:458
-#: templates/pricing/loop/vertical_view_9.php:448
+#: templates/pricing/loop/claim_plans.php:467
+#: templates/pricing/loop/horizontal_view_1.php:404
+#: templates/pricing/loop/horizontal_view_2.php:421
+#: templates/pricing/loop/vertical_view_1.php:425
+#: templates/pricing/loop/vertical_view_2.php:544
+#: templates/pricing/loop/vertical_view_3.php:470
+#: templates/pricing/loop/vertical_view_4.php:396
+#: templates/pricing/loop/vertical_view_5.php:472
+#: templates/pricing/loop/vertical_view_6.php:469
+#: templates/pricing/loop/vertical_view_7.php:471
+#: templates/pricing/loop/vertical_view_8.php:470
+#: templates/pricing/loop/vertical_view_9.php:464
 msgid "Location"
 msgstr ""
 
@@ -66,17 +67,18 @@ msgstr ""
 msgid "Payment Status"
 msgstr ""
 
-#: functions.php:582 inc/claims.php:212 inc/lp-reports/reviews-reports.php:100
+#: functions.php:582 inc/claims.php:214 inc/lp-reports/reviews-reports.php:100
 #: inc/lp-reports/reviews-reports.php:134 inc/metaboxes/post-options.php:195
 msgid "Author"
 msgstr ""
 
-#: functions.php:583 inc/claims.php:214 inc/templates/invoice_temp/all.php:13
-#: inc/templates/invoice_temp/all.php:89 inc/templates/invoice_temp/failed.php:13
-#: inc/templates/invoice_temp/failed.php:92 inc/templates/invoice_temp/pending.php:13
-#: inc/templates/invoice_temp/pending.php:92
+#: functions.php:583 inc/claims.php:216 inc/templates/invoice_temp/all.php:13
+#: inc/templates/invoice_temp/all.php:121 inc/templates/invoice_temp/failed.php:13
+#: inc/templates/invoice_temp/failed.php:105
+#: inc/templates/invoice_temp/pending.php:13
+#: inc/templates/invoice_temp/pending.php:117
 #: inc/templates/invoice_temp/success.php:13
-#: inc/templates/invoice_temp/success.php:92
+#: inc/templates/invoice_temp/success.php:105
 msgid "Date"
 msgstr ""
 
@@ -92,37 +94,37 @@ msgstr ""
 msgid "Select your listing features"
 msgstr ""
 
-#: functions.php:811 functions.php:831 shortcodes/edit.php:841
-#: shortcodes/edit.php:1765
+#: functions.php:811 functions.php:831 shortcodes/edit.php:876
+#: shortcodes/edit.php:1848
 msgid "Additional Business Info"
 msgstr ""
 
-#: functions.php:1096
+#: functions.php:1129
 msgid "Verify your purchase code to unlock all features, see "
 msgstr ""
 
-#: functions.php:1096
+#: functions.php:1129
 msgid "instructions"
 msgstr ""
 
-#: functions.php:1115
+#: functions.php:1148
 msgid "Valid License Key!"
 msgstr ""
 
-#: functions.php:1117
+#: functions.php:1150
 msgid "Invalid license key"
 msgstr ""
 
-#: functions.php:1237
+#: functions.php:1270
 #, php-format
 msgid "Show All %s"
 msgstr ""
 
-#: functions.php:1334 inc/lp-coupons/templates/active.php:54
-#: inc/lp-coupons/templates/all.php:50 inc/lp-coupons/templates/expired.php:54
-#: inc/subscriptions.php:167 inc/templates/invoice_temp/all.php:55
-#: inc/templates/invoice_temp/failed.php:58 inc/templates/invoice_temp/pending.php:58
-#: inc/templates/invoice_temp/success.php:58
+#: functions.php:1386 inc/lp-coupons/templates/active.php:63
+#: inc/lp-coupons/templates/all.php:58 inc/lp-coupons/templates/expired.php:63
+#: inc/subscriptions.php:200 inc/templates/invoice_temp/all.php:59
+#: inc/templates/invoice_temp/failed.php:60 inc/templates/invoice_temp/pending.php:61
+#: inc/templates/invoice_temp/success.php:60
 #: templates/pricing/loop/vertical_view_1.php:249
 #: templates/pricing/loop/vertical_view_1.php:260
 #: templates/pricing/loop/vertical_view_2.php:297
@@ -144,25 +146,80 @@ msgstr ""
 msgid "Active"
 msgstr ""
 
-#: functions.php:1337 inc/invoices-ads.php:176 inc/invoices-ads.php:371
-#: inc/invoices-ads.php:566 inc/invoices.php:181 inc/invoices.php:231
-#: inc/templates/invoice_temp/all.php:58 inc/templates/invoice_temp/failed.php:61
-#: inc/templates/invoice_temp/pending.php:61
-#: inc/templates/invoice_temp/success.php:61 vc_special_elements.php:837
+#: functions.php:1389 inc/invoices-ads.php:183 inc/invoices-ads.php:378
+#: inc/invoices-ads.php:573 inc/invoices.php:190 inc/invoices.php:239
+#: inc/templates/invoice_temp/all.php:62 inc/templates/invoice_temp/failed.php:63
+#: inc/templates/invoice_temp/pending.php:64
+#: inc/templates/invoice_temp/success.php:63 vc_special_elements.php:837
 msgid "Failed"
 msgstr ""
 
-#: functions.php:1340 inc/invoices-ads.php:172 inc/invoices-ads.php:367
-#: inc/invoices-ads.php:562 inc/invoices.php:180 inc/invoices.php:227
-#: inc/lp-coupons/templates/active.php:60 inc/lp-coupons/templates/all.php:56
-#: inc/lp-coupons/templates/expired.php:60 inc/templates/invoice_temp/all.php:61
-#: inc/templates/invoice_temp/failed.php:64 inc/templates/invoice_temp/pending.php:64
-#: inc/templates/invoice_temp/success.php:64
+#: functions.php:1392 inc/invoices-ads.php:179 inc/invoices-ads.php:374
+#: inc/invoices-ads.php:569 inc/invoices.php:189 inc/invoices.php:235
+#: inc/lp-coupons/templates/active.php:69 inc/lp-coupons/templates/all.php:64
+#: inc/lp-coupons/templates/expired.php:69 inc/templates/invoice_temp/all.php:67
+#: inc/templates/invoice_temp/all.php:74 inc/templates/invoice_temp/failed.php:66
+#: inc/templates/invoice_temp/pending.php:69
+#: inc/templates/invoice_temp/pending.php:76
+#: inc/templates/invoice_temp/success.php:66
 msgid "Pending"
 msgstr ""
 
-#: functions.php:1355
-msgid "Sorry! there is not result"
+#: functions.php:1426 inc/invoices-ads.php:232 inc/invoices-ads.php:426
+#: inc/invoices-ads.php:621 inc/lp-coupons/templates/active.php:23
+#: inc/lp-coupons/templates/active.php:82 inc/lp-coupons/templates/active.php:110
+#: inc/lp-coupons/templates/all.php:19 inc/lp-coupons/templates/all.php:77
+#: inc/lp-coupons/templates/all.php:105 inc/lp-coupons/templates/expired.php:23
+#: inc/lp-coupons/templates/expired.php:82 inc/lp-coupons/templates/expired.php:110
+#: inc/templates/invoice_temp/all.php:88 inc/templates/invoice_temp/failed.php:77
+#: inc/templates/invoice_temp/pending.php:90
+#: inc/templates/invoice_temp/success.php:77
+msgid "Delete"
+msgstr ""
+
+#: functions.php:1436 inc/templates/invoice_temp/all.php:108
+msgid "Sorry! there is no result"
+msgstr ""
+
+#: functions.php:1527
+msgid "Invoice Summary"
+msgstr ""
+
+#: functions.php:1533
+msgid "First Name"
+msgstr ""
+
+#: functions.php:1537
+msgid "Last Name"
+msgstr ""
+
+#: functions.php:1541
+msgid "Listing Name"
+msgstr ""
+
+#: functions.php:1552
+msgid "Order Info"
+msgstr ""
+
+#: functions.php:1557 inc/invoices-ads.php:210 inc/invoices-ads.php:272
+#: inc/invoices-ads.php:325 inc/invoices-ads.php:405 inc/invoices-ads.php:467
+#: inc/invoices-ads.php:521 inc/invoices-ads.php:600 inc/invoices-ads.php:662
+#: inc/invoices-ads.php:746 inc/templates/invoice_temp/all.php:15
+#: inc/templates/invoice_temp/all.php:123 inc/templates/invoice_temp/failed.php:15
+#: inc/templates/invoice_temp/failed.php:107
+#: inc/templates/invoice_temp/pending.php:15
+#: inc/templates/invoice_temp/pending.php:119
+#: inc/templates/invoice_temp/success.php:15
+#: inc/templates/invoice_temp/success.php:107
+msgid "Price"
+msgstr ""
+
+#: functions.php:1561
+msgid "Payment Method"
+msgstr ""
+
+#: functions.php:1565
+msgid "Transaction id"
 msgstr ""
 
 #: inc/BFI_Thumb.php:120
@@ -257,26 +314,26 @@ msgstr ""
 msgid "Description."
 msgstr ""
 
-#: inc/claims.php:213 inc/lp-coupons/templates/active.php:21
-#: inc/lp-coupons/templates/active.php:99 inc/lp-coupons/templates/all.php:17
-#: inc/lp-coupons/templates/all.php:95 inc/lp-coupons/templates/expired.php:21
-#: inc/lp-coupons/templates/expired.php:99 inc/metaboxes/post-options.php:200
-#: inc/subscriptions.php:114 inc/subscriptions.php:201
-#: inc/templates/invoice_temp/all.php:16 inc/templates/invoice_temp/all.php:92
-#: inc/templates/invoice_temp/failed.php:16 inc/templates/invoice_temp/failed.php:95
+#: inc/claims.php:215 inc/lp-coupons/templates/active.php:22
+#: inc/lp-coupons/templates/active.php:109 inc/lp-coupons/templates/all.php:18
+#: inc/lp-coupons/templates/all.php:104 inc/lp-coupons/templates/expired.php:22
+#: inc/lp-coupons/templates/expired.php:109 inc/metaboxes/post-options.php:200
+#: inc/subscriptions.php:138 inc/subscriptions.php:234
+#: inc/templates/invoice_temp/all.php:16 inc/templates/invoice_temp/all.php:124
+#: inc/templates/invoice_temp/failed.php:16 inc/templates/invoice_temp/failed.php:108
 #: inc/templates/invoice_temp/pending.php:16
-#: inc/templates/invoice_temp/pending.php:95
+#: inc/templates/invoice_temp/pending.php:120
 #: inc/templates/invoice_temp/success.php:16
-#: inc/templates/invoice_temp/success.php:95
+#: inc/templates/invoice_temp/success.php:108
 msgid "Status"
 msgstr ""
 
 #: inc/field-types.php:84 inc/field-types.php:114 inc/metaboxes/metaboxes.php:287
-#: inc/metaboxes/metaboxes.php:319 inc/metaboxes/post-options.php:598
+#: inc/metaboxes/metaboxes.php:319 inc/metaboxes/post-options.php:603
 msgid "Yes"
 msgstr ""
 
-#: inc/field-types.php:112 inc/metaboxes/post-options.php:597
+#: inc/field-types.php:112 inc/metaboxes/post-options.php:602
 msgid "No"
 msgstr ""
 
@@ -292,138 +349,123 @@ msgstr ""
 msgid "Please Login To Upload"
 msgstr ""
 
-#: inc/invoices-ads.php:44
+#: inc/invoices-ads.php:50
 msgid " Random Ads "
 msgstr ""
 
-#: inc/invoices-ads.php:47
+#: inc/invoices-ads.php:53
 msgid " Detail Page Ads "
 msgstr ""
 
-#: inc/invoices-ads.php:50
+#: inc/invoices-ads.php:56
 msgid " Top in Search Page Ads "
 msgstr ""
 
-#: inc/invoices-ads.php:155
+#: inc/invoices-ads.php:162
 msgid "Ads Invoices"
 msgstr ""
 
-#: inc/invoices-ads.php:157 inc/invoices.php:196 templates/payment-methods.php:70
+#: inc/invoices-ads.php:164 inc/invoices.php:204 templates/payment-methods.php:69
 msgid "Paypal"
 msgstr ""
 
-#: inc/invoices-ads.php:158 inc/invoices.php:200 templates/payment-methods.php:115
+#: inc/invoices-ads.php:165 inc/invoices.php:208 templates/payment-methods.php:114
 msgid "Stripe"
 msgstr ""
 
-#: inc/invoices-ads.php:159 inc/invoices.php:208
+#: inc/invoices-ads.php:166 inc/invoices.php:216
 msgid "Wire"
 msgstr ""
 
-#: inc/invoices-ads.php:168 inc/invoices-ads.php:363 inc/invoices-ads.php:558
-#: inc/invoices.php:223 vc_special_elements.php:836
+#: inc/invoices-ads.php:175 inc/invoices-ads.php:370 inc/invoices-ads.php:565
+#: inc/invoices.php:231 vc_special_elements.php:836
 msgid "Success"
 msgstr ""
 
-#: inc/invoices-ads.php:200 inc/invoices-ads.php:262 inc/invoices-ads.php:315
-#: inc/invoices-ads.php:395 inc/invoices-ads.php:457 inc/invoices-ads.php:511
-#: inc/invoices-ads.php:590 inc/invoices-ads.php:652 inc/invoices-ads.php:715
+#: inc/invoices-ads.php:207 inc/invoices-ads.php:269 inc/invoices-ads.php:322
+#: inc/invoices-ads.php:402 inc/invoices-ads.php:464 inc/invoices-ads.php:518
+#: inc/invoices-ads.php:597 inc/invoices-ads.php:659 inc/invoices-ads.php:743
 #: inc/lp-coupons/templates/active.php:8 inc/lp-coupons/templates/all.php:4
-#: inc/lp-coupons/templates/expired.php:8 inc/subscriptions.php:108
-#: inc/subscriptions.php:195 inc/templates/invoice_temp/all.php:4
+#: inc/lp-coupons/templates/expired.php:8 inc/subscriptions.php:132
+#: inc/subscriptions.php:228 inc/templates/invoice_temp/all.php:4
 #: inc/templates/invoice_temp/failed.php:4 inc/templates/invoice_temp/pending.php:4
 #: inc/templates/invoice_temp/success.php:4
 msgid "No."
 msgstr ""
 
-#: inc/invoices-ads.php:201 inc/invoices-ads.php:263 inc/invoices-ads.php:316
-#: inc/invoices-ads.php:396 inc/invoices-ads.php:458 inc/invoices-ads.php:512
-#: inc/invoices-ads.php:591 inc/invoices-ads.php:653 inc/invoices-ads.php:716
-#: inc/subscriptions.php:117 inc/subscriptions.php:204
+#: inc/invoices-ads.php:208 inc/invoices-ads.php:270 inc/invoices-ads.php:323
+#: inc/invoices-ads.php:403 inc/invoices-ads.php:465 inc/invoices-ads.php:519
+#: inc/invoices-ads.php:598 inc/invoices-ads.php:660 inc/invoices-ads.php:744
+#: inc/subscriptions.php:141 inc/subscriptions.php:237
 msgid "User"
 msgstr ""
 
-#: inc/invoices-ads.php:202 inc/invoices-ads.php:264 inc/invoices-ads.php:317
-#: inc/invoices-ads.php:397 inc/invoices-ads.php:459 inc/invoices-ads.php:513
-#: inc/invoices-ads.php:592 inc/invoices-ads.php:654 inc/invoices-ads.php:717
+#: inc/invoices-ads.php:209 inc/invoices-ads.php:271 inc/invoices-ads.php:324
+#: inc/invoices-ads.php:404 inc/invoices-ads.php:466 inc/invoices-ads.php:520
+#: inc/invoices-ads.php:599 inc/invoices-ads.php:661 inc/invoices-ads.php:745
 msgid "Post"
 msgstr ""
 
-#: inc/invoices-ads.php:203 inc/invoices-ads.php:265 inc/invoices-ads.php:318
-#: inc/invoices-ads.php:398 inc/invoices-ads.php:460 inc/invoices-ads.php:514
-#: inc/invoices-ads.php:593 inc/invoices-ads.php:655 inc/invoices-ads.php:718
-#: inc/templates/invoice_temp/all.php:15 inc/templates/invoice_temp/all.php:91
-#: inc/templates/invoice_temp/failed.php:15 inc/templates/invoice_temp/failed.php:94
-#: inc/templates/invoice_temp/pending.php:15
-#: inc/templates/invoice_temp/pending.php:94
-#: inc/templates/invoice_temp/success.php:15
-#: inc/templates/invoice_temp/success.php:94
-msgid "Price"
-msgstr ""
-
-#: inc/invoices-ads.php:204 inc/invoices-ads.php:266 inc/invoices-ads.php:319
-#: inc/invoices-ads.php:399 inc/invoices-ads.php:461 inc/invoices-ads.php:515
-#: inc/invoices-ads.php:594 inc/invoices-ads.php:656 inc/invoices-ads.php:719
+#: inc/invoices-ads.php:211 inc/invoices-ads.php:273 inc/invoices-ads.php:326
+#: inc/invoices-ads.php:406 inc/invoices-ads.php:468 inc/invoices-ads.php:522
+#: inc/invoices-ads.php:601 inc/invoices-ads.php:663 inc/invoices-ads.php:747
 msgid "Transaction ID"
 msgstr ""
 
-#: inc/invoices-ads.php:205 inc/invoices-ads.php:400 inc/invoices-ads.php:595
-#: inc/invoices-ads.php:657 inc/lp-reports/reviews-reports.php:102
-#: inc/lp-reports/reviews-reports.php:136 inc/subscriptions.php:123
-#: inc/subscriptions.php:210
+#: inc/invoices-ads.php:212 inc/invoices-ads.php:407 inc/invoices-ads.php:602
+#: inc/invoices-ads.php:664 inc/lp-reports/reviews-reports.php:102
+#: inc/lp-reports/reviews-reports.php:136 inc/subscriptions.php:147
+#: inc/subscriptions.php:243 inc/templates/invoice_temp/all.php:17
+#: inc/templates/invoice_temp/all.php:125 inc/templates/invoice_temp/failed.php:17
+#: inc/templates/invoice_temp/failed.php:109
+#: inc/templates/invoice_temp/pending.php:17
+#: inc/templates/invoice_temp/pending.php:121
+#: inc/templates/invoice_temp/success.php:17
+#: inc/templates/invoice_temp/success.php:109
 msgid "Action"
 msgstr ""
 
-#: inc/invoices-ads.php:225 inc/invoices-ads.php:419 inc/invoices-ads.php:614
-#: inc/lp-coupons/templates/active.php:22 inc/lp-coupons/templates/active.php:73
-#: inc/lp-coupons/templates/active.php:100 inc/lp-coupons/templates/all.php:18
-#: inc/lp-coupons/templates/all.php:69 inc/lp-coupons/templates/all.php:96
-#: inc/lp-coupons/templates/expired.php:22 inc/lp-coupons/templates/expired.php:73
-#: inc/lp-coupons/templates/expired.php:100
-msgid "Delete"
-msgstr ""
-
-#: inc/invoices-ads.php:239 inc/invoices-ads.php:434 inc/invoices-ads.php:629
+#: inc/invoices-ads.php:246 inc/invoices-ads.php:441 inc/invoices-ads.php:636
 msgid "Sorry! You have no successful invoice"
 msgstr ""
 
-#: inc/invoices-ads.php:293 inc/invoices-ads.php:488 inc/invoices-ads.php:692
+#: inc/invoices-ads.php:300 inc/invoices-ads.php:495 inc/invoices-ads.php:720
 msgid "Sorry! You have no pending invoice"
 msgstr ""
 
-#: inc/invoices-ads.php:347 inc/invoices-ads.php:542 inc/invoices-ads.php:746
+#: inc/invoices-ads.php:354 inc/invoices-ads.php:549 inc/invoices-ads.php:774
 msgid "Sorry! You have no failed invoice"
 msgstr ""
 
-#: inc/invoices.php:148 inc/invoices.php:173
+#: inc/invoices.php:157 inc/invoices.php:182
 msgid "Listings Invoices"
 msgstr ""
 
-#: inc/invoices.php:178
+#: inc/invoices.php:187
 msgid "All"
 msgstr ""
 
-#: inc/invoices.php:189
+#: inc/invoices.php:197
 msgid "All Types"
 msgstr ""
 
-#: inc/invoices.php:192
+#: inc/invoices.php:200
 msgid "All Methods"
 msgstr ""
 
-#: inc/invoices.php:204 templates/payment-methods.php:93
+#: inc/invoices.php:212 templates/payment-methods.php:92
 msgid "2 Checkout"
 msgstr ""
 
-#: inc/invoices.php:216 inc/invoices.php:219
+#: inc/invoices.php:224 inc/invoices.php:227
 msgid "All Status"
 msgstr ""
 
-#: inc/invoices.php:238 inc/subscriptions.php:96
+#: inc/invoices.php:246 inc/subscriptions.php:120
 msgid "Search Invoices"
 msgstr ""
 
-#: inc/lp-coupons/coupons.php:8
+#: inc/lp-coupons/coupons.php:9
 msgid "Coupons"
 msgstr ""
 
@@ -443,13 +485,25 @@ msgstr ""
 msgid "Generate"
 msgstr ""
 
+#: inc/lp-coupons/functions.php:220
+msgid "Please click on generate button"
+msgstr ""
+
 #: inc/lp-coupons/functions.php:223
 #, php-format
 msgid "Discount(without % sign) : "
 msgstr ""
 
+#: inc/lp-coupons/functions.php:224
+msgid "Please add only numeric value"
+msgstr ""
+
 #: inc/lp-coupons/functions.php:227
 msgid "Start Date : "
+msgstr ""
+
+#: inc/lp-coupons/functions.php:228
+msgid "Coupon Starts"
 msgstr ""
 
 #: inc/lp-coupons/functions.php:231
@@ -469,32 +523,40 @@ msgstr ""
 msgid "Code"
 msgstr ""
 
-#: inc/lp-coupons/templates/active.php:17 inc/lp-coupons/templates/active.php:95
-#: inc/lp-coupons/templates/all.php:13 inc/lp-coupons/templates/all.php:91
-#: inc/lp-coupons/templates/expired.php:17 inc/lp-coupons/templates/expired.php:95
+#: inc/lp-coupons/templates/active.php:17 inc/lp-coupons/templates/active.php:104
+#: inc/lp-coupons/templates/all.php:13 inc/lp-coupons/templates/all.php:99
+#: inc/lp-coupons/templates/expired.php:17 inc/lp-coupons/templates/expired.php:104
 msgid "Discount value %"
 msgstr ""
 
-#: inc/lp-coupons/templates/active.php:18 inc/lp-coupons/templates/active.php:96
-#: inc/lp-coupons/templates/all.php:14 inc/lp-coupons/templates/all.php:92
-#: inc/lp-coupons/templates/expired.php:18 inc/lp-coupons/templates/expired.php:96
-msgid "Useage / Limit"
+#: inc/lp-coupons/templates/active.php:18 inc/lp-coupons/templates/active.php:105
+#: inc/lp-coupons/templates/all.php:14 inc/lp-coupons/templates/all.php:100
+#: inc/lp-coupons/templates/expired.php:18 inc/lp-coupons/templates/expired.php:105
+#: inc/subscriptions.php:144 inc/subscriptions.php:240 shortcodes/checkout.php:194
+#: shortcodes/checkout.php:490 templates/tax.php:21
+msgid "Total"
 msgstr ""
 
-#: inc/lp-coupons/templates/active.php:19 inc/lp-coupons/templates/active.php:97
-#: inc/lp-coupons/templates/all.php:15 inc/lp-coupons/templates/all.php:93
-#: inc/lp-coupons/templates/expired.php:19 inc/lp-coupons/templates/expired.php:97
+#: inc/lp-coupons/templates/active.php:19 inc/lp-coupons/templates/active.php:106
+#: inc/lp-coupons/templates/all.php:15 inc/lp-coupons/templates/all.php:101
+#: inc/lp-coupons/templates/expired.php:19 inc/lp-coupons/templates/expired.php:106
+msgid "Available"
+msgstr ""
+
+#: inc/lp-coupons/templates/active.php:20 inc/lp-coupons/templates/active.php:107
+#: inc/lp-coupons/templates/all.php:16 inc/lp-coupons/templates/all.php:102
+#: inc/lp-coupons/templates/expired.php:20 inc/lp-coupons/templates/expired.php:107
 msgid "Start Date"
 msgstr ""
 
-#: inc/lp-coupons/templates/active.php:20 inc/lp-coupons/templates/active.php:98
-#: inc/lp-coupons/templates/all.php:16 inc/lp-coupons/templates/all.php:94
-#: inc/lp-coupons/templates/expired.php:20 inc/lp-coupons/templates/expired.php:98
+#: inc/lp-coupons/templates/active.php:21 inc/lp-coupons/templates/active.php:108
+#: inc/lp-coupons/templates/all.php:17 inc/lp-coupons/templates/all.php:103
+#: inc/lp-coupons/templates/expired.php:21 inc/lp-coupons/templates/expired.php:108
 msgid "Ends Date"
 msgstr ""
 
-#: inc/lp-coupons/templates/active.php:57 inc/lp-coupons/templates/all.php:53
-#: inc/lp-coupons/templates/expired.php:57
+#: inc/lp-coupons/templates/active.php:66 inc/lp-coupons/templates/all.php:61
+#: inc/lp-coupons/templates/expired.php:66
 msgid "Expired"
 msgstr ""
 
@@ -518,7 +580,7 @@ msgstr ""
 msgid "Confirm"
 msgstr ""
 
-#: inc/lp-reports/listings-reports.php:146 inc/lp-reports/reviews-reports.php:151
+#: inc/lp-reports/listings-reports.php:146 inc/lp-reports/reviews-reports.php:152
 msgid "Sorry! There is no report found"
 msgstr ""
 
@@ -546,19 +608,23 @@ msgstr ""
 msgid "Select Package Type"
 msgstr ""
 
+#: inc/metaboxes-plans.php:30
+msgid "Please Make sure to add no. of posts in this package"
+msgstr ""
+
 #: inc/metaboxes-plans.php:36 inc/metaboxes-plans.php:41 inc/metaboxes-plans.php:48
-#: templates/pricing/loop/horizontal_view_1.php:537
-#: templates/pricing/loop/horizontal_view_2.php:552
-#: templates/pricing/loop/horizontal_view_2_aqib.php:437
-#: templates/pricing/loop/vertical_view_1.php:545
-#: templates/pricing/loop/vertical_view_2.php:407
-#: templates/pricing/loop/vertical_view_3.php:336
-#: templates/pricing/loop/vertical_view_4.php:456
-#: templates/pricing/loop/vertical_view_5.php:588
-#: templates/pricing/loop/vertical_view_6.php:332
-#: templates/pricing/loop/vertical_view_7.php:331
-#: templates/pricing/loop/vertical_view_8.php:330
-#: templates/pricing/loop/vertical_view_9.php:575
+#: templates/pricing/loop/claim_plans.php:626
+#: templates/pricing/loop/horizontal_view_1.php:561
+#: templates/pricing/loop/horizontal_view_2.php:580
+#: templates/pricing/loop/vertical_view_1.php:579
+#: templates/pricing/loop/vertical_view_2.php:408
+#: templates/pricing/loop/vertical_view_3.php:337
+#: templates/pricing/loop/vertical_view_4.php:481
+#: templates/pricing/loop/vertical_view_5.php:621
+#: templates/pricing/loop/vertical_view_6.php:333
+#: templates/pricing/loop/vertical_view_7.php:332
+#: templates/pricing/loop/vertical_view_8.php:331
+#: templates/pricing/loop/vertical_view_9.php:612
 msgid "Package"
 msgstr ""
 
@@ -567,292 +633,303 @@ msgid "Pay Per Listing"
 msgstr ""
 
 #: inc/metaboxes-plans.php:80
-msgid "Enter no. of post in the package"
+msgid ""
+"Enter Description here(Will only work with \"Virtical View 3\" of Pricing Plan "
+"Page Style)"
 msgstr ""
 
 #: inc/metaboxes-plans.php:91
+msgid "Plan Description..."
+msgstr ""
+
+#: inc/metaboxes-plans.php:121
+msgid "Enter no. of post in the package"
+msgstr ""
+
+#: inc/metaboxes-plans.php:132
 msgid "Total Posts in Package"
 msgstr ""
 
-#: inc/metaboxes-plans.php:119
+#: inc/metaboxes-plans.php:163
 msgid "Select color for the title background box"
 msgstr ""
 
-#: inc/metaboxes-plans.php:158
+#: inc/metaboxes-plans.php:205
 msgid "Duration Type"
 msgstr ""
 
-#: inc/metaboxes-plans.php:176 inc/metaboxes-plans.php:183
-#: inc/metaboxes-plans.php:187 inc/metaboxes-plans.php:194
-#: templates/pricing/by_category.php:285 templates/pricing/by_category.php:296
+#: inc/metaboxes-plans.php:223 inc/metaboxes-plans.php:230
+#: inc/metaboxes-plans.php:234 inc/metaboxes-plans.php:241
+#: templates/pricing/by_category.php:284 templates/pricing/by_category.php:295
+#: templates/pricing/horizontal_view.php:43 templates/pricing/vertical_view.php:55
 msgid "Monthly"
 msgstr ""
 
-#: inc/metaboxes-plans.php:177 inc/metaboxes-plans.php:182
-#: inc/metaboxes-plans.php:186 inc/metaboxes-plans.php:193
-#: inc/metaboxes/metaboxes.php:747
+#: inc/metaboxes-plans.php:224 inc/metaboxes-plans.php:229
+#: inc/metaboxes-plans.php:233 inc/metaboxes-plans.php:240
+#: inc/metaboxes/metaboxes.php:751
 msgid "Default"
 msgstr ""
 
-#: inc/metaboxes-plans.php:178 inc/metaboxes-plans.php:184
-#: inc/metaboxes-plans.php:188 inc/metaboxes-plans.php:195
+#: inc/metaboxes-plans.php:225 inc/metaboxes-plans.php:231
+#: inc/metaboxes-plans.php:235 inc/metaboxes-plans.php:242
 msgid "Yearly"
 msgstr ""
 
-#: inc/metaboxes-plans.php:226
+#: inc/metaboxes-plans.php:275
 msgid ""
 "Price (Do not use currency sign)(Empty field will be considered as free plan. Free "
 "plan option only works in \"Pay per Listing\" )"
 msgstr ""
 
-#: inc/metaboxes-plans.php:274
+#: inc/metaboxes-plans.php:326
 msgid "Duration( in days )"
 msgstr ""
 
-#: inc/metaboxes-plans.php:314
+#: inc/metaboxes-plans.php:368
 msgid "Continue free plan after expire"
 msgstr ""
 
-#: inc/metaboxes-plans.php:357
+#: inc/metaboxes-plans.php:413
 msgid "Hot Plan"
 msgstr ""
 
-#: inc/metaboxes-plans.php:406
+#: inc/metaboxes-plans.php:464
 msgid "Plan Usage"
 msgstr ""
 
-#: inc/metaboxes-plans.php:423 inc/metaboxes-plans.php:429
-#: inc/metaboxes-plans.php:434
+#: inc/metaboxes-plans.php:481 inc/metaboxes-plans.php:487
+#: inc/metaboxes-plans.php:492
 msgid "General"
 msgstr ""
 
-#: inc/metaboxes-plans.php:424 inc/metaboxes-plans.php:428
-#: inc/metaboxes-plans.php:435 vc_special_elements.php:1812
+#: inc/metaboxes-plans.php:482 inc/metaboxes-plans.php:486
+#: inc/metaboxes-plans.php:493 vc_special_elements.php:1812
 msgid "By Category"
 msgstr ""
 
-#: inc/metaboxes-plans.php:465
+#: inc/metaboxes-plans.php:525
 msgid "Category"
 msgstr ""
 
-#: inc/metaboxes-plans.php:509
+#: inc/metaboxes-plans.php:569
 msgid "Unselect all"
 msgstr ""
 
-#: inc/metaboxes-plans.php:509
+#: inc/metaboxes-plans.php:569
 msgid "Select all"
 msgstr ""
 
-#: inc/metaboxes-plans.php:567
+#: inc/metaboxes-plans.php:629
 msgid "Enable/Disable Listing Fields By Plan"
 msgstr ""
 
-#: inc/metaboxes-plans.php:591
+#: inc/metaboxes-plans.php:653
 msgid ""
 "<label for=\"contact_show\">  Check it if you want to allow user to show his "
 "<b>contact information</b></label>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:602
+#: inc/metaboxes-plans.php:664
 msgid ""
 "<label for=\"contact_show_hide\">  check this to Hide option text on pricing plan "
 "page</label><br/>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:620
+#: inc/metaboxes-plans.php:682
 msgid ""
 "<label for=\"map_show\">  Check it if you want to allow user to show his <b>Google "
 "map</b></label>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:631
+#: inc/metaboxes-plans.php:693
 msgid ""
 "<label for=\"map_show_hide\">  check this to Hide option text on pricing plan "
 "page</label><br/>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:649
+#: inc/metaboxes-plans.php:711
 msgid ""
 "<label for=\"video_show\">  Check it if you want to allow user to show his Ad "
 "<b>video</b></label>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:660
+#: inc/metaboxes-plans.php:722
 msgid ""
 "<label for=\"video_show_hide\">  check this to Hide option text on pricing plan "
 "page</label><br/>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:678
+#: inc/metaboxes-plans.php:740
 msgid ""
 "<label for=\"gallery_show\">  Check it if you want to allow user to show his "
 "<b>Gallery</b></label>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:689
+#: inc/metaboxes-plans.php:751
 msgid ""
 "<label for=\"gall_show_hide\">  check this to Hide option text on pricing plan "
 "page</label><br/>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:704
+#: inc/metaboxes-plans.php:766
 msgid "Check it if you want to allow user to add <b>Tagline</b>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:715
+#: inc/metaboxes-plans.php:777
 msgid ""
 "<label for=\"tagline_show_hide\">  check this to Hide option text on pricing plan "
 "page</label><br/>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:730
+#: inc/metaboxes-plans.php:792
 msgid "Check it if you want to allow user to add <b>Location.</b>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:741
+#: inc/metaboxes-plans.php:803
 msgid ""
 "<label for=\"location_show_hide\">  check this to Hide option text on pricing plan "
 "page</label><br/>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:757
+#: inc/metaboxes-plans.php:819
 msgid "Check it if you want to allow user to add <b>Website.</b>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:768
+#: inc/metaboxes-plans.php:830
 msgid ""
 "<label for=\"website_show_hide\">  check this to Hide option text on pricing plan "
 "page</label><br/>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:783
+#: inc/metaboxes-plans.php:845
 msgid "Check it if you want to allow user to add <b>Social Media links.</b>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:794
+#: inc/metaboxes-plans.php:856
 msgid ""
 "<label for=\"social_show_hide\">  check this to Hide option text on pricing plan "
 "page</label><br/>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:809
+#: inc/metaboxes-plans.php:871
 msgid "Check it if you want to allow user to add <b>FAQs list.</b>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:820
+#: inc/metaboxes-plans.php:882
 msgid ""
 "<label for=\"faqs_show_hide\">  check this to Hide option text on pricing plan "
 "page</label><br/>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:835
+#: inc/metaboxes-plans.php:897
 msgid "Check it if you want to allow user to add <b>Price Range.</b>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:846
+#: inc/metaboxes-plans.php:908
 msgid ""
 "<label for=\"price_show_hide\">  check this to Hide option text on pricing plan "
 "page</label><br/>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:861
+#: inc/metaboxes-plans.php:923
 msgid "Check it if you want to allow user to add <b>Tags or Keywords.</b>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:872
+#: inc/metaboxes-plans.php:934
 msgid ""
 "<label for=\"tags_show_hide\">  check this to Hide option text on pricing plan "
 "page</label><br/>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:887
+#: inc/metaboxes-plans.php:949
 msgid "Check it if you want to allow user to add <b>Business Hours.</b>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:899
+#: inc/metaboxes-plans.php:961
 msgid ""
 "<label for=\"bhours_show_hide\">  check this to Hide option text on pricing plan "
 "page</label><br/>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:915
+#: inc/metaboxes-plans.php:977
 msgid "Check it if you want to allow this plan for <b>Reserva Booking.</b>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:927
+#: inc/metaboxes-plans.php:989
 msgid ""
 "<label for=\"reserva_show_hide\">  check this to Hide option text on pricing plan "
 "page</label><br/>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:942
+#: inc/metaboxes-plans.php:1004
 msgid "Check it if you want to allow this plan for <b>Timekit Booking.</b>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:954
+#: inc/metaboxes-plans.php:1016
 msgid ""
 "<label for=\"timekit_show_hide\">  check this to Hide option text on pricing plan "
 "page</label><br/>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:969
+#: inc/metaboxes-plans.php:1031
 msgid "Check it if you want to allow user to add <b>Menu.</b>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:981
+#: inc/metaboxes-plans.php:1043
 msgid ""
 "<label for=\"menu_show_hide\">  check this to Hide option text on pricing plan "
 "page</label><br/>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:996
+#: inc/metaboxes-plans.php:1058
 msgid "Check it if you want to allow user to add <b>Announcement.</b>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:1008
+#: inc/metaboxes-plans.php:1070
 msgid ""
 "<label for=\"announcment_show_hide\">  check this to Hide option text on pricing "
 "plan page</label><br/>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:1023
+#: inc/metaboxes-plans.php:1085
 msgid "Check it if you want to allow user to add <b>Deals, Offers, Discounts.</b>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:1035
+#: inc/metaboxes-plans.php:1097
 msgid ""
 "<label for=\"deals_show_hide\">  check this to Hide option text on pricing plan "
 "page</label><br/>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:1050
+#: inc/metaboxes-plans.php:1112
 msgid ""
 "Check it if you want this plan to hide <b>competitor campaigns</b> on Listing "
 "Detail Page"
 msgstr ""
 
-#: inc/metaboxes-plans.php:1061
+#: inc/metaboxes-plans.php:1123
 msgid ""
 "<label for=\"metacampaign_show_hide\">  check this to Hide option text on pricing "
 "plan page</label><br/>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:1076
+#: inc/metaboxes-plans.php:1138
 msgid ""
 "Check it if you want this plan to hide <b>featured image</b> on Listing Detail Page"
 msgstr ""
 
-#: inc/metaboxes-plans.php:1087
+#: inc/metaboxes-plans.php:1149
 msgid ""
 "<label for=\"featimg_show_hide\">  check this to Hide option text on pricing plan "
 "page</label><br/>"
 msgstr ""
 
-#: inc/metaboxes-plans.php:1102
-msgid "Check it if you want this plan to hide <b>Events</b> on Listing Detail Page"
+#: inc/metaboxes-plans.php:1164
+msgid "Check if you want this plan to allow <b>Events in listings"
 msgstr ""
 
-#: inc/metaboxes-plans.php:1113
+#: inc/metaboxes-plans.php:1175
 msgid ""
 "<label for=\"events_show_hide\">  check this to Hide option text on pricing plan "
 "page</label><br/>"
@@ -912,8 +989,8 @@ msgstr ""
 msgid "Add Your Business Hours."
 msgstr ""
 
-#: inc/metaboxes/metaboxes.php:211 shortcodes/edit.php:1023 shortcodes/edit.php:1878
-#: shortcodes/submit.php:772 shortcodes/submit.php:1304
+#: inc/metaboxes/metaboxes.php:211 shortcodes/edit.php:1059 shortcodes/edit.php:1963
+#: shortcodes/submit.php:818 shortcodes/submit.php:1372
 msgid "Answer"
 msgstr ""
 
@@ -925,33 +1002,33 @@ msgstr ""
 msgid "+ Add New"
 msgstr ""
 
-#: inc/metaboxes/metaboxes.php:258 shortcodes/edit.php:1035 shortcodes/edit.php:1081
-#: shortcodes/edit.php:1889 shortcodes/edit.php:1933
+#: inc/metaboxes/metaboxes.php:258 shortcodes/edit.php:1072 shortcodes/edit.php:1116
+#: shortcodes/edit.php:1974 shortcodes/edit.php:2019
 msgid "FAQ 1"
 msgstr ""
 
-#: inc/metaboxes/metaboxes.php:478
+#: inc/metaboxes/metaboxes.php:482
 msgid "Insert image"
 msgstr ""
 
-#: inc/metaboxes/metaboxes.php:695
+#: inc/metaboxes/metaboxes.php:699
 msgid "Current : "
 msgstr ""
 
-#: inc/metaboxes/metaboxes.php:709
+#: inc/metaboxes/metaboxes.php:713
 msgid "Edit Gallery"
 msgstr ""
 
-#: inc/metaboxes/metaboxes.php:709
+#: inc/metaboxes/metaboxes.php:713
 msgid "Upload Images"
 msgstr ""
 
-#: inc/metaboxes/metaboxes.php:744
+#: inc/metaboxes/metaboxes.php:748
 #, php-format
 msgid "No menus have been created yet. <a href=\"%s\">Create some</a>."
 msgstr ""
 
-#: inc/metaboxes/metaboxes.php:770
+#: inc/metaboxes/metaboxes.php:774
 msgid "Your Location"
 msgstr ""
 
@@ -979,19 +1056,18 @@ msgstr ""
 msgid "Claim Type"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:136
-#: templates/pricing/loop/horizontal_view_1.php:301
-#: templates/pricing/loop/horizontal_view_2.php:331
-#: templates/pricing/loop/horizontal_view_2_aqib.php:270
-#: templates/pricing/loop/vertical_view_1.php:309
-#: templates/pricing/loop/vertical_view_2.php:387
-#: templates/pricing/loop/vertical_view_3.php:326
-#: templates/pricing/loop/vertical_view_4.php:276
-#: templates/pricing/loop/vertical_view_5.php:351
-#: templates/pricing/loop/vertical_view_6.php:312
-#: templates/pricing/loop/vertical_view_7.php:315
-#: templates/pricing/loop/vertical_view_8.php:314
-#: templates/pricing/loop/vertical_view_9.php:350
+#: inc/metaboxes/post-options.php:136 templates/pricing/loop/claim_plans.php:373
+#: templates/pricing/loop/horizontal_view_1.php:295
+#: templates/pricing/loop/horizontal_view_2.php:327
+#: templates/pricing/loop/vertical_view_1.php:310
+#: templates/pricing/loop/vertical_view_2.php:388
+#: templates/pricing/loop/vertical_view_3.php:327
+#: templates/pricing/loop/vertical_view_4.php:277
+#: templates/pricing/loop/vertical_view_5.php:352
+#: templates/pricing/loop/vertical_view_6.php:313
+#: templates/pricing/loop/vertical_view_7.php:316
+#: templates/pricing/loop/vertical_view_8.php:315
+#: templates/pricing/loop/vertical_view_9.php:355
 msgid "Free"
 msgstr ""
 
@@ -1068,7 +1144,7 @@ msgstr ""
 msgid "Click Used"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:307
+#: inc/metaboxes/post-options.php:307 shortcodes/submit.php:872
 msgid "Gallery"
 msgstr ""
 
@@ -1084,23 +1160,29 @@ msgstr ""
 msgid "Reply"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:342 vc_special_elements.php:3480
+#: inc/metaboxes/post-options.php:342 vc_special_elements.php:3596
+#: vc_special_elements.php:3689 vc_special_elements.php:3739
+#: vc_special_elements.php:3810 vc_special_elements.php:3873
 msgid "Interesting"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:348
+#: inc/metaboxes/post-options.php:348 vc_special_elements.php:3690
+#: vc_special_elements.php:3740 vc_special_elements.php:3811
+#: vc_special_elements.php:3874
 msgid "LOL"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:354 vc_special_elements.php:3482
+#: inc/metaboxes/post-options.php:354 vc_special_elements.php:3598
+#: vc_special_elements.php:3691 vc_special_elements.php:3741
+#: vc_special_elements.php:3812 vc_special_elements.php:3875
 msgid "Love"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:360 inc/metaboxes/post-options.php:556
+#: inc/metaboxes/post-options.php:360 inc/metaboxes/post-options.php:561
 msgid "Reported By"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:366 inc/metaboxes/post-options.php:563
+#: inc/metaboxes/post-options.php:366 inc/metaboxes/post-options.php:568
 msgid "Reported Count"
 msgstr ""
 
@@ -1112,13 +1194,13 @@ msgstr ""
 msgid "Google Address"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:388 shortcodes/edit.php:415
-#: shortcodes/edit.php:1535 shortcodes/submit.php:420 shortcodes/submit.php:1079
+#: inc/metaboxes/post-options.php:388 shortcodes/edit.php:424
+#: shortcodes/edit.php:1593 shortcodes/submit.php:441 shortcodes/submit.php:1128
 msgid "Latitude"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:393 shortcodes/edit.php:419
-#: shortcodes/edit.php:1539 shortcodes/submit.php:424 shortcodes/submit.php:1083
+#: inc/metaboxes/post-options.php:393 shortcodes/edit.php:428
+#: shortcodes/edit.php:1597 shortcodes/submit.php:445 shortcodes/submit.php:1132
 msgid "Longitude"
 msgstr ""
 
@@ -1126,255 +1208,263 @@ msgstr ""
 msgid "Map Pin"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:405 shortcodes/edit.php:651
-#: shortcodes/edit.php:1553 templates/popup.php:106
+#: inc/metaboxes/post-options.php:405 shortcodes/edit.php:660 shortcodes/edit.php:661
+#: shortcodes/edit.php:1611 shortcodes/submit.php:566 templates/popup.php:106
 msgid "Phone"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:410 shortcodes/submit.php:1498
-#: shortcodes/submit.php:1585 templates/popup.php:100
+#: inc/metaboxes/post-options.php:410
+msgid "Whatsapp"
+msgstr ""
+
+#: inc/metaboxes/post-options.php:415 shortcodes/submit.php:1566
+#: shortcodes/submit.php:1653 templates/popup.php:100
 msgid "Email"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:415 shortcodes/edit.php:659
-#: shortcodes/edit.php:1561 templates/pricing/loop/horizontal_view_1.php:407
-#: templates/pricing/loop/horizontal_view_2.php:421
-#: templates/pricing/loop/horizontal_view_2_aqib.php:360
-#: templates/pricing/loop/vertical_view_1.php:420
-#: templates/pricing/loop/vertical_view_2.php:539
-#: templates/pricing/loop/vertical_view_3.php:465
-#: templates/pricing/loop/vertical_view_4.php:391
-#: templates/pricing/loop/vertical_view_5.php:467
-#: templates/pricing/loop/vertical_view_6.php:464
-#: templates/pricing/loop/vertical_view_7.php:466
-#: templates/pricing/loop/vertical_view_8.php:465
-#: templates/pricing/loop/vertical_view_9.php:455
+#: inc/metaboxes/post-options.php:420 shortcodes/edit.php:676 shortcodes/edit.php:677
+#: shortcodes/edit.php:1627 shortcodes/submit.php:582
+#: templates/pricing/loop/claim_plans.php:476
+#: templates/pricing/loop/horizontal_view_1.php:413
+#: templates/pricing/loop/horizontal_view_2.php:430
+#: templates/pricing/loop/vertical_view_1.php:434
+#: templates/pricing/loop/vertical_view_2.php:553
+#: templates/pricing/loop/vertical_view_3.php:479
+#: templates/pricing/loop/vertical_view_4.php:405
+#: templates/pricing/loop/vertical_view_5.php:481
+#: templates/pricing/loop/vertical_view_6.php:478
+#: templates/pricing/loop/vertical_view_7.php:480
+#: templates/pricing/loop/vertical_view_8.php:479
+#: templates/pricing/loop/vertical_view_9.php:473
 msgid "Website"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:420 shortcodes/edit.php:976
-#: shortcodes/edit.php:1966 shortcodes/submit.php:737 shortcodes/submit.php:1332
+#: inc/metaboxes/post-options.php:425 shortcodes/edit.php:977
+#: shortcodes/edit.php:1012 shortcodes/edit.php:2053 shortcodes/submit.php:783
+#: shortcodes/submit.php:1401
 msgid "Twitter"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:425 shortcodes/edit.php:975
-#: shortcodes/edit.php:1973 shortcodes/submit.php:736 shortcodes/submit.php:1339
+#: inc/metaboxes/post-options.php:430 shortcodes/edit.php:981
+#: shortcodes/edit.php:1011 shortcodes/edit.php:2060 shortcodes/submit.php:782
+#: shortcodes/submit.php:1408
 msgid "Facebook"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:430 shortcodes/edit.php:974
-#: shortcodes/edit.php:1980 shortcodes/submit.php:735 shortcodes/submit.php:1346
+#: inc/metaboxes/post-options.php:435 shortcodes/edit.php:985
+#: shortcodes/edit.php:1010 shortcodes/edit.php:2067 shortcodes/submit.php:781
+#: shortcodes/submit.php:1415
 msgid "LinkedIn"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:435 shortcodes/edit.php:973
-#: shortcodes/edit.php:1987 shortcodes/submit.php:734 shortcodes/submit.php:1353
+#: inc/metaboxes/post-options.php:440 shortcodes/edit.php:989
+#: shortcodes/edit.php:1009 shortcodes/edit.php:2074 shortcodes/submit.php:780
+#: shortcodes/submit.php:1422
 msgid "Google Plus"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:440
+#: inc/metaboxes/post-options.php:445
 msgid "Youtube Channel Link"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:443
+#: inc/metaboxes/post-options.php:448
 msgid "Your Youtube Channel URL as social link"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:446
+#: inc/metaboxes/post-options.php:451
 msgid "Instagram Profile Link"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:449
+#: inc/metaboxes/post-options.php:454
 msgid "Your Instagram Profile URL as social link"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:452
+#: inc/metaboxes/post-options.php:457
 msgid "Youtube Video URL"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:455
+#: inc/metaboxes/post-options.php:460
 msgid "Any specific Youtube Video? You want to share on business page"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:459
-#: templates/pricing/loop/horizontal_view_1.php:377
-#: templates/pricing/loop/horizontal_view_2.php:392
-#: templates/pricing/loop/horizontal_view_2_aqib.php:331
-#: templates/pricing/loop/vertical_view_1.php:391
-#: templates/pricing/loop/vertical_view_2.php:510
-#: templates/pricing/loop/vertical_view_3.php:436
-#: templates/pricing/loop/vertical_view_4.php:362
-#: templates/pricing/loop/vertical_view_5.php:438
-#: templates/pricing/loop/vertical_view_6.php:435
-#: templates/pricing/loop/vertical_view_7.php:437
-#: templates/pricing/loop/vertical_view_8.php:436
-#: templates/pricing/loop/vertical_view_9.php:426 vc_special_elements.php:2528
+#: inc/metaboxes/post-options.php:464 templates/pricing/loop/claim_plans.php:439
+#: templates/pricing/loop/horizontal_view_1.php:376
+#: templates/pricing/loop/horizontal_view_2.php:393
+#: templates/pricing/loop/vertical_view_1.php:397
+#: templates/pricing/loop/vertical_view_2.php:516
+#: templates/pricing/loop/vertical_view_3.php:442
+#: templates/pricing/loop/vertical_view_4.php:368
+#: templates/pricing/loop/vertical_view_5.php:444
+#: templates/pricing/loop/vertical_view_6.php:441
+#: templates/pricing/loop/vertical_view_7.php:443
+#: templates/pricing/loop/vertical_view_8.php:442
+#: templates/pricing/loop/vertical_view_9.php:436 vc_special_elements.php:2638
 msgid "Image Gallery"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:462
+#: inc/metaboxes/post-options.php:467
 msgid "Select images to present your buisness online."
 msgstr ""
 
-#: inc/metaboxes/post-options.php:465
+#: inc/metaboxes/post-options.php:470
 msgid "Show Price Status"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:476
+#: inc/metaboxes/post-options.php:481
 msgid "It will show your business price range"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:480 shortcodes/submit.php:685
-#: shortcodes/submit.php:1266
+#: inc/metaboxes/post-options.php:485 shortcodes/edit.php:934
+#: shortcodes/submit.php:728 shortcodes/submit.php:1332
 msgid "Price From"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:483 inc/metaboxes/post-options.php:489
+#: inc/metaboxes/post-options.php:488 inc/metaboxes/post-options.php:494
 msgid "Ignore this if your buisness does not have any specific price to show"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:486 shortcodes/edit.php:905
-#: shortcodes/edit.php:1829 shortcodes/submit.php:692 shortcodes/submit.php:1273
+#: inc/metaboxes/post-options.php:491 shortcodes/edit.php:941
+#: shortcodes/edit.php:1913 shortcodes/submit.php:735 shortcodes/submit.php:1339
 msgid "Price To"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:493
+#: inc/metaboxes/post-options.php:498
 msgid "Plans"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:497
+#: inc/metaboxes/post-options.php:502
 msgid "Ignore this if this post will not be a paid one"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:500
+#: inc/metaboxes/post-options.php:505
 msgid "Reviews"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:505
+#: inc/metaboxes/post-options.php:510
 msgid "Verify Listing"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:514
+#: inc/metaboxes/post-options.php:519
 msgid "Approve claim at claim section this will override complete claim system"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:519
+#: inc/metaboxes/post-options.php:524
 msgid "Ad Purchased on"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:526
+#: inc/metaboxes/post-options.php:531
 msgid "Ad Purchased Packages"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:532
+#: inc/metaboxes/post-options.php:537
 msgid "Faq"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:537
+#: inc/metaboxes/post-options.php:542
 msgid "Timings"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:540
+#: inc/metaboxes/post-options.php:545
 msgid "Set Your business time details"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:543
+#: inc/metaboxes/post-options.php:548
 msgid "Copmain ID"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:549
+#: inc/metaboxes/post-options.php:554
 msgid "Changed Plan ID"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:575
+#: inc/metaboxes/post-options.php:580
 msgid "Business Logo"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:578
+#: inc/metaboxes/post-options.php:583
 msgid "Select business logo for your listing."
 msgstr ""
 
-#: inc/metaboxes/post-options.php:592
+#: inc/metaboxes/post-options.php:597
 msgid "Show in Filter"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:608
+#: inc/metaboxes/post-options.php:613
 msgid "Field Type"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:613
+#: inc/metaboxes/post-options.php:618
 msgid "Text"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:622
+#: inc/metaboxes/post-options.php:627
 msgid "Checkbox"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:623
+#: inc/metaboxes/post-options.php:628
 msgid "Checkbox (Switch On/Off)"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:624
+#: inc/metaboxes/post-options.php:629
 msgid "Multicheck"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:625
+#: inc/metaboxes/post-options.php:630
 msgid "Radio"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:626
+#: inc/metaboxes/post-options.php:631
 msgid "Drop-Down"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:631
+#: inc/metaboxes/post-options.php:636
 msgid "Radio Options"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:639
+#: inc/metaboxes/post-options.php:644
 msgid "Select Options"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:647
+#: inc/metaboxes/post-options.php:652
 msgid "Multicheck Options"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:655
+#: inc/metaboxes/post-options.php:660
 msgid "Exclusive from Categories"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:662
+#: inc/metaboxes/post-options.php:667
 msgid "Select category for this field"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:688
+#: inc/metaboxes/post-options.php:693
 msgid "listing settings"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:689
+#: inc/metaboxes/post-options.php:694
 msgid "Additional Setting"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:691
+#: inc/metaboxes/post-options.php:696
 msgid "Details About Claim"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:694
+#: inc/metaboxes/post-options.php:699
 msgid "Ad Options"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:699 inc/metaboxes/post-options.php:704
+#: inc/metaboxes/post-options.php:704 inc/metaboxes/post-options.php:709
 msgid "Page Options"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:708
+#: inc/metaboxes/post-options.php:713
 msgid "Post Options"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:711
+#: inc/metaboxes/post-options.php:716
 msgid "General Options"
 msgstr ""
 
-#: inc/metaboxes/post-options.php:719
+#: inc/metaboxes/post-options.php:724
 msgid "Custom Form Fields"
 msgstr ""
 
@@ -1418,71 +1508,92 @@ msgid_plural "Reported <span class=\"count\">(%s)</span>"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/submit-ajax.php:468
+#: inc/submit-ajax.php:145 inc/submit-ajax.php:1288 inc/submit-ajax.php:1295
+#: shortcodes/edit.php:85 shortcodes/submit.php:208
+msgid "Max. allowed images are "
+msgstr ""
+
+#: inc/submit-ajax.php:152 inc/submit-ajax.php:1302 shortcodes/edit.php:90
+#: shortcodes/submit.php:213
+msgid "Max. allowed images size is "
+msgstr ""
+
+#: inc/submit-ajax.php:178 inc/submit-ajax.php:539 inc/submit-ajax.php:552
+#: inc/submit-ajax.php:559 inc/submit-ajax.php:911 inc/submit-ajax.php:1315
+#: inc/submit-ajax.php:1661
+msgid "Sorry! There is problem in your submission"
+msgstr ""
+
+#: inc/submit-ajax.php:518 inc/submit-ajax.php:892 inc/submit-ajax.php:1182
+#: inc/submit-ajax.php:1653
+msgid "Success! Submission is successful"
+msgstr ""
+
+#: inc/submit-ajax.php:551
 msgid "UserName already exists"
 msgstr ""
 
-#: inc/submit-ajax.php:474
+#: inc/submit-ajax.php:558
 msgid "Email already exists"
 msgstr ""
 
-#: inc/submit-ajax.php:792
+#: inc/submit-ajax.php:910
 msgid "Invalid username or password"
 msgstr ""
 
-#: inc/submit-ajax.php:1386
+#: inc/submit-ajax.php:1662
 msgid "Please check captcha"
 msgstr ""
 
-#: inc/subscriptions.php:59 inc/subscriptions.php:87
+#: inc/subscriptions.php:83 inc/subscriptions.php:111
 msgid "Subscriptions"
 msgstr ""
 
-#: inc/subscriptions.php:118 inc/subscriptions.php:205
+#: inc/subscriptions.php:142 inc/subscriptions.php:238
 msgid "Listing"
 msgstr ""
 
-#: inc/subscriptions.php:119 inc/subscriptions.php:206
+#: inc/subscriptions.php:143 inc/subscriptions.php:239
 msgid "Subscription"
 msgstr ""
 
-#: inc/subscriptions.php:120 inc/subscriptions.php:207
-msgid "Total(inc.Tax)"
-msgstr ""
-
-#: inc/subscriptions.php:121 inc/subscriptions.php:208
+#: inc/subscriptions.php:145 inc/subscriptions.php:241
 msgid "Next Payment"
 msgstr ""
 
-#: inc/subscriptions.php:155
+#: inc/subscriptions.php:189
 msgid "exc. tax"
 msgstr ""
 
-#: inc/subscriptions.php:160
+#: inc/subscriptions.php:193
 msgid "inc. tax"
 msgstr ""
 
-#: inc/subscriptions.php:175
+#: inc/subscriptions.php:208
 msgid "Unsubscribe"
 msgstr ""
 
-#: inc/subscriptions.php:175
+#: inc/subscriptions.php:208
 msgid "Are you sure you want to proceed action?"
 msgstr ""
 
 #: inc/templates/invoice_temp/all.php:10 inc/templates/invoice_temp/failed.php:10
 #: inc/templates/invoice_temp/pending.php:10
 #: inc/templates/invoice_temp/success.php:10
-msgid "Receipt/inovice#"
+msgid "Receipt/invoice#"
 msgstr ""
 
-#: inc/templates/invoice_temp/all.php:14 inc/templates/invoice_temp/all.php:90
-#: inc/templates/invoice_temp/failed.php:14 inc/templates/invoice_temp/failed.php:93
+#: inc/templates/invoice_temp/all.php:14 inc/templates/invoice_temp/all.php:122
+#: inc/templates/invoice_temp/failed.php:14 inc/templates/invoice_temp/failed.php:106
 #: inc/templates/invoice_temp/pending.php:14
-#: inc/templates/invoice_temp/pending.php:93
+#: inc/templates/invoice_temp/pending.php:118
 #: inc/templates/invoice_temp/success.php:14
-#: inc/templates/invoice_temp/success.php:93
+#: inc/templates/invoice_temp/success.php:106
 msgid "Method"
+msgstr ""
+
+#: inc/templates/invoice_temp/all.php:18 inc/templates/invoice_temp/all.php:126
+msgid "Watch"
 msgstr ""
 
 #: inc/vc_mods/vc_mods.php:73
@@ -1603,132 +1714,132 @@ msgstr ""
 msgid "This can then be used to target the row with CSS."
 msgstr ""
 
-#: plugin.php:98
+#: plugin.php:99
 msgctxt "post type general name"
 msgid "Pricing Plans"
 msgstr ""
 
-#: plugin.php:99
+#: plugin.php:100
 msgctxt "post type singular name"
 msgid "Price Plans"
 msgstr ""
 
-#: plugin.php:100
-msgctxt "book"
-msgid "Add New Price Plan"
-msgstr ""
-
 #: plugin.php:101
+msgctxt "book"
 msgid "Add New Price Plan"
 msgstr ""
 
 #: plugin.php:102
-msgid "Edit Price Plan"
+msgid "Add New Price Plan"
 msgstr ""
 
 #: plugin.php:103
-msgid "New Price Plan"
+msgid "Edit Price Plan"
 msgstr ""
 
 #: plugin.php:104
-msgid "View Price Plan"
+msgid "New Price Plan"
 msgstr ""
 
 #: plugin.php:105
-msgid "Search Price Plans"
+msgid "View Price Plan"
 msgstr ""
 
 #: plugin.php:106
-msgid "No Price Plan found"
+msgid "Search Price Plans"
 msgstr ""
 
 #: plugin.php:107
+msgid "No Price Plan found"
+msgstr ""
+
+#: plugin.php:108
 msgid "No Price Plans found in Trash"
 msgstr ""
 
-#: plugin.php:144
+#: plugin.php:145
 msgctxt "post type general name"
 msgid "Listings"
 msgstr ""
 
-#: plugin.php:145
+#: plugin.php:146
 msgctxt "post type singular name"
 msgid "Listing"
 msgstr ""
 
-#: plugin.php:146
+#: plugin.php:147
 msgctxt "book"
 msgid "Add New"
 msgstr ""
 
-#: plugin.php:147
+#: plugin.php:148
 msgid "Add New List"
 msgstr ""
 
-#: plugin.php:148
+#: plugin.php:149
 msgid "Edit List"
 msgstr ""
 
-#: plugin.php:149
+#: plugin.php:150
 msgid "New Listing"
 msgstr ""
 
-#: plugin.php:150
+#: plugin.php:151
 msgid "View List"
 msgstr ""
 
-#: plugin.php:151
+#: plugin.php:152
 msgid "Search Listing"
 msgstr ""
 
-#: plugin.php:152
+#: plugin.php:153
 msgid "No List found"
 msgstr ""
 
-#: plugin.php:153
+#: plugin.php:154
 msgid "No List found in Trash"
 msgstr ""
 
-#: plugin.php:179
+#: plugin.php:180
 msgctxt "post type general name"
 msgid "Form Fields"
 msgstr ""
 
-#: plugin.php:180
+#: plugin.php:181
 msgctxt "post type singular name"
 msgid "Field"
 msgstr ""
 
-#: plugin.php:181
+#: plugin.php:182
 msgctxt "book"
 msgid "Add New Field"
 msgstr ""
 
-#: plugin.php:182
+#: plugin.php:183
 msgid "Add New Field"
 msgstr ""
 
-#: plugin.php:183
+#: plugin.php:184
 msgid "Edit Field"
 msgstr ""
 
-#: plugin.php:184
+#: plugin.php:185
 msgid "New Field"
 msgstr ""
 
-#: plugin.php:185
+#: plugin.php:186
 msgid "View Field"
 msgstr ""
 
-#: plugin.php:186
+#: plugin.php:187
 msgid "Search Fields"
 msgstr ""
 
-#: plugin.php:187
+#: plugin.php:188
 msgid "No Field found"
 msgstr ""
 
-#: plugin.php:188
+#: plugin.php:189
 msgid "No Field found in Trash"
 msgstr ""
 
@@ -1796,11 +1907,11 @@ msgstr ""
 #: vc_special_elements.php:813 vc_special_elements.php:954
 #: vc_special_elements.php:1113 vc_special_elements.php:1220
 #: vc_special_elements.php:1583 vc_special_elements.php:1803
-#: vc_special_elements.php:2183 vc_special_elements.php:2530
-#: vc_special_elements.php:2674 vc_special_elements.php:2834
-#: vc_special_elements.php:3163 vc_special_elements.php:3206
-#: vc_special_elements.php:3353 vc_special_elements.php:3413
-#: vc_special_elements.php:3895 vc_special_elements.php:3940
+#: vc_special_elements.php:2235 vc_special_elements.php:2640
+#: vc_special_elements.php:2784 vc_special_elements.php:2944
+#: vc_special_elements.php:3281 vc_special_elements.php:3324
+#: vc_special_elements.php:3471 vc_special_elements.php:3531
+#: vc_special_elements.php:3898
 msgid "Listingpro"
 msgstr ""
 
@@ -1833,7 +1944,7 @@ msgid "Abstracted & Boxed View"
 msgstr ""
 
 #: shortcodes/category-element.php:48 vc_special_elements.php:1233
-#: vc_special_elements.php:1861 vc_special_elements.php:2194
+#: vc_special_elements.php:1861 vc_special_elements.php:2246
 msgid "Grid View"
 msgstr ""
 
@@ -1841,8 +1952,8 @@ msgstr ""
 msgid "Slider Style"
 msgstr ""
 
-#: shortcodes/category-element.php:56 shortcodes/edit.php:681
-#: shortcodes/edit.php:1590 shortcodes/submit.php:573 shortcodes/submit.php:1134
+#: shortcodes/category-element.php:56 shortcodes/edit.php:715
+#: shortcodes/edit.php:1672 shortcodes/submit.php:613 shortcodes/submit.php:1203
 #: vc_special_elements.php:1836
 msgid "Select Category"
 msgstr ""
@@ -1861,20 +1972,20 @@ msgid "Select Child Category"
 msgstr ""
 
 #: shortcodes/category-element.php:91 shortcodes/category-element.php:141
-#: vc_special_elements.php:702 vc_special_elements.php:2222
+#: vc_special_elements.php:702 vc_special_elements.php:2274
 msgid "Button Text"
 msgstr ""
 
-#: shortcodes/category-element.php:93 vc_special_elements.php:2224
+#: shortcodes/category-element.php:93 vc_special_elements.php:2276
 msgid "Button for grid style 3, Leave empty to hide."
 msgstr ""
 
 #: shortcodes/category-element.php:102 shortcodes/category-element.php:129
-#: vc_special_elements.php:713 vc_special_elements.php:2233
+#: vc_special_elements.php:713 vc_special_elements.php:2285
 msgid "Button Link"
 msgstr ""
 
-#: shortcodes/category-element.php:104 vc_special_elements.php:2235
+#: shortcodes/category-element.php:104 vc_special_elements.php:2287
 msgid "Button link for grid style 3"
 msgstr ""
 
@@ -1898,8 +2009,8 @@ msgstr ""
 msgid "Button for Listing category slider style, Leave empty to hide."
 msgstr ""
 
-#: shortcodes/category-element.php:650 shortcodes/category-element.php:692
-#: shortcodes/category-element.php:755 vc_special_elements.php:1302
+#: shortcodes/category-element.php:654 shortcodes/category-element.php:696
+#: shortcodes/category-element.php:759 vc_special_elements.php:1302
 #: vc_special_elements.php:1356 vc_special_elements.php:1450
 #: vc_special_elements.php:1504 vc_special_elements.php:1557
 msgid "Listings"
@@ -1925,43 +2036,51 @@ msgstr ""
 msgid "2 Checkout Image"
 msgstr ""
 
-#: shortcodes/checkout.php:153 templates/default-checkout.php:47
-#: templates/quick-checkout.php:41
-msgid "Recurring Payment?"
-msgstr ""
-
-#: shortcodes/checkout.php:193 templates/quick-checkout.php:76
-msgid "Date:"
-msgstr ""
-
-#: shortcodes/checkout.php:199 templates/quick-checkout.php:82
-msgid "Category:"
-msgstr ""
-
-#: shortcodes/checkout.php:205 templates/quick-checkout.php:88
-msgid "Duration:"
-msgstr ""
-
-#: shortcodes/checkout.php:206 templates/default-checkout.php:91
-#: templates/quick-checkout.php:89
-msgid " Days"
-msgstr ""
-
-#: shortcodes/checkout.php:213 shortcodes/checkout.php:217
-#: shortcodes/checkout.php:222 templates/quick-checkout.php:96
-#: templates/quick-checkout.php:100 templates/quick-checkout.php:105
-msgid "Price:"
-msgstr ""
-
-#: shortcodes/checkout.php:397
+#: shortcodes/checkout.php:121 shortcodes/checkout.php:408
 msgid "Sorry! Currently Free mode is activated"
 msgstr ""
 
-#: shortcodes/checkout.php:507
+#: shortcodes/checkout.php:157 shortcodes/checkout.php:453
+msgid "Coupon Code"
+msgstr ""
+
+#: shortcodes/checkout.php:161 shortcodes/checkout.php:457
+msgid "Type Here"
+msgstr ""
+
+#: shortcodes/checkout.php:162 shortcodes/checkout.php:458
+msgid "APPLY CODE"
+msgstr ""
+
+#: shortcodes/checkout.php:170 shortcodes/checkout.php:466
+msgid "ITEM"
+msgstr ""
+
+#: shortcodes/checkout.php:171 shortcodes/checkout.php:467
+msgid "PRICE"
+msgstr ""
+
+#: shortcodes/checkout.php:175
+msgid "Pro"
+msgstr ""
+
+#: shortcodes/checkout.php:182 shortcodes/checkout.php:478
+msgid "Tax(Value Added Tax)"
+msgstr ""
+
+#: shortcodes/checkout.php:189 shortcodes/checkout.php:485 templates/tax.php:66
+msgid "Subtotal"
+msgstr ""
+
+#: shortcodes/checkout.php:218 shortcodes/checkout.php:514
+msgid "Terms And Conditions"
+msgstr ""
+
+#: shortcodes/checkout.php:226 shortcodes/checkout.php:522
 msgid "PROCEED TO NEXT"
 msgstr ""
 
-#: shortcodes/checkout.php:518
+#: shortcodes/checkout.php:237 shortcodes/checkout.php:533
 msgid "Purchase"
 msgstr ""
 
@@ -1973,299 +2092,517 @@ msgstr ""
 msgid "Subtitle"
 msgstr ""
 
-#: shortcodes/edit.php:84 shortcodes/submit.php:202
-msgid "Max. allowed images are "
-msgstr ""
-
-#: shortcodes/edit.php:89 shortcodes/submit.php:207
-msgid "Max. allowed images size is "
-msgstr ""
-
-#: shortcodes/edit.php:90 shortcodes/submit.php:208
+#: shortcodes/edit.php:91 shortcodes/submit.php:214
 msgid " Mb"
 msgstr ""
 
-#: shortcodes/edit.php:291 shortcodes/submit.php:226
+#: shortcodes/edit.php:300 shortcodes/submit.php:235
 msgid "You are currently signed in as"
 msgstr ""
 
-#: shortcodes/edit.php:291 shortcodes/submit.php:226
+#: shortcodes/edit.php:300 shortcodes/submit.php:235
 msgid "Sign out"
 msgstr ""
 
-#: shortcodes/edit.php:291 shortcodes/submit.php:226
+#: shortcodes/edit.php:300 shortcodes/submit.php:235
 msgid "or continue below and start submission."
 msgstr ""
 
-#: shortcodes/edit.php:352
+#: shortcodes/edit.php:361
 msgid "Update & Preview"
 msgstr ""
 
-#: shortcodes/edit.php:367 shortcodes/submit.php:358
-msgid "primary liting details"
+#: shortcodes/edit.php:376
+msgid "Primary listing details"
 msgstr ""
 
-#: shortcodes/edit.php:375 shortcodes/edit.php:1257 shortcodes/submit.php:367
-#: shortcodes/submit.php:899
+#: shortcodes/edit.php:384 shortcodes/edit.php:1311 shortcodes/submit.php:387
+#: shortcodes/submit.php:947
 msgid "Put your listing title here and tell the name of your business to the world."
 msgstr ""
 
-#: shortcodes/edit.php:383 shortcodes/edit.php:1265 shortcodes/submit.php:390
-#: shortcodes/submit.php:916
+#: shortcodes/edit.php:387 shortcodes/submit.php:390 shortcodes/submit.php:393
+msgid ""
+"Enter your complete business name for when people who know your business by name "
+"and are looking you up."
+msgstr ""
+
+#: shortcodes/edit.php:392 shortcodes/submit.php:410 shortcodes/submit.php:411
+msgid "Tagline"
+msgstr ""
+
+#: shortcodes/edit.php:392 shortcodes/submit.php:411
+msgid ""
+"For businesses, taglines are of importance as they help business convey what they "
+"want to do and their goals to the customers."
+msgstr ""
+
+#: shortcodes/edit.php:392 shortcodes/edit.php:1319 shortcodes/submit.php:411
+#: shortcodes/submit.php:965
 msgid "Tagline Example: Best Express Mexican Grill"
 msgstr ""
 
-#: shortcodes/edit.php:391 shortcodes/edit.php:1511 shortcodes/submit.php:397
-#: shortcodes/submit.php:1056
+#: shortcodes/edit.php:400 shortcodes/edit.php:1569 shortcodes/submit.php:418
+#: shortcodes/submit.php:1105
 msgid "Search By Google"
 msgstr ""
 
-#: shortcodes/edit.php:392 shortcodes/edit.php:1512 shortcodes/submit.php:398
-#: shortcodes/submit.php:1057
+#: shortcodes/edit.php:401 shortcodes/edit.php:1570 shortcodes/submit.php:419
+#: shortcodes/submit.php:1106
 msgid "Manual Coordinates"
 msgstr ""
 
-#: shortcodes/edit.php:395 shortcodes/edit.php:1515 shortcodes/submit.php:401
-#: shortcodes/submit.php:1060
+#: shortcodes/edit.php:404 shortcodes/edit.php:1573 shortcodes/submit.php:422
+#: shortcodes/submit.php:1109
 msgid "Drop Pin"
 msgstr ""
 
-#: shortcodes/edit.php:405 shortcodes/edit.php:1525 shortcodes/submit.php:410
-#: shortcodes/submit.php:1069
+#: shortcodes/edit.php:414 shortcodes/edit.php:1583 shortcodes/submit.php:431
+#: shortcodes/submit.php:1118
 msgid ""
 "Start typing and select your google location from google suggestions. This is for "
 "the map and also for locating your business."
 msgstr ""
 
-#: shortcodes/edit.php:409 shortcodes/edit.php:1529
+#: shortcodes/edit.php:418 shortcodes/submit.php:435 shortcodes/submit.php:508
+msgid "Full Address"
+msgstr ""
+
+#: shortcodes/edit.php:418 shortcodes/submit.php:435 shortcodes/submit.php:508
+msgid ""
+"Provide your full address for your business to show up on the map and your "
+"customer can get direction."
+msgstr ""
+
+#: shortcodes/edit.php:418 shortcodes/edit.php:1587
 msgid "Your address for google map"
 msgstr ""
 
-#: shortcodes/edit.php:412 shortcodes/edit.php:1532 shortcodes/submit.php:417
-#: shortcodes/submit.php:1076
+#: shortcodes/edit.php:421 shortcodes/edit.php:1590 shortcodes/submit.php:438
+#: shortcodes/submit.php:1125
 msgid "Add address here"
 msgstr ""
 
-#: shortcodes/edit.php:436 shortcodes/edit.php:552 shortcodes/edit.php:1295
-#: shortcodes/edit.php:1411 shortcodes/submit.php:445 shortcodes/submit.php:463
-#: shortcodes/submit.php:477 shortcodes/submit.php:945 shortcodes/submit.php:969
-#: shortcodes/submit.php:989
+#: shortcodes/edit.php:445 shortcodes/edit.php:561 shortcodes/edit.php:1349
+#: shortcodes/edit.php:1465 shortcodes/submit.php:466 shortcodes/submit.php:484
+#: shortcodes/submit.php:499 shortcodes/submit.php:994 shortcodes/submit.php:1018
+#: shortcodes/submit.php:1038
 msgid "The city name will help users find you in search filters."
 msgstr ""
 
-#: shortcodes/edit.php:449 shortcodes/edit.php:538 shortcodes/edit.php:1308
-#: shortcodes/edit.php:1397 shortcodes/submit.php:448 shortcodes/submit.php:466
-#: shortcodes/submit.php:482 shortcodes/submit.php:486 shortcodes/submit.php:951
-#: shortcodes/submit.php:975 shortcodes/submit.php:995 shortcodes/submit.php:997
+#: shortcodes/edit.php:458 shortcodes/edit.php:547 shortcodes/edit.php:1362
+#: shortcodes/edit.php:1451 shortcodes/submit.php:469 shortcodes/submit.php:487
+#: shortcodes/submit.php:504 shortcodes/submit.php:508 shortcodes/submit.php:1000
+#: shortcodes/submit.php:1024 shortcodes/submit.php:1044 shortcodes/submit.php:1046
 msgid "select your listing region"
 msgstr ""
 
-#: shortcodes/edit.php:557 shortcodes/edit.php:559 shortcodes/edit.php:1416
-#: shortcodes/edit.php:1418
+#: shortcodes/edit.php:566 shortcodes/edit.php:568 shortcodes/submit.php:504
+#: templates/popup.php:115
+msgid "City"
+msgstr ""
+
+#: shortcodes/edit.php:566 shortcodes/edit.php:568 shortcodes/submit.php:504
+msgid ""
+"Provide your city name for your business to show up on the map and your customer "
+"can get direction."
+msgstr ""
+
+#: shortcodes/edit.php:566 shortcodes/edit.php:568 shortcodes/edit.php:1470
+#: shortcodes/edit.php:1472
 msgid "Select your listing region"
 msgstr ""
 
-#: shortcodes/edit.php:561 shortcodes/edit.php:1420 vc_special_elements.php:1823
+#: shortcodes/edit.php:570 shortcodes/edit.php:1476 vc_special_elements.php:1823
 msgid "Select Location"
 msgstr ""
 
-#: shortcodes/edit.php:652 shortcodes/edit.php:1554
+#: shortcodes/edit.php:661 shortcodes/submit.php:566
+msgid ""
+"Local phone numbers drive 3x more calls than toll-free numbers. Always use a "
+"business phone number and avoid personal phone numbers if possible."
+msgstr ""
+
+#: shortcodes/edit.php:661 shortcodes/edit.php:1612
 msgid "Your contact number"
 msgstr ""
 
-#: shortcodes/edit.php:660 shortcodes/edit.php:1562
+#: shortcodes/edit.php:670 shortcodes/edit.php:1621 shortcodes/submit.php:575
+#: shortcodes/submit.php:1155
+msgid "+44994981258"
+msgstr ""
+
+#: shortcodes/edit.php:677
+msgid ""
+"Its recommended to provide official website url and avoid landing pages designed "
+"for a specific campaign."
+msgstr ""
+
+#: shortcodes/edit.php:677 shortcodes/edit.php:1628
 msgid "Your web URL"
 msgstr ""
 
-#: shortcodes/edit.php:667 shortcodes/submit.php:560
+#: shortcodes/edit.php:684 shortcodes/submit.php:590
 msgid "category & services"
 msgstr ""
 
-#: shortcodes/edit.php:675 shortcodes/edit.php:679 shortcodes/edit.php:1584
-#: shortcodes/edit.php:1588
+#: shortcodes/edit.php:693 shortcodes/edit.php:697 shortcodes/submit.php:598
+#: shortcodes/submit.php:606 shortcodes/submit.php:611
+msgid "Categories"
+msgstr ""
+
+#: shortcodes/edit.php:693 shortcodes/edit.php:697 shortcodes/submit.php:598
+#: shortcodes/submit.php:606 shortcodes/submit.php:611
+msgid ""
+"The more specific you get with your categories, the better. You do still want to "
+"stay relevant to your business, though. If you ever choose to run ads campaign, "
+"your ad will be shown on those categories you select."
+msgstr ""
+
+#: shortcodes/edit.php:693 shortcodes/edit.php:697 shortcodes/edit.php:1650
+#: shortcodes/edit.php:1654
 msgid "Choose one categories"
 msgstr ""
 
-#: shortcodes/edit.php:850 shortcodes/submit.php:661
+#: shortcodes/edit.php:886 shortcodes/submit.php:704
 msgid "price details"
 msgstr ""
 
-#: shortcodes/edit.php:858 shortcodes/edit.php:1782 shortcodes/submit.php:672
-#: shortcodes/submit.php:1253
+#: shortcodes/edit.php:894 shortcodes/edit.php:1866 shortcodes/submit.php:715
+#: shortcodes/submit.php:1319
 msgid "Not to say"
 msgstr ""
 
-#: shortcodes/edit.php:859 shortcodes/edit.php:1783 shortcodes/submit.php:673
-#: shortcodes/submit.php:1254
+#: shortcodes/edit.php:895 shortcodes/edit.php:1867 shortcodes/submit.php:716
+#: shortcodes/submit.php:1320
 msgid "Inexpensive"
 msgstr ""
 
-#: shortcodes/edit.php:860 shortcodes/edit.php:1784 shortcodes/submit.php:674
-#: shortcodes/submit.php:1255
+#: shortcodes/edit.php:896 shortcodes/edit.php:1868 shortcodes/submit.php:717
+#: shortcodes/submit.php:1321
 msgid "Moderate"
 msgstr ""
 
-#: shortcodes/edit.php:861 shortcodes/edit.php:1785 shortcodes/submit.php:675
-#: shortcodes/submit.php:1256
+#: shortcodes/edit.php:897 shortcodes/edit.php:1869 shortcodes/submit.php:718
+#: shortcodes/submit.php:1322
 msgid "Pricey"
 msgstr ""
 
-#: shortcodes/edit.php:862 shortcodes/edit.php:1786 shortcodes/submit.php:676
-#: shortcodes/submit.php:1257
+#: shortcodes/edit.php:898 shortcodes/edit.php:1870 shortcodes/submit.php:719
+#: shortcodes/submit.php:1323
 msgid "Ultra High"
 msgstr ""
 
-#: shortcodes/edit.php:898 shortcodes/edit.php:1822
+#: shortcodes/edit.php:905 shortcodes/submit.php:714
+#: templates/pricing/loop/claim_plans.php:507
+#: templates/pricing/loop/horizontal_view_1.php:442
+#: templates/pricing/loop/horizontal_view_2.php:461
+#: templates/pricing/loop/vertical_view_1.php:465
+#: templates/pricing/loop/vertical_view_2.php:584
+#: templates/pricing/loop/vertical_view_3.php:510
+#: templates/pricing/loop/vertical_view_4.php:436
+#: templates/pricing/loop/vertical_view_5.php:512
+#: templates/pricing/loop/vertical_view_6.php:509
+#: templates/pricing/loop/vertical_view_7.php:511
+#: templates/pricing/loop/vertical_view_8.php:510
+#: templates/pricing/loop/vertical_view_9.php:504
+msgid "Price Range"
+msgstr ""
+
+#: shortcodes/edit.php:905 shortcodes/submit.php:714
+msgid ""
+"Setting a price range can help attract the right targeted audience and will avoid "
+"any awkward situations for both customers and the owner."
+msgstr ""
+
+#: shortcodes/edit.php:934 shortcodes/edit.php:941 shortcodes/edit.php:1006
+#: shortcodes/submit.php:728 shortcodes/submit.php:735 shortcodes/submit.php:777
+msgid ""
+"Being honest with your customers can build a strong relationship. Dont hesitate to "
+"include."
+msgstr ""
+
+#: shortcodes/edit.php:934 shortcodes/edit.php:1906
 msgid "Only Digits"
 msgstr ""
 
-#: shortcodes/edit.php:916 shortcodes/submit.php:703
+#: shortcodes/edit.php:952 shortcodes/submit.php:749
+#: templates/pricing/loop/claim_plans.php:528
+#: templates/pricing/loop/horizontal_view_1.php:463
+#: templates/pricing/loop/horizontal_view_2.php:482
+#: templates/pricing/loop/vertical_view_1.php:486
+#: templates/pricing/loop/vertical_view_2.php:605
+#: templates/pricing/loop/vertical_view_3.php:531
+#: templates/pricing/loop/vertical_view_4.php:457
+#: templates/pricing/loop/vertical_view_5.php:533
+#: templates/pricing/loop/vertical_view_6.php:530
+#: templates/pricing/loop/vertical_view_7.php:532
+#: templates/pricing/loop/vertical_view_8.php:531
+#: templates/pricing/loop/vertical_view_9.php:525
+msgid "Business Hours"
+msgstr ""
+
+#: shortcodes/edit.php:952 shortcodes/submit.php:749
+msgid ""
+"You dont want your customers to stop by when you are closed so always try to keep "
+"your hour up to date. Keeping your store closed when your business indicate its "
+"open on the directory could lead to a negative review."
+msgstr ""
+
+#: shortcodes/edit.php:952 shortcodes/submit.php:749
 msgid "business hours"
 msgstr ""
 
-#: shortcodes/edit.php:935 shortcodes/submit.php:723
+#: shortcodes/edit.php:971 shortcodes/submit.php:769
 msgid "social media"
 msgstr ""
 
-#: shortcodes/edit.php:968 shortcodes/submit.php:729
-msgid "Select"
-msgstr ""
-
-#: shortcodes/edit.php:970 shortcodes/submit.php:731
-msgid "Please Select"
-msgstr ""
-
-#: shortcodes/edit.php:971 shortcodes/edit.php:2001 shortcodes/submit.php:732
-#: shortcodes/submit.php:1367
-msgid "Instagram"
-msgstr ""
-
-#: shortcodes/edit.php:972 shortcodes/edit.php:1994 shortcodes/submit.php:733
-#: shortcodes/submit.php:1360
+#: shortcodes/edit.php:993 shortcodes/edit.php:1008 shortcodes/edit.php:2081
+#: shortcodes/submit.php:779 shortcodes/submit.php:1429
 msgid "Youtube"
 msgstr ""
 
-#: shortcodes/edit.php:992 shortcodes/submit.php:753
+#: shortcodes/edit.php:997 shortcodes/edit.php:1007 shortcodes/edit.php:2088
+#: shortcodes/submit.php:778 shortcodes/submit.php:1436
+msgid "Instagram"
+msgstr ""
+
+#: shortcodes/edit.php:1004 shortcodes/submit.php:775
+msgid "Select"
+msgstr ""
+
+#: shortcodes/edit.php:1006 shortcodes/submit.php:777
+msgid "Social Media"
+msgstr ""
+
+#: shortcodes/edit.php:1006 shortcodes/submit.php:777
+msgid "Please Select"
+msgstr ""
+
+#: shortcodes/edit.php:1028 shortcodes/submit.php:799
 msgid "frequently asked questions"
 msgstr ""
 
-#: shortcodes/edit.php:1021 shortcodes/edit.php:1875
+#: shortcodes/edit.php:1057 shortcodes/submit.php:815 shortcodes/submit.php:1369
+#: templates/pricing/loop/claim_plans.php:497
+#: templates/pricing/loop/horizontal_view_1.php:432
+#: templates/pricing/loop/horizontal_view_2.php:451
+#: templates/pricing/loop/vertical_view_1.php:455
+#: templates/pricing/loop/vertical_view_2.php:574
+#: templates/pricing/loop/vertical_view_3.php:500
+#: templates/pricing/loop/vertical_view_4.php:426
+#: templates/pricing/loop/vertical_view_5.php:502
+#: templates/pricing/loop/vertical_view_6.php:499
+#: templates/pricing/loop/vertical_view_7.php:501
+#: templates/pricing/loop/vertical_view_8.php:500
+#: templates/pricing/loop/vertical_view_9.php:494
+msgid "FAQ"
+msgstr ""
+
+#: shortcodes/edit.php:1057 shortcodes/edit.php:1059 shortcodes/submit.php:815
+#: shortcodes/submit.php:818
+msgid ""
+"Share some of the most asked question and answers so they know you are serious "
+"about your business and truly care for your customers."
+msgstr ""
+
+#: shortcodes/edit.php:1057 shortcodes/edit.php:1960
 msgid "Questions"
 msgstr ""
 
-#: shortcodes/edit.php:1097 shortcodes/submit.php:784
+#: shortcodes/edit.php:1059 shortcodes/submit.php:818
+msgid "FAQ Answers"
+msgstr ""
+
+#: shortcodes/edit.php:1127
+msgid "add new"
+msgstr ""
+
+#: shortcodes/edit.php:1139 shortcodes/submit.php:830 vc_special_elements.php:577
+msgid "Description"
+msgstr ""
+
+#: shortcodes/edit.php:1139 shortcodes/submit.php:830
+msgid ""
+"Tell briefly what your customers what to hear about your business has to offer "
+"that is unique and you do better then everyone else."
+msgstr ""
+
+#: shortcodes/edit.php:1139 shortcodes/submit.php:830
 msgid "more info"
 msgstr ""
 
-#: shortcodes/edit.php:1111 shortcodes/edit.php:2016 shortcodes/submit.php:798
-#: shortcodes/submit.php:1382
+#: shortcodes/edit.php:1153 shortcodes/edit.php:2103 shortcodes/submit.php:844
+#: shortcodes/submit.php:1451
 msgid ""
 "These keywords or tags will help your listing to find in search. Add a comma "
 "separated list of keywords related to your business."
 msgstr ""
 
-#: shortcodes/edit.php:1114 shortcodes/edit.php:2019 shortcodes/submit.php:801
-#: shortcodes/submit.php:1385
+#: shortcodes/edit.php:1156 shortcodes/edit.php:2106 shortcodes/submit.php:847
+#: shortcodes/submit.php:1454
 msgid "Enter tags or keywords comma separated..."
 msgstr ""
 
-#: shortcodes/edit.php:1133 shortcodes/submit.php:811
+#: shortcodes/edit.php:1175 shortcodes/submit.php:856
 msgid "media"
 msgstr ""
 
-#: shortcodes/edit.php:1139 shortcodes/edit.php:2043
+#: shortcodes/edit.php:1181 shortcodes/edit.php:2130
 msgid "Video "
 msgstr ""
 
-#: shortcodes/edit.php:1139 shortcodes/edit.php:2043 shortcodes/submit.php:818
-#: shortcodes/submit.php:1402
+#: shortcodes/edit.php:1181 shortcodes/edit.php:2130 shortcodes/submit.php:863
+#: shortcodes/submit.php:1471
 msgid "(Optional)"
 msgstr ""
 
-#: shortcodes/edit.php:1140 shortcodes/edit.php:2044 shortcodes/submit.php:819
-#: shortcodes/submit.php:1403
+#: shortcodes/edit.php:1182 shortcodes/submit.php:864
+#: templates/pricing/loop/claim_plans.php:449
+#: templates/pricing/loop/horizontal_view_1.php:386
+#: templates/pricing/loop/horizontal_view_2.php:403
+#: templates/pricing/loop/vertical_view_1.php:407
+#: templates/pricing/loop/vertical_view_2.php:526
+#: templates/pricing/loop/vertical_view_3.php:452
+#: templates/pricing/loop/vertical_view_4.php:378
+#: templates/pricing/loop/vertical_view_5.php:454
+#: templates/pricing/loop/vertical_view_6.php:451
+#: templates/pricing/loop/vertical_view_7.php:453
+#: templates/pricing/loop/vertical_view_8.php:452
+#: templates/pricing/loop/vertical_view_9.php:446
+msgid "Video"
+msgstr ""
+
+#: shortcodes/edit.php:1182 shortcodes/submit.php:864
+msgid ""
+"Take it to next level and provide more details about what you have to offer. "
+"Select all that applies to you."
+msgstr ""
+
+#: shortcodes/edit.php:1182 shortcodes/edit.php:2131 shortcodes/submit.php:864
+#: shortcodes/submit.php:1472
 msgid "ex: https://youtu.be/lY2yjAdbvdQ"
 msgstr ""
 
-#: shortcodes/edit.php:1149 shortcodes/edit.php:2053 shortcodes/submit.php:829
-#: shortcodes/submit.php:1412
+#: shortcodes/edit.php:1190
+msgid "Gallery "
+msgstr ""
+
+#: shortcodes/edit.php:1192 shortcodes/edit.php:2141 shortcodes/submit.php:874
+#: shortcodes/submit.php:1481
 msgid "Images "
 msgstr ""
 
-#: shortcodes/edit.php:1156 shortcodes/edit.php:2060 shortcodes/submit.php:836
-#: shortcodes/submit.php:1419
+#: shortcodes/edit.php:1199 shortcodes/edit.php:2148 shortcodes/submit.php:881
+#: shortcodes/submit.php:1488
 msgid "Drop files here or click to upload"
 msgstr ""
 
-#: shortcodes/edit.php:1159 shortcodes/edit.php:2063 shortcodes/submit.php:838
-#: shortcodes/submit.php:1421
+#: shortcodes/edit.php:1202 shortcodes/edit.php:2151 shortcodes/submit.php:883
+#: shortcodes/submit.php:1490
 msgid "Browse Files"
 msgstr ""
 
-#: shortcodes/edit.php:1207 shortcodes/edit.php:2112
+#: shortcodes/edit.php:1252 shortcodes/edit.php:2201
 msgid "Change Featured Image"
 msgstr ""
 
-#: shortcodes/edit.php:1210 shortcodes/edit.php:2115
+#: shortcodes/edit.php:1255 shortcodes/edit.php:2204
 msgid "Upload Featured Image"
 msgstr ""
 
-#: shortcodes/edit.php:1217 shortcodes/edit.php:2122 shortcodes/submit.php:854
-#: shortcodes/submit.php:1439
+#: shortcodes/edit.php:1262 shortcodes/submit.php:901
+msgid "Featured Image"
+msgstr ""
+
+#: shortcodes/edit.php:1262 shortcodes/edit.php:2211 shortcodes/submit.php:901
+#: shortcodes/submit.php:1508
 msgid "Browse"
 msgstr ""
 
-#: shortcodes/edit.php:1217 shortcodes/edit.php:1230 shortcodes/edit.php:2122
-#: shortcodes/edit.php:2133 shortcodes/submit.php:854 shortcodes/submit.php:866
-#: shortcodes/submit.php:1439 shortcodes/submit.php:1453
+#: shortcodes/edit.php:1262 shortcodes/edit.php:1279 shortcodes/edit.php:2211
+#: shortcodes/edit.php:2223 shortcodes/submit.php:901 shortcodes/submit.php:914
+#: shortcodes/submit.php:1508 shortcodes/submit.php:1521
 msgid "Choose a file"
 msgstr ""
 
-#: shortcodes/edit.php:1226 shortcodes/edit.php:2129 shortcodes/submit.php:862
-#: shortcodes/submit.php:1449
+#: shortcodes/edit.php:1275 shortcodes/edit.php:2219 shortcodes/submit.php:910
+#: shortcodes/submit.php:1517
 msgid "Upload Business Logo"
 msgstr ""
 
-#: shortcodes/edit.php:1230 shortcodes/edit.php:2133 shortcodes/submit.php:866
-#: shortcodes/submit.php:1453
+#: shortcodes/edit.php:1279 shortcodes/edit.php:2223 shortcodes/submit.php:914
+#: shortcodes/submit.php:1521
 msgid "Browser"
 msgstr ""
 
-#: shortcodes/edit.php:1967 shortcodes/submit.php:1333
+#: shortcodes/edit.php:1314 shortcodes/edit.php:1319
+msgid "Put your listing title here and tell the name of your business to the world. "
+msgstr ""
+
+#: shortcodes/edit.php:1470
+msgid "This is test data for quick tip for location field"
+msgstr ""
+
+#: shortcodes/edit.php:1472
+msgid "this is test data for quick tip for location field"
+msgstr ""
+
+#: shortcodes/edit.php:1587
+msgid "this is test data for quick tip for address field"
+msgstr ""
+
+#: shortcodes/edit.php:1612
+msgid "this is test data for quick tip for phone field"
+msgstr ""
+
+#: shortcodes/edit.php:1628
+msgid "this is test data for quick tip for website field"
+msgstr ""
+
+#: shortcodes/edit.php:1960
+msgid "this is test data for quick tip for faq field"
+msgstr ""
+
+#: shortcodes/edit.php:2054 shortcodes/submit.php:1402
 msgid "Your Twitter URL"
 msgstr ""
 
-#: shortcodes/edit.php:1974 shortcodes/submit.php:1340
+#: shortcodes/edit.php:2061 shortcodes/submit.php:1409
 msgid "Your Facebook URL"
 msgstr ""
 
-#: shortcodes/edit.php:1981 shortcodes/submit.php:1347
+#: shortcodes/edit.php:2068 shortcodes/submit.php:1416
 msgid "Your LinkedIn URL"
 msgstr ""
 
-#: shortcodes/edit.php:1988 shortcodes/submit.php:1354
+#: shortcodes/edit.php:2075 shortcodes/submit.php:1423
 msgid "Your Google Plus URL"
 msgstr ""
 
-#: shortcodes/edit.php:1995 shortcodes/submit.php:1361
+#: shortcodes/edit.php:2082 shortcodes/submit.php:1430
 msgid "Your Youtube URL"
 msgstr ""
 
-#: shortcodes/edit.php:2002 shortcodes/submit.php:1368
+#: shortcodes/edit.php:2089 shortcodes/submit.php:1437
 msgid "Your Instagram URL"
 msgstr ""
 
-#: shortcodes/edit.php:2166 shortcodes/edit.php:2211 shortcodes/submit.php:1488
-#: shortcodes/submit.php:1575
+#: shortcodes/edit.php:2131
+msgid "this is test data for quick tip for video field"
+msgstr ""
+
+#: shortcodes/edit.php:2256 shortcodes/edit.php:2301 shortcodes/submit.php:1556
+#: shortcodes/submit.php:1643
 msgid "your contact email"
 msgstr ""
 
-#: shortcodes/edit.php:2186 shortcodes/submit.php:1545
+#: shortcodes/edit.php:2276 shortcodes/submit.php:1613
 msgid "Click below to review your listing."
 msgstr ""
 
-#: shortcodes/edit.php:2193 shortcodes/edit.php:2238 shortcodes/submit.php:1549
-#: shortcodes/submit.php:1633
+#: shortcodes/edit.php:2283 shortcodes/edit.php:2328 shortcodes/submit.php:1617
+#: shortcodes/submit.php:1702
 msgid "Something is missing! Please fill out all fields highlighted in red."
 msgstr ""
 
@@ -2325,147 +2662,227 @@ msgstr ""
 msgid "Submit Listing"
 msgstr ""
 
-#: shortcodes/submit.php:234
+#: shortcodes/submit.php:244 shortcodes/submit.php:252
 msgid "Returning User? Please"
 msgstr ""
 
-#: shortcodes/submit.php:234
+#: shortcodes/submit.php:244 shortcodes/submit.php:252
 msgid "Sign In"
 msgstr ""
 
-#: shortcodes/submit.php:234
+#: shortcodes/submit.php:244 shortcodes/submit.php:252
 msgid "and if you are a "
 msgstr ""
 
-#: shortcodes/submit.php:234
+#: shortcodes/submit.php:244 shortcodes/submit.php:252
 msgid "New User, continue below "
 msgstr ""
 
-#: shortcodes/submit.php:234
+#: shortcodes/submit.php:244 shortcodes/submit.php:252
 msgid "and register along with this submission."
 msgstr ""
 
-#: shortcodes/submit.php:314
+#: shortcodes/submit.php:334
 msgid "Save & Preview"
 msgstr ""
 
-#: shortcodes/submit.php:333
+#: shortcodes/submit.php:353
 msgid "Feeling lazy? Say HELLO! to Fill-O-Bot! "
 msgstr ""
 
-#: shortcodes/submit.php:334
+#: shortcodes/submit.php:354
 msgid ""
 "Don’t worry Fill-o-BOT will help you OUT! Just enter any business on google places "
 "and Fill-O-Bot automatically fills in the data that it can grab."
 msgstr ""
 
-#: shortcodes/submit.php:370 shortcodes/submit.php:373 shortcodes/submit.php:902
-#: shortcodes/submit.php:905
+#: shortcodes/submit.php:358
+msgid "Turn Me On"
+msgstr ""
+
+#: shortcodes/submit.php:378
+msgid "primary listing details"
+msgstr ""
+
+#: shortcodes/submit.php:390 shortcodes/submit.php:393 shortcodes/submit.php:950
+#: shortcodes/submit.php:953
 msgid "Staple & Fancy Hotel"
 msgstr ""
 
-#: shortcodes/submit.php:389
-msgid "Tagline"
+#: shortcodes/submit.php:404
+msgid "Does Your Business have a tagline?"
 msgstr ""
 
-#: shortcodes/submit.php:414 shortcodes/submit.php:1073
+#: shortcodes/submit.php:435 shortcodes/submit.php:1122
 msgid "Start typing and find your place in google map"
 msgstr ""
 
-#: shortcodes/submit.php:421 shortcodes/submit.php:1080
+#: shortcodes/submit.php:442 shortcodes/submit.php:1129
 msgid "40.7143528"
 msgstr ""
 
-#: shortcodes/submit.php:425 shortcodes/submit.php:1084
+#: shortcodes/submit.php:446 shortcodes/submit.php:1133
 msgid "-74.0059731"
 msgstr ""
 
-#: shortcodes/submit.php:490 shortcodes/submit.php:1001
+#: shortcodes/submit.php:512 shortcodes/submit.php:1050
 msgid "Select City"
 msgstr ""
 
-#: shortcodes/submit.php:544 shortcodes/submit.php:1097
+#: shortcodes/submit.php:566 shortcodes/submit.php:1146
 msgid "111-111-1234"
 msgstr ""
 
-#: shortcodes/submit.php:552 shortcodes/submit.php:1105
+#: shortcodes/submit.php:575 shortcodes/submit.php:1155
+msgid "Whatsapp no."
+msgstr ""
+
+#: shortcodes/submit.php:575 shortcodes/submit.php:1155
+msgid "Whatsapp no for listing detail page."
+msgstr ""
+
+#: shortcodes/submit.php:582
+msgid ""
+"Its recommended to provide official website url and avoid landing pages designed "
+"for a specific campaign"
+msgstr ""
+
+#: shortcodes/submit.php:582 shortcodes/submit.php:1162
 msgid "http://"
 msgstr ""
 
-#: shortcodes/submit.php:566 shortcodes/submit.php:571 shortcodes/submit.php:1129
-#: shortcodes/submit.php:1132
+#: shortcodes/submit.php:598 shortcodes/submit.php:606 shortcodes/submit.php:611
+#: shortcodes/submit.php:1188 shortcodes/submit.php:1198 shortcodes/submit.php:1201
 msgid "Choose Your Business Category"
 msgstr ""
 
-#: shortcodes/submit.php:769 shortcodes/submit.php:1301
-#: templates/pricing/loop/horizontal_view_1.php:422
-#: templates/pricing/loop/horizontal_view_2.php:438
-#: templates/pricing/loop/horizontal_view_2_aqib.php:377
-#: templates/pricing/loop/vertical_view_1.php:437
-#: templates/pricing/loop/vertical_view_2.php:556
-#: templates/pricing/loop/vertical_view_3.php:482
-#: templates/pricing/loop/vertical_view_4.php:408
-#: templates/pricing/loop/vertical_view_5.php:484
-#: templates/pricing/loop/vertical_view_6.php:481
-#: templates/pricing/loop/vertical_view_7.php:483
-#: templates/pricing/loop/vertical_view_8.php:482
-#: templates/pricing/loop/vertical_view_9.php:472
-msgid "FAQ"
-msgstr ""
-
-#: shortcodes/submit.php:787 shortcodes/submit.php:1284
+#: shortcodes/submit.php:833 shortcodes/submit.php:1352
 msgid "Detail description about your listing"
 msgstr ""
 
-#: shortcodes/submit.php:851 shortcodes/submit.php:1435
+#: shortcodes/submit.php:898 shortcodes/submit.php:1504
 msgid "Upload Feature Image"
 msgstr ""
 
-#: shortcodes/submit.php:1493 shortcodes/submit.php:1580
+#: shortcodes/submit.php:901
+msgid "Quick tip for featured images"
+msgstr ""
+
+#: shortcodes/submit.php:914 shortcodes/submit.php:1521
+msgid "quick tip for business logo"
+msgstr ""
+
+#: shortcodes/submit.php:950 shortcodes/submit.php:953
+msgid "this is test data for quick tip for title field"
+msgstr ""
+
+#: shortcodes/submit.php:965
+msgid "this is test data for quick tip for tagline field"
+msgstr ""
+
+#: shortcodes/submit.php:1044 shortcodes/submit.php:1046
+msgid "quick tip data for location field"
+msgstr ""
+
+#: shortcodes/submit.php:1122
+msgid "this is test infor address field"
+msgstr ""
+
+#: shortcodes/submit.php:1146
+msgid "this is quick tip info for phone field"
+msgstr ""
+
+#: shortcodes/submit.php:1162
+msgid "this is quick tip info for website field"
+msgstr ""
+
+#: shortcodes/submit.php:1369
+msgid "Quick tip on FAQ question"
+msgstr ""
+
+#: shortcodes/submit.php:1372
+msgid "this is test data for quick tip info of FAQ answer field"
+msgstr ""
+
+#: shortcodes/submit.php:1472
+msgid "this is test data for quick tip info of Video field"
+msgstr ""
+
+#: shortcodes/submit.php:1479
+msgid "quick tip info for gallery"
+msgstr ""
+
+#: shortcodes/submit.php:1508
+msgid "quick tip for featured img"
+msgstr ""
+
+#: shortcodes/submit.php:1550
+msgid "quick tip for account section"
+msgstr ""
+
+#: shortcodes/submit.php:1561 shortcodes/submit.php:1648
 msgid "user name"
 msgstr ""
 
-#: shortcodes/submit.php:1499 shortcodes/submit.php:1586
+#: shortcodes/submit.php:1567 shortcodes/submit.php:1654
 msgid "enter username"
 msgstr ""
 
-#: shortcodes/submit.php:1500 shortcodes/submit.php:1587
+#: shortcodes/submit.php:1568 shortcodes/submit.php:1655
 msgid "Password"
 msgstr ""
 
-#: shortcodes/submit.php:1501 shortcodes/submit.php:1588
+#: shortcodes/submit.php:1569 shortcodes/submit.php:1656
 msgid "enter password"
 msgstr ""
 
-#: shortcodes/submit.php:1504 shortcodes/submit.php:1591
+#: shortcodes/submit.php:1572 shortcodes/submit.php:1659
 msgid "Already Have Account?"
 msgstr ""
 
-#: shortcodes/submit.php:1521 shortcodes/submit.php:1608
+#: shortcodes/submit.php:1589 shortcodes/submit.php:1675
 msgid "I Agree"
 msgstr ""
 
-#: shortcodes/submit.php:1525 shortcodes/submit.php:1612
-msgid "You agree you accept our Terms & Conditions for posting this ad."
+#: shortcodes/submit.php:1593
+msgid "You agree & accept our Terms & Conditions for submitting listing"
 msgstr ""
 
-#: shortcodes/submit.php:1546 shortcodes/submit.php:1630
+#: shortcodes/submit.php:1614 shortcodes/submit.php:1699
 msgid "All of the fields were successfully validated!"
 msgstr ""
 
-#: templates/default-checkout.php:85
+#: shortcodes/submit.php:1679
+msgid "You agree you accept our Terms & Conditions for posting this ad."
+msgstr ""
+
+#: templates/claim-checkout.php:52 templates/default-checkout.php:58
+#: templates/quick-checkout.php:42
+msgid "Recurring Payment?"
+msgstr ""
+
+#: templates/claim-checkout.php:90 templates/default-checkout.php:96
 msgid "Date: "
 msgstr ""
 
-#: templates/default-checkout.php:88
+#: templates/claim-checkout.php:93 templates/default-checkout.php:99
 msgid "Category: "
 msgstr ""
 
-#: templates/default-checkout.php:91
+#: templates/claim-checkout.php:96 templates/default-checkout.php:102
 msgid "Duration: "
 msgstr ""
 
-#: templates/default-checkout.php:140
+#: templates/claim-checkout.php:96 templates/default-checkout.php:102
+#: templates/quick-checkout.php:90
+msgid " Days"
+msgstr ""
+
+#: templates/claim-checkout.php:155
+msgid "Sorry! No Paid Claim request found"
+msgstr ""
+
+#: templates/default-checkout.php:151
 msgid "Sorry! You have no paid listings yet!"
 msgstr ""
 
@@ -2477,66 +2894,56 @@ msgstr ""
 msgid "Contact Site Admin"
 msgstr ""
 
-#: templates/hours-form.php:100 templates/hours-form.php:310
+#: templates/hours-form.php:110 templates/hours-form.php:298
 msgid "24 hours open"
 msgstr ""
 
-#: templates/hours-form.php:140 templates/hours-form.php:145
-#: templates/hours-form.php:146 templates/hours-form.php:190
+#: templates/hours-form.php:128 templates/hours-form.php:133
+#: templates/hours-form.php:134 templates/hours-form.php:178
 msgid "Monday"
 msgstr ""
 
-#: templates/hours-form.php:149 templates/hours-form.php:154
-#: templates/hours-form.php:155 templates/hours-form.php:191
+#: templates/hours-form.php:137 templates/hours-form.php:142
+#: templates/hours-form.php:143 templates/hours-form.php:179
 msgid "Tuesday"
 msgstr ""
 
-#: templates/hours-form.php:158 templates/hours-form.php:163
-#: templates/hours-form.php:164 templates/hours-form.php:192
+#: templates/hours-form.php:146 templates/hours-form.php:151
+#: templates/hours-form.php:152 templates/hours-form.php:180
 msgid "Wednesday"
 msgstr ""
 
-#: templates/hours-form.php:167 templates/hours-form.php:172
-#: templates/hours-form.php:173 templates/hours-form.php:193
+#: templates/hours-form.php:155 templates/hours-form.php:160
+#: templates/hours-form.php:161 templates/hours-form.php:181
 msgid "Thursday"
 msgstr ""
 
-#: templates/hours-form.php:176 templates/hours-form.php:181
-#: templates/hours-form.php:182 templates/hours-form.php:194
+#: templates/hours-form.php:164 templates/hours-form.php:169
+#: templates/hours-form.php:170 templates/hours-form.php:182
 msgid "Friday"
 msgstr ""
 
-#: templates/hours-form.php:195
+#: templates/hours-form.php:183
 msgid "Saturday"
 msgstr ""
 
-#: templates/hours-form.php:196
+#: templates/hours-form.php:184
 msgid "Sunday"
 msgstr ""
 
-#: templates/hours-form.php:201 templates/hours-form.php:253
-#: templates/hours-form.php:326 templates/hours-form.php:378
-msgid "midnight"
-msgstr ""
-
-#: templates/hours-form.php:225 templates/hours-form.php:277
-#: templates/hours-form.php:350 templates/hours-form.php:402
-msgid "noon"
-msgstr ""
-
-#: templates/hours-form.php:308
+#: templates/hours-form.php:296
 msgid "24 Hours"
 msgstr ""
 
-#: templates/hours-form.php:310
+#: templates/hours-form.php:298
 msgid "Sorry"
 msgstr ""
 
-#: templates/hours-form.php:310
+#: templates/hours-form.php:298
 msgid "Already Added"
 msgstr ""
 
-#: templates/hours-form.php:320
+#: templates/hours-form.php:308
 msgid "Add 2nd time slot?"
 msgstr ""
 
@@ -2544,7 +2951,11 @@ msgstr ""
 msgid "Bank Transfer"
 msgstr ""
 
-#: templates/payment-methods.php:156
+#: templates/payment-methods.php:147
+msgid "Recurring Payment"
+msgstr ""
+
+#: templates/payment-methods.php:155
 msgid "Sorry! You have not enable any payment method"
 msgstr ""
 
@@ -2588,10 +2999,6 @@ msgstr ""
 msgid "Address"
 msgstr ""
 
-#: templates/popup.php:115
-msgid "City"
-msgstr ""
-
 #: templates/popup.php:119
 msgid "State"
 msgstr ""
@@ -2612,36 +3019,38 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: templates/pricing/by_category.php:38
+#: templates/pricing/by_category.php:37
 msgid "Standard"
 msgstr ""
 
-#: templates/pricing/by_category.php:40
+#: templates/pricing/by_category.php:39
 msgid "Exclusive"
 msgstr ""
 
-#: templates/pricing/by_category.php:101
+#: templates/pricing/by_category.php:100
 msgid "No plan associated with this category"
 msgstr ""
 
-#: templates/pricing/by_category.php:286 templates/pricing/by_category.php:297
+#: templates/pricing/by_category.php:285 templates/pricing/by_category.php:296
+#: templates/pricing/horizontal_view.php:44 templates/pricing/vertical_view.php:56
 msgid "Annually"
 msgstr ""
 
-#: templates/pricing/horizontal_view.php:67 templates/pricing/vertical_view.php:85
+#: templates/pricing/horizontal_view.php:102
+#: templates/pricing/loop/claim_plans.php:652 templates/pricing/vertical_view.php:119
 msgid "There is no Plan available right now."
 msgstr ""
 
-#: templates/pricing/loop/horizontal_view_1.php:58
-#: templates/pricing/loop/horizontal_view_1.php:325
-#: templates/pricing/loop/horizontal_view_2.php:58
-#: templates/pricing/loop/horizontal_view_2_aqib.php:58
+#: templates/pricing/loop/claim_plans.php:99
+#: templates/pricing/loop/horizontal_view_1.php:51
+#: templates/pricing/loop/horizontal_view_1.php:319
+#: templates/pricing/loop/horizontal_view_2.php:53
 msgid "unlimited"
 msgstr ""
 
-#: templates/pricing/loop/horizontal_view_1.php:210
-#: templates/pricing/loop/horizontal_view_2.php:217
-#: templates/pricing/loop/horizontal_view_2_aqib.php:156
+#: templates/pricing/loop/claim_plans.php:258
+#: templates/pricing/loop/horizontal_view_1.php:203
+#: templates/pricing/loop/horizontal_view_2.php:212
 #: templates/pricing/loop/vertical_view_1.php:10
 #: templates/pricing/loop/vertical_view_2.php:205
 #: templates/pricing/loop/vertical_view_3.php:146
@@ -2654,9 +3063,9 @@ msgstr ""
 msgid "Per Listing"
 msgstr ""
 
-#: templates/pricing/loop/horizontal_view_1.php:213
-#: templates/pricing/loop/horizontal_view_2.php:220
-#: templates/pricing/loop/horizontal_view_2_aqib.php:159
+#: templates/pricing/loop/claim_plans.php:261
+#: templates/pricing/loop/horizontal_view_1.php:206
+#: templates/pricing/loop/horizontal_view_2.php:215
 #: templates/pricing/loop/vertical_view_1.php:13
 #: templates/pricing/loop/vertical_view_2.php:208
 #: templates/pricing/loop/vertical_view_3.php:149
@@ -2669,177 +3078,173 @@ msgstr ""
 msgid "Per Package"
 msgstr ""
 
-#: templates/pricing/loop/horizontal_view_1.php:229
-#: templates/pricing/loop/horizontal_view_1.php:252
-#: templates/pricing/loop/horizontal_view_2.php:236
-#: templates/pricing/loop/horizontal_view_2.php:259
-#: templates/pricing/loop/horizontal_view_2_aqib.php:175
-#: templates/pricing/loop/horizontal_view_2_aqib.php:198
+#: templates/pricing/loop/claim_plans.php:277
+#: templates/pricing/loop/claim_plans.php:300
+#: templates/pricing/loop/horizontal_view_1.php:222
+#: templates/pricing/loop/horizontal_view_1.php:245
+#: templates/pricing/loop/horizontal_view_2.php:231
+#: templates/pricing/loop/horizontal_view_2.php:254
 msgid "Per Package "
 msgstr ""
 
-#: templates/pricing/loop/horizontal_view_1.php:233
-#: templates/pricing/loop/horizontal_view_1.php:255
-#: templates/pricing/loop/horizontal_view_2.php:240
-#: templates/pricing/loop/horizontal_view_2.php:262
-#: templates/pricing/loop/horizontal_view_2_aqib.php:179
-#: templates/pricing/loop/horizontal_view_2_aqib.php:201
+#: templates/pricing/loop/claim_plans.php:281
+#: templates/pricing/loop/claim_plans.php:303
+#: templates/pricing/loop/horizontal_view_1.php:226
+#: templates/pricing/loop/horizontal_view_1.php:248
+#: templates/pricing/loop/horizontal_view_2.php:235
+#: templates/pricing/loop/horizontal_view_2.php:257
 msgid "Per Listing "
 msgstr ""
 
-#: templates/pricing/loop/horizontal_view_1.php:311
-#: templates/pricing/loop/horizontal_view_1.php:314
-#: templates/pricing/loop/horizontal_view_2.php:346
-#: templates/pricing/loop/horizontal_view_2.php:349
-#: templates/pricing/loop/horizontal_view_2_aqib.php:285
-#: templates/pricing/loop/horizontal_view_2_aqib.php:288
-#: templates/pricing/loop/vertical_view_1.php:351
-#: templates/pricing/loop/vertical_view_1.php:353
-#: templates/pricing/loop/vertical_view_2.php:463
-#: templates/pricing/loop/vertical_view_2.php:466
-#: templates/pricing/loop/vertical_view_3.php:389
-#: templates/pricing/loop/vertical_view_3.php:392
-#: templates/pricing/loop/vertical_view_4.php:315
-#: templates/pricing/loop/vertical_view_4.php:318
-#: templates/pricing/loop/vertical_view_5.php:391
-#: templates/pricing/loop/vertical_view_5.php:394
-#: templates/pricing/loop/vertical_view_6.php:388
-#: templates/pricing/loop/vertical_view_6.php:391
-#: templates/pricing/loop/vertical_view_7.php:390
-#: templates/pricing/loop/vertical_view_7.php:393
-#: templates/pricing/loop/vertical_view_8.php:389
-#: templates/pricing/loop/vertical_view_8.php:392
-#: templates/pricing/loop/vertical_view_9.php:379
-#: templates/pricing/loop/vertical_view_9.php:382
+#: templates/pricing/loop/claim_plans.php:388
+#: templates/pricing/loop/claim_plans.php:391
+#: templates/pricing/loop/horizontal_view_1.php:305
+#: templates/pricing/loop/horizontal_view_1.php:308
+#: templates/pricing/loop/horizontal_view_2.php:342
+#: templates/pricing/loop/horizontal_view_2.php:345
+#: templates/pricing/loop/vertical_view_1.php:352
+#: templates/pricing/loop/vertical_view_1.php:354
+#: templates/pricing/loop/vertical_view_2.php:464
+#: templates/pricing/loop/vertical_view_2.php:467
+#: templates/pricing/loop/vertical_view_3.php:390
+#: templates/pricing/loop/vertical_view_3.php:393
+#: templates/pricing/loop/vertical_view_4.php:316
+#: templates/pricing/loop/vertical_view_4.php:319
+#: templates/pricing/loop/vertical_view_5.php:392
+#: templates/pricing/loop/vertical_view_5.php:395
+#: templates/pricing/loop/vertical_view_6.php:389
+#: templates/pricing/loop/vertical_view_6.php:392
+#: templates/pricing/loop/vertical_view_7.php:391
+#: templates/pricing/loop/vertical_view_7.php:394
+#: templates/pricing/loop/vertical_view_8.php:390
+#: templates/pricing/loop/vertical_view_8.php:393
+#: templates/pricing/loop/vertical_view_9.php:384
+#: templates/pricing/loop/vertical_view_9.php:387
 msgid "Duration"
 msgstr ""
 
-#: templates/pricing/loop/horizontal_view_1.php:311
-#: templates/pricing/loop/horizontal_view_2.php:346
-#: templates/pricing/loop/horizontal_view_2_aqib.php:285
-#: templates/pricing/loop/vertical_view_1.php:351
+#: templates/pricing/loop/claim_plans.php:388
+#: templates/pricing/loop/horizontal_view_1.php:305
+#: templates/pricing/loop/horizontal_view_2.php:342
+#: templates/pricing/loop/vertical_view_1.php:352
 #: templates/pricing/loop/vertical_view_2.php:353
-#: templates/pricing/loop/vertical_view_2.php:463
+#: templates/pricing/loop/vertical_view_2.php:464
 #: templates/pricing/loop/vertical_view_3.php:275
-#: templates/pricing/loop/vertical_view_3.php:389
-#: templates/pricing/loop/vertical_view_4.php:315
-#: templates/pricing/loop/vertical_view_5.php:391
+#: templates/pricing/loop/vertical_view_3.php:390
+#: templates/pricing/loop/vertical_view_4.php:316
+#: templates/pricing/loop/vertical_view_5.php:392
 #: templates/pricing/loop/vertical_view_6.php:278
-#: templates/pricing/loop/vertical_view_6.php:388
+#: templates/pricing/loop/vertical_view_6.php:389
 #: templates/pricing/loop/vertical_view_7.php:281
-#: templates/pricing/loop/vertical_view_7.php:390
+#: templates/pricing/loop/vertical_view_7.php:391
 #: templates/pricing/loop/vertical_view_8.php:280
-#: templates/pricing/loop/vertical_view_8.php:389
-#: templates/pricing/loop/vertical_view_9.php:379
+#: templates/pricing/loop/vertical_view_8.php:390
+#: templates/pricing/loop/vertical_view_9.php:384
 msgid "days"
 msgstr ""
 
-#: templates/pricing/loop/horizontal_view_1.php:315
-#: templates/pricing/loop/horizontal_view_2.php:350
-#: templates/pricing/loop/horizontal_view_2_aqib.php:289
-#: templates/pricing/loop/vertical_view_1.php:354
-#: templates/pricing/loop/vertical_view_2.php:467
-#: templates/pricing/loop/vertical_view_3.php:393
-#: templates/pricing/loop/vertical_view_4.php:319
-#: templates/pricing/loop/vertical_view_5.php:395
-#: templates/pricing/loop/vertical_view_6.php:392
-#: templates/pricing/loop/vertical_view_7.php:394
-#: templates/pricing/loop/vertical_view_8.php:393
-#: templates/pricing/loop/vertical_view_9.php:383
+#: templates/pricing/loop/claim_plans.php:392
+#: templates/pricing/loop/horizontal_view_1.php:309
+#: templates/pricing/loop/horizontal_view_2.php:346
+#: templates/pricing/loop/vertical_view_1.php:355
+#: templates/pricing/loop/vertical_view_2.php:468
+#: templates/pricing/loop/vertical_view_3.php:394
+#: templates/pricing/loop/vertical_view_4.php:320
+#: templates/pricing/loop/vertical_view_5.php:396
+#: templates/pricing/loop/vertical_view_6.php:393
+#: templates/pricing/loop/vertical_view_7.php:395
+#: templates/pricing/loop/vertical_view_8.php:394
+#: templates/pricing/loop/vertical_view_9.php:388
 msgid " : Unlimited days"
 msgstr ""
 
-#: templates/pricing/loop/horizontal_view_1.php:321
-#: templates/pricing/loop/horizontal_view_1.php:326
-msgid "Total Listings : "
+#: templates/pricing/loop/claim_plans.php:397
+#: templates/pricing/loop/horizontal_view_2.php:351
+#: templates/pricing/loop/vertical_view_2.php:473
+#: templates/pricing/loop/vertical_view_3.php:399
+#: templates/pricing/loop/vertical_view_4.php:325
+#: templates/pricing/loop/vertical_view_5.php:401
+#: templates/pricing/loop/vertical_view_6.php:398
+#: templates/pricing/loop/vertical_view_8.php:399
+#: templates/pricing/loop/vertical_view_9.php:393
+msgid "Lorem ipsum dolor sit amet, lorem sit."
 msgstr ""
 
-#: templates/pricing/loop/horizontal_view_1.php:331
-msgid "Available Listings : "
+#: templates/pricing/loop/claim_plans.php:404
+#: templates/pricing/loop/horizontal_view_2.php:358
+#: templates/pricing/loop/vertical_view_1.php:364
+#: templates/pricing/loop/vertical_view_2.php:480
+#: templates/pricing/loop/vertical_view_3.php:406
+#: templates/pricing/loop/vertical_view_4.php:332
+#: templates/pricing/loop/vertical_view_5.php:408
+#: templates/pricing/loop/vertical_view_6.php:405
+#: templates/pricing/loop/vertical_view_7.php:407
+#: templates/pricing/loop/vertical_view_8.php:406
+#: templates/pricing/loop/vertical_view_9.php:400
+msgid "Max. Listings : "
 msgstr ""
 
-#: templates/pricing/loop/horizontal_view_1.php:338
-msgid " Used :"
+#: templates/pricing/loop/claim_plans.php:411
+#: templates/pricing/loop/horizontal_view_2.php:365
+#: templates/pricing/loop/vertical_view_2.php:487
+#: templates/pricing/loop/vertical_view_3.php:413
+#: templates/pricing/loop/vertical_view_4.php:339
+#: templates/pricing/loop/vertical_view_5.php:415
+#: templates/pricing/loop/vertical_view_6.php:412
+#: templates/pricing/loop/vertical_view_7.php:414
+#: templates/pricing/loop/vertical_view_8.php:413
+#: templates/pricing/loop/vertical_view_9.php:407
+msgid "Max. Listings : Unlimited"
 msgstr ""
 
-#: templates/pricing/loop/horizontal_view_1.php:361
-#: templates/pricing/loop/horizontal_view_2.php:377
-#: templates/pricing/loop/horizontal_view_2_aqib.php:316
-#: templates/pricing/loop/vertical_view_1.php:376
-#: templates/pricing/loop/vertical_view_2.php:495
-#: templates/pricing/loop/vertical_view_3.php:421
-#: templates/pricing/loop/vertical_view_4.php:347
-#: templates/pricing/loop/vertical_view_5.php:423
-#: templates/pricing/loop/vertical_view_6.php:420
-#: templates/pricing/loop/vertical_view_7.php:422
-#: templates/pricing/loop/vertical_view_8.php:421
-#: templates/pricing/loop/vertical_view_9.php:411
+#: templates/pricing/loop/claim_plans.php:420
+#: templates/pricing/loop/horizontal_view_1.php:356
+#: templates/pricing/loop/horizontal_view_2.php:374
+#: templates/pricing/loop/vertical_view_1.php:378
+#: templates/pricing/loop/vertical_view_2.php:497
+#: templates/pricing/loop/vertical_view_3.php:423
+#: templates/pricing/loop/vertical_view_4.php:349
+#: templates/pricing/loop/vertical_view_5.php:425
+#: templates/pricing/loop/vertical_view_6.php:422
+#: templates/pricing/loop/vertical_view_7.php:424
+#: templates/pricing/loop/vertical_view_8.php:423
+#: templates/pricing/loop/vertical_view_9.php:417
 msgid "Map Display"
 msgstr ""
 
-#: templates/pricing/loop/horizontal_view_1.php:369
-#: templates/pricing/loop/horizontal_view_2.php:384
-#: templates/pricing/loop/horizontal_view_2_aqib.php:323
-#: templates/pricing/loop/vertical_view_1.php:383
-#: templates/pricing/loop/vertical_view_2.php:502
-#: templates/pricing/loop/vertical_view_3.php:428
-#: templates/pricing/loop/vertical_view_4.php:354
-#: templates/pricing/loop/vertical_view_5.php:430
-#: templates/pricing/loop/vertical_view_6.php:427
-#: templates/pricing/loop/vertical_view_7.php:429
-#: templates/pricing/loop/vertical_view_8.php:428
-#: templates/pricing/loop/vertical_view_9.php:418
+#: templates/pricing/loop/claim_plans.php:429
+#: templates/pricing/loop/horizontal_view_1.php:366
+#: templates/pricing/loop/horizontal_view_2.php:383
+#: templates/pricing/loop/vertical_view_1.php:387
+#: templates/pricing/loop/vertical_view_2.php:506
+#: templates/pricing/loop/vertical_view_3.php:432
+#: templates/pricing/loop/vertical_view_4.php:358
+#: templates/pricing/loop/vertical_view_5.php:434
+#: templates/pricing/loop/vertical_view_6.php:431
+#: templates/pricing/loop/vertical_view_7.php:433
+#: templates/pricing/loop/vertical_view_8.php:432
+#: templates/pricing/loop/vertical_view_9.php:426
 msgid "Contact Display"
 msgstr ""
 
-#: templates/pricing/loop/horizontal_view_1.php:385
-#: templates/pricing/loop/horizontal_view_2.php:400
-#: templates/pricing/loop/horizontal_view_2_aqib.php:339
-#: templates/pricing/loop/vertical_view_1.php:399
-#: templates/pricing/loop/vertical_view_2.php:518
-#: templates/pricing/loop/vertical_view_3.php:444
-#: templates/pricing/loop/vertical_view_4.php:370
-#: templates/pricing/loop/vertical_view_5.php:446
-#: templates/pricing/loop/vertical_view_6.php:443
-#: templates/pricing/loop/vertical_view_7.php:445
-#: templates/pricing/loop/vertical_view_8.php:444
-#: templates/pricing/loop/vertical_view_9.php:434
-msgid "Video"
-msgstr ""
-
-#: templates/pricing/loop/horizontal_view_1.php:393
-#: templates/pricing/loop/horizontal_view_2.php:407
-#: templates/pricing/loop/horizontal_view_2_aqib.php:346
-#: templates/pricing/loop/vertical_view_1.php:406
-#: templates/pricing/loop/vertical_view_2.php:525
-#: templates/pricing/loop/vertical_view_3.php:451
-#: templates/pricing/loop/vertical_view_4.php:377
-#: templates/pricing/loop/vertical_view_5.php:453
-#: templates/pricing/loop/vertical_view_6.php:450
-#: templates/pricing/loop/vertical_view_7.php:452
-#: templates/pricing/loop/vertical_view_8.php:451
-#: templates/pricing/loop/vertical_view_9.php:441
+#: templates/pricing/loop/claim_plans.php:458
+#: templates/pricing/loop/horizontal_view_1.php:395
+#: templates/pricing/loop/horizontal_view_2.php:412
+#: templates/pricing/loop/vertical_view_1.php:416
+#: templates/pricing/loop/vertical_view_2.php:535
+#: templates/pricing/loop/vertical_view_3.php:461
+#: templates/pricing/loop/vertical_view_4.php:387
+#: templates/pricing/loop/vertical_view_5.php:463
+#: templates/pricing/loop/vertical_view_6.php:460
+#: templates/pricing/loop/vertical_view_7.php:462
+#: templates/pricing/loop/vertical_view_8.php:461
+#: templates/pricing/loop/vertical_view_9.php:455
 msgid "Business Tagline"
 msgstr ""
 
-#: templates/pricing/loop/horizontal_view_1.php:414
-#: templates/pricing/loop/horizontal_view_2.php:430
-#: templates/pricing/loop/horizontal_view_2_aqib.php:369
-#: templates/pricing/loop/vertical_view_1.php:429
-#: templates/pricing/loop/vertical_view_2.php:548
-#: templates/pricing/loop/vertical_view_3.php:474
-#: templates/pricing/loop/vertical_view_4.php:400
-#: templates/pricing/loop/vertical_view_5.php:476
-#: templates/pricing/loop/vertical_view_6.php:473
-#: templates/pricing/loop/vertical_view_7.php:475
-#: templates/pricing/loop/vertical_view_8.php:474
-#: templates/pricing/loop/vertical_view_9.php:464
-msgid "Social Links"
-msgstr ""
-
-#: templates/pricing/loop/horizontal_view_1.php:430
-#: templates/pricing/loop/horizontal_view_2.php:446
-#: templates/pricing/loop/horizontal_view_2_aqib.php:385
+#: templates/pricing/loop/claim_plans.php:487
+#: templates/pricing/loop/horizontal_view_1.php:422
+#: templates/pricing/loop/horizontal_view_2.php:441
 #: templates/pricing/loop/vertical_view_1.php:445
 #: templates/pricing/loop/vertical_view_2.php:564
 #: templates/pricing/loop/vertical_view_3.php:490
@@ -2848,178 +3253,147 @@ msgstr ""
 #: templates/pricing/loop/vertical_view_6.php:489
 #: templates/pricing/loop/vertical_view_7.php:491
 #: templates/pricing/loop/vertical_view_8.php:490
-#: templates/pricing/loop/vertical_view_9.php:480
-msgid "Price Range"
+#: templates/pricing/loop/vertical_view_9.php:484
+msgid "Social Links"
 msgstr ""
 
-#: templates/pricing/loop/horizontal_view_1.php:439
-#: templates/pricing/loop/horizontal_view_2.php:455
-#: templates/pricing/loop/horizontal_view_2_aqib.php:394
-#: templates/pricing/loop/vertical_view_1.php:454
-#: templates/pricing/loop/vertical_view_2.php:573
-#: templates/pricing/loop/vertical_view_3.php:499
-#: templates/pricing/loop/vertical_view_4.php:425
-#: templates/pricing/loop/vertical_view_5.php:501
-#: templates/pricing/loop/vertical_view_6.php:498
-#: templates/pricing/loop/vertical_view_7.php:500
-#: templates/pricing/loop/vertical_view_8.php:499
-#: templates/pricing/loop/vertical_view_9.php:489
+#: templates/pricing/loop/claim_plans.php:518
+#: templates/pricing/loop/horizontal_view_1.php:453
+#: templates/pricing/loop/horizontal_view_2.php:472
+#: templates/pricing/loop/vertical_view_1.php:476
+#: templates/pricing/loop/vertical_view_2.php:595
+#: templates/pricing/loop/vertical_view_3.php:521
+#: templates/pricing/loop/vertical_view_4.php:447
+#: templates/pricing/loop/vertical_view_5.php:523
+#: templates/pricing/loop/vertical_view_6.php:520
+#: templates/pricing/loop/vertical_view_7.php:522
+#: templates/pricing/loop/vertical_view_8.php:521
+#: templates/pricing/loop/vertical_view_9.php:515
 msgid "Tags/Keywords"
 msgstr ""
 
-#: templates/pricing/loop/horizontal_view_1.php:447
-#: templates/pricing/loop/horizontal_view_2.php:463
-#: templates/pricing/loop/horizontal_view_2_aqib.php:402
-#: templates/pricing/loop/vertical_view_1.php:462
-#: templates/pricing/loop/vertical_view_2.php:581
-#: templates/pricing/loop/vertical_view_3.php:507
-#: templates/pricing/loop/vertical_view_4.php:433
-#: templates/pricing/loop/vertical_view_5.php:509
-#: templates/pricing/loop/vertical_view_6.php:506
-#: templates/pricing/loop/vertical_view_7.php:508
-#: templates/pricing/loop/vertical_view_8.php:507
-#: templates/pricing/loop/vertical_view_9.php:497
-msgid "Business Hours"
-msgstr ""
-
-#: templates/pricing/loop/horizontal_view_1.php:456
-#: templates/pricing/loop/horizontal_view_2.php:472
-#: templates/pricing/loop/vertical_view_1.php:473
-#: templates/pricing/loop/vertical_view_2.php:591
-#: templates/pricing/loop/vertical_view_5.php:519
-#: templates/pricing/loop/vertical_view_9.php:506
-msgid "Resurva"
-msgstr ""
-
-#: templates/pricing/loop/horizontal_view_1.php:463
-#: templates/pricing/loop/horizontal_view_2.php:479
-#: templates/pricing/loop/vertical_view_1.php:480
-#: templates/pricing/loop/vertical_view_2.php:598
-#: templates/pricing/loop/vertical_view_5.php:526
-#: templates/pricing/loop/vertical_view_9.php:513
-msgid "Timekit"
-msgstr ""
-
-#: templates/pricing/loop/horizontal_view_1.php:470
-#: templates/pricing/loop/horizontal_view_2.php:486
-#: templates/pricing/loop/vertical_view_1.php:487
-#: templates/pricing/loop/vertical_view_2.php:605
-#: templates/pricing/loop/vertical_view_5.php:533
-#: templates/pricing/loop/vertical_view_9.php:520
-msgid "Menu"
-msgstr ""
-
-#: templates/pricing/loop/horizontal_view_1.php:476
-#: templates/pricing/loop/horizontal_view_2.php:492
-#: templates/pricing/loop/vertical_view_1.php:493
-#: templates/pricing/loop/vertical_view_2.php:611
-#: templates/pricing/loop/vertical_view_5.php:539
-#: templates/pricing/loop/vertical_view_9.php:526
-msgid "Announcment"
-msgstr ""
-
-#: templates/pricing/loop/horizontal_view_1.php:482
-#: templates/pricing/loop/horizontal_view_2.php:498
+#: templates/pricing/loop/claim_plans.php:539
+#: templates/pricing/loop/horizontal_view_1.php:474
+#: templates/pricing/loop/horizontal_view_2.php:493
 #: templates/pricing/loop/vertical_view_1.php:499
 #: templates/pricing/loop/vertical_view_2.php:617
 #: templates/pricing/loop/vertical_view_5.php:545
-#: templates/pricing/loop/vertical_view_9.php:532
-msgid "Deals-Offers-Discounts"
+#: templates/pricing/loop/vertical_view_9.php:536
+msgid "Resurva"
 msgstr ""
 
-#: templates/pricing/loop/horizontal_view_1.php:488
-#: templates/pricing/loop/horizontal_view_2.php:504
-#: templates/pricing/loop/vertical_view_1.php:505
-#: templates/pricing/loop/vertical_view_2.php:623
-#: templates/pricing/loop/vertical_view_5.php:551
-#: templates/pricing/loop/vertical_view_9.php:538
-msgid "Hide competitors Ads"
+#: templates/pricing/loop/claim_plans.php:548
+#: templates/pricing/loop/horizontal_view_1.php:483
+#: templates/pricing/loop/horizontal_view_2.php:502
+#: templates/pricing/loop/vertical_view_1.php:508
+#: templates/pricing/loop/vertical_view_2.php:626
+#: templates/pricing/loop/vertical_view_5.php:554
+#: templates/pricing/loop/vertical_view_9.php:545
+msgid "Timekit"
 msgstr ""
 
-#: templates/pricing/loop/horizontal_view_1.php:494
-#: templates/pricing/loop/horizontal_view_2.php:510
-#: templates/pricing/loop/vertical_view_1.php:511
-#: templates/pricing/loop/vertical_view_2.php:629
-#: templates/pricing/loop/vertical_view_5.php:557
-#: templates/pricing/loop/vertical_view_9.php:544
-msgid "Featured Image"
-msgstr ""
-
-#: templates/pricing/loop/horizontal_view_1.php:500
-#: templates/pricing/loop/horizontal_view_2.php:516
+#: templates/pricing/loop/claim_plans.php:557
+#: templates/pricing/loop/horizontal_view_1.php:491
+#: templates/pricing/loop/horizontal_view_2.php:511
 #: templates/pricing/loop/vertical_view_1.php:517
 #: templates/pricing/loop/vertical_view_2.php:635
 #: templates/pricing/loop/vertical_view_5.php:563
-#: templates/pricing/loop/vertical_view_9.php:550
+#: templates/pricing/loop/vertical_view_9.php:554
+msgid "Menu"
+msgstr ""
+
+#: templates/pricing/loop/claim_plans.php:565
+#: templates/pricing/loop/horizontal_view_1.php:499
+#: templates/pricing/loop/horizontal_view_2.php:519
+#: templates/pricing/loop/vertical_view_1.php:525
+#: templates/pricing/loop/vertical_view_2.php:643
+#: templates/pricing/loop/vertical_view_5.php:571
+#: templates/pricing/loop/vertical_view_9.php:562
+msgid "Announcment"
+msgstr ""
+
+#: templates/pricing/loop/claim_plans.php:573
+#: templates/pricing/loop/horizontal_view_1.php:507
+#: templates/pricing/loop/horizontal_view_2.php:527
+#: templates/pricing/loop/vertical_view_1.php:533
+#: templates/pricing/loop/vertical_view_2.php:651
+#: templates/pricing/loop/vertical_view_5.php:579
+#: templates/pricing/loop/vertical_view_9.php:570
+msgid "Deals-Offers-Discounts"
+msgstr ""
+
+#: templates/pricing/loop/claim_plans.php:581
+#: templates/pricing/loop/horizontal_view_1.php:515
+#: templates/pricing/loop/horizontal_view_2.php:535
+#: templates/pricing/loop/vertical_view_1.php:541
+#: templates/pricing/loop/vertical_view_2.php:659
+#: templates/pricing/loop/vertical_view_5.php:587
+#: templates/pricing/loop/vertical_view_9.php:578
+msgid "Hide competitors Ads"
+msgstr ""
+
+#: templates/pricing/loop/claim_plans.php:589
+#: templates/pricing/loop/horizontal_view_1.php:523
+#: templates/pricing/loop/horizontal_view_2.php:543
+#: templates/pricing/loop/vertical_view_1.php:550
+#: templates/pricing/loop/vertical_view_2.php:668
+#: templates/pricing/loop/vertical_view_5.php:595
+#: templates/pricing/loop/vertical_view_9.php:586 vc_special_elements.php:3896
 msgid "Events"
 msgstr ""
 
-#: templates/pricing/loop/horizontal_view_1.php:530
-#: templates/pricing/loop/horizontal_view_1.php:533
-#: templates/pricing/loop/horizontal_view_1.php:542
-msgid "Get Started Now"
+#: templates/pricing/loop/claim_plans.php:619
+#: templates/pricing/loop/claim_plans.php:622
+#: templates/pricing/loop/claim_plans.php:631
+#: templates/pricing/loop/claim_plans.php:637
+#: templates/pricing/loop/horizontal_view_2.php:573
+#: templates/pricing/loop/horizontal_view_2.php:576
+#: templates/pricing/loop/horizontal_view_2.php:585
+#: templates/pricing/loop/horizontal_view_2.php:591
+#: templates/pricing/loop/vertical_view_4.php:487
+#: templates/pricing/loop/vertical_view_4.php:490
+#: templates/pricing/loop/vertical_view_4.php:495
+#: templates/pricing/loop/vertical_view_5.php:627
+#: templates/pricing/loop/vertical_view_5.php:630
+#: templates/pricing/loop/vertical_view_5.php:635
+#: templates/pricing/loop/vertical_view_9.php:618
+#: templates/pricing/loop/vertical_view_9.php:621
+#: templates/pricing/loop/vertical_view_9.php:626
+msgid "CHOOSE PLAN"
 msgstr ""
 
-#: templates/pricing/loop/horizontal_view_1.php:537
-#: templates/pricing/loop/horizontal_view_2.php:552
-#: templates/pricing/loop/horizontal_view_2_aqib.php:437
-#: templates/pricing/loop/vertical_view_1.php:545
-#: templates/pricing/loop/vertical_view_2.php:407
-#: templates/pricing/loop/vertical_view_3.php:336
-#: templates/pricing/loop/vertical_view_4.php:456
-#: templates/pricing/loop/vertical_view_5.php:588
-#: templates/pricing/loop/vertical_view_6.php:332
-#: templates/pricing/loop/vertical_view_7.php:331
-#: templates/pricing/loop/vertical_view_8.php:330
-#: templates/pricing/loop/vertical_view_9.php:575
+#: templates/pricing/loop/claim_plans.php:626
+#: templates/pricing/loop/horizontal_view_1.php:561
+#: templates/pricing/loop/horizontal_view_2.php:580
+#: templates/pricing/loop/vertical_view_1.php:579
+#: templates/pricing/loop/vertical_view_2.php:408
+#: templates/pricing/loop/vertical_view_3.php:337
+#: templates/pricing/loop/vertical_view_4.php:481
+#: templates/pricing/loop/vertical_view_5.php:621
+#: templates/pricing/loop/vertical_view_6.php:333
+#: templates/pricing/loop/vertical_view_7.php:332
+#: templates/pricing/loop/vertical_view_8.php:331
+#: templates/pricing/loop/vertical_view_9.php:612
 msgid " should have a price "
 msgstr ""
 
-#: templates/pricing/loop/horizontal_view_2.php:362
-#: templates/pricing/loop/horizontal_view_2_aqib.php:301
-#: templates/pricing/loop/vertical_view_1.php:363
-#: templates/pricing/loop/vertical_view_2.php:479
-#: templates/pricing/loop/vertical_view_3.php:405
-#: templates/pricing/loop/vertical_view_4.php:331
-#: templates/pricing/loop/vertical_view_5.php:407
-#: templates/pricing/loop/vertical_view_6.php:404
-#: templates/pricing/loop/vertical_view_7.php:406
-#: templates/pricing/loop/vertical_view_8.php:405
-#: templates/pricing/loop/vertical_view_9.php:395
-msgid "Max. Listings : "
+#: templates/pricing/loop/horizontal_view_1.php:315
+#: templates/pricing/loop/horizontal_view_1.php:320
+msgid "Total Listings : "
 msgstr ""
 
-#: templates/pricing/loop/horizontal_view_2.php:369
-#: templates/pricing/loop/horizontal_view_2_aqib.php:308
-#: templates/pricing/loop/vertical_view_2.php:486
-#: templates/pricing/loop/vertical_view_3.php:412
-#: templates/pricing/loop/vertical_view_4.php:338
-#: templates/pricing/loop/vertical_view_5.php:414
-#: templates/pricing/loop/vertical_view_6.php:411
-#: templates/pricing/loop/vertical_view_7.php:413
-#: templates/pricing/loop/vertical_view_8.php:412
-#: templates/pricing/loop/vertical_view_9.php:402
-msgid "Max. Listings : Unlimited"
+#: templates/pricing/loop/horizontal_view_1.php:325
+msgid "Available Listings : "
 msgstr ""
 
-#: templates/pricing/loop/horizontal_view_2.php:545
-#: templates/pricing/loop/horizontal_view_2.php:548
-#: templates/pricing/loop/horizontal_view_2.php:557
-#: templates/pricing/loop/horizontal_view_2.php:563
-#: templates/pricing/loop/horizontal_view_2_aqib.php:430
-#: templates/pricing/loop/horizontal_view_2_aqib.php:433
-#: templates/pricing/loop/horizontal_view_2_aqib.php:442
-#: templates/pricing/loop/horizontal_view_2_aqib.php:448
-#: templates/pricing/loop/vertical_view_4.php:462
-#: templates/pricing/loop/vertical_view_4.php:465
-#: templates/pricing/loop/vertical_view_4.php:470
-#: templates/pricing/loop/vertical_view_5.php:594
-#: templates/pricing/loop/vertical_view_5.php:597
-#: templates/pricing/loop/vertical_view_5.php:602
-#: templates/pricing/loop/vertical_view_9.php:581
-#: templates/pricing/loop/vertical_view_9.php:584
-#: templates/pricing/loop/vertical_view_9.php:589
-msgid "CHOOSE PLAN"
+#: templates/pricing/loop/horizontal_view_1.php:332
+msgid " Used :"
+msgstr ""
+
+#: templates/pricing/loop/horizontal_view_1.php:554
+#: templates/pricing/loop/horizontal_view_1.php:557
+#: templates/pricing/loop/horizontal_view_1.php:566
+msgid "Get Started Now"
 msgstr ""
 
 #: templates/pricing/loop/vertical_view_1.php:215
@@ -3034,25 +3408,25 @@ msgstr ""
 msgid "Max. listings allowed : "
 msgstr ""
 
-#: templates/pricing/loop/vertical_view_1.php:320
-#: templates/pricing/loop/vertical_view_2.php:398
+#: templates/pricing/loop/vertical_view_1.php:321
+#: templates/pricing/loop/vertical_view_2.php:399
 #: templates/pricing/loop/vertical_view_3.php:297
-#: templates/pricing/loop/vertical_view_4.php:282
-#: templates/pricing/loop/vertical_view_5.php:357
-#: templates/pricing/loop/vertical_view_6.php:323
-#: templates/pricing/loop/vertical_view_7.php:322
-#: templates/pricing/loop/vertical_view_8.php:321
-#: templates/pricing/loop/vertical_view_9.php:360
+#: templates/pricing/loop/vertical_view_4.php:283
+#: templates/pricing/loop/vertical_view_5.php:358
+#: templates/pricing/loop/vertical_view_6.php:324
+#: templates/pricing/loop/vertical_view_7.php:323
+#: templates/pricing/loop/vertical_view_8.php:322
+#: templates/pricing/loop/vertical_view_9.php:365
 msgid "Remaining Listings : "
 msgstr ""
 
-#: templates/pricing/loop/vertical_view_1.php:336
+#: templates/pricing/loop/vertical_view_1.php:337
 msgid "Hot"
 msgstr ""
 
-#: templates/pricing/loop/vertical_view_1.php:551
-#: templates/pricing/loop/vertical_view_1.php:554
-#: templates/pricing/loop/vertical_view_1.php:559
+#: templates/pricing/loop/vertical_view_1.php:585
+#: templates/pricing/loop/vertical_view_1.php:588
+#: templates/pricing/loop/vertical_view_1.php:593
 msgid "Continue"
 msgstr ""
 
@@ -3080,31 +3454,43 @@ msgstr ""
 msgid "Listings : Unlimited"
 msgstr ""
 
-#: templates/pricing/loop/vertical_view_2.php:413
-#: templates/pricing/loop/vertical_view_2.php:416
-#: templates/pricing/loop/vertical_view_2.php:421
-#: templates/pricing/loop/vertical_view_3.php:342
-#: templates/pricing/loop/vertical_view_3.php:345
-#: templates/pricing/loop/vertical_view_3.php:350
-#: templates/pricing/loop/vertical_view_6.php:338
-#: templates/pricing/loop/vertical_view_6.php:341
-#: templates/pricing/loop/vertical_view_6.php:346
-#: templates/pricing/loop/vertical_view_7.php:337
-#: templates/pricing/loop/vertical_view_7.php:340
-#: templates/pricing/loop/vertical_view_7.php:345
-#: templates/pricing/loop/vertical_view_8.php:336
-#: templates/pricing/loop/vertical_view_8.php:339
-#: templates/pricing/loop/vertical_view_8.php:344
+#: templates/pricing/loop/vertical_view_2.php:414
+#: templates/pricing/loop/vertical_view_2.php:417
+#: templates/pricing/loop/vertical_view_2.php:422
+#: templates/pricing/loop/vertical_view_3.php:343
+#: templates/pricing/loop/vertical_view_3.php:346
+#: templates/pricing/loop/vertical_view_3.php:351
+#: templates/pricing/loop/vertical_view_6.php:339
+#: templates/pricing/loop/vertical_view_6.php:342
+#: templates/pricing/loop/vertical_view_6.php:347
+#: templates/pricing/loop/vertical_view_7.php:338
+#: templates/pricing/loop/vertical_view_7.php:341
+#: templates/pricing/loop/vertical_view_7.php:346
+#: templates/pricing/loop/vertical_view_8.php:337
+#: templates/pricing/loop/vertical_view_8.php:340
+#: templates/pricing/loop/vertical_view_8.php:345
 msgid "Choose Plan"
 msgstr ""
 
-#: templates/pricing/loop/vertical_view_4.php:293
-#: templates/pricing/loop/vertical_view_5.php:368
-msgid "Here will go some sort of description for this plan."
+#: templates/quick-checkout.php:38
+msgid "SELECT A LISTING"
 msgstr ""
 
-#: templates/quick-checkout.php:37
-msgid "SELECT A LISTING"
+#: templates/quick-checkout.php:77
+msgid "Date:"
+msgstr ""
+
+#: templates/quick-checkout.php:83
+msgid "Category:"
+msgstr ""
+
+#: templates/quick-checkout.php:89
+msgid "Duration:"
+msgstr ""
+
+#: templates/quick-checkout.php:97 templates/quick-checkout.php:101
+#: templates/quick-checkout.php:106
+msgid "Price:"
 msgstr ""
 
 #: templates/success.php:8
@@ -3119,16 +3505,8 @@ msgstr ""
 msgid "Item"
 msgstr ""
 
-#: templates/tax.php:21
-msgid "Total"
-msgstr ""
-
 #: templates/tax.php:45
 msgid "Tax "
-msgstr ""
-
-#: templates/tax.php:66
-msgid "Subtotal"
 msgstr ""
 
 #: vc_special_elements.php:20
@@ -3139,7 +3517,7 @@ msgstr ""
 msgid "Column Left Image"
 msgstr ""
 
-#: vc_special_elements.php:36 vc_special_elements.php:3947
+#: vc_special_elements.php:36
 msgid "First Column Title"
 msgstr ""
 
@@ -3147,7 +3525,7 @@ msgstr ""
 msgid "First Column Description"
 msgstr ""
 
-#: vc_special_elements.php:49 vc_special_elements.php:3956
+#: vc_special_elements.php:49
 msgid "Second Column Title"
 msgstr ""
 
@@ -3287,10 +3665,6 @@ msgstr ""
 msgid "Designation"
 msgstr ""
 
-#: vc_special_elements.php:577
-msgid "Description"
-msgstr ""
-
 #: vc_special_elements.php:624
 msgid "Listingpro Call to Action"
 msgstr ""
@@ -3373,29 +3747,28 @@ msgstr ""
 msgid "Listing Entries"
 msgstr ""
 
-#: vc_special_elements.php:960 vc_special_elements.php:2244
+#: vc_special_elements.php:960 vc_special_elements.php:2296
 msgid "Posts per page"
 msgstr ""
 
-#: vc_special_elements.php:963 vc_special_elements.php:2247
-#: vc_special_elements.php:3423
+#: vc_special_elements.php:963 vc_special_elements.php:2299
+#: vc_special_elements.php:3541
 msgid "3 Posts"
 msgstr ""
 
-#: vc_special_elements.php:964 vc_special_elements.php:2248
-#: vc_special_elements.php:3426
+#: vc_special_elements.php:964 vc_special_elements.php:2300
 msgid "6 Posts"
 msgstr ""
 
-#: vc_special_elements.php:965 vc_special_elements.php:2249
+#: vc_special_elements.php:965 vc_special_elements.php:2301
 msgid "9 Posts"
 msgstr ""
 
-#: vc_special_elements.php:966 vc_special_elements.php:2250
+#: vc_special_elements.php:966 vc_special_elements.php:2302
 msgid "12 Posts"
 msgstr ""
 
-#: vc_special_elements.php:967 vc_special_elements.php:2251
+#: vc_special_elements.php:967 vc_special_elements.php:2303
 msgid "15 Posts"
 msgstr ""
 
@@ -3431,7 +3804,7 @@ msgstr ""
 msgid "Client Avatar"
 msgstr ""
 
-#: vc_special_elements.php:1145 vc_special_elements.php:2732
+#: vc_special_elements.php:1145 vc_special_elements.php:2842
 msgid "Testimonial Content"
 msgstr ""
 
@@ -3523,210 +3896,228 @@ msgstr ""
 msgid "Listing per page"
 msgstr ""
 
-#: vc_special_elements.php:1857 vc_special_elements.php:2190
+#: vc_special_elements.php:1857 vc_special_elements.php:2242
 msgid "Listing Layout"
 msgstr ""
 
-#: vc_special_elements.php:1860 vc_special_elements.php:2193
+#: vc_special_elements.php:1860 vc_special_elements.php:2245
 msgid "List View"
 msgstr ""
 
-#: vc_special_elements.php:1869 vc_special_elements.php:2202
+#: vc_special_elements.php:1869 vc_special_elements.php:2254
 msgid "Styles"
 msgstr ""
 
-#: vc_special_elements.php:1872 vc_special_elements.php:2205
+#: vc_special_elements.php:1872 vc_special_elements.php:2257
 msgid "Grid Style 1"
 msgstr ""
 
-#: vc_special_elements.php:1873 vc_special_elements.php:2206
+#: vc_special_elements.php:1873 vc_special_elements.php:2258
 msgid "Grid Style 2"
 msgstr ""
 
-#: vc_special_elements.php:1874 vc_special_elements.php:2207
+#: vc_special_elements.php:1874 vc_special_elements.php:2259
 msgid "Grid Style 3"
 msgstr ""
 
-#: vc_special_elements.php:1875 vc_special_elements.php:2208
+#: vc_special_elements.php:1875 vc_special_elements.php:2260
 msgid "Grid Style 4"
 msgstr ""
 
-#: vc_special_elements.php:1876 vc_special_elements.php:2209
+#: vc_special_elements.php:1876 vc_special_elements.php:2261
 msgid "Grid Style 5"
 msgstr ""
 
-#: vc_special_elements.php:2181
+#: vc_special_elements.php:2233
 msgid "Listing Posts"
 msgstr ""
 
-#: vc_special_elements.php:2535
+#: vc_special_elements.php:2645
 msgid "Image gallery styles"
 msgstr ""
 
-#: vc_special_elements.php:2537
+#: vc_special_elements.php:2647
 msgid "Choose your Gallery style"
 msgstr ""
 
-#: vc_special_elements.php:2539
+#: vc_special_elements.php:2649
 msgid "Old Style"
 msgstr ""
 
-#: vc_special_elements.php:2540
+#: vc_special_elements.php:2650
 msgid "New Style"
 msgstr ""
 
-#: vc_special_elements.php:2547
+#: vc_special_elements.php:2657
 msgid "Image for gallery"
 msgstr ""
 
-#: vc_special_elements.php:2672
+#: vc_special_elements.php:2782
 msgid "Video Testimonials"
 msgstr ""
 
-#: vc_special_elements.php:2682
+#: vc_special_elements.php:2792
 msgid "Video preview Image"
 msgstr ""
 
-#: vc_special_elements.php:2691
+#: vc_special_elements.php:2801
 msgid "Video URL"
 msgstr ""
 
-#: vc_special_elements.php:2700
+#: vc_special_elements.php:2810
 msgid "Testimonial Title"
 msgstr ""
 
-#: vc_special_elements.php:2708
+#: vc_special_elements.php:2818
 msgid "Author name"
 msgstr ""
 
-#: vc_special_elements.php:2716
+#: vc_special_elements.php:2826
 msgid "Author Company"
 msgstr ""
 
-#: vc_special_elements.php:2724
+#: vc_special_elements.php:2834
 msgid "Author Avatar"
 msgstr ""
 
-#: vc_special_elements.php:2825
+#: vc_special_elements.php:2935
 msgid "All Categories"
 msgstr ""
 
-#: vc_special_elements.php:2832
+#: vc_special_elements.php:2942
 msgid "Blog Grids"
 msgstr ""
 
-#: vc_special_elements.php:2840
+#: vc_special_elements.php:2950
 msgid "Select Blog Element Style"
 msgstr ""
 
-#: vc_special_elements.php:2843
+#: vc_special_elements.php:2953
 msgid "Blog Grid "
 msgstr ""
 
-#: vc_special_elements.php:2844
-msgid "Blog Masnory "
+#: vc_special_elements.php:2954
+msgid "Blog Masonery "
 msgstr ""
 
-#: vc_special_elements.php:2845
-msgid "Blog Cirlce "
+#: vc_special_elements.php:2955
+msgid "Blog Circle "
 msgstr ""
 
-#: vc_special_elements.php:2862
+#: vc_special_elements.php:2972
 msgid "No. of posts"
 msgstr ""
 
-#: vc_special_elements.php:3037 vc_special_elements.php:3084
+#: vc_special_elements.php:3155 vc_special_elements.php:3202
 msgid "Read More"
 msgstr ""
 
-#: vc_special_elements.php:3161
+#: vc_special_elements.php:3279
 msgid "content boxes"
 msgstr ""
 
-#: vc_special_elements.php:3172 vc_special_elements.php:3321
+#: vc_special_elements.php:3290 vc_special_elements.php:3439
 msgid "Element title"
 msgstr ""
 
-#: vc_special_elements.php:3204
+#: vc_special_elements.php:3322
 msgid "Single Content Box"
 msgstr ""
 
-#: vc_special_elements.php:3214
+#: vc_special_elements.php:3332
 msgid "Select Single Content Box Sryle"
 msgstr ""
 
-#: vc_special_elements.php:3217
+#: vc_special_elements.php:3335
 msgid "Old Style "
 msgstr ""
 
-#: vc_special_elements.php:3218
+#: vc_special_elements.php:3336
 msgid "New Style "
 msgstr ""
 
-#: vc_special_elements.php:3235 vc_special_elements.php:3243
+#: vc_special_elements.php:3353 vc_special_elements.php:3361
 msgid "Content"
 msgstr ""
 
-#: vc_special_elements.php:3311
+#: vc_special_elements.php:3429
 msgid "listingpro Partners"
 msgstr ""
 
-#: vc_special_elements.php:3351
+#: vc_special_elements.php:3469
 msgid "Single Partner Logo"
 msgstr ""
 
-#: vc_special_elements.php:3361
+#: vc_special_elements.php:3479
 msgid "Partner logo "
 msgstr ""
 
-#: vc_special_elements.php:3369
+#: vc_special_elements.php:3487
 msgid "Logo Url"
 msgstr ""
 
-#: vc_special_elements.php:3411
+#: vc_special_elements.php:3529
 msgid "Activities"
 msgstr ""
 
-#: vc_special_elements.php:3420
+#: vc_special_elements.php:3538 vc_special_elements.php:3905
 msgid "Number of Activities"
 msgstr ""
 
-#: vc_special_elements.php:3424
+#: vc_special_elements.php:3542
 msgid "4 Posts"
 msgstr ""
 
-#: vc_special_elements.php:3425
+#: vc_special_elements.php:3543
 msgid "5 Posts"
 msgstr ""
 
-#: vc_special_elements.php:3427
-msgid "7 Posts"
-msgstr ""
-
-#: vc_special_elements.php:3462
+#: vc_special_elements.php:3578
 msgid "Ad"
 msgstr ""
 
-#: vc_special_elements.php:3481
+#: vc_special_elements.php:3597
 msgid "Lol"
 msgstr ""
 
-#: vc_special_elements.php:3501
+#: vc_special_elements.php:3617
 msgid "You already reacted"
 msgstr ""
 
-#: vc_special_elements.php:3545 vc_special_elements.php:3606
+#: vc_special_elements.php:3662 vc_special_elements.php:3712
+#: vc_special_elements.php:3773 vc_special_elements.php:3837
 msgid "Wrote a review"
 msgstr ""
 
-#: vc_special_elements.php:3570 vc_special_elements.php:3641
+#: vc_special_elements.php:3687 vc_special_elements.php:3737
+#: vc_special_elements.php:3808 vc_special_elements.php:3871
 msgid "Continue Reading"
 msgstr ""
 
-#: vc_special_elements.php:3893
-msgid "ListingPro Discounts"
+#: vc_special_elements.php:3908
+msgid "3 Events"
 msgstr ""
 
-#: vc_special_elements.php:3938
-msgid "ListingPro Venders Element"
+#: vc_special_elements.php:3909
+msgid "4 Events"
+msgstr ""
+
+#: vc_special_elements.php:3910
+msgid "5 Events"
+msgstr ""
+
+#: vc_special_elements.php:3911
+msgid "6 Events"
+msgstr ""
+
+#: vc_special_elements.php:3912
+msgid "7 Events"
+msgstr ""
+
+#: vc_special_elements.php:3913
+msgid "All Events"
+msgstr ""
+
+#: vc_special_elements.php:3955
+msgid "No Events Found"
 msgstr ""

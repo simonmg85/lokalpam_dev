@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: Tawk.to Live Chat
-Plugin URI: https://tawk.to
+Plugin URI: https://www.tawk.to
 Description: Embeds Tawk.to live chat widget to your site
-Version: 0.3.4
+Version: 0.3.6
 Author: Tawkto
 Text Domain: tawk-to-live-chat
 */

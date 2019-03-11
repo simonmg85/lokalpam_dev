@@ -142,7 +142,7 @@ if(!function_exists('listingpro_flags_page')){
 									/* endif */
 								}else{ ?>
 									<tr>
-										<td>
+										<td  class="colspanchange" colspan="9">
 										<?php esc_html_e('Sorry! There is no report found', 'listingpro-plugin');?>
 										</td>
 									</tr>

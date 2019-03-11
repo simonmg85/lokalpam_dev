@@ -33,13 +33,6 @@
 		}
 	}
 	
-	
-	/* $showCatsBoxes = false;
-	$lp_plan_based = $listingpro_options['listingpro_plans_cats_pos'];
-	if(!empty($lp_plan_based)){
-		$showCatsBoxes = true;
-	} */
-	
 	/* horizontal view */
 	
 							global $post;
@@ -289,6 +282,7 @@
 													$taxprice = (float)(($taxrate/100)*$post_price);
 													$post_price = (float)$post_price + (float)$taxprice;
 												}
+												$post_price = round($post_price,2);
 												$lp_currency_position = $listingpro_options['pricingplan_currency_position'];
 												if(isset($lp_currency_position) && $lp_currency_position=="left"){
 													$outputHorz .='<span class="pull-right">'.listingpro_currency_sign().$post_price.'</span>';
@@ -354,152 +348,182 @@
 										
 											';
 											if($listingpro_options['lp_showhide_address']=="1"){
-												$outputHorz .='
-												
-												<li>
-													<span class="icon-text">'.listingpro_icon8($map_checked).'</span>
-													<span>'.esc_html__('Map Display', 'listingpro-plugin').'</span>
-												</li>
-												';
+												if(get_post_meta(get_the_ID(), 'map_show_hide', true)==''){
+													$outputHorz .='
+													
+													<li>
+														<span class="icon-text">'.listingpro_icon8($map_checked).'</span>
+														<span>'.esc_html__('Map Display', 'listingpro-plugin').'</span>
+													</li>
+													';
+												}
 											}
 											if($listingpro_options['phone_switch']=="1"){
-												$outputHorz .='
-												<li>
-													<span class="icon-text">'.listingpro_icon8($contact_checked).'</span>
-													<span>'.esc_html__('Contact Display', 'listingpro-plugin').'</span>
-												</li>
-												';
+												if(get_post_meta(get_the_ID(), 'contact_show_hide', true)==''){
+													$outputHorz .='
+													<li>
+														<span class="icon-text">'.listingpro_icon8($contact_checked).'</span>
+														<span>'.esc_html__('Contact Display', 'listingpro-plugin').'</span>
+													</li>
+													';
+												}
 											}
 											if($listingpro_options['file_switch']=="1"){
-												$outputHorz .='
-												<li>
-													<span class="icon-text">'.listingpro_icon8($gallery_checked).'</span>
-													<span>'.esc_html__('Image Gallery', 'listingpro-plugin').'</span>
-												</li>
-												';
+												if(get_post_meta(get_the_ID(), 'gall_show_hide', true)==''){
+													$outputHorz .='
+													<li>
+														<span class="icon-text">'.listingpro_icon8($gallery_checked).'</span>
+														<span>'.esc_html__('Image Gallery', 'listingpro-plugin').'</span>
+													</li>
+													';
+												}
 											}
 											if($listingpro_options['vdo_switch']=="1"){
-												$outputHorz .='
-												<li>
-													<span class="icon-text">'.listingpro_icon8($video_checked).'</span>
-													<span>'.esc_html__('Video', 'listingpro-plugin').'</span>
-												</li>
-												';
+												if(get_post_meta(get_the_ID(), 'video_show_hide', true)==''){
+													$outputHorz .='
+													<li>
+														<span class="icon-text">'.listingpro_icon8($video_checked).'</span>
+														<span>'.esc_html__('Video', 'listingpro-plugin').'</span>
+													</li>
+													';
+												}
 											}
-											
-											$outputHorz .='
-												<li>
-													<span class="icon-text">'.listingpro_icon8($tagline_checked).'</span>
-													<span>'.esc_html__('Business Tagline', 'listingpro-plugin').'</span>
-												</li>';
+											if(get_post_meta(get_the_ID(), 'tagline_show_hide', true)==''){
+												$outputHorz .='
+													<li>
+														<span class="icon-text">'.listingpro_icon8($tagline_checked).'</span>
+														<span>'.esc_html__('Business Tagline', 'listingpro-plugin').'</span>
+													</li>';
+											}
 											
 											if($listingpro_options['location_switch']=="1"){
-												$outputHorz .='
-												<li>
-													<span class="icon-text">'.listingpro_icon8($location_checked).'</span>
-													<span>'.esc_html__('Location', 'listingpro-plugin').'</span>
-												</li>';
+												if(get_post_meta(get_the_ID(), 'location_show_hide', true)==''){
+													$outputHorz .='
+													<li>
+														<span class="icon-text">'.listingpro_icon8($location_checked).'</span>
+														<span>'.esc_html__('Location', 'listingpro-plugin').'</span>
+													</li>';
+												}
 											}
 											if($listingpro_options['web_switch']=="1"){
-												$outputHorz .='
-												<li>
-													<span class="icon-text">'.listingpro_icon8($website_checked).'</span>
-													<span>'.esc_html__('Website', 'listingpro-plugin').'</span>
-												</li>';
+												if(get_post_meta(get_the_ID(), 'website_show_hide', true)==''){
+													$outputHorz .='
+													<li>
+														<span class="icon-text">'.listingpro_icon8($website_checked).'</span>
+														<span>'.esc_html__('Website', 'listingpro-plugin').'</span>
+													</li>';
+												}
 											}
 											if($listingpro_options['listin_social_switch']=="1"){
-												$outputHorz .='
-												<li>
-													<span class="icon-text">'.listingpro_icon8($social_checked).'</span>
-													<span>'.esc_html__('Social Links', 'listingpro-plugin').'</span>
-												</li>
-												';
+												if(get_post_meta(get_the_ID(), 'social_show_hide', true)==''){
+													$outputHorz .='
+													<li>
+														<span class="icon-text">'.listingpro_icon8($social_checked).'</span>
+														<span>'.esc_html__('Social Links', 'listingpro-plugin').'</span>
+													</li>
+													';
+												}
 											}
 											if($listingpro_options['faq_switch']=="1"){
-												$outputHorz .='
-												<li>
-													<span class="icon-text">'.listingpro_icon8($faq_checked).'</span>
-													<span>'.esc_html__('FAQ', 'listingpro-plugin').'</span>
-												</li>
-												';
+												if(get_post_meta(get_the_ID(), 'faqs_show_hide', true)==''){
+													$outputHorz .='
+													<li>
+														<span class="icon-text">'.listingpro_icon8($faq_checked).'</span>
+														<span>'.esc_html__('FAQ', 'listingpro-plugin').'</span>
+													</li>
+													';
+												}
 											}
 											if($listingpro_options['currency_switch']=="1"){
-												$outputHorz .='
-												<li>
-													<span class="icon-text">'.listingpro_icon8($price_checked).'</span>
-													<span>'.esc_html__('Price Range', 'listingpro-plugin').'</span>
-												</li>
-												';
+												if(get_post_meta(get_the_ID(), 'price_show_hide', true)==''){
+													$outputHorz .='
+													<li>
+														<span class="icon-text">'.listingpro_icon8($price_checked).'</span>
+														<span>'.esc_html__('Price Range', 'listingpro-plugin').'</span>
+													</li>
+													';
+												}
 											}
 											
 											if($listingpro_options['tags_switch']=="1"){
-												$outputHorz .='
-												<li>
-													<span class="icon-text">'.listingpro_icon8($tag_key_checked).'</span>
-													<span>'.esc_html__('Tags/Keywords', 'listingpro-plugin').'</span>
-												</li>
-												';
-											}
-											if($listingpro_options['oph_switch']=="1"){
+												if(get_post_meta(get_the_ID(), 'tags_show_hide', true)==''){
 													$outputHorz .='
 													<li>
-														<span class="icon-text">'.listingpro_icon8($bhours_checked).'</span>
-														<span>'.esc_html__('Business Hours', 'listingpro-plugin').'</span>
+														<span class="icon-text">'.listingpro_icon8($tag_key_checked).'</span>
+														<span>'.esc_html__('Tags/Keywords', 'listingpro-plugin').'</span>
 													</li>
 													';
+												}
+											}
+											if($listingpro_options['oph_switch']=="1"){
+												if(get_post_meta(get_the_ID(), 'bhours_show_hide', true)==''){
+														$outputHorz .='
+														<li>
+															<span class="icon-text">'.listingpro_icon8($bhours_checked).'</span>
+															<span>'.esc_html__('Business Hours', 'listingpro-plugin').'</span>
+														</li>
+														';
+												}
 											}
 											/* new option */
 											if(lp_theme_option('lp_featured_file_switch')){
+												if(get_post_meta(get_the_ID(), 'reserva_show_hide', true)==''){
+													$outputHorz .='
+														<li>
+															<span class="icon-text">'.listingpro_icon8($resurva_show).'</span>
+															<span>'.esc_html__('Resurva', 'listingpro-plugin').'</span>
+														</li>
+														';
+												}
+											}
+											if(get_post_meta(get_the_ID(), 'timekit_show_hide', true)==''){
 												$outputHorz .='
 													<li>
-														<span class="icon-text">'.listingpro_icon8($resurva_show).'</span>
-														<span>'.esc_html__('Resurva', 'listingpro-plugin').'</span>
+														<span class="icon-text">'.listingpro_icon8($timekit_show).'</span>
+														<span>'.esc_html__('Timekit', 'listingpro-plugin').'</span>
 													</li>
 													';
 											}
-											$outputHorz .='
-												<li>
-													<span class="icon-text">'.listingpro_icon8($timekit_show).'</span>
-													<span>'.esc_html__('Timekit', 'listingpro-plugin').'</span>
-												</li>
-												';
-												
-												$outputHorz .='
-												<li>
-													<span class="icon-text">'.listingpro_icon8($menu_show).'</span>
-													<span>'.esc_html__('Menu', 'listingpro-plugin').'</span>
-												</li>
-												';
-												$outputHorz .='
-												<li>
-													<span class="icon-text">'.listingpro_icon8($announcment_show).'</span>
-													<span>'.esc_html__('Announcment', 'listingpro-plugin').'</span>
-												</li>
-												';
-												$outputHorz .='
-												<li>
-													<span class="icon-text">'.listingpro_icon8($deals_show).'</span>
-													<span>'.esc_html__('Deals-Offers-Discounts', 'listingpro-plugin').'</span>
-												</li>
-												';
-												$outputHorz .='
-												<li>
-													<span class="icon-text">'.listingpro_icon8($competitor_show).'</span>
-													<span>'.esc_html__('Hide competitors Ads', 'listingpro-plugin').'</span>
-												</li>
-												';
-												$outputHorz .='
-												<li>
-													<span class="icon-text">'.listingpro_icon8($featured_show).'</span>
-													<span>'.esc_html__('Featured Image', 'listingpro-plugin').'</span>
-												</li>
-												';
-												$outputHorz .='
-												<li>
-													<span class="icon-text">'.listingpro_icon8($event_show).'</span>
-													<span>'.esc_html__('Events', 'listingpro-plugin').'</span>
-												</li>
-												';
+												if(get_post_meta(get_the_ID(), 'menu_show_hide', true)==''){
+													$outputHorz .='
+													<li>
+														<span class="icon-text">'.listingpro_icon8($menu_show).'</span>
+														<span>'.esc_html__('Menu', 'listingpro-plugin').'</span>
+													</li>
+													';
+												}
+												if(get_post_meta(get_the_ID(), 'announcment_show_hide', true)==''){
+													$outputHorz .='
+													<li>
+														<span class="icon-text">'.listingpro_icon8($announcment_show).'</span>
+														<span>'.esc_html__('Announcment', 'listingpro-plugin').'</span>
+													</li>
+													';
+												}
+												if(get_post_meta(get_the_ID(), 'deals_show_hide', true)==''){
+													$outputHorz .='
+													<li>
+														<span class="icon-text">'.listingpro_icon8($deals_show).'</span>
+														<span>'.esc_html__('Deals-Offers-Discounts', 'listingpro-plugin').'</span>
+													</li>
+													';
+												}
+												if(get_post_meta(get_the_ID(), 'metacampaign_show_hide', true)==''){
+													$outputHorz .='
+													<li>
+														<span class="icon-text">'.listingpro_icon8($competitor_show).'</span>
+														<span>'.esc_html__('Hide competitors Ads', 'listingpro-plugin').'</span>
+													</li>
+													';
+												}
+												if(get_post_meta(get_the_ID(), 'events_show_hide', true)==''){
+													$outputHorz .='
+													<li>
+														<span class="icon-text">'.listingpro_icon8($event_show).'</span>
+														<span>'.esc_html__('Events', 'listingpro-plugin').'</span>
+													</li>
+													';
+												}
 											/* new option emd */
 											
 											$lp_plan_more_fields = listing_get_metabox_by_ID('lp_price_plan_addmore',get_the_ID());

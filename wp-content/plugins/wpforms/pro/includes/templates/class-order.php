@@ -112,7 +112,7 @@ class WPForms_Template_Order extends WPForms_Template {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $form_data
+	 * @param array $form_data Form data and settings.
 	 *
 	 * @return boolean
 	 */

@@ -4,8 +4,22 @@ use sgpb\MultipleChoiceButton;
 use sgpb\PopupBuilderActivePackage;
 $removedOptions = $popupTypeObj->getRemoveOptions();
 $defaultData = ConfigDataHelper::defaultData();
+$defaultAnimation = esc_attr($popupTypeObj->getOptionValue('sgpb-open-animation-effect'));
+if (!empty($_GET['sgpb_type'])) {
+	if (defined('SGPB_POPUP_TYPE_RECENT_SALES')) {
+		if ($_GET['sgpb_type'] == defined('SGPB_POPUP_TYPE_RECENT_SALES') && !$popupTypeObj->getOptionValue('sgpb-open-animation-effect')) {
+			$defaultAnimation = 'sgpb-fadeIn';
+		}
+	}
+}
 $autoClose = PopupBuilderActivePackage::canUseOption('sgpb-auto-close');
-
+$afterXpagesUseOption = PopupBuilderActivePackage::canUseOption('sgpb-show-popup-after-x-pages');
+if (!empty($removedOptions['content-copy-to-clipboard'])) {
+	if (isset($defaultData['contentClickOptions']['fields'])) {
+		// where 2 is copy to clipboard index
+		unset($defaultData['contentClickOptions']['fields'][2]);
+	}
+}
 ?>
 <div class="sgpb-wrapper">
 	<div class="row">
@@ -44,6 +58,30 @@ $autoClose = PopupBuilderActivePackage::canUseOption('sgpb-auto-close');
 							</label>
 							<div class="col-md-6"><input name="sgpb-copy-to-clipboard-text" id="sgpb-copy-to-clipboard-text" class="form-control sgpb-full-width-events" value="<?php echo esc_attr($popupTypeObj->getOptionValue('sgpb-copy-to-clipboard-text')); ?>"></div>
 						</div>
+						<div class="row form-group">
+							<label for="sgpb-copy-to-clipboard-close-popup" class="col-md-5 control-label sgpb-static-padding-top sgpb-double-sub-option">
+								<?php _e('Close popup', SG_POPUP_TEXT_DOMAIN)?>:
+							</label>
+							<div class="col-md-6"><input type="checkbox" name="sgpb-copy-to-clipboard-close-popup" id="sgpb-copy-to-clipboard-close-popup" <?php echo $popupTypeObj->getOptionValue('sgpb-copy-to-clipboard-close-popup'); ?>></div>
+						</div>
+						<div class="row form-group">
+							<label for="sgpb-copy-to-clipboard-alert" class="col-md-5 control-label sgpb-static-padding-top sgpb-double-sub-option">
+								<?php _e('Show alert', SG_POPUP_TEXT_DOMAIN)?>:
+							</label>
+							<div class="col-md-6">
+								<input type="checkbox" id="sgpb-copy-to-clipboard-alert" class="js-checkbox-accordion" name="sgpb-copy-to-clipboard-alert" <?php echo $popupTypeObj->getOptionValue('sgpb-copy-to-clipboard-alert'); ?>>
+							</div>
+						</div>
+						<div class="sg-full-width form-group">
+							<div class="row">
+								<label for="col-md-5 sgpb-copy-to-clipboard-message" class="col-md-5 control-label sgpb-static-padding-top sgpb-double-sub-option">
+									<?php _e('Message', SG_POPUP_TEXT_DOMAIN)?>:
+								</label>
+								<div class="col-md-6">
+									<input type="text" id="sgpb-copy-to-clipboard-message" class="form-control sgpb-full-width-events " name="sgpb-copy-to-clipboard-message" value="<?php echo $popupTypeObj->getOptionValue('sgpb-copy-to-clipboard-message'); ?>">
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			<?php endif; ?>
@@ -81,12 +119,12 @@ $autoClose = PopupBuilderActivePackage::canUseOption('sgpb-auto-close');
 						<?php _e('Popup showing expiry', SG_POPUP_TEXT_DOMAIN)?>:
 					</label>
 					<div class="col-md-6">
-						<input type="number" min="1" disabled required id="sgpb-show-popup-same-user-expiry" class="sgpb-full-width-events form-control" name="sgpb-show-popup-same-user-expiry" value="<?php echo $popupTypeObj->getOptionValue('sgpb-show-popup-same-user-expiry'); ?>" placeholder="e.g.: 1">
+						<input type="number" min="0" disabled required id="sgpb-show-popup-same-user-expiry" class="sgpb-full-width-events form-control" name="sgpb-show-popup-same-user-expiry" value="<?php echo $popupTypeObj->getOptionValue('sgpb-show-popup-same-user-expiry'); ?>" placeholder="e.g.: 1">
 					</div>
 					<div class="col-md-1 sgpb-info-wrapper">
 						<span class="dashicons dashicons-editor-help sgpb-info-icon sgpb-info-icon-align"></span>
 						<span class="infoSelectRepeat samefontStyle sgpb-info-text" style="display: none;">
-							<?php _e('Select the count of the days after which the popup will be shown to the same user.', SG_POPUP_TEXT_DOMAIN);?>
+							<?php _e('Select the count of the days after which the popup will be shown to the same user, or set the value "0" if you want to save cookies by session.', SG_POPUP_TEXT_DOMAIN);?>
 						</span>
 					</div>
 				</div>
@@ -137,6 +175,7 @@ $autoClose = PopupBuilderActivePackage::canUseOption('sgpb-auto-close');
 					</div>
 				</div>
 			</div>
+			<!-- opening animation -->
 			<div class="row form-group">
 				<label class="col-md-5" for="open-animation">
 					<?php _e('Popup opening animation', SG_POPUP_TEXT_DOMAIN); ?>:
@@ -151,7 +190,7 @@ $autoClose = PopupBuilderActivePackage::canUseOption('sgpb-auto-close');
 						<?php _e('Type', SG_POPUP_TEXT_DOMAIN); ?>:
 					</label>
 					<div class="col-md-6 sgpb-select2-input-styles">
-						<?php echo AdminHelper::createSelectBox($defaultData['openAnimationEfects'], esc_attr($popupTypeObj->getOptionValue('sgpb-open-animation-effect')), array('name' => 'sgpb-open-animation-effect', 'class'=>'js-sg-select2 sgpb-open-animation-effects')); ?>
+						<?php echo AdminHelper::createSelectBox($defaultData['openAnimationEfects'], $defaultAnimation, array('name' => 'sgpb-open-animation-effect', 'class'=>'js-sg-select2 sgpb-open-animation-effects')); ?>
 					</div>
 					<div class="col-md-1">
 						<span class="sgpb-preview-animation"></span>
@@ -162,7 +201,7 @@ $autoClose = PopupBuilderActivePackage::canUseOption('sgpb-auto-close');
 						<?php _e('Speed', SG_POPUP_TEXT_DOMAIN); ?>:
 					</label>
 					<div class="col-md-6">
-						<input type="number" min="1" data-default="<?php echo esc_attr($popupTypeObj->getOptionDefaultValue('sgpb-open-animation-speed'))?>" class="js-sgpb-reset-default-value sgpb-full-width-events form-control" id="sgpb-open-animation-speed" name="sgpb-open-animation-speed" value="<?php echo esc_attr($popupTypeObj->getOptionValue('sgpb-open-animation-speed'))?>">
+						<input type="number" min="0" step="0.1" data-default="<?php echo esc_attr($popupTypeObj->getOptionDefaultValue('sgpb-open-animation-speed'))?>" class="js-sgpb-reset-default-value sgpb-full-width-events form-control" id="sgpb-open-animation-speed" name="sgpb-open-animation-speed" value="<?php echo esc_attr($popupTypeObj->getOptionValue('sgpb-open-animation-speed'))?>">
 					</div>
 					<div class="col-md-1 sgpb-relative-position">
 						<span class="sgpb-restriction-unit">
@@ -172,6 +211,44 @@ $autoClose = PopupBuilderActivePackage::canUseOption('sgpb-auto-close');
 					</div>
 				</div>
 			</div>
+			<!-- opening animation end -->
+			<!-- closing animation -->
+			<div class="row form-group">
+				<label class="col-md-5" for="open-animation">
+					<?php _e('Popup closing animation', SG_POPUP_TEXT_DOMAIN); ?>:
+				</label>
+				<div class="col-md-6">
+					<input type="checkbox" id="close-animation" class="js-checkbox-accordion" name="sgpb-close-animation" <?php echo $popupTypeObj->getOptionValue('sgpb-close-animation'); ?>>
+				</div>
+			</div>
+			<div class="sg-full-width form-group">
+				<div class="row">
+					<label class="col-md-5 sgpb-align-with-select2 sgpb-sub-option">
+						<?php _e('Type', SG_POPUP_TEXT_DOMAIN); ?>:
+					</label>
+					<div class="col-md-6 sgpb-select2-input-styles">
+						<?php echo AdminHelper::createSelectBox($defaultData['closeAnimationEfects'], esc_attr($popupTypeObj->getOptionValue('sgpb-close-animation-effect')), array('name' => 'sgpb-close-animation-effect', 'class'=>'js-sg-select2 sgpb-close-animation-effects')); ?>
+					</div>
+					<div class="col-md-1">
+						<span class="sgpb-preview-close-animation"></span>
+					</div>
+				</div>
+				<div class="row">
+					<label class="col-md-5 sgpb-static-padding-top sgpb-sub-option" for="sgpb-close-animation-speed">
+						<?php _e('Speed', SG_POPUP_TEXT_DOMAIN); ?>:
+					</label>
+					<div class="col-md-6">
+						<input type="number" min="0" step="0.1" data-default="<?php echo esc_attr($popupTypeObj->getOptionDefaultValue('sgpb-close-animation-speed'))?>" class="js-sgpb-reset-default-value sgpb-full-width-events form-control" id="sgpb-close-animation-speed" name="sgpb-close-animation-speed" value="<?php echo esc_attr($popupTypeObj->getOptionValue('sgpb-close-animation-speed'))?>">
+					</div>
+					<div class="col-md-1 sgpb-relative-position">
+						<span class="sgpb-restriction-unit">
+							<?php _e('Second(s)', SG_POPUP_TEXT_DOMAIN)?>
+						</span>
+						<div id="js-close-animation-effect"></div>
+					</div>
+				</div>
+			</div>
+			<!-- closing animation end -->
 			<div class="row form-group">
 				<label class="col-md-5 sgpb-static-padding-top" for="popup-fixed">
 					<?php _e('Popup location', SG_POPUP_TEXT_DOMAIN); ?>:
@@ -211,18 +288,21 @@ $autoClose = PopupBuilderActivePackage::canUseOption('sgpb-auto-close');
 					</div>
 				</div>
 			<?php endif; ?>
-			<div class="row form-group">
-				<label for="content-scrolling" class="col-md-5 control-label sgpb-static-padding-top">
-					<?php _e('Enable content scrolling', SG_POPUP_TEXT_DOMAIN)?>:
-				</label>
-				<div class="col-md-6">
-					<input type="checkbox" id="content-scrolling" name="sgpb-enable-content-scrolling" <?php echo $popupTypeObj->getOptionValue('sgpb-enable-content-scrolling'); ?>>
-					<span class="dashicons dashicons-editor-help sgpb-info-icon sgpb-info-icon-align"></span>
-					<span class="infoSelectRepeat samefontStyle sgpb-info-text">
-						<?php _e('If the content is larger than the specified dimensions, then the content will be scrollable', SG_POPUP_TEXT_DOMAIN)?>.
-					</span>
+			<?php if (empty($removedOptions['sgpb-enable-content-scrolling'])): ?>
+				<div class="row form-group">
+					<label for="content-scrolling" class="col-md-5 control-label sgpb-static-padding-top">
+						<?php _e('Enable content scrolling', SG_POPUP_TEXT_DOMAIN)?>:
+					</label>
+					<div class="col-md-6">
+						<input type="checkbox" id="content-scrolling" name="sgpb-enable-content-scrolling" <?php echo $popupTypeObj->getOptionValue('sgpb-enable-content-scrolling'); ?>>
+						<span class="dashicons dashicons-editor-help sgpb-info-icon sgpb-info-icon-align"></span>
+						<span class="infoSelectRepeat samefontStyle sgpb-info-text">
+							<?php _e('If the content is larger than the specified dimensions, then the content will be scrollable', SG_POPUP_TEXT_DOMAIN)?>.
+						</span>
+					</div>
 				</div>
-			</div>
+			<?php endif; ?>
+			<?php if (empty($removedOptions['sgpb-auto-close'])): ?>
 				<div class="row form-group">
 					<label class="col-md-5 sgpb-static-padding-top" for="auto-close">
 						<?php _e('Auto close popup', SG_POPUP_TEXT_DOMAIN); ?>:
@@ -236,11 +316,12 @@ $autoClose = PopupBuilderActivePackage::canUseOption('sgpb-auto-close');
 					</div>
 					<?php if (!$autoClose): ?>
 					<div class="col-md-2 sgpb-pro-options-label-wrapper">
-						<a href="<?php echo SG_POPUP_PRO_URL;?>" target="_blank" class="btn btn-warning btn-xs sgpb-pro-label-sm"><?php _e('Upgrade to PRO', SG_POPUP_TEXT_DOMAIN) ?></a>
+						<a href="<?php echo SG_POPUP_ADVANCED_CLOSING_URL;?>" target="_blank" class="btn btn-warning btn-xs sgpb-pro-label-sm sgpb-advanced-closing-pro-label"><?php _e('UNLOCK OPTION', SG_POPUP_TEXT_DOMAIN) ?></a>
 					</div>
 				<?php endif; ?>
 				</div>
-			<?php if ($autoClose): ?>
+			<?php endif; ?>
+			<?php if ($autoClose && empty($removedOptions['sgpb-auto-close-time'])): ?>
 				<div class="sg-full-width">
 					<div class="row form-group">
 						<label class="col-md-5 sgpb-static-padding-top sgpb-sub-option">
@@ -271,6 +352,8 @@ $autoClose = PopupBuilderActivePackage::canUseOption('sgpb-auto-close');
 					</div>
 				</div>
 			<?php endif; ?>
+
+			<?php if (empty($removedOptions['sgpb-popup-order'])): ?>
 			<div class="row form-group">
 				<label class="col-md-5 sgpb-static-padding-top" for="sgpb-popup-order">
 					<?php _e('Popup order', SG_POPUP_TEXT_DOMAIN); ?>:
@@ -285,21 +368,25 @@ $autoClose = PopupBuilderActivePackage::canUseOption('sgpb-auto-close');
 					</span>
 				</div>
 			</div>
-			<div class="row form-group">
-				<label class="col-md-5 sgpb-static-padding-top" for="sgpb-popup-delay">
-					<?php _e('Custom event delay', SG_POPUP_TEXT_DOMAIN); ?>:
-				</label>
-				<div class="col-md-6">
-					<input type="number" min="0" name="sgpb-popup-delay" id="sgpb-popup-delay" class="form-control sgpb-full-width-events" value="<?php echo (int)$popupTypeObj->getOptionValue('sgpb-popup-delay'); ?>">
+			<?php endif; ?>
+
+			<?php if (empty($removedOptions['sgpb-popup-delay'])): ?>
+				<div class="row form-group">
+					<label class="col-md-5 sgpb-static-padding-top" for="sgpb-popup-delay">
+						<?php _e('Custom event delay', SG_POPUP_TEXT_DOMAIN); ?>:
+					</label>
+					<div class="col-md-6">
+						<input type="number" min="0" name="sgpb-popup-delay" id="sgpb-popup-delay" class="form-control sgpb-full-width-events" value="<?php echo (int)$popupTypeObj->getOptionValue('sgpb-popup-delay'); ?>">
+					</div>
+					<div class="col-md-1 sgpb-info-wrapper">
+						<span class="dashicons dashicons-editor-help sgpb-info-icon sgpb-info-icon-align"></span>
+						<span class="infoSelectRepeat samefontStyle sgpb-info-text" style="display: none;">
+							<?php _e('You can add an opening delay for the popup, in seconds. This will refer to custom events, like:
+										Shortcodes, custom CSS classes, HTML attributes, or JS called custom events', SG_POPUP_TEXT_DOMAIN)?>.
+						</span>
+					</div>
 				</div>
-				<div class="col-md-1 sgpb-info-wrapper">
-					<span class="dashicons dashicons-editor-help sgpb-info-icon sgpb-info-icon-align"></span>
-					<span class="infoSelectRepeat samefontStyle sgpb-info-text" style="display: none;">
-						<?php _e('You can add an opening delay for the popup, in seconds. This will refer to custom events, like:
-									Shortcodes, custom CSS classes, HTML attributes, or JS called custom events', SG_POPUP_TEXT_DOMAIN)?>.
-					</span>
-				</div>
-			</div>
+			<?php endif; ?>
 		</div>
 	</div>
 </div>

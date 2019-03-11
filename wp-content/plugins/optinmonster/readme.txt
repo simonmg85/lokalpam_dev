@@ -1,10 +1,10 @@
 === Popups by OptinMonster - Best WordPress Lead Generation Plugin ===
 Contributors: optinmonster, griffinjt, smub
-Tags: wordpress popup, popup, lightbox popup, mailchimp, aweber, campaign monitor, constant contact, exit-intent, madmimi, infusionsoft, getresponse, hubspot, marketo, activecampaign, pardot, totalsend, emma, icontact, mailerlite, mailpoet, google analytics, pop over, optin forms, email list, subscribers, wordpress popup form, lightbox, wordpress popups, popups, lightbox popups, optin form, wordpress optin form, sidebar optin form, sidebar optin, sidebar form, wordpress overlay popup, wordpress popup plugin, popup plugin, wordpress lightbox optin, wordpress lightbox optin form, after post optin form, wordpress after post optin form, after post optin form plugin, lightbox popup plugin, wordpress popup solution, exit intent, exit-intent, optinmonster, optin monster, optin-monster, mobile popup, mobile popups, mobile optin forms, mobile optins, lightbox optins, wordpress mobile popup, wordpress mobile popups, wordpress mobile optin forms, wordpress lightbox optins, lead gen, lead generation, wordpress lead generation, lead generation wordpress, wordpress lead gen, fullscreen, welcome gate, interstitial
+Tags: email list, wordpress popup, popup, popup plugin, wordpress popup plugin, lightbox popup, mailchimp, aweber, campaign monitor, constant contact, exit-intent, madmimi, infusionsoft, getresponse, hubspot, marketo, activecampaign, pardot, totalsend, emma, icontact, mailerlite, mailpoet, google analytics, pop over, optin forms, subscribers, wordpress popup form, lightbox, wordpress popups, popups, lightbox popups, optin form, wordpress optin form, sidebar optin form, sidebar optin, sidebar form, wordpress overlay popup, wordpress lightbox optin, wordpress lightbox optin form, after post optin form, wordpress after post optin form, after post optin form plugin, lightbox popup plugin, wordpress popup solution, exit intent, exit-intent, optinmonster, optin monster, optin-monster, mobile popup, mobile popups, mobile optin forms, mobile optins, lightbox optins, wordpress mobile popup, wordpress mobile popups, wordpress mobile optin forms, wordpress lightbox optins, lead gen, lead generation, wordpress lead generation, lead generation wordpress, wordpress lead gen, fullscreen, welcome gate, interstitial
 Requires at least: 3.5.1
-Tested up to: 4.9.8
+Tested up to: 5.1.0
 Requires PHP: 5.3
-Stable tag: 1.5.0
+Stable tag: 1.6.3
 License: GNU General Public License v2.0 or later
 
 OptinMonster helps you grow your email list by converting visitors into subscribers and customers. Get more email subscribers now!
@@ -12,41 +12,48 @@ OptinMonster helps you grow your email list by converting visitors into subscrib
 == Description ==
 
 = WordPress Popup Plugin =
-Did you know that over 70% of website visitors who leave your website will never return? Why? Because most people find your blog, read, and leave (that's just a natural pattern). Wouldn't it be nice if you can convert some of those people to subscribe to your blog? That's where <a href="https://optinmonster.com" rel="friend" title="OptinMonster">OptinMonster</a> can help. OptinMonster helps you grow your email list and get more subscribers with popup and other types of high converting optin forms.
+Did you know that over 70% of website visitors who leave your website will never return? Why? Because most people find your blog, read, and leave (that's just a natural pattern).
+
+Wouldn't it be nice if you can convert some of those people to subscribe to your blog?
+
+That's where <a href="https://optinmonster.com" rel="friend" title="OptinMonster">OptinMonster</a> can help. OptinMonster helps you grow your email list and get more subscribers with popup and other types of high converting optin forms.
 
 > <strong>OptinMonster App</strong><br>
-> OptinMonster is a standalone application that integrates with all web platforms including WordPress. You must have an OptinMonster account in order to take advantage of this plugin. <a href="https://optinmonster.com/pricing/" rel="friend" title="OptinMonster Plans">Click here to create your account.</a>
+> OptinMonster is a standalone application that integrates with all website platforms including WordPress. You must have an OptinMonster account in order to take advantage of this plugin. <a href="https://optinmonster.com/wp/?utm_source=orgplugin&utm_medium=link&utm_campaign=wpreadme" rel="friend" title="Click here to learn more about OptinMonster">Click here to learn more about OptinMonster.</a>
 
-OptinMonster comes with an easy to use form builder that allows you to create beautiful optin forms that are proven to convert. You can create various type of campaigns including WordPress popup forms, floating header and footer bars, slide-ins also known as scroll triggered boxes, sidebar forms, after post forms, in-line forms, mobile-specific forms, welcome gates and more.
+OptinMonster comes with an easy-to-use drag-and-drop popup builder that allows you to create beautiful email optin forms that are proven to convert. You can create various types of campaigns including WordPress popup forms, floating header and footer bars, slide-ins also known as scroll triggered boxes, sidebar forms, after post forms, in-line forms, mobile-specific forms, welcome gates and more.
 
-Using OptinMonster forms combined with our exit-intent technology, page-level targeting, and behavior automation, users have seen an instant boost in conversion rate, _even upwards of 785%!_
+Using OptinMonster popups combined with our exit-intent technology, page-level targeting, and behavior automation, users have seen an instant boost in conversion rate, _even upwards of 785%!_
 
-Let's take a look at how OptinMonster can help you get more email subscribers.
+Let's take a look at how OptinMonster can help you grow your email list.
 
-> <strong>OptinMonster App</strong><br>
-> OptinMonster is a standalone application that integrates with all web platforms including WordPress. You must have an OptinMonster account in order to take advantage of this plugin. <a href="https://optinmonster.com/pricing/" rel="friend" title="OptinMonster Plans">Click here to create your account.</a>
+= Drag-and-Drop Builder + Optin Forms Templates =
 
-= OptinMonster Builder + Optin Forms Templates =
+OptinMonster allows you to build high-converting opt-in forms in minutes, not hours!
 
-OptinMonster allows you to build high converting opt-in forms in minutes, not hours!
+You can choose from 5 different type of campaigns including: lightbox popups, fullscreen popups, floating bars, slide-ins, and in-line forms.
 
-You can choose from 8 different type of campaigns including: popup forms, floating bars, slide-ins, sidebar forms, after-post forms, in-line forms, mobile-only popup forms, and Canvas.
+Choose a pre-built template designed for maximum conversions,
+or start from scratch with a blank canvas. Customize all the details
+with our easy to use drag-and-drop builder - no code needed.
 
-All of our templates are 100% responsive and mobile friendly.
+With OptinMonster's drag-and-drop builder, you can add any element to your popups including video, social icons, images, buttons, and more.
+
+All of your campaigns will be 100% responsive and mobile friendly.
 
 = Easy Integration with All Email Marketing Services =
 
-We started with the goal to make the most beginner friendly lead generation plugin. That's why OptinMonster works out of the box with all popular email marketing service providers including but not limited to:
+We started with the goal to make the most beginner-friendly lead generation plugin to grow your email list. That's why OptinMonster works out of the box with all popular email marketing service providers including but not limited to:
 
-MailChimp, AWeber, Infusionsoft, GetResponse, ConstantContact, CampaignMonitor, Hubspot, Marketo, ActiveCampaign, Pardot, TotalSend, Emma, iContact, MailerLite, Customer.io, MailPoet, and FeedBlitz.
+MailChimp, AWeber, Drip, ConvertKit, Infusionsoft, GetResponse, ConstantContact, CampaignMonitor, Hubspot, Marketo, ActiveCampaign, Pardot, TotalSend, Emma, iContact, MailerLite, Customer.io, MailPoet, and FeedBlitz.
 
-You can also use custom HTML forms as well as use shortcodes to add other form plugins such as Gravity Forms, Ninja Forms, etc.
+You can also use custom HTML forms as well as use shortcodes to add other form plugins such as WPForms, Formidable Forms, etc.
 
 = Powerful Exit-Intent&reg; Technology =
 
 OptinMonster is among the pioneers of <a href="https://optinmonster.com/features/exit-intent/" rel="friend" title="Exit-Intent Technology">exit-intent technology</a>. It helps you track user's mouse behavior and prompt them with a targeted message at the precise moment they are about to leave.
 
-This allows you to re-engage the visitor and encourage them to subscribe. Exit-intent is proven to increase conversions.
+Exit popups allow you to re-engage the visitor and encourage them to subscribe to your email list. Exit-intent is proven to increase conversions.
 
 We used it on our site, <a href="http://www.wpbeginner.com/" rel="friend" title="WPBeginner - Beginners Guide to WordPress">WPBeginner</a>, and increased conversions by over 600%.
 
@@ -57,9 +64,9 @@ But don't just take our word. See what one of the experts are saying:
 
 = Advanced Page Level Targeting and Behavior Personalization =
 
-Have you ever wondered what if you created a highly targeted message based on the specific page, traffic referral source, category or tag of your site? How would that impact your conversions?
-
-Well, we have tested it, and it works wonders. We liked the results so much that we built-it into OptinMonster.
+Our powerful targeting and segmentation engine lets you
+show your perfect offer to the right people at the exact right time
+to maximize your website conversions.
 
 OptinMonster's <a href="https://optinmonster.com/features/page-level-targeting/" rel="friend" title="Page Level Targeting">page level targeting module</a> allows you to display unique offers and campaigns based on visitor's location and interaction on your website.
 
@@ -74,7 +81,7 @@ Read how this helped one of our users:
 
 A/B testing is one of the most desired features, but normally it is extremely hard to setup for beginners. Well, we changed that.
 
-OptinMonster's easy <a href="https://optinmonster.com/features/easy-ab-split-testing/" rel="friend" title="A/B split testing">A/B split testing</a> module helps you eliminate the guess work and make data-driven decisions on what works best.
+OptinMonster's easy <a href="https://optinmonster.com/features/easy-ab-split-testing/" rel="friend" title="A/B split testing">A/B split testing</a> tool helps you eliminate the guess work and make data-driven decisions on what works best.
 
 You can try different content, headlines, layouts, styles, and opt-in triggers, to see what converts best.
 
@@ -83,24 +90,25 @@ You can try different content, headlines, layouts, styles, and opt-in triggers, 
 
 = Detailed Conversion Analytics =
 
-Most people don't know what to do with analytics because they don't understand them. OptinMonster's <a href="https://optinmonster.com/features/conversion-analytics/" rel="friend" title="conversion analytics">conversion analytics</a> is easy to understand and give you the stats that matter, so you can take action to improve your lead-generation strategy.
+OptinMonster's <a href="https://optinmonster.com/features/conversion-analytics/" rel="friend" title="conversion analytics">conversion analytics</a> is easy to understand and give you the stats that matter, so you can take action to improve your lead-generation strategy.
 
 = MonsterLinks&trade; - 2 Step Opt-in Technology =
 
-<a href="https://optinmonster.com/features/monsterlinks/" rel="friend" title="MonsterLinks">MonsterLinks</a> allow you to turn any link or image into a 2-step opt-in process which is proven to boost conversions by as much as 785%. Marketers use it to offer content upgrades and then use OptinMonster's success redirect feature for lead-magnet delivery.
+<a href="https://optinmonster.com/features/monsterlinks/" rel="friend" title="MonsterLinks">MonsterLinks</a> allow you to easily create a WordPress popup on click, which is proven to boost conversions by as much as 785%. Marketers use it to offer content upgrades and then use OptinMonster's success redirect feature for lead-magnet delivery.
 
 = Full Features List =
 
 
 * High converting template library (100% responsive mobile-friendly).
-* 8 different types of optin forms.
+* Drag-and-drop campaign builder to easily customize any campaign, no code needed.
+* 5 different types of email opt in forms.
 * Powerful page level targeting to build a hyper-segmented email list.
 * Custom user-centric output settings to target visitors, logged-in users or a mixture of both.
 * Category, tag and custom taxonomy output controls for robust campaign segmenting.
 * Custom analytics with Google Analytics to tell you which campaigns are converting the best.
 * Our signature Exit Intent&trade; technology to convert abandoning website visitors into subscribers and customers.
 * Powerful A/B testing that helps you eliminate guess work and make data driven decisions on what works best.
-* MonsterLinks&trade; 2-step optin technology **which is proven to boost conversions by as much as 785%!**
+* MonsterLinks&trade; popup on click technology **which is proven to boost conversions by as much as 785%!**
 * Mobile specific popup forms that are specifically targeted towards mobile visitors.
 * Scroll triggered popup and optin forms for enhanced conversion rates.
 * Timed popup forms - display opt-ins after a certain time or on second pageview.
@@ -120,8 +128,11 @@ If you like this plugin, then consider checking out our other projects:
 
 * <a href="https://wpforms.com/" rel="friend" title="WPForms">WPForms</a> - Best WordPress Contact Form Plugin
 * <a href="https://www.monsterinsights.com/" rel="friend" title="MonsterInsights">MonsterInsights</a> - Best Google Analytics Plugin for WordPress
+* <a href="https://www.seedprod.com/" rel="friend" title="SeedProd">SeedProd</a> - Best Coming Soon &amp; Maintenance Most Plugin for WordPress
 
 Visit WPBeginner to learn from our <a href="http://www.wpbeginner.com/category/wp-tutorials/" rel="friend" title="WordPress Tutorials">WordPress Tutorials</a> and find out about other <a href="http://www.wpbeginner.com/category/plugins/" rel="friend" title="Best WordPress Plugins">best WordPress plugins</a>.
+
+To get the most value out of your growing email list, see our <a href="https://optinmonster.com/beginners-guide-to-email-marketing/" rel="friend" title="Email Marketing Guide">beginner's guide to email marketing</a>.
 
 = Press & Brand Assets =
 
@@ -144,14 +155,18 @@ OptinMonster® and Exit-Intent® are registered trademarks of Retyp, LLC.
 
 = I downloaded this plugin but don't have an OptinMonster account. How can I get one? =
 
-You can sign up for an OptinMonster account by <a href="https://optinmonster.com/pricing/" rel="friend" title="OptinMonster Plans and Pricing">visiting our Pricing page</a> and choosing the account that best suits your needs.
+You can sign up for an OptinMonster account by <a href="https://optinmonster.com/wp/?utm_source=orgplugin&utm_medium=link&utm_campaign=wpreadme" rel="friend" title="Click here to learn more about OptinMonster">visiting our overview page</a> and following the instructions on the screen.
 
 == Screenshots ==
 
+1. The OptinMonster WordPress popup plugin allows you to control how and where your popups load on your website.
+2. Create and customize your popups with our drag-and-drop popup builder.
+3. Manage your popups and other campaigns from the OptinMonster dashboard.
+4. Get detailed analytics on how each popup and split test is converting.
 
 == Notes ==
 
-OptinMonster is the <a href="https://optinmonster.com" rel="friend" title="OptinMonster">best WordPress lead generation and WordPress popup plugin solution</a> on the market. No other WordPress popup plugin or WordPress optin form solution compares to OptinMonster and features it offers.
+OptinMonster is the <a href="https://optinmonster.com" rel="friend" title="OptinMonster">best WordPress lead generation and WordPress popup plugin solution</a> on the market. No other WordPress popup plugin or WordPress optin form solution compares to OptinMonster and the features it offers.
 
 = Testimonial =
 
@@ -159,6 +174,38 @@ OptinMonster is the <a href="https://optinmonster.com" rel="friend" title="Optin
 > Chris Lema - VP of Product at Liquid Web
 
 == Changelog ==
+
+= 1.6.3 =
+
+* Improved searching when adding advanced rules for posts/pages/tags.
+* Add `optin_monster_pre_store_options` filter to allow users to override which campaigns are imported.
+
+= 1.6.2 =
+
+* Fix issue where the "Automatically add after post setting" was not working properly after changes in 1.6.0.
+
+= 1.6.1 =
+
+* Fix dashboard notice showing at incorrect times.
+
+= 1.6.0 =
+
+* Add widget option, "Apply Advanced Output Settings?". If checked, widget will follow the advanced settings rules for the campaign (found in the Output Settings for the campaign).
+* Fix bug where advanced settings would not apply to inline after-post campaigns.
+* Update the inline/automatic setting language to make the new behavior more explicit.
+
+= 1.5.3 =
+
+* "Display the campaign automatically after blog posts" setting no longer selected by default for inline campaigns.
+* Fix inline campaigns showing in some scenarios, even when "Display the campaign automatically after blog posts" is NOT checked.
+
+= 1.5.2 =
+* Fixed potential privilege escalation bug.
+* Bumped for 5.0.
+
+= 1.5.1 =
+* Fixed a possible security issue with admin notices.
+* Updated outdated URLs in the admin.
 
 = 1.5.0 =
 * Refactored WordPress rules system, and a new `[optin-monster]` shortcode parameter, `followrules=true`. This means if you have specific WordPress display rules (e.g. which categories/posts/pages to display the campaign), and use the shortcode to output the campaign, you can have the shortcode follow the rules you have setup. Example shortcode usage: `[optin-monster slug="XXXXXXXXXXXXXXXXXXXX" followrules=true]`

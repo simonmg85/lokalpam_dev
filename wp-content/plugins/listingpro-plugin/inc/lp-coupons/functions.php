@@ -217,15 +217,15 @@ if(!function_exists('listingpro_coupons_page')){
 						<button type="button" id="coponcodebtn" onclick="lprandomString(10)" class="btn btn-default"><?php echo esc_html__('Generate', 'listingpro-plugin'); ?></button>
 					</div>
 					<div class="form-group">
-						<input type="text" class="form-control" id="couponcode" placeholder="Please click on generate button" name="couponcode" required>
+						<input type="text" class="form-control" id="couponcode" placeholder="<?php echo esc_html__('Please click on generate button', 'listingpro-plugin'); ?>" name="couponcode" required>
 					</div>
 					<div class="form-group">
 						<label for="couponpercentage"><?php echo esc_html__('Discount(without % sign) : ', 'listingpro-plugin'); ?></label>
-						<input type="text" class="form-control" id="couponpercentage" placeholder="Please add discount %" name="couponpercentage" required>
+						<input type="text" class="form-control" id="couponpercentage" placeholder="<?php echo esc_html__('Please add only numeric value', 'listingpro-plugin'); ?>" name="couponpercentage" required>
 					</div>
 					<div class="form-group">
 						<label for="couponstarts"><?php echo esc_html__('Start Date : ', 'listingpro-plugin'); ?></label>
-						<input type="date" class="form-control" id="couponstarts" placeholder="Coupon Starts" name="couponstarts" required>
+						<input type="date" class="form-control" id="couponstarts" placeholder="<?php echo esc_html__('Coupon Starts', 'listingpro-plugin'); ?>" name="couponstarts" required>
 					</div>
 					<div class="form-group">
 						<label for="couponends"><?php echo esc_html__('End Date : ', 'listingpro-plugin'); ?></label>

@@ -140,7 +140,7 @@ ul.legal-pages-form-radio {
 }
 
 .wpautoterms-option-info {
-    padding: 5px 2px;
+    padding: 0;
 }
 
 .wpautoterms-pull-right {
@@ -157,4 +157,182 @@ ul.legal-pages-form-radio {
 
 .wpautoterms-resize-both {
     resize: both;
+}
+
+.wpautoterms-flex {
+    display: flex;
+}
+
+.wpautoterms-w-3 {
+    flex: 3;
+}
+
+.wpautoterms-w-9 {
+    flex: 9;
+}
+
+.wpautoterms-pad-left {
+    padding-left: 1em;
+}
+
+.wpautoterms-bold {
+    font-weight: 600;
+}
+
+.cm-matchhighlight {
+    background-color: lightgreen
+}
+
+.CodeMirror-selection-highlight-scrollbar {
+    background-color: green
+}
+
+.CodeMirror {
+    resize: both;
+}
+
+.wpautoterms-list {
+    padding: 0 0 0 20px;
+}
+
+.wpautoterms-list li {
+    list-style-type: square;
+}
+
+.wpautoterms-custom-css-available-selectors {
+    padding: 20px;
+    margin-top: -5px;
+    background: #EEE;
+    box-shadow: inset 0 -1px 2px rgba(0, 0, 0, .07);
+}
+
+.wpautoterms-custom-css-available-selectors .wpautoterms-list {
+    margin-bottom: 0;
+}
+
+.wpautoterms-custom-css-available-selectors .wpautoterms-list li {
+    line-height: 25px;
+    margin: 0 0 10px 0;
+}
+
+.wpautoterms-custom-css-available-selectors .wpautoterms-selector-type {
+    display: block;
+}
+
+.wpautoterms-custom-css-available-selectors .wpautoterms-selector {
+    padding: 2px 4px;
+    background: #FFF;
+    border-radius: 5px;
+}
+
+#wpautoterms_links_custom_css,
+#wpautoterms_update_notice_custom_css,
+#wpautoterms_cookies_notice_custom_css,
+#wpautoterms_endorsements_custom_css {
+    width: 100%;
+    min-height: 200px;
+}
+
+.wpautoterms-list {
+    padding: 0 0 0 20px;
+}
+
+.wpautoterms-list li {
+    list-style-type: square;
+}
+
+.wpautoterms-custom-css-available-selectors {
+    padding: 20px;
+    margin-top: -5px;
+    background: #EEE;
+    box-shadow: inset 0 -1px 2px rgba(0, 0, 0, .07);
+}
+
+.wpautoterms-custom-css-available-selectors .wpautoterms-list {
+    margin-bottom: 0;
+}
+
+.wpautoterms-custom-css-available-selectors .wpautoterms-list li {
+    line-height: 25px;
+    margin: 0 0 10px 0;
+}
+
+.wpautoterms-custom-css-available-selectors .wpautoterms-selector-type {
+    display: block;
+}
+
+.wpautoterms-custom-css-available-selectors .wpautoterms-selector {
+    padding: 2px 4px;
+    background: #FFF;
+    border-radius: 5px;
+}
+
+#wpautoterms_links_custom_css,
+#wpautoterms_update_notice_custom_css,
+#wpautoterms_cookies_notice_custom_css,
+#wpautoterms_endorsements_custom_css {
+    width: 100%;
+    min-height: 200px;
+}
+
+.wpautoterms-review-banner {
+    padding: 30px;
+}
+.wpautoterms-review-banner h4 {
+    font-size: 20px;
+    margin: 0 0 10px 0;
+}
+.wpautoterms-review-banner p {
+    font-size: 16px;
+}
+.wpautoterms-review-banner p:last-child {
+    margin: 0;
+}
+.wpautoterms-review-banner .button-primary {
+    font-size: 16px;
+}
+
+.wpautoterms-is-dismissible {
+    padding-right: 38px;
+    position: relative;
+}
+
+.wpautoterms-dismiss-icon:before {
+    background: none;
+    color: #72777c;
+    content: "\f153";
+    display: inline-block;
+    font: normal 16px/20px dashicons;
+    text-align: center;
+    width: 20px;
+    vertical-align: middle;
+}
+
+.wpautoterms-dismiss-button {
+    position: absolute;
+    top: 0;
+    right: 1px;
+    border: none;
+    margin: 0;
+    padding: 9px;
+    background: none;
+    color: #72777c;
+    cursor: pointer;
+}
+
+.wpautoterms-dismiss-button:hover .wpautoterms-dismiss-icon:before,
+.wpautoterms-dismiss-button:active .wpautoterms-dismiss-icon:before,
+.wpautoterms-dismiss-button:focus .wpautoterms-dismiss-icon:before {
+    color: #c00;
+}
+
+.wpautoterms-dismiss-button:hover,
+.wpautoterms-dismiss-button:active,
+.wpautoterms-dismiss-button:focus {
+    color: #933;
+}
+
+.wpautoterms-dismiss-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 1px #5b9dd9, 0 0 2px 1px rgba(30, 140, 190, .8);
 }

@@ -22,7 +22,7 @@ class SgpbPopupExtensionRegister
 			if(!empty($registeredData[$pluginName])) {
 				/*Delete the plugin from the registered plugins' list if the class name or the class path is empty.*/
 				unset($registeredData[$pluginName]);
-				update_option('SG_POPUP_BUILDER_REGISTERED_PLUGINS', $registeredData);
+				update_site_option('SG_POPUP_BUILDER_REGISTERED_PLUGINS', $registeredData);
 			}
 
 			return;
@@ -34,7 +34,7 @@ class SgpbPopupExtensionRegister
 		$registeredData[$pluginName] = $pluginData;
 		$registeredData = json_encode($registeredData);
 
-		update_option('SG_POPUP_BUILDER_REGISTERED_PLUGINS', $registeredData);
+		update_site_option('SG_POPUP_BUILDER_REGISTERED_PLUGINS', $registeredData);
 	}
 
 	public static function remove($pluginName)
@@ -57,7 +57,7 @@ class SgpbPopupExtensionRegister
 		unset($registeredData[$pluginName]);
 		$registeredData = json_encode($registeredData);
 
-		update_option('SG_POPUP_BUILDER_REGISTERED_PLUGINS', $registeredData);
+		update_site_option('SG_POPUP_BUILDER_REGISTERED_PLUGINS', $registeredData);
 
 		return true;
 	}

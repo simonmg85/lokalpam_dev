@@ -123,7 +123,7 @@ class OMAPI_Output {
 	 */
 	public function api_script() {
 
-		wp_enqueue_script( $this->base->plugin_slug . '-api-script', OPTINMONSTER_APIJS_URL, array( 'jquery' ), $this->base->version );
+		wp_enqueue_script( $this->base->plugin_slug . '-api-script', OPTINMONSTER_APIJS_URL, array( 'jquery' ), null );
 
 		if ( version_compare( get_bloginfo( 'version' ), '4.1.0', '>=' ) ) {
 			add_filter( 'script_loader_tag', array( $this, 'filter_api_script' ), 10, 2 );

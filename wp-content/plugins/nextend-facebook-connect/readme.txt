@@ -3,8 +3,8 @@ Contributors: nextendweb
 Tags: social login, facebook, google, twitter, linkedin, register, login, social, nextend facebook connect, social sign in
 Donate link: https://www.facebook.com/nextendweb
 Requires at least: 4.5
-Tested up to: 4.9
-Stable tag: 3.0.12
+Tested up to: 5.0
+Stable tag: 3.0.18
 Requires PHP: 5.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -65,26 +65,32 @@ After you activated the plugin configure and enable the provider you want to use
 = Can I make my site GDPR compliant with Nextend Social Login installed? =
 Sure, Nextend Social Login provides you the tools to make your site GDPR compliant. [Check out the Nextend Social Login GDPR documentation](https://nextendweb.com/nextend-social-login-docs/gdpr/) to learn more about the topic.
 
-= 1. How can I get the email address from the Twitter users? =
+= 1. Where does Nextend Social Login display the social login buttons? =
+The free version of Nextend Social Login displays the social login buttons automatically on the /wp-login.php's login form and all forms made using the wp_login_form action.
+You can use Nextend Social Login's widget and shortcodes if you need to display the buttons anywhere. If you need to publish the login buttons in your theme, you can use the [PHP code](https://nextendweb.com/nextend-social-login-docs/theme-developer/).
+
+= 2. How can I get the email address from the Twitter users? =
 After you set up your APP go to the Settings tab and enter the URL of your Terms of Service and Privacy Policy page. Then hit the Update your settings button. Then go to the Permissions tab and check the "Request email addresses from users" under "Additional Permissions". [There's a documentation](https://nextendweb.com/nextend-social-login-docs/provider-twitter/#get-email) that explains the process with screenshots.
 
-= 2. Why are random email addresses generated for users registering with their FaceBook account? =
+= 3. Why are random email addresses generated for users registering with their FaceBook account? =
 When the user tries to register with their Facebook account Facebook pops up a window where each user can view what kind of access they give for the app. In this modal they can chose not to share their email address. When they're doing so we generate a random email address for them. They can of course change this at their profile.
 If the permission is given to the app, there are still [other factors](https://nextendweb.com/nextend-social-login-docs/provider-facebook/#get-email) which can result Facebook not sending back any email address.
 
 In the Pro Addon it's possible to ask an email address if it's not returned by Facebook.
 
-= 3. What should I do when I experience any problems? =
+= 4. What should I do when I experience any problems? =
 [Contact us](https://nextendweb.com/contact-us/) via email and explain the issue you have.
 
-= 4. How can I translate the plugin? =
+= 5. How can I translate the plugin? =
 Find the `.pot` file at the /languages folder. From that you can start the translation process. [Drop us](https://nextendweb.com/contact-us/) the final `.po` and `.mo` files and we'll put them to the next releases.
 
-= 5. I have a feature request... =
+= 6. I have a feature request... =
 That's awesome! [Contact us](https://nextendweb.com/contact-us/) and let's discuss the details.
 
-= 6. Does Nextend Social Login work with BuddyPress? =
-Unfortunately, currently there are no BuddyPress specific settings. However your users will still be able login and register at the normal WordPress login page. Then when logged in they can use every BuddyPress feature their current user role have access to.
+= 7. Does Nextend Social Login work with BuddyPress? =
+Nextend Social Login Free version does not have BuddyPress specific settings and the login buttons will not appear there. However your users will still be able login and register at the normal WordPress login page. Then when logged in they can use every BuddyPress feature their current user role have access to.
+
+Using the Pro Addon you can set where the login buttons should appear on the Register form and how they should look like.
 
 == Installation ==
 
@@ -113,6 +119,70 @@ Unfortunately, currently there are no BuddyPress specific settings. However your
 2. Nextend Social Login and Register in the profile page for account linking
 
 == Changelog ==
+= 3.0.18 =
+* Fix:  _nsl is not defined error
+* Fix:  The shortcode of [Page for register flow](https://nextendweb.com/nextend-social-login-docs/global-settings/) will be rendered into the correct position.
+* Fix: Google - G+ logo is replaced with simple G logo.
+
+* PRO: Fix: [Target window](https://nextendweb.com/nextend-social-login-docs/global-settings/#pro-settings) will open the auth window of the provider in the selected way again.
+* PRO: Fix: Update notice when the Free and Pro Addon are not compatible.
+* PRO: Feature: Social buttons for BuddyPress - Login widget
+* PRO: Feature: Option to disable the WordPress Toolbar on the front-end for some roles.
+* PRO: New provider - [Yahoo](https://nextendweb.com/nextend-social-login-docs/provider-yahoo/)
+* PRO: Note: We had plans to implement the [Instagram](https://nextendweb.com/nextend-social-login-docs/provider-instagram/) provider. Unfortunately we need to change our mind, since the Instagram API will become deprecated soon!
+
+= 3.0.17 =
+* Fix: Activation fix on certain sub-domains.
+
+= 3.0.16 =
+* Fix: NSL Avatars used to override the specified BuddyPress avatars.
+* Fix: 500 error when the Extended Profiles setting is disabled in BuddyPress.
+* Fix: By default, users won’t be redirected to the homepage after unlinking their accounts, instead will be redirected back to the page, where the unlink action has happened.
+* Fix: Nextend Social Login will now wait for jQuery before positioning the social buttons.
+* Fix: Getting Started section of some providers are updated with the new App creation steps.
+* Feature: Russian translation added.
+* Feature: [Display avatars in “All media items”](https://nextendweb.com/nextend-social-login-docs/global-settings/) – Images can now load faster in Media Library – Grid view, when this option is enabled.
+* Feature: Social button alignment option for WordPress forms, shortcode and widget.
+* Feature: [Membership](https://nextendweb.com/nextend-social-login-docs/global-settings/) – is now available in the FREE version and provides support for WordPress default membership as well.
+* Feature: new hook allows overriding the username and email before registration - [nsl_registration_user_data](https://nextendweb.com/nextend-social-login-docs/backend-developer/)
+* Facebook – Graph API v3.2 - old API-s may require [API Call version upgrade](https://nextendweb.com/nextend-social-login-docs/facebook-upgrade-api-call/)!
+* Old Nextend Facebook/Twitter/Google Connect compatibility has been removed.
+* Social Buttons use flex-box layout now.
+
+
+* PRO: Fix: Internet Explorer – Pro Addon activation.
+* PRO: Fix: Facebook provider – Sync data: Gender, Profile link, Age range can be retrieved again.
+* PRO: Feature: Social button alignment option for WooCommerce, Comment, BuddyPress, MemberPress, UserPro, Ultimate Member forms.
+* PRO: Feature: [Unlink](https://nextendweb.com/nextend-social-login-docs/global-settings/) option to disable unlink buttons.
+* PRO: Feature: PayPal – Option to [disable the email scope](https://nextendweb.com/nextend-social-login-docs/provider-paypal/#settings).
+* PRO: Removed: Facebook provider – Sync data fields: Currency, TimeZone, Locale became deprecated.
+* PRO: Improvement: Google+ API will shut down soon, so [Google Sync data](https://nextendweb.com/nextend-social-login-docs/provider-google/#sync_data) will use Google People API instead.
+
+= 3.0.14 =
+* Fix: Conflict with Login with Ajax reset password.
+* Fix: BuddyPress related themes, that render the avatar with the bp_displayed_user_avatar() will be able to get the avatar of the user.
+* Fix: New email and profile Google scopes, since old ones became deprecated.
+* Fix: WooCommerce User Email Verification plugin prevented users with NSL from logging in.
+* Fix: registerComplete function is hooked later to let other plugins send their email notifications.
+* Old Nextend Twitter/Google Connect - backwards compatibility notice added. In the 3.0.15 release the backward compatibility will be removed.
+
+* PRO: Fix: Ultimate Member - missing avatar when Support login restriction is disabled.
+* PRO: Fix: Authorized domain notification when the page was authorized on non www but was visited on www or vice versa.
+* PRO: New provider - [WordPress.com](https://nextendweb.com/nextend-social-login-docs/provider-wordpress-com/)
+* PRO: New provider - [Disqus](https://nextendweb.com/nextend-social-login-docs/provider-disqus/)
+
+= 3.0.13 =
+* Fix: Twitter Getting Started and Settings page updated according to the new Twitter App creation.
+* Fix: Won't stuck on a blank page anymore when the login and registration is blocked by WP Cerber.
+* Fix: Infinite redirect loop when home page was selected as OAuth redirect uri proxy page.
+* Fix: Safari will no longer close the page automatically after logging in with NSL.
+* Feature: Login restriction - Some plugins are now able to prevent the login of NSL when admin approval or email verification is necessary!
+* Feature: Google button skins.
+* Feature: Portuguese (Brazilian) translation added.
+
+* PRO: Fix: USM Premium prevented the authorization of NSL Pro Addon.
+* PRO: Fix: WooCommerce default button layout fix for Billing.
+* PRO: Fix: Separator duplication by some themes.
 
 = 3.0.12 =
 * Fix: Further changes to prevent some issues with Theme My Login.

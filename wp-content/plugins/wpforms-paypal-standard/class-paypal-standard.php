@@ -75,7 +75,7 @@ class WPForms_Paypal_Standard extends WPForms_Payment {
 					'production' => esc_html__( 'Production', 'wpforms-paypal-standard' ),
 					'test'       => esc_html__( 'Test / Sandbox', 'wpforms-paypal-standard' ),
 				),
-				'tooltip' => esc_html__( 'Select Production to receive real payments or select Test to use the Paypal developer sandbox', 'wpforms-paypal-standard' ),
+				'tooltip' => esc_html__( 'Select Production to receive real payments or select Test to use the PayPal developer sandbox', 'wpforms-paypal-standard' ),
 			)
 		);
 		wpforms_panel_field(
@@ -175,7 +175,7 @@ class WPForms_Paypal_Standard extends WPForms_Payment {
 	 * @param array $fields
 	 * @param array $entry
 	 * @param array $form_data
-	 * @param int $entry_id
+	 * @param int   $entry_id
 	 */
 	public function process_entry( $fields, $entry, $form_data, $entry_id ) {
 
@@ -245,6 +245,10 @@ class WPForms_Paypal_Standard extends WPForms_Payment {
 		$amount = wpforms_get_total_payment( $fields );
 		if ( empty( $amount ) || $amount == wpforms_sanitize_amount( 0 ) ) {
 			$error = esc_html__( 'PayPal Standard Payment stopped, invalid/empty amount', 'wpforms-paypal-standard' );
+		}
+
+		if ( $error ) {
+			return;
 		}
 
 		// Update entry to include payment details.
@@ -320,7 +324,7 @@ class WPForms_Paypal_Standard extends WPForms_Payment {
 					$item_name = $item['name'];
 				}
 				$paypal_args[ 'item_name_' . $i ] = stripslashes_deep( html_entity_decode( $item_name, ENT_COMPAT, 'UTF-8' ) );
-				// Don't yet support quantities
+				// Don't yet support quantities.
 				//$paypal_args['quantity_' . $i ]  = $item['quantity'];
 				$paypal_args[ 'amount_' . $i ] = $item_amount;
 				$i ++;
@@ -353,7 +357,7 @@ class WPForms_Paypal_Standard extends WPForms_Payment {
 
 		// Build query.
 		$redirect .= http_build_query( $paypal_args );
-		$redirect = str_replace( '&amp;', '&', $redirect );
+		$redirect  = str_replace( '&amp;', '&', $redirect );
 
 		// Redirect to PayPal.
 		wp_redirect( $redirect );
@@ -367,6 +371,7 @@ class WPForms_Paypal_Standard extends WPForms_Payment {
 	 *
 	 * @link https://github.com/easydigitaldownloads/Easy-Digital-Downloads/blob/master/includes/gateways/paypal-standard.php
 	 * @link https://github.com/WadeShuler/PHP-PayPal-IPN/blob/master/src/IpnListener.php
+	 *
 	 * @since 1.0.0
 	 */
 	public function process_ipn() {
@@ -502,7 +507,7 @@ class WPForms_Paypal_Standard extends WPForms_Payment {
 			$error = esc_html__( 'Payment failed: payment amounts do not match', 'wpforms-paypal-standard' );
 		}
 
-		// If there was an error log and update payment status.
+		// If there was an error, log and update the payment status.
 		if ( ! empty( $error ) ) {
 			$payment_meta['payment_note'] = $error;
 			wpforms_log(
@@ -592,4 +597,4 @@ class WPForms_Paypal_Standard extends WPForms_Payment {
 	}
 }
 
-new WPForms_Paypal_Standard;
+new WPForms_Paypal_Standard();

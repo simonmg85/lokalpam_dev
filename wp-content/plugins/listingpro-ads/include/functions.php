@@ -33,6 +33,7 @@
 			if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return $post_id;
 			if ( $post_type !== 'lp-ads' ) return $post_id;
 			
+			
 			if(!empty($ads_mode)){
 				listing_set_metabox('ads_mode', $ads_mode, $post_id);
 			}
@@ -56,8 +57,12 @@
 				$ad_type = $_POST['ad_type'];
 				
 				$listingID = $_POST['ads_listing'];
-				listing_set_metabox('campaign_id', $post_id, $listingID);
-				update_post_meta( $listingID, 'campaign_status', 'active' );
+				if(!empty($listingID)){
+					listing_set_metabox('ads_listing', $listingID, $post_id);
+					listing_set_metabox('campaign_id', $post_id, $listingID);
+					update_post_meta( $listingID, 'campaign_status', 'active' );
+				}
+				
 				
 				if(!empty($ad_type)){
 					foreach( $ad_type as $type ){
@@ -70,6 +75,25 @@
 					}else{
 						delete_post_meta($listingID, $atype);
 					}
+				}
+				
+				$myAd = get_post($post_id);
+				if( $myAd->post_modified_gmt == $myAd->post_date_gmt ){
+					//New ad by admin so update value in db to support ads by admin
+					$table = 'listing_campaigns';
+					$insert_data = array(
+						'user_id' => get_current_user_id(),
+						'post_id' => $post_id,
+						'payment_method' => '',
+						'price' => '',
+						'currency' => '',
+						'status' => 'success',
+						'transaction_id' => '',
+						'mode' => $ads_mode,
+						'duration' => $duration,
+						'budget' => '',
+					);
+					lp_insert_data_in_db($table, $insert_data);
 				}
 				
 			}

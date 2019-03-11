@@ -2,12 +2,14 @@
 Plugin Name: Popup Builder - Responsive Wordpress Pop up
 Contributors: Popup By Sygnoos, Sygnoos
 Author: Popup Builder
+Author URI: https://popup-builder.com
+Plugin URI: https://popup-builder.com
 Donate link: https://popup-builder.com
 Tags: popup, pop up, wordpress popup, popup maker, exit popup, popup builder, wordpress popup plugin
 Requires at least: 3.8
-Tested up to: 4.9.7
+Tested up to: 5.1
 Requires PHP: 5.3.3
-Stable tag: trunk
+Stable tag: 3.1.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,6 +35,7 @@ https://www.youtube.com/watch?v=-wFDJDjczeY
 *   Redirect confirmation popup/Leaving notice popup
 *   Repetitive pop up - show popup every X period of time
 
+-
 
 *   Popup opening sound
 *   Responsive popup
@@ -43,8 +46,9 @@ https://www.youtube.com/watch?v=-wFDJDjczeY
 *   Redirect user to another page when he/she clicks on popup content
 *   Show/Hide Popup for selected User Roles (Admin panel)
 *   Open popup from URL. Example http://popup-builder.com/index.php?sg_popup_id=1
-*   Reopen popup after form submission 
+*   Reopen popup after form submission
 
+-
 
 *   Html popup
 *   Image popup
@@ -64,7 +68,7 @@ https://www.youtube.com/watch?v=-wFDJDjczeY
 *   HTML5 Maps
 *   Review Builder
 
-This is a modal popup plugin for WordPress websites, that allows you to add highly customizable lightbox. This lightbox plugin will enable awesome popup windows in your WordPress website using short codes. You can add unlimited popups with their own configurations. We added effective settings'-panel for each type. So, you can fully customize the popup themes, colors, sizes and many other options. 
+This is a modal popup plugin for WordPress websites, that allows you to add highly customizable lightbox. This lightbox plugin will enable awesome popup windows in your WordPress website using short codes. You can add unlimited popups with their own configurations. We added effective settings'-panel for each type. So, you can fully customize the popup themes, colors, sizes and many other options.
 
 Popups are a good marketing tool, they're impressively high converting. A web page with a modal popup typically sees more conversions than the same page without one. More important, a page with a well-designed and thoughtfully implemented popup converts better than one with a poor popup. With Popup Builder plugin you can customize the look and the functionality according to your needs.
 
@@ -72,7 +76,17 @@ With Popup Builder plugin you can insert any type of content, right into your Po
 
 **Popup Builder - PRO features:**
 
-*   Iframe popup - you can set the URL you want to load within an iframe and the popup will load that iframe
+*   WooCommerce popup - display targeted popup offers depending on the WooCommerce cart conditions: Price, Product amount, Specific product.
+
+*   Recent sales or Social proof - promote more sales showing all your live sales popups to notify your customers about recently bought items.
+
+*   Login popup - open login form inside the popup.
+
+*   Registration popup - open registration form inside the popup.
+
+*   Iframe popup - you can set the URL you want to load within an iframe and the popup will load that iframe.
+
+*   Autoresponder (subscription plus extension) - send targeted emails right after the visitor subscribes to your newsletter. You can send coupon codes or download links.
 
 *   Video popup - embed YouTube and Vimeo videos inside your popup.
 
@@ -83,14 +97,14 @@ With Popup Builder plugin you can insert any type of content, right into your Po
 *   Create countdown popup - your site is under construction and you are planning to open it in some amount of time, in this case countdown popup is exactly for you.
 
 *   Exit popup - catch your users' attention when they decide to leave your site without doing any of the things you want them to do. Exit popups can briefly interrupt them with a popup message, steering them towards a singular call to action.
- 
+
 *   Contact form popup - this type will allow your clients to write you a message right from the popup.
 
-*   MailChimp popup (separate extension) - create eye-catching, beautiful MailChimp popups to make your users sign up to the mail list right from the popup. You can set up all the design customization according to your needs and preferences!
+*   Mailchimp popup (separate extension) - create eye-catching, beautiful Mailchimp popups to make your users sign up to the mail list right from the popup. You can set up all the design customization according to your needs and preferences!
 
 *   Adblock popup (separate extension) - detect Adblock extensions that block the advertisements of your site and show a message to your visitors via popup!
 
-*   AWeber popup (separate extension) - let your visitors to subscribe to your AWeber subscription form right from the popup.   
+*   AWeber popup (separate extension) - let your visitors to subscribe to your AWeber subscription form right from the popup.
 
 *   Popup analytics (separate extension) - get statistics about the effectiveness of your popup.
 
@@ -109,6 +123,8 @@ With Popup Builder plugin you can insert any type of content, right into your Po
 *   Targeting popup -  this option allows you to show a popup depending on user's location. This kind of popup is useful if your product or service is created for a specific region.
 
 *   Show popup for logged in users or vice versa - you can make the popup appear only for the users who are logged in. Or you can make the it visible only for the users who aren't logged in.
+
+*   Show popup after X pages - this option will help you to show a popup when the visitor visits your specified amount of pages.
 
 *   Schedule popup - you can schedule the period (in days) when you want the popup to be shown. The users will see the popup during the period of the time you set. (Ex. April 13- May 9)
 
@@ -166,6 +182,144 @@ Go to the Popup Builder settings and set your desired options.
 
 == Changelog ==
 
+= Version 3.1.7.1 =
+* Bug fixes related to banner.
+
+= Version 3.1.7 =
+* Added Popup Builder button inside the TinyMCE editor, which will allow adding the popup shortcode inside the page/post content.
+* Added compatability with page builders.
+* Bug fixed related to Autoresponder conditions.
+* Bug fixed related to cache of the select box element.
+* Improvements related to script including for wordpress multisites.
+* Conflict resolved related to some extensions.
+* Bug fixed related to post category search action.
+* Code cleanup and improvements.
+
+= Version 3.1.6.1 =
+* Bug fixed related to overlay issue.
+* Mailchimp update issue fixed.
+
+= Version 3.1.6 =
+* Added new feature to change Close Button position.
+* Added new feature to hide/change popup's border (2nd and 3rd themes).
+* Added new feature inside the 'Display Rules' to show popup by post categories.
+* Improvement related to MyISAM and InnoDB when one if this engines don't supported.
+* Added class selector inside the popups' data table.
+* Fixed PHP notices.
+* Bug fixed related to extension licenses.
+* Code improvements and minor bug fixes.
+
+= Version 3.1.5.2 =
+* Added new extension Web Push Notification.
+* Gutenberg block improvements.
+* Code improvements and minor bug fixes.
+
+= Version 3.1.5.1 =
+* Bug fixes and improvements.
+
+= Version 3.1.5 =
+* Improvements related to popup analytics.
+* Bug fixed related to onclick with 'set popup by css class' option.
+* Improvements related to some filters inside the subscriber's list section.
+* Bug fixed related to multiple onload subscription popups.
+* Bug fixed related to infinite loop with popups shortcode.
+* Code improvements and minor bug fixes.
+
+= Version 3.1.4.1 =
+* Bug fixed related to JS error for blocks.
+
+= Version 3.1.4 =
+* Added Popup Builder block for Gutenberg.
+* Bug fixed related to popup limitation for IE browser.
+* Improvements related to the Iframes inside the HTML popup.
+* Added filter inside subscriber's table.
+* URL detection.
+
+= Version 3.1.3 =
+* Bug fixed related to banner closing.
+* Popup Builder archive page removed.
+* Bug fixed related to blank page of the popups data table.
+* Added popup showing limitation to remember by session.
+* If the user requests Popup's post type page it will be redreceted to homepage.
+* Added new option to not close the initial popup when the second popup is opened with "popup inside another popup" option.
+* Code improvements and minor bug fixes.
+
+= Version 3.1.2 =
+* Bug fixed related to popup view limitation (getting JS error if Popup Limitation is set up).
+* Improvements on popup preview functionality.
+* Added missing localization texts.
+* Improvements on subscribers section.
+* Minor fixes and improvements.
+
+= Version 3.1.1 =
+* Now the popup limitation cookie is saving only after the popup appears.
+* Popup Builder migration tweak.
+* Added popup import/export functionality.
+* Added new extension.
+* Code improvements and minor bug fixes.
+
+= Version 3.1 =
+* Bug fixed related to cookie saving for Safari and Internet Explorer.
+* Add new option to show categories for WooCommerce product(s).
+* Bug fixed related to 'unsubscribe' link.
+* Code improvements and minor bug fixes.
+
+= Version 3.0.9.1 =
+* Deafult values added for conditions section.
+* Media button dublicate localization removed.
+* Bug fixed related to page/post selection.
+
+= Version 3.0.9 =
+* Bug fixed connected to page scrolling when after popup appearance page srolled up.
+* Bug fixed for the admin side related to subscribers export list.
+* Improvements connected to subscription live preview.
+* Improvement: If more than one ShortCode (same popup) is added into the page, we will load the data only once.
+* Image popup optimization.
+* Bug fixed realted to overlay closing.
+* Minor fixes and improvements.
+
+= Version 3.0.8 =
+* Conflict fixed connected to 'unsubscribe' link with othe plugins.
+* Image popup responsivenes improvements.
+* Onclick and Onhover events added inside events dropdown metabox.
+* Padding removed from image popup.
+* Added while content is loading.
+* Code improvements and minor bug fixes.
+
+= Version 3.0.7 =
+* Hot fix connected to subscribers table.
+
+= Version 3.0.6 =
+* Added new option 'unsubscribe' for newsletter.
+* Opening and closing animation can be a float value now.
+* Optimization connected to large page/post list data inside the select box.
+* Now countdown can be set not only with date but also without it.
+* Image popup improvements, optimization (speed, responsivenes) and bug fixes.
+* Added to new option RTL/LTR for popup content direction.
+* Added new option inside age restriction popup to remember previus state of user selection.
+* Added loading spinner inside Iframe and Video popup types.
+
+= Version 3.0.5 =
+* Bug fixed for subscription popup for some cases when the submit event was not triggering.
+* Added new option to close popup after copy to clipboard action.
+* Added 'Push to bottom' option for social and restriction popup types.
+* Bug fixed connected to user roles who can use the plugin.
+* Bug fixed related to Popup Conditions saved data.
+* Improvements connected to 'disable scrolling' option for Android devices.
+* Added new Fit option for image popup type to resize it according to the image size.
+* Added success message for 'Copy to clipboard'  option
+* Added new option to reset popup opening count.
+* New animation effect for popup closing.
+
+= Version 3.0.4 =
+* Seo redirect for popup post types (301).
+* CSS class support for popup opening.
+* Added new condition to show popup sitewide.
+* Bug fixed conencted to scrolling inside the Safari browser.
+* Bug fixed inside the subscribers' table for invalid dates.
+* Popup sizing improvements.
+* Bug fixed connected to content scroling option.
+
 = Version 3.0.3 =
 * Bug fixed connected to update from v2 to v3 when popups disappear.
 * Compatability with old popup (v2) classes. Example sg-popup-id-1.
@@ -179,7 +333,7 @@ Go to the Popup Builder settings and set your desired options.
 * Bug fixed connected to mail subject.
 * Bug fixed subscription popup type.
 * Bug fixed connected to banner.
-* Bug fixed connected to 'draf' status.
+* Bug fixed connected to 'draft' status.
 * Optimization of images.
 
 = Version 3.0.1 =
@@ -408,7 +562,7 @@ Example `<button class="sg-dont-show-popup-30">Close Popup and Dont Show for 30 
 * Added empty index.php file inside every directory to prevent directory listing.
 * Shortcode functionality improvements.
 * Prevented direct access to plugins php file.
-* Bug fixes.  
+* Bug fixes.
 
 = Version 2.4.2 =
 * Added option to open from URL. Example http://popup-builder.com/index.php?sg_popup_id=1
@@ -559,7 +713,7 @@ Example `<button class="sg-dont-show-popup-30">Close Popup and Dont Show for 30 
 
 * Compatible with minify plugins.
 * Code cleanup.
-	
+
 = Version 2.1.0 =
 
 * Added ability to close popup from itself. Just add html class to the element.
@@ -568,16 +722,16 @@ Example `<button class="sg-dont-show-popup-30">Close Popup and Dont Show for 30 
 = Version 2.0.9 =
 
 * Facebook share and like popup added.
-* Code cleanup. 
+* Code cleanup.
 * Bug fixed.
 
 = Version 2.0.8 =
 
 * Inside Popup data table added sorting and search field.
 * Bug fixed.
-	
+
 = Version 2.0.7 =
-	
+
 * Inside HTML popup WYSIWYG is updated and now allows to create content with most common HTML tags and styles.
 * Code cleanup.
 * Bug fixed.
@@ -624,7 +778,7 @@ Example `<button class="sg-dont-show-popup-30">Close Popup and Dont Show for 30 
 
 * Multisite support.
 * Bug fixes.
-	
+
 = Version 1.1.2 =
 
 * Bug fixes.
@@ -683,7 +837,7 @@ Ex. [sg_popup id="1" event="click" wrap="span"]Your text, which will be wraped i
 
 Ex. [sg_popup id="1" event="click"]`<img src="https://sygnoos.com/images/sygnoos_logo_grey.png">`[/sg_popup]
 
-Alternative method in case if shortcode doesn't satisfy your needs 
+Alternative method in case if shortcode doesn't satisfy your needs
 
 Adding the following class `sg-popup-id-1`
 
@@ -709,17 +863,17 @@ Example: `[sg_popup id="1" event="hover" wrap="span"]Your text, which will be wr
 
 It's a very easy thing to do, just follow the steps!
 
-*	Find "Popup Builder" plugin on the left bar
-*	Press "Add new Popup" button 
-*	Press "Shortcode" button 
-*	Enter a title for the Popup
-*	Setup general options of the popup
-*	Enter a Shortcode
-*	Setup effects of the popup
-*	Setup the dimensions of the popup
-*	Setup advanced options of the popup
-*	After creating press "Save changes" right above the page
-*	Find the popup you created in "All popups" on the left bar 
+* Find "Popup Builder" plugin on the left bar
+* Press "Add new Popup" button
+* Press "Shortcode" button
+* Enter a title for the Popup
+* Setup general options of the popup
+* Enter a Shortcode
+* Setup effects of the popup
+* Setup the dimensions of the popup
+* Setup advanced options of the popup
+* After creating press "Save changes" right above the page
+* Find the popup you created in "All popups" on the left bar
 
 One perfect news for the popup builder users! Our popup builder plugin is now compatible with any other plugins' shortcodes!
 
@@ -748,10 +902,10 @@ You should enter the URL of the site you want to share.
 
 You should create any type of popup.
 
-*	From the Popup's options, find "Dismiss on content click" option. 
-*	Check it.
-*	Select "Redirect" button. 
-*	In the "URL" field enter the URL of the page you need your users to be redirected to.
+* From the Popup's options, find "Dismiss on content click" option.
+* Check it.
+* Select "Redirect" button.
+* In the "URL" field enter the URL of the page you need your users to be redirected to.
 
 Don't forget to Save changes!)
 
@@ -775,8 +929,8 @@ The Free version of Popup Builder gives you anything you need for creating unlim
 
 We made it very easy for you! All you need to do is:
 
-*	In your Menu sidebar, go to Popup -> "Settings" section.
-*	Disable the "Delete popup data" option.
+* In your Menu sidebar, go to Popup -> "Settings" section.
+* Disable the "Delete popup data" option.
 
 That's all! And you don't need to delete your Free version manually before upgrading to Pro!
 
@@ -787,7 +941,7 @@ Please be noted that browser's don't support all the formats. We recommend to us
 
 **Can I create a popup and make it invisible for some countries? (PRO)**
 
-Our plugin has an option for such cases. You can select "Filter popup for selected countries" option, which allows you to select the countries in which you want the popup to be shown or hidden, because there can be some popups which you make for specific countries and you may not want them to be seen in some other countries in cases of targeting groups for your marketing. (Allow/Disallow) 
+Our plugin has an option for such cases. You can select "Filter popup for selected countries" option, which allows you to select the countries in which you want the popup to be shown or hidden, because there can be some popups which you make for specific countries and you may not want them to be seen in some other countries in cases of targeting groups for your marketing. (Allow/Disallow)
 
 **What's Live Preview in Countdown, Subscription and Contact Form popups for? (PRO)**
 
@@ -804,7 +958,7 @@ Leave us a good review :)
 
 == Upgrade Notice ==
 
-Current Version of Popup Builder is 2.6.7
+Current Version of Popup Builder is 3.1.7
 
 == Other Notes ==
 
@@ -816,21 +970,21 @@ Popup Builder Team finds popups as another definition of the word "Solution".
 Ready to see 10 relevant problems that appear while social marketing?
 Here is how this works.
 
-= First problem: I want to have basic information about my product in a certain popup but a huge text might make annoying or just unreadable the text.  How can this be achieved? Is there a correspondent tool for it? = 
+= First problem: I want to have basic information about my product in a certain popup but a huge text might make annoying or just unreadable the text.  How can this be achieved? Is there a correspondent tool for it? =
 
 == First solution: HTML Popup ==
 
 While sharing your ideas and viewpoints online, it is not always convenient or adequate to involve in the text all the information you got. On the other hand, it is always important not to ignore all the significant extra pieces of the information, because every website owner wants to satisfy the needs of a manifold audience.
- 
+
 The HTML popup of ours is quite popular solution. After installing it, you gain the golden ability to be brief in your texts but unleash a pack of needed information that was collected in your mind. It is all about a simple redirection.
 There are several sections in the options we give, that represent a grateful help to configure all the popups up to your needs.
- 
-Firstly - the way the Popup looks. 
-You may easily customize it by choosing the theme and effect types applied to it and deciding the appropriate dimensions. 
+
+Firstly - the way the Popup looks.
+You may easily customize it by choosing the theme and effect types applied to it and deciding the appropriate dimensions.
 Secondly - the time, when the Popup turns up.
 You have all the abilities to manage when and where the popup turns up. It can appear while visitors scroll the page, whether while they try to exit the page.
 Thirdly - the size of your Popup.
-You may make the it to remain unchangeable or be resized according to the window. 
+You may make the it to remain unchangeable or be resized according to the window.
 Fourthly - how visitors can close it.
 The popup could close itself either automatically or by visitor's hand. All this options are up to you our dear customer.
 And finally - the availability of the Popup.
@@ -840,16 +994,16 @@ You can decide on its availability on different devices (PC, mobile, etc.).
 
 == Second solution: Image Popup ==
 
-It is not a secret that even the greatest articles written with the most attractive style awaken laziness among readers. The victims of these situations are huge texts that are allowed to include only words as main characters but the images. An undeniable fact - even few images certainly ease the process of reading and getting information from blogs. 
+It is not a secret that even the greatest articles written with the most attractive style awaken laziness among readers. The victims of these situations are huge texts that are allowed to include only words as main characters but the images. An undeniable fact - even few images certainly ease the process of reading and getting information from blogs.
 Image popup is the best way to deal with this problem; the best way to make your ideas stand out in the crowd. All you need to do is using all the available opportunities we offer by adding a topic image to the pilot.
 
 * You may customize your installed image popup in many interesting ways, such as determining the image dimensions that considers being a very responsive option due to its resizing and repositioning ability when the main window resizes.
 * It also provides options for choosing the image frame theme and effects that vary in the duration of the popup animation as well.
 * There is one more possibility up to you, to specify how long the ready-made popup appearance should be delayed after loading the page.
 * With the help of both basic and advanced options, you are able to easily regulate the dismissal, display, color and location of the image popup.
-* You may choose where it should appear. It can appear at the top right or left corner, at the bottom or in the center. 
-* You can choose to show it whenever the user scrolls the page or ensure its permanent occurrence by disabling popup closing in any possible way. 
-* On the other hand, the popup can be chosen to close automatically, whether be dismissed when the user clicks inside or beyond of the popup area. 
+* You may choose where it should appear. It can appear at the top right or left corner, at the bottom or in the center.
+* You can choose to show it whenever the user scrolls the page or ensure its permanent occurrence by disabling popup closing in any possible way.
+* On the other hand, the popup can be chosen to close automatically, whether be dismissed when the user clicks inside or beyond of the popup area.
 * In addition, it is up to you to decide on your popup accessibility on different devices (PC, mobile, etc.).
 
 
@@ -864,7 +1018,7 @@ As far as the popup accessibility on different devices is freely manageable too,
 
 Here is another useful pop up to make your content or website more sociable and vibrant. It is a great addition to your social toolkit, since Iframe enables you to include and remind of another website with the help of a simple tool.
 One can think of a number of cases when this popup can efficiently be used.
-For instance, if you are lucky enough to have sponsors or you have got partners that are worth a mention, Iframe will give you the wonderful opportunity to share the work they do. Thus, by clicking on the popup, the user will get to their websites. 
+For instance, if you are lucky enough to have sponsors or you have got partners that are worth a mention, Iframe will give you the wonderful opportunity to share the work they do. Thus, by clicking on the popup, the user will get to their websites.
 It can also be used to add some maps, diagrams, charts, etc. to your content without putting them within the material itself or by refraining from dealing with copyright issues.
 You can build the Iframe popup having decided on its frame theme and the effects that vary in duration. It is also possible to manage how long the ready-made popup appearance should be delayed after loading the page (in sec).
 The popup can appear at the top right/left corner, at the bottom or in the center. Thanks to certain ticks-off in the options section you will be able to show the popup whenever the user scrolls the page and disable its closing at all. On the contrary, the popup can be chosen to close automatically or be dismissed when the user clicks inside or beyond the popup area.
@@ -899,9 +1053,9 @@ In the meantime, there are basic and advanced options available which help to re
 No doubt, building a trustful relationship with an audience is highly important if you wish to make a profit online and have an email list full of targeted, engaged subscribers. As the trust grows, the audience will be more prone to buying whatever is being sold. One way to make this happen is to make people wish to subscribe to your website with the help of the Subscription popup which can help to extend the functionality of your website.
 The Subscription popup offered allows to generate a great-looking form, add a compelling incentive to subscribe and guarantee the buildup of an email list, as, once installed, it will be given maximum visibility on your website.
 Happily, almost every element of the popup is fully customizable - including fonts, sizes and colours, themes and effects applied. Also, you can view it real-time thanks to the live previewer displaying changes you make.
-The appearance and disappearance of the popup is under complete control too. It will appear after a pre-configured wait, be permanent or turn up while scrolling, close by hand or by itself. 
+The appearance and disappearance of the popup is under complete control too. It will appear after a pre-configured wait, be permanent or turn up while scrolling, close by hand or by itself.
 
-= Age restriction Popup = 
+= Age restriction Popup =
 
 Internet is recognized as somehow an open space for creation and dissemination of ideas and content that comply to no kind of limits. It is also known that many children have at least once accessed some online content that contains violence, sex, bad language, etc.. The latter can play a crucial role in the child's personality development and can lead to serious deviations later.
 Thus, to help avoid such kind of developments, you can foster child protection by simply deciding on how much explicit each of your content is and installing the age restriction popup we offer. It will make your content accessible to the age group it refers to, as the popup will make the user answer some questions to decide his/her age and will direct to certain content accordingly.

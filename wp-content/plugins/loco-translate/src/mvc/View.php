@@ -50,10 +50,10 @@ class Loco_mvc_View implements IteratorAggregate {
      */
     public function cd( $path ){
         if( $path && '/' === $path{0} ){
-            $this->cwd = rtrim( loco_plugin_root().'/tpl'.$path, '/' );
+            $this->cwd = untrailingslashit( loco_plugin_root().'/tpl'.$path );
         }
         else {
-            $this->cwd = rtrim( $this->cwd.'/'.$path );
+            $this->cwd = untrailingslashit( $this->cwd.'/'.$path );
         }
         return $this;
     }    
@@ -269,7 +269,7 @@ class Loco_mvc_View implements IteratorAggregate {
 
     /**
      * Shorthand for `echo esc_html( sprintf( ...`
-     * @return void
+     * @return string
      */
     private static function e( $text ){
         if( 1 < func_num_args() ){
@@ -278,7 +278,7 @@ class Loco_mvc_View implements IteratorAggregate {
         }
         echo htmlspecialchars( $text, ENT_COMPAT, 'UTF-8' );
         return '';
-    }    
+    }
 
 }
 

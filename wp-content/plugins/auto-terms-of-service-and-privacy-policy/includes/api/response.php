@@ -6,57 +6,50 @@ class Response {
 	const HTTP_OK = 200;
 	const HTTP_LIMIT = 429;
 
-	const HEADER_RETRY_AFTER = 'retry-after: ';
+	const HEADER_RETRY_AFTER = 'retry-after';
 
 	const MESSAGE_KEY = 'message';
 
 	public $code;
-	public $response;
 	public $error;
 	public $error_info = '';
 	public $url;
 	public $delay;
-	protected $_curl;
+	/**
+	 * @var array|\WP_Error
+	 */
+	protected $_response;
 	protected $_verbose;
 	protected $_vs;
 	public $headers = array();
 	protected $_json;
 
-	public function __construct( $curl, $verbose = false ) {
-		$this->_curl = $curl;
+	public function __construct( $response, $url, $verbose = false ) {
+		$this->_response = $response;
 		$this->_verbose = $verbose;
-		curl_setopt( $this->_curl, CURLOPT_HEADERFUNCTION, array( $this, '_handle_header' ) );
-		if ( $this->_verbose ) {
-			curl_setopt( $this->_curl, CURLOPT_VERBOSE, true );
-			$this->_vs = fopen( 'php://temp', 'w+' );
-			curl_setopt( $this->_curl, CURLOPT_STDERR, $this->_vs );
-		}
-		$this->url = curl_getinfo( $this->_curl, CURLINFO_EFFECTIVE_URL );
-	}
-
-	public function _handle_header( $curl, $header ) {
-		$this->headers[] = $header;
-		$l = strlen( static::HEADER_RETRY_AFTER );
-		if ( 0 == strncasecmp( $header, static::HEADER_RETRY_AFTER, $l ) ) {
-			$this->delay = intval( substr( $header, $l ) );
-		}
-
-		return strlen( $header );
+		$this->url = $url;
 	}
 
 	public function _done() {
-		$this->code = curl_getinfo( $this->_curl, CURLINFO_HTTP_CODE );
-		$this->error = curl_errno( $this->_curl );
-		if ( $this->has_error() && $this->_vs !== null ) {
-			rewind( $this->_vs );
-			$this->error_info = stream_get_contents( $this->_vs );
-			fclose( $this->_vs );
-			$this->_vs = null;
+		if ( $this->has_error() ) {
+			$this->code = __( 'unknown', WPAUTOTERMS_SLUG );
+			$this->error = join( '; ', $this->_response->get_error_codes() );
+			$this->error_info = join( '; ', $this->_response->get_error_messages() );
+		} else {
+			$this->code = $this->_response['response']['code'];
+			$this->error = $this->_response['response']['code'];
+			$this->error_info = $this->_response['response']['message'];
+			if ( $this->code == \WP_Http::TOO_MANY_REQUESTS ) {
+				$retry = $this->_response['http_response']->get_response_object()->headers->getValues( static::HEADER_RETRY_AFTER );
+				if ( ! empty( $retry ) ) {
+					$this->delay = intval( $retry );
+				}
+			}
 		}
 	}
 
 	public function has_error() {
-		return empty( $this->response ) || $this->error != CURLE_OK;
+		return is_wp_error( $this->_response );
 	}
 
 	/**
@@ -67,7 +60,7 @@ class Response {
 			return array();
 		}
 		if ( $this->_json === null ) {
-			$this->_json = json_decode( $this->response, true );
+			$this->_json = json_decode( $this->_response['body'], true );
 		}
 
 		return $this->_json;
@@ -81,7 +74,7 @@ class Response {
 			if ( $json !== null && isset( $json[ static::MESSAGE_KEY ] ) ) {
 				$error = $json[ static::MESSAGE_KEY ];
 			} else {
-				if ( $this->code == Response::HTTP_LIMIT ) {
+				if ( $this->code == \WP_Http::TOO_MANY_REQUESTS ) {
 					$error = __( 'Too much requests. Please, wait.', WPAUTOTERMS_SLUG );
 				} else {
 					$error = sprintf( __( 'Server response code: %s', WPAUTOTERMS_SLUG ), $this->code );

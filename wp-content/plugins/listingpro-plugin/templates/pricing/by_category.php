@@ -14,18 +14,17 @@
 	$lpyearmonthswitch = lp_theme_option('listingpro_month_year_plans');
 	
 	/* dev for 2.0 */
-	$listingpro_plans_cats_pos ='';
+	$listingpro_plans_cats_pos ='pricingplan';
 	$paidMode = lp_paid_mode_status();
 	if( $paidMode == true ){
 		$listingpro_pre_plans_cats = lp_theme_option('listingpro_plans_cats');
 		if($listingpro_pre_plans_cats=="yes"){
-			$listingpro_plans_cats_pos = lp_theme_option('listingpro_plans_cats_pos');
 		}
 	}
 	
 
 	//Standard and Exclusive buttons switch
-	$showSwither = lp_theme_option('listingpro_swith_default_plan');
+	$showSwither = "yes";
 	if($showSwither=="yes"){
 		//for categories list to hide show.
 		$displayOpt = "visibility:hidden;";
@@ -279,7 +278,7 @@
 			$pricing_views == 'vertical_view' && $pricing_style_views == 'vertical_view_7' ||
 			$pricing_views == 'vertical_view' && $pricing_style_views == 'vertical_view_8'){
 			
-				if($lpyearmonthswitch=="yes" && !empty($isMontlyFilter) ){
+				if($lpyearmonthswitch=="yes"){
 					$outputCat .='<div class="col-md-aa col-md-offset-a clearfix">
 					<div class="outer_switch_month_year lpmonthyearswitcher"><ul class="switch_month_year">
 					<li><span class="active_switch">'.esc_html__('Monthly','listingpro-plugin').'</span></li>
@@ -290,7 +289,7 @@
 		}
 		else{
 				
-				if( $lpyearmonthswitch=="yes" && !empty($isMontlyFilter) ){
+				if( $lpyearmonthswitch=="yes" ){
 					$outputCat .='<div class="lp-montly-annualy-text clearfix">
 					<div class="lp_button_switcher lpmonthyearswitcher">
 					<span class="lp-monthly-side">'.esc_html__('Monthly','listingpro-plugin').'</span>
@@ -312,7 +311,7 @@
 		
 		elseif($pricing_style_views=='vertical_view_1' || $pricing_style_views=='vertical_view_3' || $pricing_style_views=='vertical_view_4' || $pricing_style_views=='vertical_view_5'){
 
-			$outputCat .='<div class="col-md-aa col-md-offset-a row-centered clearfix lp_plan_result_section" style="border:0px;">
+			$outputCat .='<div class="col-md-aa col-md-offset-a row-centered clearfix lp_plan_result_section" style="border:0px;" data-style="'.$pricing_style_views.'">
 			<div class="slider_pricing_Plan">
 			<div id="cats-selected-plans" class="selected_plans_v2" style="border:0px;"></div>
 			</div>
@@ -321,7 +320,7 @@
 		
 		else{
 
-			$outputCat .='<div class="col-md-aa col-md-offset-a row-centered clearfix lp_plan_result_section">
+			$outputCat .='<div class="col-md-aa col-md-offset-a row-centered clearfix lp_plan_result_section" data-style="'.$pricing_style_views.'">
 			<div class="slider_pricing_Plan">
 			<div id="cats-selected-plans" class="selected_plans_v2"></div>
 			</div>

@@ -57,15 +57,15 @@ class WPForms_Entries_Single {
 	}
 
 	/**
-	 * Determing if the user is viewing the singley entry page, if so, party on.
+	 * Determine if the user is viewing the single entry page, if so, party on.
 	 *
 	 * @since 1.3.9
 	 */
 	public function init() {
 
 		// Check page and view.
-		$page = ! empty( $_GET['page'] ) ? $_GET['page'] : '';
-		$view = ! empty( $_GET['view'] ) ? $_GET['view'] : '';
+		$page = ! empty( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : '';
+		$view = ! empty( $_GET['view'] ) ? sanitize_key( $_GET['view'] ) : '';
 
 		if ( 'wpforms-entries' === $page && 'details' === $view ) {
 
@@ -295,7 +295,7 @@ class WPForms_Entries_Single {
 			return;
 		}
 
-		// Check for existing errors
+		// Check for existing errors.
 		if ( $this->abort || empty( $this->entry ) || empty( $this->form ) ) {
 			return;
 		}
@@ -307,7 +307,7 @@ class WPForms_Entries_Single {
 
 		$this->alerts[] = array(
 			'type'    => 'success',
-			'message' => esc_html__( 'Notifications sent!', 'wpforms' ),
+			'message' => esc_html__( 'Notifications were resent!', 'wpforms' ),
 			'dismiss' => true,
 		);
 	}
@@ -497,8 +497,8 @@ class WPForms_Entries_Single {
 	 * Entry fields metabox.
 	 *
 	 * @since 1.1.5
-	 * @param object $entry
-	 * @param array $form_data
+	 * @param object $entry     Submitted entry values.
+	 * @param array  $form_data Form data and settings.
 	 */
 	public function details_fields( $entry, $form_data ) {
 
@@ -532,7 +532,7 @@ class WPForms_Entries_Single {
 
 						$field_value  = apply_filters( 'wpforms_html_field_value', wp_strip_all_tags( $field['value'] ), $field, $form_data, 'entry-single' );
 						$field_class  = sanitize_html_class( 'wpforms-field-' . $field['type'] );
-						$field_class .= empty( $field_value ) ? ' empty' : '';
+						$field_class .= wpforms_is_empty_string( $field_value )  ? ' empty' : '';
 						$field_style  = $hide_empty && empty( $field_value ) ? 'display:none;' : '';
 
 						echo '<div class="wpforms-entry-field ' . $field_class . '" style="' . $field_style . '">';
@@ -545,7 +545,7 @@ class WPForms_Entries_Single {
 
 							// Field value
 							echo '<p class="wpforms-entry-field-value">';
-								echo ! empty( $field_value ) ? nl2br( make_clickable( $field_value ) ) : esc_html__( 'Empty', 'wpforms' );
+								echo ! wpforms_is_empty_string( $field_value ) ? nl2br( make_clickable( $field_value ) ) : esc_html__( 'Empty', 'wpforms' );
 							echo '</p>';
 
 						echo '</div>';
@@ -564,8 +564,8 @@ class WPForms_Entries_Single {
 	 *
 	 * @since 1.1.6
 	 *
-	 * @param object $entry
-	 * @param array $form_data
+	 * @param object $entry     Submitted entry values.
+	 * @param array  $form_data Form data and settings.
 	 */
 	public function details_notes( $entry, $form_data ) {
 
@@ -678,8 +678,8 @@ class WPForms_Entries_Single {
 	 *
 	 * @since 1.1.6
 	 *
-	 * @param object $entry
-	 * @param array $form_data
+	 * @param object $entry     Submitted entry values.
+	 * @param array  $form_data Form data and settings.
 	 */
 	public function details_debug( $entry, $form_data ) {
 
@@ -721,7 +721,7 @@ class WPForms_Entries_Single {
 		<div id="wpforms-entry-details" class="postbox">
 
 			<h2 class="hndle">
-				<span><?php esc_html_e( 'Entry Details' , 'wpforms' ); ?></span>
+				<span><?php esc_html_e( 'Entry Details', 'wpforms' ); ?></span>
 			</h2>
 
 			<div class="inside">
@@ -730,8 +730,14 @@ class WPForms_Entries_Single {
 
 					<p class="wpforms-entry-id">
 						<span class="dashicons dashicons-admin-network"></span>
-						<?php esc_html_e( 'Entry ID:', 'wpforms' ); ?>
-						<strong><?php echo absint( $entry->entry_id ); ?></strong>
+						<?php
+						printf(
+							/* translators: %s - entry ID. */
+							esc_html__( 'Entry ID: %s', 'wpforms' ),
+							'<strong>' . absint( $entry->entry_id ) . '</strong>'
+						);
+						?>
+
 					</p>
 
 					<p class="wpforms-entry-date">
@@ -827,8 +833,8 @@ class WPForms_Entries_Single {
 	 *
 	 * @since 1.2.6
 	 *
-	 * @param object $entry
-	 * @param array $form_data
+	 * @param object $entry     Submitted entry values.
+	 * @param array  $form_data Form data and settings.
 	 */
 	public function details_payment( $entry, $form_data ) {
 
@@ -836,20 +842,31 @@ class WPForms_Entries_Single {
 			return;
 		}
 
-		$entry_meta  = json_decode( $entry->meta, true );
-		$status      = ! empty( $entry->status ) ? ucwords( sanitize_text_field( $entry->status ) ) : esc_html__( 'Unknown', 'wpforms' );
-		$currency    = ! empty( $entry_meta['payment_currency'] ) ? $entry_meta['payment_currency'] : wpforms_setting( 'currency', 'USD' );
-		$total       = isset( $entry_meta['payment_total'] ) ? wpforms_format_amount( wpforms_sanitize_amount( $entry_meta['payment_total'], $currency ), true, $currency ) : '-';
-		$note        = ! empty( $entry_meta['payment_note'] ) ? esc_html( $entry_meta['payment_note'] ) : '';
-		$gateway     = esc_html( apply_filters( 'wpforms_entry_details_payment_gateway', '-', $entry_meta, $entry, $form_data ) );
-		$transaction = esc_html( apply_filters( 'wpforms_entry_details_payment_transaction', '-', $entry_meta, $entry, $form_data ) );
-		$mode        = ! empty( $entry_meta['payment_mode'] ) && 'test' === $entry_meta['payment_mode'] ? 'test' : 'production';
+		$entry_meta   = json_decode( $entry->meta, true );
+		$status       = ! empty( $entry->status ) ? ucwords( sanitize_text_field( $entry->status ) ) : esc_html__( 'Unknown', 'wpforms' );
+		$currency     = ! empty( $entry_meta['payment_currency'] ) ? $entry_meta['payment_currency'] : wpforms_setting( 'currency', 'USD' );
+		$total        = isset( $entry_meta['payment_total'] ) ? wpforms_format_amount( wpforms_sanitize_amount( $entry_meta['payment_total'], $currency ), true, $currency ) : '-';
+		$note         = ! empty( $entry_meta['payment_note'] ) ? esc_html( $entry_meta['payment_note'] ) : '';
+		$gateway      = esc_html( apply_filters( 'wpforms_entry_details_payment_gateway', '-', $entry_meta, $entry, $form_data ) );
+		$transaction  = esc_html( apply_filters( 'wpforms_entry_details_payment_transaction', '-', $entry_meta, $entry, $form_data ) );
+		$subscription = '';
+		$customer     = '';
+		$mode         = ! empty( $entry_meta['payment_mode'] ) && 'test' === $entry_meta['payment_mode'] ? 'test' : 'production';
 
 		switch ( $entry_meta['payment_type'] ) {
 			case 'stripe':
 				$gateway = esc_html__( 'Stripe', 'wpforms' );
 				if ( ! empty( $entry_meta['payment_transaction'] ) ) {
 					$transaction = sprintf( '<a href="https://dashboard.stripe.com/payments/%s" target="_blank" rel="noopener noreferrer">%s</a>', $entry_meta['payment_transaction'], $entry_meta['payment_transaction'] );
+				}
+				if ( ! empty( $entry_meta['payment_subscription'] ) ) {
+					$subscription = sprintf( '<a href="https://dashboard.stripe.com/subscriptions/%s" target="_blank" rel="noopener noreferrer">%s</a>', $entry_meta['payment_subscription'], $entry_meta['payment_subscription'] );
+				}
+				if ( ! empty( $entry_meta['payment_customer'] ) ) {
+					$customer = sprintf( '<a href="https://dashboard.stripe.com/customers/%s" target="_blank" rel="noopener noreferrer">%s</a>', $entry_meta['payment_customer'], $entry_meta['payment_customer'] );
+				}
+				if ( ! empty( $entry_meta['payment_period'] ) ) {
+					$total .= ' <span style="font-weight:400; color:#999; display:inline-block;margin-left:4px;"><i class="fa fa-refresh" aria-hidden="true"></i> ' . $entry_meta['payment_period'] . '</span>';
 				}
 				break;
 			case 'paypal_standard':
@@ -916,6 +933,30 @@ class WPForms_Entries_Single {
 						?>
 					</p>
 
+					<?php if ( ! empty( $subscription ) ) : ?>
+					<p class="wpforms-entry-payment-subscription">
+						<?php
+						printf(
+							/* translators: %s - entry payment subscription. */
+							esc_html__( 'Subscription ID: %s', 'wpforms' ),
+							'<strong>' . $subscription . '</strong>'
+						);
+						?>
+					</p>
+					<?php endif; ?>
+
+					<?php if ( ! empty( $customer ) ) : ?>
+					<p class="wpforms-entry-payment-customer">
+						<?php
+						printf(
+							/* translators: %s - entry payment customer. */
+							esc_html__( 'Customer ID: %s', 'wpforms' ),
+							'<strong>' . $customer . '</strong>'
+						);
+						?>
+					</p>
+					<?php endif; ?>
+
 					<?php if ( ! empty( $note ) ) : ?>
 						<p class="wpforms-entry-payment-note">
 							<?php echo esc_html__( 'Note:', 'wpforms' ) . '<br>' . esc_html( $note ); ?>
@@ -937,8 +978,8 @@ class WPForms_Entries_Single {
 	 *
 	 * @since 1.1.5
 	 *
-	 * @param object $entry
-	 * @param array $form_data
+	 * @param object $entry     Submitted entry values.
+	 * @param array  $form_data Form data and settings.
 	 */
 	public function details_actions( $entry, $form_data ) {
 
@@ -954,10 +995,11 @@ class WPForms_Entries_Single {
 		// Print Entry URL
 		$print_url = add_query_arg(
 			array(
-				'wpforms_preview' => 'print',
-				'entry_id'        => absint( $entry->entry_id ),
+				'page'     => 'wpforms-entries',
+				'view'     => 'print',
+				'entry_id' => absint( $entry->entry_id ),
 			),
-			home_url()
+			admin_url( 'admin.php' )
 		);
 
 		// Export Entry URL
@@ -1079,8 +1121,8 @@ class WPForms_Entries_Single {
 	 *
 	 * @since 1.3.3
 	 *
-	 * @param object $entry
-	 * @param array $form_data
+	 * @param object $entry     Submitted entry values.
+	 * @param array  $form_data Form data and settings.
 	 */
 	public function details_related( $entry, $form_data ) {
 

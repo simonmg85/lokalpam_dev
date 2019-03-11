@@ -9,13 +9,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class Cookies_Notice extends Base_Notice {
+	const CLASS_COOKIES_NOTICE = 'wpautoterms-cookies-notice';
+	const CLASS_CLOSE_BUTTON = 'wpautoterms-notice-close';
 	/**
 	 * @var License
 	 */
 	protected $_license;
 
 	public static function create( $license ) {
-		$a = new Cookies_Notice( 'cookies_notice', 'wpautoterms-cookies-notice-container', 'wpautoterms-cookies-notice' );
+		$a = new Cookies_Notice( 'cookies_notice', 'wpautoterms-cookies-notice-container', self::CLASS_COOKIES_NOTICE );
 		$a->set_license( $license );
 
 		return $a;

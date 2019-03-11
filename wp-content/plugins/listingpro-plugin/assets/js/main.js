@@ -29,7 +29,8 @@ jQuery(function() {
         jQuery(this).parent().find('.jFiler-item-container').fadeOut();
         jQuery(this).closest('ul.jFiler-items-grid').fadeOut();
         jQuery(this).fadeOut();
-        jQuery(this).next('input').attr('name', 'listImg_remove[]')
+        jQuery(this).next('input').attr('name', 'listImg_remove[]');
+        jQuery(this).parent().parent().parent().remove();
     });
     jQuery(document).on('change', 'input#already-account', function(e) {
         if (jQuery(this).is(':checked')) {

@@ -47,7 +47,7 @@ $currencyprice = $listingpro_options['currency_paid_submission'];
 
 
 $adsArray['lp_random_ads'] = $lp_random_ads.$currencyprice.' (Spotlight)'; 
-$adsArray['lp_detail_page_ads'] = $lp_detail_page_ads.$currencyprice.' (Listing sidebar)'; 
+$adsArray['lp_detail_page_ads'] = $lp_detail_page_ads.$currencyprice.' (Sidebar)'; 
 $adsArray['lp_top_in_search_page_ads'] = $lp_top_in_search_page_ads.$currencyprice.' (Top of Search)'; 
 }
 
@@ -267,8 +267,8 @@ $ads_options = Array(
         'type' => 'select',
         'options' => array(
             ''=>	'Select Mode',
-            'perclick'=>	'Per Click',
-            'byduration'=>	'By Duration',
+            'perclick'=>    'Pay Per Click (PPC)',
+           'byduration'=>    'Pay Per Day (PPD)',
         ),
         'desc'	  => '',
     ),
@@ -285,14 +285,14 @@ $ads_options = Array(
     Array(
         'name' => esc_html__('Allowed Click', 'listingpro-plugin'),
         'id' => 'remaining_balance',
-        'type' => 'hidden',
+        'type' => 'text',
         'std' => '',
         'desc' => 'Remaing balance for clicks',
     ),
     Array(
         'name' => esc_html__('Click Used', 'listingpro-plugin'),
         'id' => 'click_performed',
-        'type' => 'hidden',
+        'type' => 'text',
         'std' => '',
         'desc' => 'Used Click by this ad',
     ),
@@ -404,6 +404,11 @@ $listingpro_settings = Array(
    Array(
         'name' => esc_html__('Phone', 'listingpro-plugin'),
         'id' => 'phone',
+        'type' => 'text',
+		'desc' => ''),
+	Array(
+        'name' => esc_html__('Whatsapp', 'listingpro-plugin'),
+        'id' => 'whatsapp',
         'type' => 'text',
 		'desc' => ''),
     Array(

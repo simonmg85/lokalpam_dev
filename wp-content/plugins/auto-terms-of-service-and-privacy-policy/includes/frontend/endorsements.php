@@ -46,11 +46,15 @@ class Endorsements {
 		$message = \wpautoterms\print_template( static::ID, array(
 			'message' => do_shortcode( $message )
 		), true );
-		$message = Styles::print_styles( static::ID, 'wpautoterms-' . static::ID, true ) . $message;
+		$message = Styles::print_styles( static::ID, static::css_class_id(), true ) . $message;
 		if ( $where == 'bottom' ) {
 			return $content . $message;
 		}
 
 		return $message . $content;
+	}
+
+	public static function css_class_id() {
+		return 'wpautoterms-' . static::ID;
 	}
 }

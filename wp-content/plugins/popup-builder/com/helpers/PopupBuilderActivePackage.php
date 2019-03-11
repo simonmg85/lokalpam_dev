@@ -9,9 +9,9 @@ class PopupBuilderActivePackage
 	public static function init()
 	{
 		self::$sections = array(
-			'userStatus' => array('min-version' => SGPB_POPUP_PRO_MIN_VERSION, 'min-pkg' => SGPB_POPUP_PKG_SILVER),
-			'popupConditionsSection' => array('min-version' => SGPB_POPUP_PRO_MIN_VERSION, 'min-pkg' => SGPB_POPUP_PKG_SILVER),
-			'popupOtherConditionsSection' => array('min-version' => SGPB_POPUP_PRO_MIN_VERSION, 'min-pkg' => SGPB_POPUP_PKG_SILVER)
+			'userStatus' => array('min-version' => SGPB_POPUP_PRO_MIN_VERSION, 'min-pkg' => SGPB_POPUP_PKG_SILVER, 'name' => 'userStatus'),
+			'popupConditionsSection' => array('min-version' => SGPB_POPUP_PRO_MIN_VERSION, 'min-pkg' => SGPB_POPUP_PKG_SILVER, 'name' => 'popupConditionsSection'),
+			'popupOtherConditionsSection' => array('min-version' => SGPB_POPUP_PRO_MIN_VERSION, 'min-pkg' => SGPB_POPUP_PKG_SILVER, 'name' => 'popupOtherConditionsSection')
 		);
 	}
 
@@ -27,10 +27,12 @@ class PopupBuilderActivePackage
 	public static function canUseOption($optionName)
 	{
 		global $SGPB_OPTIONS;
+		$currentOption = array();
 
 		foreach ($SGPB_OPTIONS as $option) {
 			if ($option['name'] == $optionName) {
 				$currentOption = $option;
+				break;
 			}
 		}
 
@@ -47,6 +49,12 @@ class PopupBuilderActivePackage
 		}
 		if (isset($option['min-pkg'])) {
 			$currentOptionSupportedMinPackage = $option['min-pkg'];
+		}
+		$optionAvailable = apply_filters('sgpbOptionAvailable', $option);
+
+		// it can change option availability from extensions
+		if (isset($optionAvailable['status'])) {
+			return $optionAvailable['status'];
 		}
 
 		if ($currentOptionSupportedMinVersion <= SG_POPUP_VERSION) {

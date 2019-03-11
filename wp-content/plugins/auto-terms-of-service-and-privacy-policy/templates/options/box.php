@@ -28,7 +28,7 @@
     </div>
     <div class="wpautoterms-box-configure-button">
         <a class="button button-primary"
-           href="edit.php?post_type=<?php echo WPAUTOTERMS_CPT; ?>&page=wpautoterms_compliancekits&box=<?php echo $box->id(); ?>">
+           href="edit.php?post_type=<?php echo \wpautoterms\cpt\CPT::type(); ?>&page=wpautoterms_compliancekits&box=<?php echo $box->id(); ?>">
 			<?php _e( 'Configure', WPAUTOTERMS_SLUG ); ?>
         </a>
     </div>

@@ -65,6 +65,7 @@ class Loco_admin_file_EditController extends Loco_admin_file_BaseController {
         }
         // Fine if not, this just means sync isn't possible.
         catch( Loco_error_Exception $e ){
+            Loco_error_AdminNotices::add( $e );
             Loco_error_AdminNotices::debug( sprintf("Sync is disabled because this file doesn't relate to a known set of translations", $bundle ) );
             $project = null;
         }
@@ -109,8 +110,8 @@ class Loco_admin_file_EditController extends Loco_admin_file_BaseController {
                     $potfile = null;
                 }
             }
-            // allow PO file to dictate its own Plural-Forms
             if( $locale ){
+                // allow PO file to dictate its own Plural-Forms
                 try {
                     $locale->setPluralFormsHeader( $head['Plural-Forms'] );
                 }
@@ -119,12 +120,17 @@ class Loco_admin_file_EditController extends Loco_admin_file_BaseController {
                 }
                 // fill in missing PO headers now locale is fully resolved
                 $data->localize($locale);
+                
+                // If MO file will be compiled, check for library/config problems
+                if ( 2 !== strlen( "\xC2\xA3" ) ) {
+                    Loco_error_AdminNotices::warn('Your mbstring configuration will result in corrupt MO files. Please ensure mbstring.func_overload is disabled');
+                }
             }
         }
         
         // notify if template is locked (save and sync will be disabled)
         if( is_null($locale) && $project && $project->isPotLocked() ){
-            Loco_error_AdminNotices::warn('Template is protected from updates by the bundle configuration');
+            $this->set('fsDenied', true );
             $readonly = true;
         }
         
@@ -140,7 +146,7 @@ class Loco_admin_file_EditController extends Loco_admin_file_BaseController {
             'readonly' => $readonly,
             'project' => $project ? array (
                 'bundle' => $bundle->getId(),
-                'domain' => $project->getId(),
+                'domain' => (string) $project->getId(),
             ) : null,
             'nonces' => $readonly ? null : array (
                 'save' => wp_create_nonce('save'),

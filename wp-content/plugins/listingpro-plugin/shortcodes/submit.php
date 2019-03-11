@@ -52,6 +52,8 @@ function listingpro_shortcode_submit($atts, $content = null) {
     $gSiteKey = '';
     $gSiteKey = $listingpro_options['lp_recaptcha_site_key'];
     $enableCaptcha = lp_check_receptcha('lp_recaptcha_listing_submission');
+	
+	$listing_mobile_view  = $listingpro_options['single_listing_mobile_view'];
 
     $lp_paid_mode = $listingpro_options['enable_paid_submission'];
     $privacy_policy = $listingpro_options['payment_terms_condition'];
@@ -89,39 +91,33 @@ function listingpro_shortcode_submit($atts, $content = null) {
 
     /* MODE CHECK */
     if( $lp_paid_mode == "yes" ){
-        $lp_plans_url = $listingpro_options['pricing-plan'];
-        if (!has_valid_order() && !empty($lp_plans_url)) { //if user does not have any valid order
-            wp_redirect($lp_plans_url);
-            exit;
-        }
-        if (!has_valid_order() && empty($lp_plans_url)) {
-            wp_redirect(site_url());
-            exit;
-        }
 
-//        if( !isset($_POST['plan_id'])){
-//            $selectePlanID = '';
-//            if( !isset( $_POST['price_nonce_field'.$selectePlanID] ) ){
-//                $lp_plans_url = $listingpro_options['pricing-plan'];
-//                if(!empty($lp_plans_url)){
-//                    wp_redirect($lp_plans_url);
-//                    exit;
-//                }
-//                else{
-//                    wp_redirect(site_url());
-//                    exit;
-//                }
-//
-//            }
-//        }
+        if( !isset($_POST['plan_id'])){
+            $selectePlanID = $_POST['plan_id'];
+            if( !isset( $_POST['price_nonce_field'.$selectePlanID] ) ){
+                $lp_plans_url = $listingpro_options['pricing-plan'];
+                if(!empty($lp_plans_url)){
+                    wp_redirect($lp_plans_url);
+                    exit;
+                }
+                else{
+                    wp_redirect(site_url());
+                    exit;
+                }
 
+            }
+        }
     }
 
 
     /* PLAN ID */
     $plan_id = '';
+    $cat_plan_id = '';
     if(isset($_POST['plan_id'])){
         $plan_id = $_POST['plan_id'];
+		if(isset($_POST['lp_pre_selected_cats'])){
+			$cat_plan_id = $_POST['lp_pre_selected_cats'];
+		}
     }else{
         $plan_id = 'none';
     }
@@ -140,7 +136,7 @@ function listingpro_shortcode_submit($atts, $content = null) {
     $price_show = get_post_meta( $plan_id, 'listingproc_price', true );
     $tags_show = get_post_meta( $plan_id, 'listingproc_tag_key', true );
     $hours_show = get_post_meta( $plan_id, 'listingproc_bhours', true );
-
+	$b_logo = lp_theme_option('business_logo_switch');
 
     if($plan_id=="none"){
         $contact_show = 'true';
@@ -157,7 +153,7 @@ function listingpro_shortcode_submit($atts, $content = null) {
         $hours_show = 'true';
         $featuredimg_show = 'true';
     }
-
+	$social_show_switch =   lp_theme_option('listin_social_switch');
     $ShowTitleTabs = false;
     /* $enableCustom = lp_theme_option('lp_listing_listing_by_custom'); */
     $enableGoogle = lp_theme_option('lp_listing_listing_by_google');
@@ -218,7 +214,10 @@ function listingpro_shortcode_submit($atts, $content = null) {
         $lp_imagesize_notice .= $lp_images_size. esc_html__(' Mb', 'listingpro-plugin');
         $lp_images_size = $lp_images_size * 1000000;
     }
-
+	$whatsappButton = false;
+    if(lp_theme_option('lp_detail_page_whatsapp_button')=="on"){
+        $whatsappButton = true;
+    }
     $output .= '
 	<div class="page-container-four clearfix submit_new_style submit_new_style-outer">
 		<div class="col-md-12 col-sm-12">
@@ -226,7 +225,7 @@ function listingpro_shortcode_submit($atts, $content = null) {
 				<h3>'.$title.'</h3>
 				<p>'.$subtitle.'</p>
 			</div>
-			<div class="post-submit"><div id="lp_listing_map"></div>';
+			<div class="post-submit">';
 
     if(is_user_logged_in()) {
         $output .= '
@@ -237,13 +236,24 @@ function listingpro_shortcode_submit($atts, $content = null) {
 						</div>
 					</div>';
     }else{
-        $output .=
+		if( $listing_mobile_view == 'app_view' && wp_is_mobile() ){
+             $output .=
+           '<div class="author-section border-bottom lp-form-row clearfix lp-border-bottom padding-bottom-40">
+                        <div class="lp-form-row-left text-left pull-left not-logged-in-msg">
+                            <!-- <img class="avatar-circle" src="'.plugins_url( '/images/author.jpg', dirname(__FILE__) ).'" /> -->
+                            <p><strong>'.esc_html__('Returning User? Please', 'listingpro-plugin'). '</strong> <a class="md-trigger" data-toggle="modal" data-target="#app-view-login-popup">'.esc_html__('Sign In', 'listingpro-plugin').'</a> '.esc_html__('and if you are a ', 'listingpro-plugin').' <strong>' .esc_html__('New User, continue below ', 'listingpro-plugin').'</strong>' .esc_html__('and register along with this submission.', 'listingpro-plugin').'</p>
+                        </div>                        
+                    </div>';
+         }else{
+              $output .=
             '<div class="author-section border-bottom lp-form-row clearfix lp-border-bottom padding-bottom-40">
 						<div class="lp-form-row-left text-left pull-left not-logged-in-msg">
 							<!-- <img class="avatar-circle" src="'.plugins_url( '/images/author.jpg', dirname(__FILE__) ).'" /> -->
 							<p><strong>'.esc_html__('Returning User? Please', 'listingpro-plugin'). '</strong> <a class=" md-trigger" data-modal="modal-3">'.esc_html__('Sign In', 'listingpro-plugin').'</a> '.esc_html__('and if you are a ', 'listingpro-plugin').' <strong>' .esc_html__('New User, continue below ', 'listingpro-plugin').'</strong>' .esc_html__('and register along with this submission.', 'listingpro-plugin').'</p>
 						</div>						
 					</div>';
+        }
+       
     }
 
     $quickTipTitle = $listingpro_options['quick_tip_title'];
@@ -340,12 +350,12 @@ function listingpro_shortcode_submit($atts, $content = null) {
                                         <img src="'. get_template_directory_uri() .'/assets/images/bot-icon.png" alt="">
                                     </div>
                                     <div class="col-md-7">
-                                        <strong>'.esc_html__( 'Feeling lazy? Say HELLO! to Fill-O-Bot! ', 'listingpro' ).'</strong>
-                                        <p>'. esc_html__( 'Don’t worry Fill-o-BOT will help you OUT! Just enter any business on google places and Fill-O-Bot automatically fills in the data that it can grab.', 'listingpro' ) .'</p>
+                                        <strong>'.esc_html__( 'Feeling lazy? Say HELLO! to Fill-O-Bot! ', 'listingpro-plugin' ).'</strong>
+                                        <p>'. esc_html__( 'Don’t worry Fill-o-BOT will help you OUT! Just enter any business on google places and Fill-O-Bot automatically fills in the data that it can grab.', 'listingpro-plugin' ) .'</p>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="bot-on-tag-wrap">
-                                            <span class="bot-on-tag">Turn Me On</span>
+                                            <span class="bot-on-tag">'. esc_html__( 'Turn Me On', 'listingpro-plugin' ) .'</span>
                                             <label class="switch">									
                                                 <input id="fill-o-bot-check" class="form-control switch-checkbox" type="checkbox" name="fil-o-bot-check">										
                                                 <div class="slider round"></div>
@@ -365,7 +375,7 @@ function listingpro_shortcode_submit($atts, $content = null) {
     if( $page_style == 'style2' )
     {
         $output .= '<div class="white-section border-bottom ' . $style_wrap . '">';
-        $output .=  '<h4 class="white-section-heading">'. esc_html__( 'primary liting details', 'listingpro' ) .'</h4>';
+        $output .=  '<h4 class="white-section-heading">'. esc_html__( 'primary listing details', 'listingpro-plugin' ) .'</h4>';
         $output .=  '   <div class="row">';
 
         $output .= '        <div class="form-group ' . $style2_content_class . ' col-xs-12">';
@@ -377,10 +387,11 @@ function listingpro_shortcode_submit($atts, $content = null) {
                                                         <p>' . esc_html__('Put your listing title here and tell the name of your business to the world.', 'listingpro-plugin') . '</p>
                                                     </div>
                                                 </div>
-                                                <input data-quick-tip="<p>this is test data for quick tip for title field</p>' . $quicktip_image . '" type="text" name="postTitle" class="form-control margin-bottom-10" id="lptitle" placeholder="' . esc_html__('Staple & Fancy Hotel', 'listingpro-plugin') . '">';
+                                                <input data-quick-tip="<h2>'. esc_html__( 'Title', 'listingpro-plugin' ) .'</h2><p>'. esc_html__( 'Enter your complete business name for when people who know your business by name and are looking you up.', 'listingpro-plugin' ) .'</p><img src='.$quicktip_title.'>" type="text" name="postTitle" class="form-control margin-bottom-10" id="lptitle" placeholder="' . esc_html__('Staple & Fancy Hotel', 'listingpro-plugin') . '">';
 												if($enableGoogle=="yes"){
 													
-													$output .='<input data-quick-tip="<p>this is test data for quick tip for title field</p>' . $quicktip_image . '" type="hidden" id="lptitleGoogle" name="" class="form-control margin-bottom-10 lptitle" placeholder="' . esc_html__('Staple & Fancy Hotel', 'listingpro-plugin') . '">';
+													$output .='<input data-quick-tip="<h2>'. esc_html__( 'Title', 'listingpro-plugin' ) .'</h2><p>'. esc_html__( 'Enter your complete business name for when people who know your business by name and are looking you up.', 'listingpro-plugin' ) .'</p><img src='.$quicktip_title.'>" type="hidden" id="lptitleGoogle" name="" class="form-control margin-bottom-10 lptitle" placeholder="' . esc_html__('Staple & Fancy Hotel', 'listingpro-plugin') . '">
+													<div id="lp_listing_map"></div>';
 													
 												}
 												$output .='
@@ -390,14 +401,14 @@ function listingpro_shortcode_submit($atts, $content = null) {
         if ($tagline_show == "true")
         {
             $output .= '<div class="lp-tagline-submit-tagline">
-										<label>Does Your Business have a tagline?
+										<label>'. esc_html__( 'Does Your Business have a tagline?', 'listingpro-plugin' ) .'
 										  <input type="checkbox">
 										  <span class="lp-sbt-checkmark"></span>
 										</label>
                                         </div>
                         <div class="form-group ' . $style2_content_class . ' col-xs-12 with-title-cond">';
-            $output .= '            <label for="usr">' . esc_html__( 'Tagline', 'listingpro' ). '</label>';
-            $output .= '            <input data-quick-tip="<h2>Tagline</h2><p>For businesses, taglines are of importance as they help business convey what they want to do and their goals to the customers.</p><img src='.$quicktip_title.'>" type="text" name="tagline_text" class="form-control margin-bottom-10" id="lptagline" placeholder="' . esc_html__('Tagline Example: Best Express Mexican Grill', 'listingpro-plugin') . '">';
+            $output .= '            <label for="usr">' . esc_html__( 'Tagline', 'listingpro-plugin' ). '</label>';
+            $output .= '            <input data-quick-tip="<h2>'. esc_html__( 'Tagline', 'listingpro-plugin' ) .'</h2><p>'. esc_html__( 'For businesses, taglines are of importance as they help business convey what they want to do and their goals to the customers.', 'listingpro-plugin' ) .'</p><img src='.$quicktip_title.'>" type="text" name="tagline_text" class="form-control margin-bottom-10" id="lptagline" placeholder="' . esc_html__('Tagline Example: Best Express Mexican Grill', 'listingpro-plugin') . '">';
             $output .= '        </div>';
         }
         if ($addressSwitch == 1) {
@@ -421,7 +432,7 @@ function listingpro_shortcode_submit($atts, $content = null) {
 										</div>
 									</div>
 									
-									<input data-quick-tip="<h2>Full Address</h2><p>Provide your full address for your business to show up on the map and your customer can get direction.</p><img src='.$quicktip_adress.'>" type="text" class="form-control form-control-st" name="gAddress" id="inputAddress" placeholder="' . esc_html__('Start typing and find your place in google map', 'listingpro-plugin') . '">
+									<input data-quick-tip="<h2>'. esc_html__( 'Full Address', 'listingpro-plugin' ) .'</h2><p>'. esc_html__( 'Provide your full address for your business to show up on the map and your customer can get direction.', 'listingpro-plugin' ) .'</p><img src='.$quicktip_adress.'>" type="text" class="form-control form-control-st" name="gAddress" id="inputAddress" placeholder="' . esc_html__('Start typing and find your place in google map', 'listingpro-plugin') . '">
 									<div class="lp-custom-lat clearfix">
 										<label for="inputAddress">' . $listingGaddcustomText . '</label>
 										<input type="text" class="form-control form-control-st" name="gAddresscustom" id="inputAddresss" placeholder="' . esc_html__('Add address here', 'listingpro-plugin') . '">
@@ -474,7 +485,8 @@ function listingpro_shortcode_submit($atts, $content = null) {
 												</div>
 											</div>';
                     $output .= '<input id="citiess" name="locationn" data-isseleted="false" class="form-control ostsubmitSelect" autocomplete="off" data-country="' . $locArea . '" placeholder="' . esc_html__('select your listing region', 'listingpro-plugin') . '">';
-                    $output .= '</div>';
+                    $output .= '</div>
+						<input type="hidden" name="location">';
                 }
             }
             elseif (!empty($locations_type) && $locations_type == "manual_loc")
@@ -489,11 +501,11 @@ function listingpro_shortcode_submit($atts, $content = null) {
 										</div>';
                 if ($singleLocMode == true)
                 {
-                    $output .= '<select data-quick-tip="<h2>City</h2><p>Provide your city name for your business to show up on the map and your customer can get direction.</p><img src='.$quicktip_adress.'>" data-placeholder="' . esc_html__('select your listing region', 'listingpro-plugin') . '" id="inputCity" name="location[]" class="select2 postsubmitSelect" tabindex="5">';
+                    $output .= '<select data-quick-tip="<h2>'. esc_html__( 'City', 'listingpro-plugin' ) .'</h2><p>'. esc_html__( 'Provide your city name for your business to show up on the map and your customer can get direction.', 'listingpro-plugin' ) .'</p><img src='.$quicktip_adress.'>" data-placeholder="' . esc_html__('select your listing region', 'listingpro-plugin') . '" id="inputCity" name="location[]" class="select2 postsubmitSelect" tabindex="5">';
                 }
                 else
                 {
-                    $output .= '<select data-quick-tip="<h2>Full Address</h2><p>Provide your full address for your business to show up on the map and your customer can get direction.</p><img src='.$quicktip_adress.'>" data-placeholder="' . esc_html__('select your listing region', 'listingpro-plugin') . '" id="inputCity" name="location[]" class="select2 postsubmitSelect" tabindex="5" multiple="multiple">';
+                    $output .= '<select data-quick-tip="<h2>'. esc_html__( 'Full Address', 'listingpro-plugin' ) .'</h2><p>'. esc_html__( 'Provide your full address for your business to show up on the map and your customer can get direction.', 'listingpro-plugin' ) .'</p><img src='.$quicktip_adress.'>" data-placeholder="' . esc_html__('select your listing region', 'listingpro-plugin') . '" id="inputCity" name="location[]" class="select2 postsubmitSelect" tabindex="5" multiple="multiple">';
                 }
 
 
@@ -551,15 +563,23 @@ function listingpro_shortcode_submit($atts, $content = null) {
                 $output .= '
 									<div class="form-group ' . $style2_content_class . ' col-xs-12">
 										<label for="inputPhone">' . $listingPhText . '</label>
-										<input data-quick-tip="<h2>Phone</h2><p>Local phone numbers drive 3x more calls than toll-free numbers. Always use a business phone number and avoid personal phone numbers if possible.</p><img src='.$quicktip_adress.'>" type="text" class="form-control" name="phone" id="inputPhone" placeholder="' . esc_html__('111-111-1234', 'listingpro-plugin') . '">
+										<input data-quick-tip="<h2>'. esc_html__( 'Phone', 'listingpro-plugin' ) .'</h2><p>'. esc_html__( 'Local phone numbers drive 3x more calls than toll-free numbers. Always use a business phone number and avoid personal phone numbers if possible.', 'listingpro-plugin' ) .'</p><img src='.$quicktip_adress.'>" type="text" class="form-control" name="phone" id="inputPhone" placeholder="' . esc_html__('111-111-1234', 'listingpro-plugin') . '">
 									</div>';
             }
+        }
+		if (!empty($whatsappButton)) {
+            $whatsappLable = lp_theme_option('lp_whatsapp_label');
+            $output .= '
+                                <div class="form-group ' . $style2_content_class . ' col-xs-12">
+                                    <label for="inputWhatsapp">' . $whatsappLable . '</label>
+                                    <input data-quick-tip="<h2>'. esc_html__( 'Whatsapp no.', 'listingpro-plugin' ) .'</h2><p>'. esc_html__( 'Whatsapp no for listing detail page.', 'listingpro-plugin' ) .'</p><img src='.$quicktip_adress.'>" type="text" class="form-control" name="whatsapp" id="inputWhatsapp" placeholder="' . esc_html__('+44994981258', 'listingpro-plugin') . '">
+                                </div>';
         }
         if ($webSwitch == 1 && $website_show == "true") {
             $output .= '
 								<div class="form-group ' . $style2_content_class . ' col-xs-12">
 									<label for="inputWebsite">' . $listingWebText . '</label>
-									<input data-quick-tip="<h2>Website</h2><p>Its recommended to provide official website url and avoid landing pages designed for a specific campaign</p><img src='.$quicktip_adress.'>" type="text" class="form-control" name="website" id="inputWebsite" placeholder="' . esc_html__('http://', 'listingpro-plugin') . '">
+									<input data-quick-tip="<h2>'. esc_html__( 'Website', 'listingpro-plugin' ) .'</h2><p>'. esc_html__( 'Its recommended to provide official website url and avoid landing pages designed for a specific campaign', 'listingpro-plugin' ) .'</p><img src='.$quicktip_adress.'>" type="text" class="form-control" name="website" id="inputWebsite" placeholder="' . esc_html__('http://', 'listingpro-plugin') . '">
 								</div>';
         }
 
@@ -567,90 +587,101 @@ function listingpro_shortcode_submit($atts, $content = null) {
         $output .=  '</div>';
 
         $output .= '<div class="white-section border-bottom ' . $style_wrap . '">';
-        $output .=  '<h4 class="white-section-heading">'. esc_html__( 'category & services', 'listingpro' ) .'</h4>';
+        $output .=  '<h4 class="white-section-heading">'. esc_html__( 'category & services', 'listingpro-plugin' ) .'</h4>';
         $output .=  '   <div class="row">';
         $output .= '        <div class="form-group clearfix margin-bottom-0 lp-new-cat-wrape col-md-12">
 									        <label for="inputCategory">' . $listing_cat_text . ' <small>*</small></label>';
-        if ($singleCatMode == true)
-        {
-            $output .= '<select data-quick-tip="<h2>Categories</h2><p>The more specific you get with your categories, the better. You do still want to stay relevant to your business, though. If you ever choose to run ads campaign, your ad will be shown on those categories you select.</p><img src='.$quicktip_cat.'>" data-placeholder="' . esc_html__('Choose Your Business Category', 'listingpro-plugin') . '" id="inputCategory" name="category[]" class="select2 postsubmitSelect" tabindex="5">';
+											
+		if(!empty($cat_plan_id)){
+			/* for pre category selection */
+			$output .='<input type="hidden" name="lppre_plan_cats" value="true" />';
+			$output .= '<select data-quick-tip="<h2>'. esc_html__( 'Categories', 'listingpro-plugin' ) .'</h2><p>'. esc_html__( 'The more specific you get with your categories, the better. You do still want to stay relevant to your business, though. If you ever choose to run ads campaign, your ad will be shown on those categories you select.', 'listingpro-plugin' ) .'</p><img src='.$quicktip_cat.'>" data-placeholder="' . esc_html__('Choose Your Business Category', 'listingpro-plugin') . '" id="inputCategory" name="category[]" class="select2 postsubmitSelect" tabindex="5">';
+			$selectedCatObj = get_term_by('id', $cat_plan_id, 'listing-category');
+			$selectedCatName = $selectedCatObj->name;
+			$output .= '<option value="'.$cat_plan_id.'">' . $selectedCatName . '</option>';
+			$output .='</select>';
+			
+		}else{
+			if ($singleCatMode == true){
+				$output .= '<select data-quick-tip="<h2>'. esc_html__( 'Categories', 'listingpro-plugin' ) .'</h2><p>'. esc_html__( 'The more specific you get with your categories, the better. You do still want to stay relevant to your business, though. If you ever choose to run ads campaign, your ad will be shown on those categories you select.', 'listingpro-plugin' ) .'</p><img src='.$quicktip_cat.'>" data-placeholder="' . esc_html__('Choose Your Business Category', 'listingpro-plugin') . '" id="inputCategory" name="category[]" class="select2 postsubmitSelect" tabindex="5">';
 
-        }
-        else
-        {
-            $output .= '<select data-quick-tip="<h2>Categories</h2><p>The more specific you get with your categories, the better. You do still want to stay relevant to your business, though. If you ever choose to run ads campaign, your ad will be shown on those categories you select.</p><img src='.$quicktip_cat.'>" data-placeholder="' . esc_html__('Choose Your Business Category', 'listingpro-plugin') . '" id="inputCategory" name="category[]" class="select2 postsubmitSelect" tabindex="5" multiple="multiple">';
-        }
-        $output .= '<option value="">' . esc_html__('Select Category', 'listingpro-plugin') . '</option>';
-        $args = array(
-            'post_type' => 'listing',
-            'order' => 'ASC',
-            'hide_empty' => false,
-            'parent' => 0,
-        );
-        $categories = get_terms('listing-category', $args);
-        if (!empty($categories))
-        {
-            foreach ($categories as $category)
-            {
+			}
+			else
+			{
+				$output .= '<select data-quick-tip="<h2>'. esc_html__( 'Categories', 'listingpro-plugin' ) .'</h2><p>'. esc_html__( 'The more specific you get with your categories, the better. You do still want to stay relevant to your business, though. If you ever choose to run ads campaign, your ad will be shown on those categories you select.', 'listingpro-plugin' ) .'</p><img src='.$quicktip_cat.'>" data-placeholder="' . esc_html__('Choose Your Business Category', 'listingpro-plugin') . '" id="inputCategory" name="category[]" class="select2 postsubmitSelect" tabindex="5" multiple="multiple">';
+			}
+			$output .= '<option value="">' . esc_html__('Select Category', 'listingpro-plugin') . '</option>';
+			$args = array(
+				'post_type' => 'listing',
+				'order' => 'ASC',
+				'hide_empty' => false,
+				'parent' => 0,
+			);
+			$categories = get_terms('listing-category', $args);
+			if (!empty($categories))
+			{
+				foreach ($categories as $category)
+				{
 
-                $doAjax = false;
-                $doAjax = lp_category_has_features($category->term_id);
-                $output .= '<option data-doajax="' . $doAjax . '" value="' . $category->term_id . '">' . $category->name . '</option>';
+					$doAjax = false;
+					$doAjax = lp_category_has_features($category->term_id);
+					$output .= '<option data-doajax="' . $doAjax . '" value="' . $category->term_id . '">' . $category->name . '</option>';
 
-                $argscatChild = array(
-                    'order' => 'ASC',
-                    'hide_empty' => false,
-                    'hierarchical' => false,
-                    'parent' => $category->term_id,
+					$argscatChild = array(
+						'order' => 'ASC',
+						'hide_empty' => false,
+						'hierarchical' => false,
+						'parent' => $category->term_id,
 
-                );
-                $childCats = get_terms('listing-category', $argscatChild);
-                if (!empty($childCats))
-                {
-                    foreach ($childCats as $subID)
-                    {
-                        $doAjax = false;
-                        $doAjax = lp_category_has_features($subID->term_id);
-                        $output .= '<option data-doajax="' . $doAjax . '"  class="sub_cat" value="' . $subID->term_id . '">-&nbsp;&nbsp;' . $subID->name . '</option>';
+					);
+					$childCats = get_terms('listing-category', $argscatChild);
+					if (!empty($childCats))
+					{
+						foreach ($childCats as $subID)
+						{
+							$doAjax = false;
+							$doAjax = lp_category_has_features($subID->term_id);
+							$output .= '<option data-doajax="' . $doAjax . '"  class="sub_cat" value="' . $subID->term_id . '">-&nbsp;&nbsp;' . $subID->name . '</option>';
 
-                        $childCatsof = array(
-                            'order' => 'ASC',
-                            'hide_empty' => false,
-                            'hierarchical' => false,
-                            'parent' => $subID->term_id,
-                        );
-                        $childofCats = get_terms('listing-category', $childCatsof);
-                        if (!empty($childofCats))
-                        {
-                            foreach ($childofCats as $subIDD)
-                            {
-                                $doAjax = false;
-                                $doAjax = lp_category_has_features($subIDD->term_id);
-                                $output .= '<option data-doajax="' . $doAjax . '"  class="sub_cat" value="' . $subIDD->term_id . '">--&nbsp;&nbsp;' . $subIDD->name . '</option>';
+							$childCatsof = array(
+								'order' => 'ASC',
+								'hide_empty' => false,
+								'hierarchical' => false,
+								'parent' => $subID->term_id,
+							);
+							$childofCats = get_terms('listing-category', $childCatsof);
+							if (!empty($childofCats))
+							{
+								foreach ($childofCats as $subIDD)
+								{
+									$doAjax = false;
+									$doAjax = lp_category_has_features($subIDD->term_id);
+									$output .= '<option data-doajax="' . $doAjax . '"  class="sub_cat" value="' . $subIDD->term_id . '">--&nbsp;&nbsp;' . $subIDD->name . '</option>';
 
-                                $childCatsoff = array(
-                                    'order' => 'ASC',
-                                    'hide_empty' => false,
-                                    'hierarchical' => false,
-                                    'parent' => $subIDD->term_id,
-                                );
-                                $childofCatss = get_terms('listing-category', $childCatsoff);
-                                if (!empty($childofCatss))
-                                {
-                                    foreach ($childofCatss as $subIDDD)
-                                    {
-                                        $doAjax = false;
-                                        $doAjax = lp_category_has_features($subIDDD->term_id);
-                                        $output .= '<option data-doajax="' . $doAjax . '"  class="sub_cat" value="' . $subIDDD->term_id . '">---&nbsp;&nbsp;' . $subIDDD->name . '</option>';
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        $output .= '            </select>';
+									$childCatsoff = array(
+										'order' => 'ASC',
+										'hide_empty' => false,
+										'hierarchical' => false,
+										'parent' => $subIDD->term_id,
+									);
+									$childofCatss = get_terms('listing-category', $childCatsoff);
+									if (!empty($childofCatss))
+									{
+										foreach ($childofCatss as $subIDDD)
+										{
+											$doAjax = false;
+											$doAjax = lp_category_has_features($subIDDD->term_id);
+											$output .= '<option data-doajax="' . $doAjax . '"  class="sub_cat" value="' . $subIDDD->term_id . '">---&nbsp;&nbsp;' . $subIDDD->name . '</option>';
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			$output .= '            </select>';
+		}
         $output .=  '       </div>';
         $output .=  '   </div>';
         $output .=  '</div>';
@@ -666,19 +697,21 @@ function listingpro_shortcode_submit($atts, $content = null) {
                                         </div>';
         $output .=  '   </div>';
         $output .=  '</div>';
-
+		
+		if ($price_show == "true" && ($currencySwitch == 1 || $digitPriceSwitch == 1 || $priceSwitch == 1))
+        {
         $output .= '<div class="white-section border-bottom ' . $style_wrap . '">';
-        $output .=  '<h4 class="white-section-heading">'. esc_html__( 'price details', 'listingpro' ) .'</h4>';
+        $output .=  '<h4 class="white-section-heading">'. esc_html__( 'price details', 'listingpro-plugin' ) .'</h4>';
         $output .=  '   <div class="row">';
-        if ($currencySwitch == 1) {
+        if ($currencySwitch == 1 && $price_show == "true") {
             $lp_priceSymbol = $listingpro_options['listing_pricerange_symbol'];
             $lp_priceSymbol2 = $lp_priceSymbol . $lp_priceSymbol;
             $lp_priceSymbol3 = $lp_priceSymbol2 . $lp_priceSymbol;
             $lp_priceSymbol4 = $lp_priceSymbol3 . $lp_priceSymbol;
             $output .= '
 									<div class="col-md-4 clearfix">
-										<label for="price_status test-edit">' . $listingCurrText . '</label>
-										<select data-quick-tip="<h2>Price Range</h2><p>Setting a price range can help attract the right targeted audience and will avoid any awkward situations for both customers and the owner.</p><img src='.$quicktip_price.'>" id="price_status" name="price_status" class="chosen-select chosen-select7  postsubmitSelect" tabindex="5">
+										<label for="price_status">' . $listingCurrText . '</label>
+										<select data-quick-tip="<h2>'. esc_html__( 'Price Range', 'listingpro-plugin' ) .'</h2><p>'. esc_html__( 'Setting a price range can help attract the right targeted audience and will avoid any awkward situations for both customers and the owner.', 'listingpro-plugin' ) .'</p><img src='.$quicktip_price.'>" id="price_status" name="price_status" class="chosen-select chosen-select7  postsubmitSelect" tabindex="5">
 											<option value="notsay">' . esc_html__('Not to say', 'listingpro-plugin') . '</option>
 											<option value="inexpensive"> ' . $lp_priceSymbol . ' - ' . esc_html__('Inexpensive', 'listingpro-plugin') . '</option>
 											<option value="moderate"> ' . $lp_priceSymbol2 . ' - ' . esc_html__('Moderate', 'listingpro-plugin') . '</option>
@@ -692,25 +725,28 @@ function listingpro_shortcode_submit($atts, $content = null) {
                 $output .= '
 										<div class="col-md-4">
 											<label for="listingprice">' . $listingDigitText . '</label>
-											<input data-quick-tip="<h2>Price From</h2><p>Being honest with your customers can build a strong relationship. Dont hesitate to include.</p><img src='.$quicktip_price.'>" type="text" name="listingprice" class="form-control" id="listingprice" placeholder="' . esc_html__('Price From', 'listingpro-plugin') . '">
+											<input data-quick-tip="<h2>'. esc_html__( 'Price From', 'listingpro-plugin' ) .'</h2><p>'. esc_html__( 'Being honest with your customers can build a strong relationship. Dont hesitate to include.', 'listingpro-plugin' ) .'</p><img src='.$quicktip_price.'>" type="text" name="listingprice" class="form-control" id="listingprice" placeholder="' . esc_html__('Price From', 'listingpro-plugin') . '">
 										</div>';
             }
             if ($priceSwitch == 1) {
                 $output .= '
 										<div class="col-md-4">
 											<label for="listingptext">' . $listingPriceText . '</label>
-											<input data-quick-tip="<h2>Price To</h2><p>Being honest with your customers can build a strong relationship. Dont hesitate to include.</p><img src='.$quicktip_price.'>" type="text" name="listingptext" class="form-control" id="listingptext" placeholder="' . esc_html__('Price To', 'listingpro-plugin') . '">
+											<input data-quick-tip="<h2>'. esc_html__( 'Price To', 'listingpro-plugin' ) .'</h2><p>'. esc_html__( 'Being honest with your customers can build a strong relationship. Dont hesitate to include.', 'listingpro-plugin' ) .'</p><img src='.$quicktip_price.'>" type="text" name="listingptext" class="form-control" id="listingptext" placeholder="' . esc_html__('Price To', 'listingpro-plugin') . '">
 										</div>';
             }
         }
         $output .=  '   </div>';
         $output .=  '</div>';
-
+		
+		}
+		
+		
         if ($ophSwitch == 1 && $hours_show == "true")
         {
 
             $output .= '<div class="white-section border-bottom ' . $style_wrap . '">';
-            $output .=  '<h4 class="white-section-heading bussin-top" data-quick-tip="<h2>Business Hours</h2><p>You dont want your customers to stop by when you are closed so always try to keep your hour up to date. Keeping your store closed when your business indicate its open on the directory could lead to a negative review.</p><img src='.$quicktip_biz.'>">'. esc_html__( 'business hours', 'listingpro' ) .'</h4>';
+            $output .=  '<h4 class="white-section-heading bussin-top" data-quick-tip="<h2>'. esc_html__( 'Business Hours', 'listingpro-plugin' ) .'</h2><p>'. esc_html__( 'You dont want your customers to stop by when you are closed so always try to keep your hour up to date. Keeping your store closed when your business indicate its open on the directory could lead to a negative review.', 'listingpro-plugin' ) .'</p><img src='.$quicktip_biz.'>">'. esc_html__( 'business hours', 'listingpro-plugin' ) .'</h4>';
             $output .=  '   <div class="row">';
             $output .= '        <div class="form-group clearfix margin-bottom-0 col-md-12">';
             $fakeID = '';
@@ -720,7 +756,7 @@ function listingpro_shortcode_submit($atts, $content = null) {
             $output .=  '</div>';
         }
 
-        if ($social_show == "true")
+        if ($social_show == "true" && $social_show_switch == true)
         {
             if ($twSwitch == 1) {$output .=  '<input type="hidden" class="form-control" name="twitter" id="inputTwitter">';}
             if ($fbSwitch == 1) {$output .=  '<input type="hidden" class="form-control" name="facebook" id="inputFacebook">';}
@@ -730,15 +766,15 @@ function listingpro_shortcode_submit($atts, $content = null) {
             if ($instaSwitch == 1) {$output .=  '<input type="hidden" class="form-control" name="instagram" id="inputInstagram">';}
 
             $output .= '<div class="white-section border-bottom ' . $style_wrap . '">';
-            $output .=  '<h4 class="white-section-heading">'. esc_html__( 'social media', 'listingpro' ) .'</h4>';
+            $output .=  '<h4 class="white-section-heading">'. esc_html__( 'social media', 'listingpro-plugin' ) .'</h4>';
             $output .=  '   <div class="row">';
             $output .=  '       <div class="style2-social-list-section"></div>';
 
 
             $output .=  '<div class="style2-add-new-social-sec">';
-            $output .=  '    <div class="col-md-2">'.esc_html__( 'Select', 'listingpro' ).'</div>';
+            $output .=  '    <div class="col-md-2">'.esc_html__( 'Select', 'listingpro-plugin' ).'</div>';
             $output .=  '    <div class="col-md-3">';
-            $output .=  '       <select data-quick-tip="<h2>Social Media</h2><p>Being honest with your customers can build a strong relationship. Dont hesitate to include.</p><img src='.$quicktip_price.'>" class="select2" id="get_media"><option>'. esc_html__( 'Please Select', 'listingpro' ) .'</option>';
+            $output .=  '       <select data-quick-tip="<h2>'. esc_html__( 'Social Media', 'listingpro-plugin' ) .'</h2><p>'. esc_html__( 'Being honest with your customers can build a strong relationship. Dont hesitate to include.', 'listingpro-plugin' ) .'</p><img src='.$quicktip_price.'>" class="select2" id="get_media"><option>'. esc_html__( 'Please Select', 'listingpro-plugin' ) .'</option>';
             if ($instaSwitch == 1) {$output .=  '<option>' . esc_html__('Instagram', 'listingpro-plugin') . '</option>';}
             if ($ytSwitch == 1) {$output .=  '<option>' . esc_html__('Youtube', 'listingpro-plugin') . '</option>';}
             if ($googleSwitch == 1) {$output .=  '<option>' . esc_html__('Google Plus', 'listingpro-plugin') . '</option>';}
@@ -760,7 +796,7 @@ function listingpro_shortcode_submit($atts, $content = null) {
         }
         if ($faq_switch == 1 && $faqs_show == "true") {
             $output .= '<div class="white-section border-bottom ' . $style_wrap . '">';
-            $output .=  '<h4 class="white-section-heading">'. esc_html__( 'frequently asked questions', 'listingpro' ) .'</h4>';
+            $output .=  '<h4 class="white-section-heading">'. esc_html__( 'frequently asked questions', 'listingpro-plugin' ) .'</h4>';
             $output .=  '   <div class="row">';
             $output .= '<div class="form-group clearfix margin-bottom-0 col-md-12">
 										<div id="tabs" class="lsiting-submit-faq-tabs clearfix pos-relative" data-faqtitle="' . $listing_faq_text . '">
@@ -776,10 +812,10 @@ function listingpro_shortcode_submit($atts, $content = null) {
                                                 </div>
                                                 <div class="col-md-10">
                                                     <div class="form-group">
-                                                        <input data-quick-tip="<h2>FAQ</h2><p>Share some of the most asked question and answers so they know you are serious about your business and truly care for your customers.</p><img src='.$quicktip_faq.'>" type="text" class="form-control" data-faqmaintitle="' . $listing_faq_text . '" name="faq[1]" id="inpuFaqsLp" placeholder="' . esc_html__('FAQ', 'listingpro-plugin') . '">
+                                                        <input data-quick-tip="<h2>'. esc_html__( 'FAQ', 'listingpro-plugin' ) .'</h2><p>'. esc_html__( 'Share some of the most asked question and answers so they know you are serious about your business and truly care for your customers.', 'listingpro-plugin' ) .'</p><img src='.$quicktip_faq.'>" type="text" class="form-control" data-faqmaintitle="' . $listing_faq_text . '" name="faq[1]" id="inpuFaqsLp" placeholder="' . esc_html__('FAQ', 'listingpro-plugin') . '">
                                                     </div>
                                                     <div class="form-group">												
-                                                        <textarea data-quick-tip="<h2>FAQ Answers</h2><p>Share some of the most asked question and answers so they know you are serious about your business and truly care for your customers.</p><img src='.$quicktip_faq.'>" class="form-control" placeholder="' . esc_html__('Answer', 'listingpro-plugin') . '" name="faqans[1]" rows="8" id="inputDescriptionFaq"></textarea>
+                                                        <textarea data-quick-tip="<h2>'. esc_html__( 'FAQ Answers', 'listingpro-plugin' ) .'</h2><p>'. esc_html__( 'Share some of the most asked question and answers so they know you are serious about your business and truly care for your customers.', 'listingpro-plugin' ) .'</p><img src='.$quicktip_faq.'>" class="form-control" placeholder="' . esc_html__('Answer', 'listingpro-plugin') . '" name="faqans[1]" rows="8" id="inputDescriptionFaq"></textarea>
                                                     </div>
                                                 </div>
 									 	 	</div>										
@@ -791,7 +827,7 @@ function listingpro_shortcode_submit($atts, $content = null) {
         }
 
         $output .= '<div class="white-section border-bottom ' . $style_wrap . '">';
-        $output .=  '<h4 class="white-section-heading description-tip" data-quick-tip="<h2>Description</h2><p>Tell briefly what your customers what to hear about your business has to offer that is unique and you do better then everyone else.</p><img src='.$quicktip_desc.'>">'. esc_html__( 'more info', 'listingpro' ) .'</h4>';
+        $output .=  '<h4 class="white-section-heading description-tip" data-quick-tip="<h2>'. esc_html__( 'Description', 'listingpro-plugin' ) .'</h2><p>'. esc_html__( 'Tell briefly what your customers what to hear about your business has to offer that is unique and you do better then everyone else.', 'listingpro-plugin' ) .'</p><img src='.$quicktip_desc.'>">'. esc_html__( 'more info', 'listingpro-plugin' ) .'</h4>';
         $output .=  '   <div class="row">';
         $output .=  '       <div class="form-group ' . $style2_content_class . ' col-xs-12">';
         $placeholder_for_decs = esc_html__('Detail description about your listing', 'listingpro-plugin');
@@ -815,10 +851,9 @@ function listingpro_shortcode_submit($atts, $content = null) {
         $output .=  '   </div>';
         $output .=  '</div>';
 
-        if ($video_show == "true" || $gallery_show == "true" || !empty($featuredimg_show))
-        {
+         if ($video_show == "true" || $gallery_show == "true" || lp_theme_option('lp_featured_file_switch') || $b_logo == 1 ){
             $output .= '<div class="white-section border-bottom ' . $style_wrap . '">';
-            $output .=  '<h4 class="white-section-heading">'. esc_html__( 'media', 'listingpro' ) .'</h4>';
+            $output .=  '<h4 class="white-section-heading">'. esc_html__( 'media', 'listingpro-plugin' ) .'</h4>';
             $output .=  '   <div class="row">';
             if ($vdoSwitch == 1)
             {
@@ -826,7 +861,7 @@ function listingpro_shortcode_submit($atts, $content = null) {
                 {
                     $output .= '<div class="form-group clearfix ' . $style2_content_class . '">
                                                 <label for="postVideo">' . $listingVdoText . '<span>' . esc_html__('(Optional)', 'listingpro-plugin') . '</span></label>
-                                                <input data-quick-tip="<h2>Video</h2><p>Take it to next level and provide more details about what you have to offer. Select all that applies to you.</p><img src='.$quicktip_video.'>" type="text" class="form-control" name="postVideo" id="postVideo" placeholder="' . esc_html__('ex: https://youtu.be/lY2yjAdbvdQ', 'listingpro-plugin') . '">
+                                                <input data-quick-tip="<h2>'. esc_html__( 'Video', 'listingpro-plugin' ) .'</h2><p>'. esc_html__( 'Take it to next level and provide more details about what you have to offer. Select all that applies to you.', 'listingpro-plugin' ) .'</p><img src='.$quicktip_video.'>" type="text" class="form-control" name="postVideo" id="postVideo" placeholder="' . esc_html__('ex: https://youtu.be/lY2yjAdbvdQ', 'listingpro-plugin') . '">
                                             </div>';
                 }
             }
@@ -834,7 +869,7 @@ function listingpro_shortcode_submit($atts, $content = null) {
             {
                 if ($gallery_show == "true")
                 {
-                    $output .= '<div class="col-md-12 form-group clearfix margin-bottom-0 lp-img-gall-upload-section" data-quick-tip="<h2>Gallery</h2><img src='.$quicktip_gallery.'>">
+                    $output .= '<div class="col-md-12 form-group clearfix margin-bottom-0 lp-img-gall-upload-section lplistgallery" data-quick-tip="<h2>'. esc_html__( 'Gallery', 'listingpro-plugin' ) .'</h2><img src='.$quicktip_gallery.'>" data-savedgallerysize="0">
                                                 <div class="col-sm-12 padding-left-0 padding-right-0">
                                                     <label for="postVideo">' . esc_html__('Images ', 'listingpro-plugin') . '</label>	
                                                     <div class="jFiler-input-dragDrop pos-relative">
@@ -847,7 +882,7 @@ function listingpro_shortcode_submit($atts, $content = null) {
                                                             </div>
                                                             <a class="jFiler-input-choose-btn blue">' . esc_html__('Browse Files', 'listingpro-plugin') . '</a>
                                                             <div class="filediv">
-                                                                <input type="file" name="listingfiles[]" id="lpFIleGalleryy" multiple>
+                                                                <input type="file" name="listingfiles[]" class="file" multiple>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -857,14 +892,17 @@ function listingpro_shortcode_submit($atts, $content = null) {
             }
             $output .=  '   </div>';
             $output .=  '   <div class="row">';
+			if( lp_theme_option('lp_featured_file_switch') )
+           {
             $output .= '<div class="form-group clearfix margin-bottom-0 margin-top-10 lp-listing-featuredimage col-md-6">
                                             <label class="margin-top-10">' . esc_html__('Upload Feature Image', 'listingpro-plugin') . '</label>
                                             <div class="custom-file">
                                                 <input style="display:none;" type="file" name="lp-featuredimage[]" id="lp-featuredimage" class="inputfile inputfile-3" data-multiple-caption="{count} files selected" />
-                                                <label class="featured-img-label" for="lp-featuredimage" data-quick-tip="<h2>Featured Image</h2><p>Quick tip for featured images</p><img src='.$quicktip_gallery.'>"><p>' . esc_html__('Browse', 'listingpro-plugin') . '</p><span>' . esc_html__('Choose a file', 'listingpro-plugin') . '&hellip;</span></label>
+                                                <label class="featured-img-label" for="lp-featuredimage" data-quick-tip="<h2>'. esc_html__( 'Featured Image', 'listingpro-plugin' ) .'</h2><p>'. esc_html__( 'Quick tip for featured images', 'listingpro-plugin' ) .'</p><img src='.$quicktip_gallery.'>"><p>' . esc_html__('Browse', 'listingpro-plugin') . '</p><span>' . esc_html__('Choose a file', 'listingpro-plugin') . '&hellip;</span></label>
                                             </div>
                                         </div>
                                         ';
+		   }
 
             $b_logo = $listingpro_options['business_logo_switch'];
             if ($b_logo == 1) {
@@ -873,7 +911,7 @@ function listingpro_shortcode_submit($atts, $content = null) {
 									
 									<div class="custom-file">
 										<input style="display:none;" type="file" name="business_logo[]" id="business_logo" class="inputfile inputfile-4" />
-										<label class="b-logo-img-label" for="business_logo" data-quick-tip="quick tip for business logo"><p>' . esc_html__('Browser', 'listingpro-plugin') . '</p><span>' . esc_html__('Choose a file', 'listingpro-plugin') . '&hellip;</span></label>
+										<label class="b-logo-img-label" for="business_logo" data-quick-tip="'. esc_html__( 'quick tip for business logo', 'listingpro-plugin' ) .'"><p>' . esc_html__('Browser', 'listingpro-plugin') . '</p><span>' . esc_html__('Choose a file', 'listingpro-plugin') . '&hellip;</span></label>
 							</div>
 								</div>';
             }
@@ -909,10 +947,11 @@ function listingpro_shortcode_submit($atts, $content = null) {
 										<p>' . esc_html__('Put your listing title here and tell the name of your business to the world.', 'listingpro-plugin') . '</p>
 									</div>
 								</div>
-										<input data-quick-tip="<p>this is test data for quick tip for title field</p>' . $quicktip_image . '" type="text" name="postTitle" class="form-control margin-bottom-10" id="lptitle" placeholder="' . esc_html__('Staple & Fancy Hotel', 'listingpro-plugin') . '">';
+										<input data-quick-tip="<p>'. esc_html__( 'this is test data for quick tip for title field', 'listingpro-plugin' ) .'</p>' . $quicktip_image . '" type="text" name="postTitle" class="form-control margin-bottom-10" id="lptitle" placeholder="' . esc_html__('Staple & Fancy Hotel', 'listingpro-plugin') . '">';
 										if($enableGoogle=="yes"){
 											
-											$output .='<input data-quick-tip="<p>this is test data for quick tip for title field</p>' . $quicktip_image . '" type="hidden" id="lptitleGoogle" name="" class="form-control margin-bottom-10 lptitle"  placeholder="' . esc_html__('Staple & Fancy Hotel', 'listingpro-plugin') . '">';
+											$output .='<input data-quick-tip="<p>'. esc_html__( 'this is test data for quick tip for title field', 'listingpro-plugin' ) .'</p>' . $quicktip_image . '" type="hidden" id="lptitleGoogle" name="" class="form-control margin-bottom-10 lptitle"  placeholder="' . esc_html__('Staple & Fancy Hotel', 'listingpro-plugin') . '">
+											<div id="lp_listing_map"></div>';
 											
 										}
 									
@@ -923,7 +962,7 @@ function listingpro_shortcode_submit($atts, $content = null) {
        
         if ($tagline_show == "true") {
             $output .= '
-												<input data-quick-tip="<p>this is test data for quick tip for tagline field</p>' . $quicktip_image . '" type="text" name="tagline_text" class="form-control margin-bottom-10" id="lptagline" placeholder="' . esc_html__('Tagline Example: Best Express Mexican Grill', 'listingpro-plugin') . '">';
+												<input data-quick-tip="<p>'. esc_html__( 'this is test data for quick tip for tagline field', 'listingpro-plugin' ) .'</p>' . $quicktip_image . '" type="text" name="tagline_text" class="form-control margin-bottom-10" id="lptagline" placeholder="' . esc_html__('Tagline Example: Best Express Mexican Grill', 'listingpro-plugin') . '">';
         }
         $output .= '
 							</div>';
@@ -1002,9 +1041,9 @@ function listingpro_shortcode_submit($atts, $content = null) {
 
 
                 if ($singleLocMode == true) {
-                    $output .= '<select data-quick-tip="<p>quick tip data for location field</p>' . $quicktip_image . '" data-placeholder="' . esc_html__('select your listing region', 'listingpro-plugin') . '" id="inputCity" name="location[]" class="select2 postsubmitSelect" tabindex="5">';
+                    $output .= '<select data-quick-tip="<p>'. esc_html__( 'quick tip data for location field', 'listingpro-plugin' ) .'</p>' . $quicktip_image . '" data-placeholder="' . esc_html__('select your listing region', 'listingpro-plugin') . '" id="inputCity" name="location[]" class="select2 postsubmitSelect" tabindex="5">';
                 } else {
-                    $output .= '<select data-quick-tip="<p>quick tip data for location field</p>' . $quicktip_image . '" data-placeholder="' . esc_html__('select your listing region', 'listingpro-plugin') . '" id="inputCity" name="location[]" class="select2 postsubmitSelect" tabindex="5" multiple="multiple">';
+                    $output .= '<select data-quick-tip="<p>'. esc_html__( 'quick tip data for location field', 'listingpro-plugin' ) .'</p>' . $quicktip_image . '" data-placeholder="' . esc_html__('select your listing region', 'listingpro-plugin') . '" id="inputCity" name="location[]" class="select2 postsubmitSelect" tabindex="5" multiple="multiple">';
                 }
 
 
@@ -1080,7 +1119,7 @@ function listingpro_shortcode_submit($atts, $content = null) {
 										</div>
 									</div>
 									
-									<input data-quick-tip="<p>this is test infor address field</p>' . $quicktip_image . '" type="text" class="form-control" name="gAddress" id="inputAddress" placeholder="' . esc_html__('Start typing and find your place in google map', 'listingpro-plugin') . '">
+									<input data-quick-tip="<p>'. esc_html__( 'this is test infor address field', 'listingpro-plugin' ) .'</p>' . $quicktip_image . '" type="text" class="form-control" name="gAddress" id="inputAddress" placeholder="' . esc_html__('Start typing and find your place in google map', 'listingpro-plugin') . '">
 									<div class="lp-custom-lat clearfix">
 										<label for="inputAddress">' . $listingGaddcustomText . '</label>
 										<input type="text" class="form-control" name="gAddresscustom" id="inputAddresss" placeholder="' . esc_html__('Add address here', 'listingpro-plugin') . '">
@@ -1104,15 +1143,23 @@ function listingpro_shortcode_submit($atts, $content = null) {
                 $output .= '
 									<div class="form-group ' . $style2_content_class . ' col-xs-12">
 										<label for="inputPhone">' . $listingPhText . '</label>
-										<input data-quick-tip="<p>this is quick tip info for phone field</p>' . $quicktip_image . '" type="text" class="form-control" name="phone" id="inputPhone" placeholder="' . esc_html__('111-111-1234', 'listingpro-plugin') . '">
+										<input data-quick-tip="<p>'. esc_html__( 'this is quick tip info for phone field', 'listingpro-plugin' ) .'</p>' . $quicktip_image . '" type="text" class="form-control" name="phone" id="inputPhone" placeholder="' . esc_html__('111-111-1234', 'listingpro-plugin') . '">
 									</div>';
             }
+        }
+		if (!empty($whatsappButton)) {
+            $whatsappLable = lp_theme_option('lp_whatsapp_label');
+            $output .= '
+                                <div class="form-group ' . $style2_content_class . ' col-xs-12">
+                                    <label for="inputWhatsapp">' . $whatsappLable . '</label>
+                                    <input data-quick-tip="<h2>'. esc_html__( 'Whatsapp no.', 'listingpro-plugin' ) .'</h2><p>'. esc_html__( 'Whatsapp no for listing detail page.', 'listingpro-plugin' ) .'</p><img src='.$quicktip_adress.'>" type="text" class="form-control" name="whatsapp" id="inputWhatsapp" placeholder="' . esc_html__('+44994981258', 'listingpro-plugin') . '">
+                                </div>';
         }
         if ($webSwitch == 1 && $website_show == "true") {
             $output .= '
 								<div class="form-group ' . $style2_content_class . ' col-xs-12">
 									<label for="inputWebsite">' . $listingWebText . '</label>
-									<input data-quick-tip="<p>this is quick tip info for website field</p>' . $quicktip_image . '" type="text" class="form-control" name="website" id="inputWebsite" placeholder="' . esc_html__('http://', 'listingpro-plugin') . '">
+									<input data-quick-tip="<p>'. esc_html__( 'this is quick tip info for website field', 'listingpro-plugin' ) .'</p>' . $quicktip_image . '" type="text" class="form-control" name="website" id="inputWebsite" placeholder="' . esc_html__('http://', 'listingpro-plugin') . '">
 								</div>';
         }
         $output .= '
@@ -1133,97 +1180,103 @@ function listingpro_shortcode_submit($atts, $content = null) {
         $output .= '
 								<div class="form-group clearfix margin-bottom-0 lp-new-cat-wrape">
 									<label for="inputCategory">' . $listing_cat_text . ' <small>*</small></label>';
+		
+		if(!empty($cat_plan_id)){
+			/* for pre category selection */
+			$output .='<input type="hidden" name="lppre_plan_cats" value="true" />';
+			$output .= '
+					<select data-placeholder="' . esc_html__('Choose Your Business Category', 'listingpro-plugin') . '" id="inputCategory" name="category[]" class="select2 postsubmitSelect" tabindex="5">';
+					$selectedCatObj = get_term_by('id', $cat_plan_id, 'listing-category');
+					$selectedCatName = $selectedCatObj->name;
+					$output .= '<option value="'.$cat_plan_id.'">' . $selectedCatName . '</option>';
+			$output .='</select>';
+			
+		}else{
 
-        if ($singleCatMode == true) {
-            $output .= '
-										<select data-placeholder="' . esc_html__('Choose Your Business Category', 'listingpro-plugin') . '" id="inputCategory" name="category[]" class="select2 postsubmitSelect" tabindex="5">';
-        } else {
-            $output .= '
-										<select data-placeholder="' . esc_html__('Choose Your Business Category', 'listingpro-plugin') . '" id="inputCategory" name="category[]" class="select2 postsubmitSelect" tabindex="5" multiple="multiple">';
-        }
-        $output .= '<option value="">' . esc_html__('Select Category', 'listingpro-plugin') . '</option>';
-        $args = array(
-            'post_type' => 'listing',
-            'order' => 'ASC',
-            'hide_empty' => false,
-            'parent' => 0,
-        );
-        $categories = get_terms('listing-category', $args);
-        if (!empty($categories)) {
-            foreach ($categories as $category) {
-                $doAjax = false;
-                $doAjax = lp_category_has_features($category->term_id);
-                $output .= '<option data-doajax="' . $doAjax . '" value="' . $category->term_id . '">' . $category->name . '</option>';
+			if ($singleCatMode == true) {
+				$output .= '
+											<select data-placeholder="' . esc_html__('Choose Your Business Category', 'listingpro-plugin') . '" id="inputCategory" name="category[]" class="select2 postsubmitSelect" tabindex="5">';
+			} else {
+				$output .= '
+											<select data-placeholder="' . esc_html__('Choose Your Business Category', 'listingpro-plugin') . '" id="inputCategory" name="category[]" class="select2 postsubmitSelect" tabindex="5" multiple="multiple">';
+			}
+			$output .= '<option value="">' . esc_html__('Select Category', 'listingpro-plugin') . '</option>';
+			$args = array(
+				'post_type' => 'listing',
+				'order' => 'ASC',
+				'hide_empty' => false,
+				'parent' => 0,
+			);
+			$categories = get_terms('listing-category', $args);
+			if (!empty($categories)) {
+				foreach ($categories as $category) {
+					$doAjax = false;
+					$doAjax = lp_category_has_features($category->term_id);
+					$output .= '<option data-doajax="' . $doAjax . '" value="' . $category->term_id . '">' . $category->name . '</option>';
 
-                $argscatChild = array(
-                    'order' => 'ASC',
-                    'hide_empty' => false,
-                    'hierarchical' => false,
-                    'parent' => $category->term_id,
+					$argscatChild = array(
+						'order' => 'ASC',
+						'hide_empty' => false,
+						'hierarchical' => false,
+						'parent' => $category->term_id,
 
-                );
-                $childCats = get_terms('listing-category', $argscatChild);
-                if (!empty($childCats)) {
+					);
+					$childCats = get_terms('listing-category', $argscatChild);
+					if (!empty($childCats)) {
 
-                    foreach ($childCats as $subID) {
-                        $doAjax = false;
-                        $doAjax = lp_category_has_features($subID->term_id);
-                        $output .= '<option data-doajax="' . $doAjax . '"  class="sub_cat" value="' . $subID->term_id . '">-&nbsp;&nbsp;' . $subID->name . '</option>';
+						foreach ($childCats as $subID) {
+							$doAjax = false;
+							$doAjax = lp_category_has_features($subID->term_id);
+							$output .= '<option data-doajax="' . $doAjax . '"  class="sub_cat" value="' . $subID->term_id . '">-&nbsp;&nbsp;' . $subID->name . '</option>';
 
-                        $childCatsof = array(
-                            'order' => 'ASC',
-                            'hide_empty' => false,
-                            'hierarchical' => false,
-                            'parent' => $subID->term_id,
-                        );
-                        $childofCats = get_terms('listing-category', $childCatsof);
-                        if (!empty($childofCats)) {
-                            foreach ($childofCats as $subIDD) {
-                                $doAjax = false;
-                                $doAjax = lp_category_has_features($subIDD->term_id);
-                                $output .= '<option data-doajax="' . $doAjax . '"  class="sub_cat" value="' . $subIDD->term_id . '">--&nbsp;&nbsp;' . $subIDD->name . '</option>';
+							$childCatsof = array(
+								'order' => 'ASC',
+								'hide_empty' => false,
+								'hierarchical' => false,
+								'parent' => $subID->term_id,
+							);
+							$childofCats = get_terms('listing-category', $childCatsof);
+							if (!empty($childofCats)) {
+								foreach ($childofCats as $subIDD) {
+									$doAjax = false;
+									$doAjax = lp_category_has_features($subIDD->term_id);
+									$output .= '<option data-doajax="' . $doAjax . '"  class="sub_cat" value="' . $subIDD->term_id . '">--&nbsp;&nbsp;' . $subIDD->name . '</option>';
 
-                                $childCatsoff = array(
-                                    'order' => 'ASC',
-                                    'hide_empty' => false,
-                                    'hierarchical' => false,
-                                    'parent' => $subIDD->term_id,
-                                );
-                                $childofCatss = get_terms('listing-category', $childCatsoff);
-                                if (!empty($childofCatss)) {
-                                    foreach ($childofCatss as $subIDDD) {
-                                        $doAjax = false;
-                                        $doAjax = lp_category_has_features($subIDDD->term_id);
-                                        $output .= '<option data-doajax="' . $doAjax . '"  class="sub_cat" value="' . $subIDDD->term_id . '">---&nbsp;&nbsp;' . $subIDDD->name . '</option>';
-
-
-                                    }
-
-
-                                }
-
-                            }
-
-
-                        }
-
-
-                    }
-                }
+									$childCatsoff = array(
+										'order' => 'ASC',
+										'hide_empty' => false,
+										'hierarchical' => false,
+										'parent' => $subIDD->term_id,
+									);
+									$childofCatss = get_terms('listing-category', $childCatsoff);
+									if (!empty($childofCatss)) {
+										foreach ($childofCatss as $subIDDD) {
+											$doAjax = false;
+											$doAjax = lp_category_has_features($subIDDD->term_id);
+											$output .= '<option data-doajax="' . $doAjax . '"  class="sub_cat" value="' . $subIDDD->term_id . '">---&nbsp;&nbsp;' . $subIDDD->name . '</option>';
 
 
-                /* $sub = get_term_children( $category->term_id, 'listing-category' );
-                    foreach ( $sub as $subID ) {
-                        $term = get_term_by( 'id', $subID, 'listing-category' );
-                        $doAjax = false;
-                        $doAjax = lp_category_has_features($term->term_id);
-                $output .= '<option data-doajax="'.$doAjax.'"  class="sub_cat" value="'.$term->term_id.'">-&nbsp;&nbsp;'.$term->name.'</option>';
-                    } */
-            }
-        }
-        $output .= '
-									</select>
-								</div>';
+										}
+
+
+									}
+
+								}
+
+
+							}
+
+
+						}
+					}
+
+
+				}
+			}
+			$output .= '</select>';
+		}
+		
+		$output .='</div>';
         $output .= '
 							</div>';
         if ($page_style != 'style2') {
@@ -1248,16 +1301,19 @@ function listingpro_shortcode_submit($atts, $content = null) {
 								<div class="featuresDataContainer lp-nested row" id="tags-by-cat"></div>	
 								<div class="featuresDataContainer lp-nested row" id="features-by-cat"></div>
 							</div>';
+							
+		if ($price_show == "true" && ($currencySwitch == 1 || $digitPriceSwitch == 1 || $priceSwitch == 1))
+        {
         $output .= '
 						<div class="form-group clearfix">
 							<div class="row">';
-        if ($currencySwitch == 1) {
+        if ($currencySwitch == 1 && $price_show == "true") {
             $lp_priceSymbol = $listingpro_options['listing_pricerange_symbol'];
             $lp_priceSymbol2 = $lp_priceSymbol . $lp_priceSymbol;
             $lp_priceSymbol3 = $lp_priceSymbol2 . $lp_priceSymbol;
             $lp_priceSymbol4 = $lp_priceSymbol3 . $lp_priceSymbol;
             $output .= '
-									<div class="col-md-4 clearfix test-edit-00000">
+									<div class="col-md-4 clearfix">
 										<label for="price_status">' . $listingCurrText . '</label>
 										<select id="price_status" name="price_status" class="chosen-select chosen-select7  postsubmitSelect" tabindex="5">
 											<option value="notsay">' . esc_html__('Not to say', 'listingpro-plugin') . '</option>
@@ -1286,9 +1342,11 @@ function listingpro_shortcode_submit($atts, $content = null) {
         }
         $output .= '
 							</div>
-						</div>
-					</div>
-					<div class="white-section border-bottom ' . $style_wrap . '">
+						</div>';
+		}
+		$output .= '</div>
+					
+		<div class="white-section border-bottom ' . $style_wrap . '">
 						<div class="row">
 							<div class="form-group ' . $style2_content_class . ' col-xs-12">';
         $placeholder_for_decs = esc_html__('Detail description about your listing', 'listingpro-plugin');
@@ -1308,10 +1366,10 @@ function listingpro_shortcode_submit($atts, $content = null) {
 										  	<div id="tabs-1">
 												<div class="form-group">
 													<label for="inpuFaqsLp">' . $listing_faq_text . '</label>
-													<input data-quick-tip="<p>Quick tip on FAQ question</p>' . $quicktip_image . '" type="text" class="form-control" data-faqmaintitle="' . $listing_faq_text . '" name="faq[1]" id="inpuFaqsLp" placeholder="' . esc_html__('FAQ', 'listingpro-plugin') . '">
+													<input data-quick-tip="<p>'. esc_html__( 'Quick tip on FAQ question', 'listingpro-plugin' ) .'</p>' . $quicktip_image . '" type="text" class="form-control" data-faqmaintitle="' . $listing_faq_text . '" name="faq[1]" id="inpuFaqsLp" placeholder="' . esc_html__('FAQ', 'listingpro-plugin') . '">
 												</div>
 												<div class="form-group">												
-													<textarea data-quick-tip="<p>this is test data for quick tip info of FAQ answer field</p>' . $quicktip_image . '" class="form-control" placeholder="' . esc_html__('Answer', 'listingpro-plugin') . '" name="faqans[1]" rows="8" id="inputDescriptionFaq"></textarea>
+													<textarea data-quick-tip="<p>'. esc_html__( 'this is test data for quick tip info of FAQ answer field', 'listingpro-plugin' ) .'</p>' . $quicktip_image . '" class="form-control" placeholder="' . esc_html__('Answer', 'listingpro-plugin') . '" name="faqans[1]" rows="8" id="inputDescriptionFaq"></textarea>
 												</div>
 									 	 	</div>										
 									  	</div>
@@ -1335,7 +1393,8 @@ function listingpro_shortcode_submit($atts, $content = null) {
         $output .= '</div>
 						<div class="row">
 							<div class="form-group ' . $style2_content_class . ' col-xs-12 lp-social-area">';
-        if ($social_show == "true") {
+       if ($social_show == "true" && $social_show_switch == true)
+		{
             if ($twSwitch == 1) {
                 $output .= '
 									<div class="form-group col-md-6 col-xs-12">
@@ -1400,7 +1459,7 @@ function listingpro_shortcode_submit($atts, $content = null) {
 						</div>
 					</div>';
 
-        if ($video_show == "true" || $gallery_show == "true" || !empty($featuredimg_show)) {
+       if ($video_show == "true" || $gallery_show == "true" || lp_theme_option('lp_featured_file_switch') || $b_logo == 1 ){
             $output .= '
 					<div class="white-section border-bottom ' . $style_wrap . '">
 						<div class="row">
@@ -1410,14 +1469,14 @@ function listingpro_shortcode_submit($atts, $content = null) {
                     $output .= '
 										<div class="form-group clearfix">
 											<label for="postVideo">' . $listingVdoText . '<span>' . esc_html__('(Optional)', 'listingpro-plugin') . '</span></label>
-											<input data-quick-tip="<p>this is test data for quick tip info of Video field</p>' . $quicktip_image . '" type="text" class="form-control" name="postVideo" id="postVideo" placeholder="' . esc_html__('ex: https://youtu.be/lY2yjAdbvdQ', 'listingpro-plugin') . '">
+											<input data-quick-tip="<p>'. esc_html__( 'this is test data for quick tip info of Video field', 'listingpro-plugin' ) .'</p>' . $quicktip_image . '" type="text" class="form-control" name="postVideo" id="postVideo" placeholder="' . esc_html__('ex: https://youtu.be/lY2yjAdbvdQ', 'listingpro-plugin') . '">
 										</div>';
                 }
             }
             if ($fileSwitch == 1) {
                 if ($gallery_show == "true") {
                     $output .= '
-										<div class="form-group clearfix margin-bottom-0 lp-img-gall-upload-section" data-quick-tip="<p>quick tip info for gallery</p>' . $quicktip_image . '">
+										<div class="form-group clearfix margin-bottom-0 lp-img-gall-upload-section lplistgallery" data-quick-tip="<p>'. esc_html__( 'quick tip info for gallery', 'listingpro-plugin' ) .'</p>' . $quicktip_image . '" data-savedgallerysize="0">
 											<div class="col-sm-12 padding-left-0 padding-right-0">
 												<label for="postVideo">' . esc_html__('Images ', 'listingpro-plugin') . '</label>	
 												<div class="jFiler-input-dragDrop pos-relative">
@@ -1430,7 +1489,7 @@ function listingpro_shortcode_submit($atts, $content = null) {
 														</div>
 														<a class="jFiler-input-choose-btn blue">' . esc_html__('Browse Files', 'listingpro-plugin') . '</a>
 														<div class="filediv">
-															<input type="file" name="listingfiles[]" id="lpFIleGalleryy" multiple>
+															<input type="file" name="listingfiles[]" class="file" multiple>
 														</div>
 													</div>
 												</div>
@@ -1438,21 +1497,20 @@ function listingpro_shortcode_submit($atts, $content = null) {
 										</div>';
                 }
             }
-            if (!empty($featuredimg_show)) {
-                if (lp_theme_option('lp_featured_file_switch')) {
+			if( lp_theme_option('lp_featured_file_switch') )
+           {
                     $output .= '
                                             <div class="form-group clearfix margin-bottom-0 margin-top-10 lp-listing-featuredimage">
                                                 <label class="margin-top-10">' . esc_html__('Upload Feature Image', 'listingpro-plugin') . '</label>
                                                 
                                                 <div class="custom-file">
                                                     <input style="display:none;" type="file" name="lp-featuredimage[]" id="lp-featuredimage" class="inputfile inputfile-3" data-multiple-caption="{count} files selected" multiple />
-                                                    <label class="featured-img-label" for="lp-featuredimage" data-quick-tip="<p>quick tip for featured img</p>' . $quicktip_image . '"><p>' . esc_html__('Browse', 'listingpro-plugin') . '</p><span>' . esc_html__('Choose a file', 'listingpro-plugin') . '&hellip;</span></label>
+                                                    <label class="featured-img-label" for="lp-featuredimage" data-quick-tip="<p>'. esc_html__( 'quick tip for featured img', 'listingpro-plugin' ) .'</p>' . $quicktip_image . '"><p>' . esc_html__('Browse', 'listingpro-plugin') . '</p><span>' . esc_html__('Choose a file', 'listingpro-plugin') . '&hellip;</span></label>
                                                 </div>
                                             </div>
                                             ';
-
-                }
-            }
+		   }
+               
             $b_logo = $listingpro_options['business_logo_switch'];
             if ($b_logo == 1):
                 $output .= '<div class="form-group clearfix margin-bottom-0 margin-top-10 lp-listing-featuredimage">
@@ -1460,7 +1518,7 @@ function listingpro_shortcode_submit($atts, $content = null) {
 									
 									<div class="custom-file">
 										<input style="display:none;" type="file" name="business_logo[]" id="business_logo" class="inputfile inputfile-4" />
-										<label class="b-logo-img-label" for="business_logo" data-quick-tip="quick tip for business logo"><p>' . esc_html__('Browser', 'listingpro-plugin') . '</p><span>' . esc_html__('Choose a file', 'listingpro-plugin') . '&hellip;</span></label>
+										<label class="b-logo-img-label" for="business_logo" data-quick-tip="'. esc_html__( 'quick tip for business logo', 'listingpro-plugin' ) .'"><p>' . esc_html__('Browser', 'listingpro-plugin') . '</p><span>' . esc_html__('Choose a file', 'listingpro-plugin') . '&hellip;</span></label>
 							</div>
 								</div>';
             endif;
@@ -1489,7 +1547,7 @@ function listingpro_shortcode_submit($atts, $content = null) {
         if(!is_user_logged_in()){
 
             $output .='
-                                    <div class="lp-submit-accoutn lp-submit-accoutn-wrap" data-quick-tip="quick tip for accoutn section">
+                                    <div class="lp-submit-accoutn lp-submit-accoutn-wrap" data-quick-tip="'. esc_html__( 'quick tip for account section', 'listingpro-plugin' ) .'">
                                         <div class="lp-submit-no-account">';
             if(!empty($enableUsernameField)){
                 $output .='<div class="row"><div class="col-md-6">';
@@ -1523,7 +1581,7 @@ function listingpro_shortcode_submit($atts, $content = null) {
 							</div>
 							<div class="form-group col-md-6 margin-bottom-0 preview-section-caption clearfix">';
 
-        if(!empty($privacy_policy)){
+         if(!empty($privacy_policy) && lp_theme_option('listingpro_privacy_listing') == 'yes'){
 
             $output .='
 								  	<div class="checkbox form-group col-md-4 check_policy termpolicy">
@@ -1532,7 +1590,7 @@ function listingpro_shortcode_submit($atts, $content = null) {
 											<div class="help-text">
 												<a class="help" target="_blank"><i class="fa fa-question"></i></a>
 												<div class="help-tooltip">
-												<p>'.esc_html__('You agree you accept our Terms & Conditions for posting this ad.', 'listingpro-plugin').'</p>
+												<p>'.esc_html__('You agree & accept our Terms & Conditions for submitting listing', 'listingpro-plugin').'</p>
 												</div>
 											</div>
 										</div>';
@@ -1609,10 +1667,9 @@ function listingpro_shortcode_submit($atts, $content = null) {
         {
             $output .='
                             <div class="white-section">
-                                <div class="row">
-                                    <div class="form-group col-md-12 margin-bottom-0">';
-            if(!empty($privacy_policy)){
-                $output .='
+                                <div class="row">';
+              if(!empty($privacy_policy) && lp_theme_option('listingpro_privacy_listing') == 'yes'){
+                $output .=' 			<div class="form-group col-md-12 margin-bottom-0">
                                                 <div class="checkbox form-group col-md-4 check_policy termpolicy">
                                                     <input id="policycheck" type="checkbox" name="policycheck" value="true">
                                                     <label for="policycheck"><a target="_blank" href="'.get_the_permalink($privacy_policy).'" class="help" target="_blank">'.esc_html__('I Agree', 'listingpro-plugin').'</a></label>
@@ -1622,19 +1679,21 @@ function listingpro_shortcode_submit($atts, $content = null) {
                                                             <p>'.esc_html__('You agree you accept our Terms & Conditions for posting this ad.', 'listingpro-plugin').'</p>
                                                         </div>
                                                     </div>
-                                                </div>';
+                                                </div>
+                                          </div>';
             }
             if($enableCaptcha==true){
                 if ( class_exists( 'cridio_Recaptcha' ) ){
                     if ( cridio_Recaptcha_Logic::is_recaptcha_enabled() ) {
+						$output .=' <div class="form-group col-md-12 margin-bottom-0">';
                         $output .='<div style="transform:scale(0.77);-webkit-transform:scale(0.77);transform-origin:0 0;-webkit-transform-origin:0 0;" id="recaptcha-securet" class="g-recaptcha form-group clearfix" data-sitekey="'.$gSiteKey.'"></div>';
+						$output .='</div>';
                     }
                 }
             }
 
             $output .=  '</div>
-                                </div>
-                            </div>';
+                                </div>';
         }
         $output .='<div class="submitbutton-wraper submitbutton-wraper-style2">';
         $output .=' <div class="success_box">'.esc_html__('All of the fields were successfully validated!', 'listingpro-plugin').'</div>
@@ -1678,7 +1737,9 @@ function listingpro_shortcode_submit($atts, $content = null) {
 			</div>
 		</div>
 	</div>';
-
+	
+	$output .= ajax_response_markup(true);
+	
     ob_end_clean();
     ob_flush();
     return $output;

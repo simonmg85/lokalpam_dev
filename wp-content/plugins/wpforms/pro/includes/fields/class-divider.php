@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Seciton Divider field.
+ * Section Divider field.
  *
  * @package    WPForms
  * @author     WPForms
@@ -22,7 +22,7 @@ class WPForms_Field_Divider extends WPForms_Field {
 		$this->name  = esc_html__( 'Section Divider', 'wpforms' );
 		$this->type  = 'divider';
 		$this->icon  = 'fa-arrows-h';
-		$this->order = 19;
+		$this->order = 150;
 		$this->group = 'fancy';
 	}
 
@@ -105,9 +105,9 @@ class WPForms_Field_Divider extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field
-	 * @param array $deprecated
-	 * @param array $form_data
+	 * @param array $field      Field data and settings.
+	 * @param array $deprecated Deprecated field attributes. Use field properties.
+	 * @param array $form_data  Form data and settings.
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
 
@@ -126,16 +126,46 @@ class WPForms_Field_Divider extends WPForms_Field {
 	}
 
 	/**
+	 * Whether current field can be populated dynamically.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param array $properties Field properties.
+	 * @param array $field      Current field specific data.
+	 *
+	 * @return bool
+	 */
+	public function is_dynamic_population_allowed( $properties, $field ) {
+
+		return false;
+	}
+
+	/**
+	 * Whether current field can be populated using a fallback.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param array $properties Field properties.
+	 * @param array $field      Current field specific data.
+	 *
+	 * @return bool
+	 */
+	public function is_fallback_population_allowed( $properties, $field ) {
+
+		return false;
+	}
+
+	/**
 	 * Formats field.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int $field_id
-	 * @param array $field_submit
-	 * @param array $form_data
+	 * @param int    $field_id     Field ID.
+	 * @param string $field_submit Submitted field value.
+	 * @param array  $form_data    Form data and settings.
 	 */
 	public function format( $field_id, $field_submit, $form_data ) {
 	}
 }
 
-new WPForms_Field_Divider;
+new WPForms_Field_Divider();

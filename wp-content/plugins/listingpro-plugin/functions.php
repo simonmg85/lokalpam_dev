@@ -865,142 +865,175 @@ class ListingproPlugin{
 	
 	add_action('wp_ajax_lp_get_fields',        'lp_get_fields');
 	add_action('wp_ajax_nopriv_lp_get_fields', 'lp_get_fields');
-	if(!function_exists('lp_get_fields')){
-		function lp_get_fields(){
-			$output = null;
-			$featureOutput = null;
-			$array='';
-			$value='';
-			$term_id = $_POST['term_id'];
-			$list_id = $_POST['list_id'];
-			$featureName = array();
-			$featurevalue = array();
-			$fieldIDs = array();
-			$idcounts = 1;
-			
-			if(!empty($term_id)){
-				foreach($term_id as $tid){
-					$fieldIDss = listingpro_get_term_meta($tid,'fileds_ids');
-					if(!empty($fieldIDss)){
-						foreach($fieldIDss as $singleId){
-							if(!empty($singleId)){
-								$fieldIDs[$idcounts] = $singleId;
-								$idcounts++;
-							}
-						}
-						
-					}
-					$Features = listingpro_get_term_meta( $tid,'lp_category_tags' );
+    if(!function_exists('lp_get_fields')){
+        function lp_get_fields(){
+            $output = null;
+            $featureOutput = null;
+            $array='';
+            $value='';
+            $term_id = $_POST['term_id'];
+            $list_id = $_POST['list_id'];
+            $featureName = array();
+            $featurevalue = array();
+            $fieldIDs = array();
+            $idcounts = 1;
+            $featureMID = 'lp_feature';
 
-					$featurevalued= listing_get_fields('lp_feature',$list_id);
-					$featurevalue = array_merge($featurevalued, $featurevalue);
-					$featureMID = 'lp_feature';
-					if(!empty($Features)){
-						explode(',', $Features);
-						foreach($Features as $Feature){
-								$features = get_term_by('id', $Feature, 'features');
-								$featureName[$features->term_id] = $features->name;
-						}			
-							
-					}
-					
-				}
-				/* 
-				print_r($fieldIDs);
-				exit; */
-				
-				/* for outputing features */
-				$settings = Array(
-								'name'          => 'Select Business Features',
-								'id'            => 'lp_form_fields_inn['.$featureMID.']',
-								'type'          => 'checkboxes',
-								'child_of'=> '',
-								'match'=>'',
-								'options'=>$featureName,
-								'value'=>$featurevalue,
-								'std'=>'',
-								'desc' => ''
-								);
-				ob_start();
-				call_user_func('settings_checkboxes', $settings);
-				$featureOutput[] .= ob_get_contents(); 
-				ob_end_clean();
-				ob_flush();
-				/* end for outputing features */
-				/* for form fields */
-				if(!empty($fieldIDs)){
-					$type = 'form-fields';
-					$args=array(
-						'post_type' => $type,
-						'post_status' => 'publish',
-						'posts_per_page' => -1,
-						'post__in'         => $fieldIDs,
-						
-					);
-					$my_query = null;
-					
-					$my_query = new WP_Query($args);
-					
-		
-					if( $my_query->have_posts() ) {
-						while ($my_query->have_posts()) : $my_query->the_post();
-							global $post;
-							$options='';
-							$array= null;
-							
-							$type = listing_get_metabox('field-type');
-							
-							if(isset($list_id) && !empty($list_id)){
-								$value = listing_get_fields($post->post_name,$list_id);
-							}
-							
-							
-							
-							if($type=='radio'){
-								$options = listing_get_metabox('radio-options');
-							}elseif($type=='select'){
-								$options = listing_get_metabox('select-options');
-							}elseif($type=='checkboxes'){
-								$options = listing_get_metabox('multicheck-options');
-							}
-							if(!empty($options)){
-								$myArray = explode(',', $options);
-								foreach($myArray as $key=>$myAr){
-									$array[$myAr] = $myAr;
-								}
-								
-							}
-							
-							$settings = Array(
-								'name'          => get_the_title(),
-								'id'            => 'lp_form_fields_inn['.$post->post_name.']',
-								'type'          => $type,
-								'child_of'=> '',
-								'match'=>'',
-								'options'=>$array,
-								'value'=>$value,
-								'std'=>'',
-								'desc' => '',
-								'from' => 'ajax'
-								);
-							ob_start();
-							call_user_func('settings_'.$type, $settings);
-							 $output[] .= ob_get_contents(); 
-								ob_end_clean();
-								ob_flush();
-						endwhile;	
-						
-					}
-				}
-				/* end for form fields */
-			}	
-			
-			
-			$term_group_result = json_encode(array('fields'=>$output,'features'=>$featureOutput));
-			die($term_group_result);
-			
-		}
-	}
+            /* for listing whose features are there but not assigned to categories */
+            $lpFreetags = get_the_terms( $list_id ,'features');
+            $featurevalued= listing_get_fields('lp_feature',$list_id);
+            $featurevalue = array_merge($featurevalued, $featurevalue);
+            if(!empty($lpFreetags)){
+                foreach($lpFreetags as $sngTag) {
+                    $featureName[$sngTag->term_id] = $sngTag->name;
+                }
+            }
+
+            if(empty($term_id)){
+                /* for outputing features */
+                $settings = Array(
+                    'name'          => 'Select Business Features',
+                    'id'            => 'lp_form_fields_inn['.$featureMID.']',
+                    'type'          => 'checkboxes',
+                    'child_of'=> '',
+                    'match'=>'',
+                    'options'=>$featureName,
+                    'value'=>$featurevalue,
+                    'std'=>'',
+                    'desc' => ''
+                );
+                ob_start();
+                call_user_func('settings_checkboxes', $settings);
+                $featureOutput[] .= ob_get_contents();
+                ob_end_clean();
+                ob_flush();
+            }
+
+            //die(json_encode($featureName));
+
+            if(!empty($term_id)){
+                foreach($term_id as $tid){
+                    $fieldIDss = listingpro_get_term_meta($tid,'fileds_ids');
+                    if(!empty($fieldIDss)){
+                        foreach($fieldIDss as $singleId){
+                            if(!empty($singleId)){
+                                $fieldIDs[$idcounts] = $singleId;
+                                $idcounts++;
+                            }
+                        }
+
+                    }
+                    $Features = listingpro_get_term_meta( $tid,'lp_category_tags' );
+
+                    $featurevalued= listing_get_fields('lp_feature',$list_id);
+                    $featurevalue = array_merge($featurevalued, $featurevalue);
+
+                    if(!empty($Features)){
+                        explode(',', $Features);
+                        foreach($Features as $Feature){
+                            $features = get_term_by('id', $Feature, 'features');
+                            $featureName[$features->term_id] = $features->name;
+                        }
+
+                    }
+
+                }
+                /*
+                print_r($fieldIDs);
+                exit; */
+
+                /* for outputing features */
+                $settings = Array(
+                    'name'          => 'Select Business Features',
+                    'id'            => 'lp_form_fields_inn['.$featureMID.']',
+                    'type'          => 'checkboxes',
+                    'child_of'=> '',
+                    'match'=>'',
+                    'options'=>$featureName,
+                    'value'=>$featurevalue,
+                    'std'=>'',
+                    'desc' => ''
+                );
+                ob_start();
+                call_user_func('settings_checkboxes', $settings);
+                $featureOutput[] .= ob_get_contents();
+                ob_end_clean();
+                ob_flush();
+                /* end for outputing features */
+                /* for form fields */
+                if(!empty($fieldIDs)){
+                    $type = 'form-fields';
+                    $args=array(
+                        'post_type' => $type,
+                        'post_status' => 'publish',
+                        'posts_per_page' => -1,
+                        'post__in'         => $fieldIDs,
+
+                    );
+                    $my_query = null;
+
+                    $my_query = new WP_Query($args);
+
+
+                    if( $my_query->have_posts() ) {
+                        while ($my_query->have_posts()) : $my_query->the_post();
+                            global $post;
+                            $options='';
+                            $array= null;
+
+                            $type = listing_get_metabox('field-type');
+
+                            if(isset($list_id) && !empty($list_id)){
+                                $value = listing_get_fields($post->post_name,$list_id);
+                            }
+
+
+
+                            if($type=='radio'){
+                                $options = listing_get_metabox('radio-options');
+                            }elseif($type=='select'){
+                                $options = listing_get_metabox('select-options');
+                            }elseif($type=='checkboxes'){
+                                $options = listing_get_metabox('multicheck-options');
+                            }
+                            if(!empty($options)){
+                                $myArray = explode(',', $options);
+                                foreach($myArray as $key=>$myAr){
+                                    $array[$myAr] = $myAr;
+                                }
+
+                            }
+
+                            $settings = Array(
+                                'name'          => get_the_title(),
+                                'id'            => 'lp_form_fields_inn['.$post->post_name.']',
+                                'type'          => $type,
+                                'child_of'=> '',
+                                'match'=>'',
+                                'options'=>$array,
+                                'value'=>$value,
+                                'std'=>'',
+                                'desc' => '',
+                                'from' => 'ajax'
+                            );
+                            ob_start();
+                            call_user_func('settings_'.$type, $settings);
+                            $output[] .= ob_get_contents();
+                            ob_end_clean();
+                            ob_flush();
+                        endwhile;
+
+                    }
+                }
+                /* end for form fields */
+            }
+
+
+            $term_group_result = json_encode(array('fields'=>$output,'features'=>$featureOutput));
+            die($term_group_result);
+
+        }
+    }
 	
 	/* for open fields ajax */
 	add_action('wp_ajax_lp_get_excluded_fields',        'lp_get_excluded_fields');
@@ -1093,7 +1126,7 @@ class ListingproPlugin{
 			<div class="notice">
 				<form action="" method="post">
 					<h2 style="margin-top:0;margin-bottom:5px">Activate Listingpro</h2>
-					<p><?php esc_html__('Verify your purchase code to unlock all features, see ', 'listingpro-plugin'); ?><a href="https://cridio.ticksy.com/article/10539/" target="_blank"><?php echo esc_html__('instructions', 'listingpro-plugin'); ?></a></p>
+					<p><?php esc_html__('Verify your purchase code to unlock all features, see ', 'listingpro-plugin'); ?><a href="https://docs.listingprowp.com/knowledgebase/how-to-activate-listingpro-theme/" target="_blank"><?php echo esc_html__('instructions', 'listingpro-plugin'); ?></a></p>
 					<div id="title-wrap" class="input-text-wrap">
 						<label id="title-prompt-text" class="prompt" for="title"> Put here purchase key </label>
 						<input id="title" name="key" autocomplete="off" type="text">
@@ -1274,22 +1307,37 @@ if(!function_exists('lp_listing_save_additional_metas')){
 /*===================function for lisitng to check if actions allowed ===================*/
 if(!function_exists('lp_validate_listing_action')){
     function lp_validate_listing_action($listingid, $action){
-        $pLan_Id = listing_get_metabox_by_ID($listingid, 'Plan_id');
+        $pLan_Id = listing_get_metabox_by_ID( 'Plan_id', $listingid );
 
+        if( $action == 'price' )
+        {
+            $p_action =   'plan_price';
+        }elseif ( $action == 'menu' )
+        {
+            $p_action =   'listingproc_plan_menu';
+        }elseif ( $action == 'announcment' )
+        {
+            $p_action =   'listingproc_plan_announcment';
+        }elseif ( $action == 'deals' )
+        {
+            $p_action =   'listingproc_plan_deals';
+        }elseif ( $action   == 'competitor_campaigns' )
+        {
+            $p_action =   'listingproc_plan_campaigns';
+        }elseif ( $action == 'events' )
+        {
+            $p_action =   'lp_eventsplan';
+        }
         if(isset($pLan_Id)){
             if($pLan_Id!="none"){
-                $plans_metasArray = get_post_meta($listingid, 'listing_plan_data', true);
-                if(!empty($plans_metasArray)){
-                    if(isset($plans_metasArray[$action])){
-                        $thisAction = $plans_metasArray[$action];
-                        if($thisAction!="false"){
-                            return true;
-                        }else{
-                            return false;
-                        }
-                    }else{
-                        return false;
-                    }
+                $plans_meta = get_post_meta($pLan_Id, $p_action, true);
+                if( $plans_meta == 'false' )
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
                 }
             }else{
                 return false;
@@ -1304,14 +1352,17 @@ if(!function_exists('lp_filter_backend_invoice')){
     function lp_filter_backend_invoice(){
         $method = $_POST['method'];
         $status = $_POST['status'];
-        $where = '';
+        $where = 'WHERE ';
         if( !empty($method) && !empty($status) ){
             $where .="payment_method='$method' AND status='$status'";
         }elseif(!empty($method)){
             $where .="payment_method='$method'";
         }elseif(!empty($status)){
             $where .="status='$status'";
-        }
+        }elseif( empty($method) && empty($status) ){
+			$where ="";
+		}
+
         global $wpdb;
         $counter = 1;
         $table = "listing_orders";
@@ -1321,11 +1372,12 @@ if(!function_exists('lp_filter_backend_invoice')){
         $htmlReturn = null;
         if($wpdb->get_var("SHOW TABLES LIKE '$table'") == $table) {
             $query = "";
-            $query = "SELECT * from $table WHERE $where ORDER BY main_id DESC";
+            $query = "SELECT * from $table  $where ORDER BY main_id DESC";
             $results = $wpdb->get_results( $query);
         }
         if(!empty($results)){
             foreach($results as $Index=>$Value){
+				$main_id = $Value->main_id;
                 $classStatus = '';
                 $textStatus = '';
                 $invoiceStatus = $Value->status;
@@ -1347,12 +1399,41 @@ if(!function_exists('lp_filter_backend_invoice')){
                 $htmlReturn .='<td class="manage-column column-categories">'. date(get_option('date_format'), strtotime($Value->date)).'</td>';
                 $htmlReturn .='<td class="manage-column column-categories">'.$Value->payment_method.'</td>';
                 $htmlReturn .='<td class="manage-column column-categories">'.$Value->price.$Value->currency.'</td>';
-                $htmlReturn .='<td><input class="alert alert-'.$classStatus.'" type="button" value="'.$textStatus.'" ></td>';
+				$buttunType = 'button';
+				if($Value->payment_method=="wire"){
+					
+					$buttunType = 'submit';
+					
+					$htmlReturn .= '
+						
+						<td>
+							<form class="posts-filter" method="POST">
+								<input class="alert alert-'.$classStatus.'" type="'.$buttunType.'" value="'.$textStatus.'" >
+								<input type="hidden" name="payment_submitt" value="proceed">
+								<input type="hidden" name="order_id" value="'.$Value->order_id.'">
+								<input type="hidden" name="post_id" value="'.$Value->post_id.'">
+							</form>
+						</td>
+						
+						';
+						
+				}else{
+					$htmlReturn .='<td><input class="alert alert-'.$classStatus.'" type="'.$buttunType.'" value="'.$textStatus.'" ></td>';
+				}
+				$htmlReturn .='
+							<td>
+							<form class="wp-core-ui" method="post">
+								<input type="submit" name="delete_invoice" class="button action" value="'.esc_html__('Delete', 'listingpro-plugin') .'" onclick="return window.confirm("Are you sure you want to proceed action?")" />
+								<input type="hidden" name="main_id" value="'.$main_id.'" />
+							</form>
+																
+						</td>';
                 $htmlReturn .='</tr>';
             }
+			
 
         }else{
-            $htmlReturn = '<tr><td>'.esc_html__("Sorry! there is not result", "listingpro-plugin").'</td></tr>';
+            $htmlReturn = '<p style="width: 98%;position: absolute;padding: 20px;font-size: 16px;text-align: center;">'.esc_html__("Sorry! there is no result", "listingpro-plugin").'</p>';
         }
 
         exit(json_encode($htmlReturn));
@@ -1373,4 +1454,129 @@ if(!function_exists('lp_theme_option')){
             return false;
         }
     }
+	
+}
+
+
+add_action('wp_ajax_lp_get_child_cats', 'lp_get_child_cats');
+add_action('wp_ajax_nopriv_lp_get_child_cats', 'lp_get_child_cats');
+if( !function_exists( 'lp_get_child_cats' ) )
+{
+    function lp_get_child_cats()
+    {
+        $parentID   =   $_POST['parentID'];
+        $markup     =   '';
+        $child_terms = get_terms('listing-category', array('hide_empty' => false, 'parent' => $parentID ));
+        if( $child_terms )
+        {
+            foreach ( $child_terms as $child_term )
+            {
+                $markup .=  '<label class="vc_checkbox-label"><input id="child_category_ids-'. $child_term->term_id .'" value="'. $child_term->term_id .'" class="wpb_vc_param_value child_category_ids checkbox" type="checkbox" name="child_category_ids"> '. $child_term->name .'</label>';
+            }
+        }
+        $json_attr  =   'json';
+        $child_cats_result = json_encode(array('markup'=>$markup,'json_attr'=>$json_attr));
+        die($child_cats_result);
+    }
+}
+
+
+/* =============== for admin invoice details================ */
+add_action('wp_ajax_lp_get_admin_invoice_details', 'lp_get_admin_invoice_details');
+add_action('wp_ajax_nopriv_lp_get_admin_invoice_details', 'lp_get_admin_invoice_details');
+if( !function_exists( 'lp_get_admin_invoice_details' ) ){
+	function lp_get_admin_invoice_details(){
+		global $wpdb;
+		$invoiceid   =   $_POST['invoiceid'];
+		$dbprefix = $wpdb->prefix;
+		$myInvoice = $wpdb->get_row( "SELECT * FROM ".$dbprefix."listing_orders WHERE main_id = $invoiceid" );
+
+		$firstName = '';
+		$lastName = '';
+		$listingName = '';
+		$price = '';
+		$currency = '';
+		$paymentMethod = '';
+		$transactionID = '';
+
+		if(!empty($myInvoice)){
+			$userID = $myInvoice->user_id;
+			$author_obj = get_user_by('id', $userID);
+			$firstName = $author_obj->first_name;
+			$lastName = $author_obj->last_name;
+			$listingID = $myInvoice->post_id;
+			$listingName = get_the_title($listingID);
+			$price = $myInvoice->price;
+			$paymentMethod = $myInvoice->payment_method;
+			$transactionID = $myInvoice->order_id;
+			$currency = $myInvoice->currency;
+		}
+
+		$output = null;
+		$output = '
+					
+					<button style="display:none" type="button" class="btn btn-info btn-lg lpinvoiceadminpop" data-toggle="modal" data-target="#lpinvoiceadminpop"></button>
+
+					<!-- Modal -->
+					<div id="lpinvoiceadminpop" class="modal fade" role="dialog">
+					  <div class="modal-dialog">
+
+						<div class="modal-content">
+						  <div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">'.esc_html__('Invoice Summary', 'listingpro-plugin').'</h4>
+						  </div>
+						  <div class="modal-body">
+							<div class="row">
+								<div class="col-xs-12">
+									<div class="row">
+										<div class="col-xs-6">'.esc_html__('First Name', 'listingpro-plugin').'</div>
+										<div class="col-xs-6 text-right">'.$firstName.'</div>
+										<div class="clearfix"></div>
+										
+										<div class="col-xs-6">'.esc_html__('Last Name', 'listingpro-plugin').'</div>
+										<div class="col-xs-6 text-right">'.$lastName.'</div>
+										<div class="clearfix"></div>
+										
+										<div class="col-xs-6">'.esc_html__('Listing Name', 'listingpro-plugin').'</div>
+										<div class="col-xs-6 text-right">'.$listingName.'</div>
+										<div class="clearfix"></div>
+										
+										
+									</div>
+									<div class="row">
+										<br>
+										<div class="col-md-12">
+											<div class="panel panel-default">
+												<div class="panel-heading">
+													<h3 class="panel-title"><strong>'.esc_html__('Order Info', 'listingpro-plugin').'</strong></h3>
+												</div>
+											</div>
+										</div>
+										
+										<div class="col-xs-6">'.esc_html__('Price', 'listingpro-plugin').'</div>
+										<div class="col-xs-6 text-right">'.$price.$currency.'</div>
+										<div class="clearfix"></div>
+										
+										<div class="col-xs-6">'.esc_html__('Payment Method', 'listingpro-plugin').'</div>
+										<div class="col-xs-6 text-right">'.$paymentMethod.'</div>
+										<div class="clearfix"></div>
+										
+										<div class="col-xs-6">'.esc_html__('Transaction id', 'listingpro-plugin').'</div>
+										<div class="col-xs-6 text-right">'.$transactionID.'</div>
+
+									</div>
+								</div>
+							</div>
+						  </div>
+						  <div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						  </div>
+						</div>
+
+					  </div>
+					</div>
+		';
+		exit(json_encode(array($output)));
+	}
 }

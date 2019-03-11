@@ -22,7 +22,7 @@ class WPForms_Field_URL extends WPForms_Field {
 		$this->name  = esc_html__( 'Website / URL', 'wpforms' );
 		$this->type  = 'url';
 		$this->icon  = 'fa-link';
-		$this->order = 5;
+		$this->order = 90;
 		$this->group = 'fancy';
 	}
 
@@ -118,9 +118,9 @@ class WPForms_Field_URL extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field
-	 * @param array $deprecated
-	 * @param array $form_data
+	 * @param array $field      Field data and settings.
+	 * @param array $deprecated Deprecated field attributes. Use field properties.
+	 * @param array $form_data  Form data and settings.
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
 
@@ -140,16 +140,16 @@ class WPForms_Field_URL extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int $field_id
+	 * @param int    $field_id
 	 * @param string $field_submit
-	 * @param array $form_data
+	 * @param array  $form_data
 	 */
 	public function validate( $field_id, $field_submit, $form_data ) {
 
 		$form_id = $form_data['id'];
 
 		// Basic required check - If field is marked as required, check for entry data.
-		if ( ! empty( $form_data['fields'][ $field_id ]['required'] ) && empty( $field_submit ) ) {
+		if ( empty( $field_submit ) && ! empty( $form_data['fields'][ $field_id ]['required'] ) ) {
 			wpforms()->process->errors[ $form_id ][ $field_id ] = wpforms_get_required_label();
 		}
 
@@ -160,4 +160,4 @@ class WPForms_Field_URL extends WPForms_Field {
 	}
 }
 
-new WPForms_Field_URL;
+new WPForms_Field_URL();

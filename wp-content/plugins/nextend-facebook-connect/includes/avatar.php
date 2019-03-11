@@ -2,6 +2,19 @@
 
 class NextendSocialLoginAvatar {
 
+    /**
+     * @return NextendSocialLoginAvatar
+     */
+    public static function getInstance() {
+        static $inst = null;
+        if ($inst === null) {
+            $inst = new self();
+        }
+
+        return $inst;
+    }
+
+
     public function __construct() {
         if (NextendSocialLogin::$settings->get('avatar_store')) {
             add_action('nsl_update_avatar', array(
@@ -11,7 +24,7 @@ class NextendSocialLoginAvatar {
 
             // WP User Avatar https://wordpress.org/plugins/wp-user-avatar/
             // Ultimate member
-            if (!defined('WPUA_VERSION') && !class_exists('UM', false)) {
+            if (!defined('WPUA_VERSION') && !class_exists('UM', false) && !class_exists('buddypress', false)) {
                 add_filter('get_avatar', array(
                     $this,
                     'renderAvatar'
@@ -63,11 +76,16 @@ class NextendSocialLoginAvatar {
                 'compare' => 'EXISTS'
             );
         } else {
-            $query['meta_query']['relation'] = 'AND';
-            $query['meta_query'][]           = array(
-                'key'     => '_wp_attachment_wp_user_avatar',
-                'compare' => 'NOT EXISTS'
-            );
+            $avatars_in_all_media = NextendSocialLogin::$settings->get('avatars_in_all_media');
+
+            //Avatars will be loaded in Media Libray Grid view - All media items if $avatars_in_all_media is disabled!
+            if (!$avatars_in_all_media) {
+                $query['meta_query']['relation'] = 'AND';
+                $query['meta_query'][]           = array(
+                    'key'     => '_wp_attachment_wp_user_avatar',
+                    'compare' => 'NOT EXISTS'
+                );
+            }
         }
 
         return $query;
@@ -102,10 +120,52 @@ class NextendSocialLoginAvatar {
                             }
                         }
                     }
+
+                    UM()
+                        ->user()
+                        ->remove_cache($user_id);
                 };
 
                 return;
             }
+
+            //upload user avatar for BuddyPress - bp_displayed_user_avatar() function
+            if (class_exists('BuddyPress', false)) {
+                if (!empty($avatarUrl)) {
+                    $extension = 'jpg';
+                    if (preg_match('/\.(jpg|jpeg|gif|png)/', $avatarUrl, $match)) {
+                        $extension = $match[1];
+                    }
+
+                    require_once(ABSPATH . '/wp-admin/includes/file.php');
+                    $avatarTempPath = download_url($avatarUrl);
+
+                    if (!is_wp_error($avatarTempPath)) {
+                        if (!function_exists('xprofile_avatar_upload_dir')) {
+                            require_once(buddypress()->plugin_dir . '/bp-xprofile/bp-xprofile-functions.php');
+                        }
+                        $pathInfo = xprofile_avatar_upload_dir('avatars', $user_id);
+
+                        if (wp_mkdir_p($pathInfo['path'])) {
+                            if ($av_dir = opendir($pathInfo['path'] . '/')) {
+                                $hasAvatar = false;
+                                while (false !== ($avatar_file = readdir($av_dir))) {
+                                    if ((preg_match("/-bpfull/", $avatar_file) || preg_match("/-bpthumb/", $avatar_file))) {
+                                        $hasAvatar = true;
+                                        break;
+                                    }
+                                }
+                                if (!$hasAvatar) {
+                                    copy($avatarTempPath, $pathInfo['path'] . '/' . 'avatar-bpfull.' . $extension);
+                                    rename($avatarTempPath, $pathInfo['path'] . '/' . 'avatar-bpthumb.' . $extension);
+                                }
+                            }
+                            closedir($av_dir);
+                        }
+                    }
+                }
+            }
+
 
             /**
              * $original_attachment_id is false, if the user has had avatar set but the path is not found.
@@ -339,4 +399,4 @@ class NextendSocialLoginAvatar {
     }
 }
 
-new NextendSocialLoginAvatar();
+NextendSocialLoginAvatar::getInstance();

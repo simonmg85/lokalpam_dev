@@ -1,6 +1,5 @@
 <?php
 namespace sgpb;
-
 /**
  * Popup Builder Style
  *
@@ -13,16 +12,12 @@ class Javascript
 {
 	public static function enqueueScripts($hook)
 	{
-		global $post;
-		global $post_type;
 		$pageName = $hook;
 		$scripts = array();
-		$currentPostType = @$post->post_type;
-		// in some themes global $post returns null
-		if (empty($currentPostType)) {
-			$currentPostType = $post_type;
-		}
-		if($hook == 'popupbuilder_page_popupbuilder') {
+		$popupType = AdminHelper::getCurrentPopupType();
+		$currentPostType = AdminHelper::getCurrentPostType();
+
+		if($hook == SG_POPUP_POST_TYPE.'_page_'.SG_POPUP_POST_TYPE) {
 			$pageName = 'popupType';
 		}
 		else if(($hook == 'post-new.php' || $hook == 'post.php') && $currentPostType == SG_POPUP_POST_TYPE) {
@@ -31,8 +26,8 @@ class Javascript
 		else if($hook == 'edit.php' && !empty($currentPostType) && $currentPostType == SG_POPUP_POST_TYPE) {
 			$pageName = 'popupspage';
 		}
-		else if ($hook == 'popupbuilder_page_subscribers') {
-			$pageName = 'subscribers';
+		else if ($hook == SG_POPUP_POST_TYPE.'_page_'.SG_POPUP_SUBSCRIBERS_PAGE) {
+			$pageName = SG_POPUP_SUBSCRIBERS_PAGE;
 		}
 
 		$registeredPlugins = get_option('SG_POPUP_BUILDER_REGISTERED_PLUGINS');
@@ -74,7 +69,10 @@ class Javascript
 			if(!$classObj instanceof $extensionInterface) {
 				continue;
 			}
-			$scriptData = $classObj->getScripts($pageName , array());
+			$args  = array(
+				'popupType' => $popupType
+			);
+			$scriptData = $classObj->getScripts($pageName , $args);
 
 			$scripts[] = $scriptData;
 		}

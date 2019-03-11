@@ -1,10 +1,211 @@
 # Change Log
 All notable changes to this project will be documented in this file, formatted via [this recommendation](http://keepachangelog.com/).
 
+## [1.5.1.2] - 2019-02-28
+### Fixed
+- Conditonal logic issue with Checkbox/Multiple choice fields when default values are set.
+
+## [1.5.1.1] - 2019-02-26
+### Fixed
+- Conflict with WordPress 5.1 if form contained target="_blank".
+- Long field labels cut off when viewed in Entry Print page compact view.
+- PHP notices on Entry Print page.
+- PHP notices on Entries page.
+- Unable to uncheck default Multiple Choice value in form builder after being set initially.
+- PHP error when entries are exported after a field has been deleted.
+- Form builder Email notification conditional logic settings display issue after new notification is added.
+- Conflict with some themes preventing Multiple Choice fields from being selectable.
+
+## [1.5.1] - 2019-02-06
+### Added
+- Checkbox Items field (payment checkboxes).
+- Complete translations for Spanish, Italian, Japanese, and German.
+- Improved form builder education and workflows: install and activate any addon without ever leaving the form builder!
+- Smart Tag for referencing user meta data, `{user_meta key=""}`.
+
+### Changed
+- Removed limit on Entry Columns when customizing.
+- Improved support with LocoTranslate plugin.
+- Refactored Form Preview functionality, no longer requiring hidden private page to be created.
+- Always load full WPForms styling inside Gutenberg so forms render correctly.
+
+### Fixed
+- Entry counts getting off sync with entry heartbeat detection.
+- Typos, grammar, and other i18n related issues.
+- Created alias class for `WPForms` to prevent issue with namespacing introduced in 1.5.0.
+- Dynamic population issue when using Image Choices field.
+
+## [1.5.0.4] - 2018-12-20
+### Changed
+- Dashboard widget improvements.
+
+### Fixed
+- Various typos.
+
+## [1.5.0.3] - 2018-12-06
+### Changed
+- Minor improvements to Gutenberg block for WordPress 5.0.
+
+### Fixed
+- Error when activating WPForms Pro if WPForms Lite is still activated.
+
+## [1.5.0.2] - 2018-12-03
+### Fixed
+- File Upload validation issue if max file size was defined.
+- Dashboard widget appearance on Windows.
+
+## [1.5.0.1] - 2018-11-28
+### Fixed
+- Required validation enforcement on Date Time fields.
+
+## [1.5.0] - 2018-11-28
+### IMPORTANT
+- Support for PHP 5.2 has been discontinued. If you are running PHP 5.2, you MUST upgrade PHP before installing WPForms 1.5. Failure to do that will disable WPForms core functionality.
+
+### Added
+- Dashboard widget with basic reporting.
+- WPForms Challenge: an interactive step-by-step guide to creating a form for new users.
+- Dynamic field population, available to enable from form settings.
+- New entries "heartbeat" notification on entries list screen.
+- "About Us" admin page (WPForms > About Us).
+- {user_first_name} and {user_last_name} Smart Tags.
+
+### Changed
+- Improved randomizing if field is configured to randomize items.
+- Improved file size validations with multiple uploads.
+- Improved i18n support.
+
+### Fixed
+- Form builder errors if user had Visual Editor disabled in profile.
+- Form builder Windows styling issues.
+- Form builder dynamic choices warning not always removing.
+- Form builder "Show Layout" CSS formatting.
+- reCAPTCHA compatibility when form is inside OptinMonster popup.
+- PHP errors if form does not contain entries.
+- Validation and formatting issues on some fields if submitted value is zero.
+- File upload javascript validation conflicting with multi-page forms.
+- Gutenberg block returning error if no forms have been created.
+
+## [1.4.9] - 2018-09-18
+### Added
+- Pirate Forms importer.
+
+### Changed
+- Some form builder tooltips to contain documentation links.
+
+### Fixed
+- Form builder javascript conflict with jQuery non-conflict mode.
+- RTL issue with Phone field when using input masks.
+- PHP Notice from WPForms widget.
+- Incorrect markup around Addons submenu item.
+
+## [1.4.8.1] - 2018-08-21
+### Fixed
+- Certain confirmation settings, before 1.4.8, not displaying correctly in the form builder.
+- Compatibility issue with MySQL `Strict_Trans_Tables` mode (again).
+
+## [1.4.8] - 2018-08-28
+### Added
+- Gutenberg block.
+- Conditional form confirmations - forms can now have multiple confirmations with conditional logic!
+- WP Mail SMTP detection and hints in the form builder notification settings.
+- Alt and title tags to image choices images on frontend display.
+
+### Changed
+- Improved Website URL field frontend validation - now automatically adds protocol if omitted.
+- i18n improvements.
+
+### Fixed
+- Compatiblity issue with MySQL `Strict_Trans_Tables` mode.
+- Incorrect param used with `shortcode_atts`.
+- NPS and Rating fields not having access to all conditional logic comparisons.
+- Accessing `wpforms_setting` in frontend javascript before checking if it exists.
+- Escaping method in HTML field mangling code on save.
+- PHP error toggling form builder notifications in some use cases.
+- GDPR field Agreement text not updating in real time.
+- Marketing provider connections containing an escaped apostrophe. 
+- Pressing "Enter" in the form builder resulting in unexpected behavior.
+- Incorrect pagination when searching entries.
+- Security enhancements and other misc. bug fixes.
+
+## [1.4.7.2] - 2018-06-21
+### Changed
+- Adding new choice to Multiple Items field now defaults price to $0.
+
+## Fixed
+- Entry ID always displaying 0 when viewing single entry details.
+- Honeypot field using a none unique CSS ID.
+- Form builder Bulk Add display issues in certain use cases.
+- Checkbox field values not saving if Show Values field option is enabled.
+- Date Time field date dropdown placeholder text not accessible.
+
+## [1.4.7.1] - 2018-06-07
+### Added
+- Greater Than and Less Than conditional logic rules.
+- Conditional logic support for Net Promoter Score field (Surveys and Polls addon v1.1.0).
+
+## Changed
+- Updated Russian translation.
+
+## Fixed
+- Various i18n issues.
+
+## [1.4.7] - 2018-06-04
+### Added
+- New Providers class and functionality. The Drip addon is the first to leverage the new class and existing provider addons will be updated over time.
+
+### Changed
+- CSV export columns are now filterable (`wpforms_export_get_csv_cols`).
+- Old PHP version (5.2 and 5.3) admin warning adjusted to reflect new August 2018 time line.
+
+### Fixed
+- Multiple Choice fields showing as Radio fields in the builder preview when first created.
+- Duplicating fields in the form builder causing issues with certain field types.
+- Entry ID becomes 0 when resending notifications.
+- Escaping issue with provider connection names contained an apostrophe.
+- Alignment issues with the Addons page display.
+- Incorrect text on the Welcome activation page.
+
+## [1.4.6] - 2018-05-14
+### Added
+- GDPR Enhancements plugin setting [doc](https://wpforms.com/how-to-create-gdpr-compliant-forms/).
+- GDPR Enhancement: Disable User Cookies plugin setting.
+- GDPR Enhancement: Disable User Details (IP and User Agent) plugin setting.
+- GDPR Enhancement: Disable Storing User Details form setting.
+- GDPR Enhancement: User Agreement form field.
+- Page break, section divider, and HTML fields can now be enabled in email notifications with a filter [doc](https://developers.wpforms.com/docs/filter-reference-wpforms_email_display_other_fields).
+
+### Changed
+- Hide credit card field unless enabled by a payment addon or with a filter [doc](https://developers.wpforms.com/docs/enable-credit-card-field-without-stripe-addon/).
+- PHP warning that alerts users support for PHP 5.4 and below will be dropped this summer.
+- Spam logging, to improve performance.
+
+### Fixed
+- Rating and Likert Scale not included in CSV exports.
+- Typo in base form CSS.
+- Stripping HTML from the checkbox, mulitple choice, and multiple payment choice labels in the form builder.
+- Unreadable errors if 1-click addon install fails.
+- Date and Time field time interval labels not translatable.
+- Form builder icon visibility when field labels are hidden.
+
+## [1.4.5.3] - 2018-04-03
+### Changed
+- Use minified admin assets when appropriate.
+- Show helpful doc link in form embed modal.
+- Minor improvements with complex conditional logic rule processing.
+
+### Fixed
+- Rating and Likert fields missing from CSV exports.
+- reCAPTCHA v2 showing in form builder when using Invisible reCAPTCHA.
+- Conditional logic rules inception.
+- Conditional logic rules with Radio and Checkbox choices not updating until save.
+- Remove jQuery shorthand references in `admin-utils` to prevent conflicts.
+- Issue with form return hash not processing correctly in some scenarios.
+
 ## [1.4.5.2] - 2018-03-20
 ### Fixed
 - Checkbox and Multiple choice fields not validating when inside pagebreaks.
-- Incorrect documenation link for Input Mask.
+- Incorrect documentation link for Input Mask.
 - Input Mask value disappearing when form builder is refreshed.
 
 ## [1.4.5.1] - 2018-03-20

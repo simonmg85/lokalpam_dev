@@ -1,3 +1,50 @@
-jQuery(function(){jQuery('#plan_package_type').change(function(){var selected=jQuery('#plan_package_type option:selected').text();if(selected==="Pay Per Listing"){jQuery('#plan_text_box').slideToggle();jQuery('#plan_duration_type').slideToggle();jQuery("input#plan_time").prop("disabled",!0);jQuery("input#plan_time").prop("readonly",!0)}else{jQuery('#plan_text_box').slideToggle();jQuery('#plan_duration_type').slideToggle();jQuery("input#plan_time").prop("disabled",!1);jQuery("input#plan_time").prop("readonly",!1)}})});jQuery(document).ready(function($){var selected=jQuery('#plan_package_type option:selected').text();if(selected==="Pay Per Listing"){jQuery('#plan_text_box').slideToggle()}else{jQuery('#plan_text_box').slideToggle();jQuery('#plan_duration_type').slideToggle();jQuery("input#plan_time").prop("disabled",!1);jQuery("input#plan_time").prop("readonly",!1)}
-jQuery('.type_select select[name=plan_for]').change(function(){$this=jQuery(this);$thisval=$this.val();if($thisval=="claimonly"){jQuery('tr#lp_field_lp_price_plan_addmore').slideToggle();jQuery('div#plan_contact_box').slideToggle();jQuery('div#plan_package_type').slideToggle();jQuery('div#plan_color_box').slideToggle();jQuery('div#plan_price_box').slideToggle();jQuery('div#plan_time_monthyear_box').slideToggle();jQuery('div#plan_free_continue').slideToggle();jQuery('div#plan_hot_box').slideToggle();jQuery('div#plan_usage').slideToggle();jQuery('div#plan_cats').slideToggle();if(jQuery('div#plan_text_box').css('display')!=='none'){jQuery('div#plan_text_box').slideToggle()}
-if(jQuery('div#plan_duration_type').css('display')!=='none'){jQuery('div#plan_duration_type').slideToggle()}}else{jQuery('tr#lp_field_lp_price_plan_addmore').slideDown();jQuery('div#plan_contact_box').slideDown();jQuery('div#plan_package_type').slideDown();jQuery('div#plan_color_box').slideDown();jQuery('div#plan_price_box').slideDown();jQuery('div#plan_time_monthyear_box').slideDown();jQuery('div#plan_free_continue').slideDown();jQuery('div#plan_hot_box').slideDown();jQuery('div#plan_usage').slideDown();jQuery('div#plan_cats').slideDown();jQuery('div#plan_duration_type').slideToggle()}})})
+jQuery(function() {
+    jQuery('#plan_package_type').change(function() {
+        var selected = jQuery('#plan_package_type option:selected').text();
+        var alertmsg = jQuery('#plan_package_type select').data('alertmsg');
+        if (selected === "Pay Per Listing") {
+            jQuery('#plan_text_box').slideUp();
+            /* jQuery('#plan_duration_type').slideUp(); */
+            jQuery("input#plan_time").prop("disabled", !1);
+            jQuery("input#plan_time").prop("readonly", !1)
+        } else {
+			alert(alertmsg);
+            jQuery('#plan_text_box').slideDown();
+            /* jQuery('#plan_duration_type').slideDown(); */
+            jQuery("input#plan_time").prop("disabled", !1);
+            jQuery("input#plan_time").prop("readonly", !1)
+        }
+    })
+});
+jQuery(document).ready(function($) {
+    
+	jQuery('select#plan_usge_for').on('change', function(){
+		$cval = jQuery(this).val();
+		if($cval=="default"){
+			jQuery('#plan_cats').slideUp();
+		}else{
+			jQuery('#plan_cats').slideDown();
+		}
+	});
+	$cval = jQuery('select#plan_usge_for').val();
+	if($cval=="default"){
+		jQuery('#plan_cats').slideUp();
+	}else{
+		jQuery('#plan_cats').slideDown();
+	}
+});
+
+jQuery(window).load(function(){
+        var selected = jQuery('#plan_package_type option:selected').text();
+        if (selected === "Pay Per Listing") {
+            jQuery('#plan_text_box').slideUp();
+            /* jQuery('#plan_duration_type').slideUp(); */
+            jQuery("input#plan_time").prop("disabled", !1);
+            jQuery("input#plan_time").prop("readonly", !1)
+        } else {
+            jQuery('#plan_text_box').slideDown();
+            /* jQuery('#plan_duration_type').slideDown(); */
+            jQuery("input#plan_time").prop("disabled", !1);
+            jQuery("input#plan_time").prop("readonly", !1)
+        }
+});

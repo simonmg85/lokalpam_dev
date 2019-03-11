@@ -6,10 +6,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-abstract class Sub_Shortcode {
+abstract class Sub_Shortcode implements I_Shortcode_Handler {
 	protected $_name;
 
-	function __construct( $name ) {
+	public function __construct( $name ) {
 		$this->_name = $name;
 	}
 
@@ -17,5 +17,5 @@ abstract class Sub_Shortcode {
 		return $this->_name;
 	}
 
-	abstract function handle( $values, $content );
+	abstract public function handle( $values, $content );
 }

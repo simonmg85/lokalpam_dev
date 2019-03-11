@@ -27,6 +27,45 @@
 	$limitLefts = '';
 	$taxOn = $listingpro_options['lp_tax_swtich'];
 	$withtaxprice = false;
+	$lpyearmonthswitch = lp_theme_option('listingpro_month_year_plans');
+	
+	if($pricing_views=="horizontal_view"){
+		$pricing_style_views = $pricing_horizontal_view;
+	}else{
+		$pricing_style_views = $pricing_vertical_view;
+	}
+	$switcherArgs = array();
+	$showSwitcher = false;
+	$lp_plans_cats = lp_theme_option('listingpro_plans_cats');
+	if($lp_plans_cats!='yes'){
+		if($lpyearmonthswitch=="yes"){
+			$showSwitcher = true;
+		}
+	}elseif($lp_plans_cats=='yes'){
+		$switcherArgs['relation'] = 'AND';
+		$switcherArgs[] = array(
+							'key' => 'plan_usge_for',
+							'value' => 'default',
+							'compare' => 'LIKE',
+						);
+	}
+	if($showSwitcher==true){
+		$outputVert .='<div class="lp-montly-annualy-text clearfix">
+			<div class="lp_button_switcher lpmonthyearswitcher">
+			<span class="lp-monthly-side active">'.esc_html__('Monthly','listingpro-plugin').'</span>
+			<a href="#" class="switch-fields lp_show_hide_plans"></a><span class="lp-year-side">'.esc_html__('Annually','listingpro-plugin').'</span>
+			</div>
+			</div>';
+	}
+	
+    
+    if($lpyearmonthswitch=="yes"){
+        $switcherArgs[] = array(
+            'key' => 'plan_duration_type',
+            'value' => 'monthly',
+            'compare' => 'LIKE',
+        );
+    }
 	if($taxOn=="1"){
 		$showtaxwithprice = $listingpro_options['lp_tax_with_plan_swtich'];
 		if($showtaxwithprice=="1"){
@@ -49,44 +88,45 @@
 	/* vertical view code */
 	
 			$outputVert .='
-			<div class="page-inner-container '.$hide_plan_class.' '.$borderclass.'">';
+			<div class="page-inner-container '.$hide_plan_class.' '.$borderclass.'" id="select_style"  data-style="'.$pricing_style_views.'">';
 					$args1 = array(
 						'post_type' => 'price_plan',
 						'posts_per_page' => -1,
 						'post_status' => 'publish',
 						'meta_query'=>array(
-							'relation' => 'OR',
-							array(
-								'key' => 'plan_usge_for',
-								'value' => 'default',
-								'compare' => 'LIKE',
-							),
-							array(
-								'key' => 'lp_selected_cats',
-								'compare' => 'NOT EXISTS',
-							),
-							
-
-						),
+                            $switcherArgs,
+                        ),
 					);
 					$query1 = new WP_Query( $args1 );
+					$count = $query1->found_posts;
+                   $GLOBALS['plans_count'] = $count;
 					if($query1->have_posts()){
 						while ( $query1->have_posts() ) {
 							$query1->the_post();
-							ob_start();
-							include( LISTINGPRO_PLUGIN_PATH . "templates/pricing/loop/".$pricing_vertical_view.'.php');
-							$outputVert .= ob_get_contents();
-							ob_end_clean();
-							ob_flush();
-							
+							$listing_id = get_the_ID();
+							$forListings = listing_get_metabox_by_ID('plan_for', $listing_id);
+							if($forListings!="claimonly"){
+								ob_start();
+								include( LISTINGPRO_PLUGIN_PATH . "templates/pricing/loop/".$pricing_vertical_view.'.php');
+								$outputVert .= ob_get_contents();
+								ob_end_clean();
+								ob_flush();
+							}
+
 						}/* END WHILE */
 						wp_reset_postdata();
 					}else {
-						echo '<p class="text-center">'.esc_html__('There is no Plan available right now.', 'listingpro-plugin').'</p>';
+						$outputVert .= '<p class="text-center">'.esc_html__('There is no Plan available right now.', 'listingpro-plugin').'</p>';
 					}
 					$outputVert .= '
 				
-			</div>';
+			</div>
+				';
+			
+			if($lp_plans_cats!='yes'){
+				$outputVert .= '
+				<div id="cats-selected-plans" class="selected_horizontial_plans_v1 lp_plan_result_section" data-style="'.$pricing_style_views.'"></div>';
+			}
 		
 		echo $outputVert;
 ?>

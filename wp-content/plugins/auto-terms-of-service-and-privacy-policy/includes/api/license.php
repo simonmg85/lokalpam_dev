@@ -63,7 +63,7 @@ class License {
 		if ( empty( $key ) ) {
 			return;
 		}
-		$headers = array( WPAUTOTERMS_API_KEY_HEADER . ': ' . $key );
+		$headers = array( WPAUTOTERMS_API_KEY_HEADER => $key );
 		$resp = $this->_query->get( static::_EP_STATUS, array(), $headers );
 		$json = $resp->json();
 		if ( ! $resp->has_error() && isset( $json[ static::_RESP_STATUS ] ) &&

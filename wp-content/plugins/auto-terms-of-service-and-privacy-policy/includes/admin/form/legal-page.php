@@ -3,6 +3,7 @@
 namespace wpautoterms\admin\form;
 
 use wpautoterms\Countries;
+use wpautoterms\cpt\CPT;
 
 class Legal_Page {
 	protected $_id;
@@ -87,7 +88,7 @@ class Legal_Page {
 
 	public function save_post( $post_id ) {
 		$post = get_post( $post_id );
-		if ( ( WPAUTOTERMS_CPT != $post->post_type ) || ! isset( $_POST['legal_page'] ) ) {
+		if ( ( CPT::type() != $post->post_type ) || ! isset( $_POST['legal_page'] ) ) {
 			return;
 		}
 		$legal_page = sanitize_text_field( $_POST['legal_page'] );

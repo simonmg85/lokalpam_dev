@@ -1,31 +1,30 @@
 <?php
+	use sgpb\AdminHelper;
 	$upgradeLink = SG_POPUP_RATE_US_URL;
 	$buttonText = 'RATE US';
 	if (SGPB_POPUP_PKG == SGPB_POPUP_PKG_FREE) {
-		$upgradeLink = SG_POPUP_PRO_URL;
-		$buttonText = 'UPGRADE NOW';
+		$upgradeLink = SG_POPUP_ALL_EXTENSIONS_URL;
+		$buttonText = 'MORE EXTENSIONS';
 	}
+	$banner = AdminHelper::getBannerText();
 ?>
 <div class="sgpb-wrapper sgpb-banner-wrapper">
 	<div class="row">
 		<div class="col-xs-12">
 			<div class="sgpb-main-rate-us-banner-wrapper">
 				<div class="row">
-					<div class="col-xs-5 sgpb-rate-us-banner-1">
+					<div class="col-xs-3 sgpb-rate-us-banner-1">
 						<div class="row">
-							<div class="col-xs-2"></div>
-							<div class="col-xs-7">
-								<a href="<?php echo SG_POPUP_PRO_URL ;?>" target="_blank" class="sgpb-banner-logo-link"><div class="sgpb-banner-logo"></div></a>
+							<div class="col-xs-1"></div>
+							<div class="col-xs-9">
+								<a href="<?php echo SG_POPUP_ALL_EXTENSIONS_URL ;?>" target="_blank" class="sgpb-banner-logo-link"><div class="sgpb-banner-logo"></div></a>
 							</div>
 						</div>
 					</div>
-					<div class="col-xs-4 sgpb-rate-us-banner-2">
+					<div class="col-xs-6 sgpb-rate-us-banner-2">
 						<div class="row">
 							<div class="col-xs-12">
-								<a class="btn sgpb-upgrade-banner-btn" target="_blank" href="<?php echo $upgradeLink; ?>">
-									<img src="<?php echo SG_POPUP_IMG_URL;?>star.png" width="40px">
-									<span style="vertical-align: sub;"><?php _e($buttonText, SG_POPUP_TEXT_DOMAIN); ?></span>
-								</a>
+								<?php echo $banner; ?>
 							</div>
 						</div>
 					</div>

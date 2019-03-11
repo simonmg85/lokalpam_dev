@@ -18,14 +18,17 @@ abstract class Option {
 	protected $_tooltip;
 	protected $_attrs;
 	protected $_classes;
+	public $additional_template_args = array();
 
 	protected function _prepare_attrs() {
 		$ret = array();
-		foreach ( $this->_attrs as $k => $attr ) {
-			if ( $attr === null ) {
-				$ret[] = esc_attr( $k );
-			} else {
-				$ret[] = esc_attr( $k ) . '="' . esc_attr( $attr ) . '"';
+		if ( ! empty( $this->_attrs ) ) {
+			foreach ( $this->_attrs as $k => $attr ) {
+				if ( $attr === null ) {
+					$ret[] = esc_attr( $k );
+				} else {
+					$ret[] = esc_attr( $k ) . '="' . esc_attr( $attr ) . '"';
+				}
 			}
 		}
 
@@ -92,13 +95,13 @@ abstract class Option {
 	}
 
 	protected function _template_args() {
-		return array(
+		return array_merge( array(
 			'name' => esc_attr( $this->_name ),
-			'value' =>  $this->get_value(),
+			'value' => $this->get_value(),
 			'tooltip' => $this->_tooltip,
 			'attrs' => $this->_prepare_attrs(),
 			'classes' => join( ' ', array_map( 'esc_attr', $this->_classes ) )
-		);
+		), $this->additional_template_args );
 	}
 
 	protected function _handle_render( $template, $args ) {

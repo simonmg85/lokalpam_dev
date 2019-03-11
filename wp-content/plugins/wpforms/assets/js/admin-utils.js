@@ -3,6 +3,7 @@ var wpf = {
 
 	cachedFields: {},
 	savedState: false,
+	initialSave: true,
 	orders:  {
 		fields: [],
 		choices: {}
@@ -48,6 +49,7 @@ var wpf = {
 		jQuery(document).on('wpformsFieldAdd', wpf.setFieldOrders);
 		jQuery(document).on('wpformsFieldDelete', wpf.setFieldOrders);
 		jQuery(document).on('wpformsFieldMove', wpf.setFieldOrders);
+		jQuery(document).on('wpformsFieldAdd', wpf.setChoicesOrders);
 		jQuery(document).on('wpformsFieldChoiceAdd', wpf.setChoicesOrders);
 		jQuery(document).on('wpformsFieldChoiceDelete', wpf.setChoicesOrders);
 		jQuery(document).on('wpformsFieldChoiceMove', wpf.setChoicesOrders);
@@ -470,7 +472,6 @@ var wpf = {
 	 * @since 1.3.8
 	 */
 	isDebug: function() {
-
 		return ( ( window.location.hash && '#wpformsdebug' === window.location.hash ) || wpforms_builder.debug );
 	},
 
@@ -492,14 +493,14 @@ var wpf = {
 	 */
 	formObject: function( el ) {
 
-		var form         = $( el ),
-			fields       = form.find( '[name]' ) ,
+		var form         = jQuery( el ),
+			fields       = form.find( '[name]' ),
 			json         = {},
 			arraynames   = {};
 
 		for ( var v = 0; v < fields.length; v++ ){
 
-			var field     = $( fields[v] ),
+			var field     = jQuery( fields[v] ),
 				name      = field.prop( 'name' ).replace( /\]/gi,'' ).split( '[' ),
 				value     = field.val(),
 				lineconf  = {};
@@ -548,10 +549,26 @@ var wpf = {
 					lineconf[nestname] = newobj;
 				}
 		  	}
-			$.extend( true, json, lineconf );
-		};
+			jQuery.extend( true, json, lineconf );
+		}
 
 		return json;
+	},
+
+	/**
+	 * Initialize WPForms admin area tooltips.
+	 *
+	 * @since 1.4.8
+	 */
+	initTooltips: function() {
+
+		jQuery( '.wpforms-help-tooltip' ).tooltipster( {
+			contentAsHTML: true,
+			position: 'right',
+			maxWidth: 300,
+			multiple: true,
+			interactive: true
+		} );
 	}
 };
 wpf.init();

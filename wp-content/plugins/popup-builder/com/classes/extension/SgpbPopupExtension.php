@@ -1,6 +1,10 @@
 <?php
+
 require_once(SG_POPUP_EXTENSION_PATH.'SgpbIPopupExtension.php');
 use sgpb\AdminHelper;
+if (class_exists('SgpbPopupExtension')) {
+	return false;
+}
 
 class SgpbPopupExtension implements SgpbIPopupExtension
 {
@@ -19,15 +23,21 @@ class SgpbPopupExtension implements SgpbIPopupExtension
 		$jsFiles = array();
 		$localizeData = array();
 		$translatedData = ConfigDataHelper::getJsLocalizedData();
+		$currentPostType = AdminHelper::getCurrentPostType();
 		$newsletterPage = $this->getNewsletterPageKey();
 		$settingsPage = $this->getSettingsPageKey();
 
-		$jsFiles[] = array('folderUrl'=> SG_POPUP_JS_URL, 'filename' => 'ExtensionsNotification.js');
+		$jsFiles[] = array('folderUrl'=> SG_POPUP_JS_URL, 'filename' => 'ExtensionsNotification.js', 'dep' => array('jquery'));
 		$localizeData[] = array(
 			'handle' => 'ExtensionsNotification.js',
 			'name' => 'SGPB_JS_EXTENSIONS_PARAMS',
 			'data' => array(
-				'nonce' => wp_create_nonce(SG_AJAX_NONCE)
+				'nonce' => wp_create_nonce(SG_AJAX_NONCE),
+				'popupPostType' => SG_POPUP_POST_TYPE,
+				'extendPage' => SG_POPUP_EXTEND_PAGE,
+				'supportUrl' => SG_POPUP_SUPPORT_URL,
+				'allExtensionsUrl' => SG_POPUP_ALL_EXTENSIONS_URL,
+				'reviewUrl' => SG_POPUP_RATE_US_URL
 			)
 		);
 
@@ -42,18 +52,52 @@ class SgpbPopupExtension implements SgpbIPopupExtension
 		if ($pageName == $newsletterPage) {
 			$jsFiles[] = array('folderUrl'=> SG_POPUP_JS_URL, 'filename' => 'Newsletter.js');
 		}
+		$jsFiles[] = array('folderUrl'=> SG_POPUP_JS_URL, 'filename' => 'Banner.js', 'dep' => array('jquery'));
+		$localizeData[] = array(
+			'handle' => 'Banner.js',
+			'name' => 'SGPB_JS_PARAMS',
+			'data' => array(
+				'url'   => admin_url('admin-ajax.php'),
+				'nonce' => wp_create_nonce(SG_AJAX_NONCE)
+			)
+		);
+		$jsFiles[] = array('folderUrl'=> SG_POPUP_JS_URL, 'filename' => 'gutenbergBlock.min.js');
 
-		if (in_array($pageName, $allowPages)) {
+		$localizeData[] = array(
+			'handle' => 'gutenbergBlock.min.js',
+			'name' => 'SGPB_GUTENBERG_PARAMS',
+			'data' => array(
+				'allPopups' => AdminHelper::getGutenbergPopupsIdAndTitle(),
+				'allEvents' => AdminHelper::getGutenbergPopupsEvents(),
+				'title'   => __('Popup Builder', SG_POPUP_TEXT_DOMAIN),
+				'description'   => __('This block will help you to add Popup Builder’s shortcode inside the page content', SG_POPUP_TEXT_DOMAIN),
+				'i18n'=> array(
+					'title'            => __( 'WPForms', 'wpforms-lite' ),
+					'description'      => __( 'Select and display one of your forms.', 'wpforms-lite' ),
+					'form_keyword'     => __( 'form', 'wpforms-lite' ),
+					'form_select'      => __( 'Select Popup', 'wpforms-lite' ),
+					'form_settings'    => __( 'Form Settings', 'wpforms-lite' ),
+					'form_selected'    => __( 'Form', 'wpforms-lite' ),
+					'show_title'       => __( 'Show Title', 'wpforms-lite' ),
+					'show_description' => __( 'Show Description', 'wpforms-lite' ),
+				),
+				'logo_url' => SG_POPUP_IMG_URL.'bannerLogo.png',
+				'logo_classname' => 'sgpb-gutenberg-logo',
+				'clickText' => __('Click me', SG_POPUP_TEXT_DOMAIN)
+			)
+		);
+
+		if (in_array($pageName, $allowPages) || $currentPostType == SG_POPUP_AUTORESPONDER_POST_TYPE) {
 			$jsFiles[] = array('folderUrl'=> '', 'filename' => 'wp-color-picker');
-			$jsFiles[] = array('folderUrl'=> SG_POPUP_JS_URL, 'filename' => 'select2.min.js', 'dep' => '', 'ver' => '3.86', 'inFooter' => '');
+			$jsFiles[] = array('folderUrl'=> SG_POPUP_JS_URL, 'filename' => 'select2.min.js');
 			$jsFiles[] = array('folderUrl'=> SG_POPUP_JS_URL, 'filename' => 'sgpbSelect2.js');
-			$jsFiles[] = array('folderUrl'=> SG_POPUP_JS_URL, 'filename' => 'jquery.datetimepicker.full.min.js');
+
+
 			$jsFiles[] = array('folderUrl'=> SG_POPUP_JS_URL, 'filename' => 'bootstrap.min.js');
 			$jsFiles[] = array('folderUrl'=> SG_POPUP_JS_URL, 'filename' => 'sgPopupRangeSlider.js');
 			$jsFiles[] = array('folderUrl'=> SG_POPUP_JS_URL, 'filename' => 'Backend.js');
 			$jsFiles[] = array('folderUrl'=> SG_POPUP_JS_URL, 'filename' => 'Popup.js');
 			$jsFiles[] = array('folderUrl'=> SG_POPUP_JS_URL, 'filename' => 'PopupConfig.js');
-			$jsFiles[] = array('folderUrl'=> SG_POPUP_JS_URL, 'filename' => 'Banner.js');
 
 			$localizeData[] = array(
 				'handle' => 'Backend.js',
@@ -74,16 +118,12 @@ class SgpbPopupExtension implements SgpbIPopupExtension
 						'silver' => SGPB_POPUP_PKG_SILVER,
 						'gold' => SGPB_POPUP_PKG_GOLD,
 						'platinum' => SGPB_POPUP_PKG_PLATINUM
-					)
-				)
-			);
-
-			$localizeData[] = array(
-				'handle' => 'Banner.js',
-				'name' => 'SGPB_JS_PARAMS',
-				'data' => array(
-					'url'   => admin_url('admin-ajax.php'),
-					'nonce' => wp_create_nonce(SG_AJAX_NONCE)
+					),
+					'extensions' => array(
+						'geo-targeting' => AdminHelper::isPluginActive('geo-targeting'),
+						'advanced-closing' => AdminHelper::isPluginActive('advancedClosing')
+					),
+					'proEvents' => apply_filters('sgpbProEvents', array('inactivity', 'onScroll'))
 				)
 			);
 
@@ -99,7 +139,7 @@ class SgpbPopupExtension implements SgpbIPopupExtension
 				'data' => SG_POPUP_PUBLIC_URL
 			);
 		}
-		else if ($pageName == 'subscribers') {
+		else if ($pageName == SG_POPUP_SUBSCRIBERS_PAGE) {
 			$jsFiles[] = array('folderUrl'=> SG_POPUP_JS_URL, 'filename' => 'select2.min.js', 'dep' => '', 'ver' => '3.86', 'inFooter' => '');
 			$jsFiles[] = array('folderUrl'=> SG_POPUP_JS_URL, 'filename' => 'sgpbSelect2.js');
 			$jsFiles[] = array('folderUrl'=> SG_POPUP_JS_URL, 'filename' => 'Subscribers.js');
@@ -189,10 +229,10 @@ class SgpbPopupExtension implements SgpbIPopupExtension
 			$cssFiles[] = array('folderUrl' => SG_POPUP_CSS_URL, 'filename' => 'popupAdminStyles.css', 'dep' => array(), 'ver' => SG_POPUP_VERSION, 'inFooter' => false);
 			$cssFiles[] = array('folderUrl' => SG_POPUP_CSS_URL, 'filename' => 'select2.min.css', 'dep' => array(), 'ver' => SG_POPUP_VERSION, 'inFooter' => false);
 			$cssFiles[] = array('folderUrl' => SG_POPUP_CSS_URL, 'filename' => 'sgPopupRangeSlider.css', 'dep' => array(), 'ver' => SG_POPUP_VERSION, 'inFooter' => false);
+			$cssFiles[] = array('folderUrl' => SG_POPUP_CSS_URL, 'filename' => 'theme.css', 'dep' => array(), 'ver' => SG_POPUP_VERSION, 'inFooter' => false);
 			$cssFiles[] = array('folderUrl' => '', 'filename' => 'wp-color-picker');
-			$cssFiles[] = array('folderUrl' => SG_POPUP_CSS_URL, 'filename' => 'animate.css');
 		}
-		else if ($pageName == 'subscribers') {
+		else if ($pageName == SG_POPUP_SUBSCRIBERS_PAGE) {
 			$cssFiles[] = array('folderUrl' => SG_POPUP_CSS_URL, 'filename' => 'sgbp-bootstrap.css', 'dep' => array(), 'ver' => SG_POPUP_VERSION, 'inFooter' => false);
 			$cssFiles[] = array('folderUrl' => SG_POPUP_CSS_URL, 'filename' => 'popupAdminStyles.css', 'dep' => array(), 'ver' => SG_POPUP_VERSION, 'inFooter' => false);
 			$cssFiles[] = array('folderUrl' => SG_POPUP_CSS_URL, 'filename' => 'select2.min.css', 'dep' => array(), 'ver' => SG_POPUP_VERSION, 'inFooter' => false);
@@ -220,7 +260,7 @@ class SgpbPopupExtension implements SgpbIPopupExtension
 			'handle' => 'PopupBuilder.js',
 			'name' => 'SGPB_POPUP_PARAMS',
 			'data' => array(
-				'popupTypeAgeRestriction' => SGPB_POPUP_TYPE_AGE_RESTRICTION,
+				'popupTypeAgeRestriction' => SGPB_POPUP_TYPE_RESTRICTION,
 				'defaultThemeImages' => array(
 					1 => AdminHelper::defaultButtonImage('sgpb-theme-1'),
 					2 => AdminHelper::defaultButtonImage('sgpb-theme-2'),
@@ -231,7 +271,8 @@ class SgpbPopupExtension implements SgpbIPopupExtension
 				'homePageUrl' => get_home_url().'/',
 				'isPreview' => is_preview(),
 				'convertedIdsReverse' => AdminHelper::getReverseConvertIds(),
-				'dontShowPopupExpireTime' => SGPB_DONT_SHOW_POPUP_EXPIRY
+				'dontShowPopupExpireTime' => SGPB_DONT_SHOW_POPUP_EXPIRY,
+				'conditionalJsClasses' => apply_filters('sgpbConditionalJsClasses', array())
 			)
 		);
 		$localizeData[] = array(
@@ -244,6 +285,10 @@ class SgpbPopupExtension implements SgpbIPopupExtension
 					'silver' => SGPB_POPUP_PKG_SILVER,
 					'gold' => SGPB_POPUP_PKG_GOLD,
 					'platinum' => SGPB_POPUP_PKG_PLATINUM
+				),
+				'extensions' => array(
+					'geo-targeting' => AdminHelper::isPluginActive('geo-targeting'),
+					'advanced-closing' => AdminHelper::isPluginActive('advancedClosing')
 				)
 			)
 		);
@@ -255,7 +300,7 @@ class SgpbPopupExtension implements SgpbIPopupExtension
 		);
 
 		$localizeData[] = array(
-			'handle' => 'Popup.js',
+			'handle' => 'PopupBuilder.js',
 			'name' => 'SGPB_JS_PARAMS',
 			'data' => array(
 				'ajaxUrl' => admin_url('admin-ajax.php'),
@@ -277,7 +322,6 @@ class SgpbPopupExtension implements SgpbIPopupExtension
 	{
 		$cssFiles = array();
 		$cssFiles[] = array('folderUrl' => SG_POPUP_CSS_URL, 'filename' => 'theme.css', 'dep' => array(), 'ver' => SG_POPUP_VERSION, 'inFooter' => false);
-		$cssFiles[] = array('folderUrl' => SG_POPUP_CSS_URL, 'filename' => 'animate.css', 'dep' => array(), 'ver' => SG_POPUP_VERSION, 'inFooter' => false);
 
 		$cssData = array(
 			'cssFiles' => apply_filters('sgpbFrontendCssFiles', $cssFiles)

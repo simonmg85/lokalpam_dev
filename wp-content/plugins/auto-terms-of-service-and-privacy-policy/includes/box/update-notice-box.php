@@ -3,6 +3,8 @@
 namespace wpautoterms\box;
 
 use wpautoterms\admin\Menu;
+use wpautoterms\cpt\CPT;
+use wpautoterms\frontend\notice\Update_Notice;
 use wpautoterms\option;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -53,7 +55,7 @@ class Update_Notice_Box extends Box {
 	function define_options( $page_id, $section_id ) {
 		new option\Checkbox_Option( $this->id(), __( 'Enabled', WPAUTOTERMS_SLUG ), '', $page_id, $section_id );
 
-		if ( current_user_can( 'manage_options' ) ) {
+		if ( current_user_can( CPT::edit_cap() ) ) {
 //			new option\Checkbox_Option( $this->id() . '_test_mode', __( 'Test mode', WPAUTOTERMS_SLUG ),
 //				__( 'Show sample box to admin', WPAUTOTERMS_SLUG ), $page_id, $section_id );
 		}
@@ -137,7 +139,7 @@ class Update_Notice_Box extends Box {
 		$a->set_values( Menu::font_sizes() );
 		new option\Color_Option( $this->id() . '_text_color', __( 'Text color', WPAUTOTERMS_SLUG ), '', $page_id, $section_id );
 		new option\Color_Option( $this->id() . '_links_color', __( 'Links color', WPAUTOTERMS_SLUG ), '', $page_id, $section_id );
-		$this->_custom_css_options($page_id, $section_id);
+		$this->_custom_css_options( $page_id, $section_id );
 	}
 
 	public function defaults() {
@@ -155,6 +157,13 @@ class Update_Notice_Box extends Box {
 			$this->id() . '_font_size' => '',
 			$this->id() . '_text_color' => '',
 			$this->id() . '_links_color' => '',
+		);
+	}
+
+	protected function _class_hints() {
+		return array(
+			__( 'Update notice class:', WPAUTOTERMS_SLUG ) => '.' . Update_Notice::BLOCK_CLASS,
+			__( 'Close button class:', WPAUTOTERMS_SLUG ) => '.' . Update_Notice::CLOSE_CLASS,
 		);
 	}
 }

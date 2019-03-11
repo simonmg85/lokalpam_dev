@@ -11,6 +11,8 @@
  */
 class WPForms_Addons {
 
+	const SLUG = 'wpforms-addons';
+
 	/**
 	 * WPForms addons
 	 *
@@ -31,7 +33,7 @@ class WPForms_Addons {
 	}
 
 	/**
-	 * Determing if the user is viewing the settings page, if so, party on.
+	 * Determine if the user is viewing the settings page, if so, party on.
 	 *
 	 * @since 1.0.0
 	 */
@@ -41,7 +43,7 @@ class WPForms_Addons {
 		$page = isset( $_GET['page'] ) ? $_GET['page'] : '';
 
 		// Only load if we are actually on the settings page.
-		if ( 'wpforms-addons' === $page ) {
+		if ( self::SLUG === $page ) {
 
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueues' ) );
 			add_action( 'wpforms_admin_page', array( $this, 'output' ) );
@@ -59,7 +61,7 @@ class WPForms_Addons {
 		wp_enqueue_script(
 			'jquery-matchheight',
 			WPFORMS_PLUGIN_URL . 'assets/js/jquery.matchHeight-min.js',
-			array( 'jquery'  ),
+			array( 'jquery' ),
 			'0.7.0',
 			false
 		);
@@ -88,27 +90,29 @@ class WPForms_Addons {
 		<div id="wpforms-admin-addons" class="wrap wpforms-admin-wrap">
 
 			<h1 class="page-title">
-				<?php _e( 'WPForms Addons', 'wpforms' ); ?>
-				<a href="<?php echo esc_url_raw( add_query_arg( array( 'wpforms_refresh_addons' => '1' ) ) ); ?> " class="add-new-h2 wpforms-btn-orange"><?php _e( 'Refresh Addons', 'wpforms' ); ?></a>
-				<input type="search" placeholder="<?php esc_html_e( 'Search Addons', 'wpforms' ); ?>" id="wpforms-admin-addons-search">
+				<?php esc_html_e( 'WPForms Addons', 'wpforms' ); ?>
+				<a href="<?php echo esc_url_raw( add_query_arg( array( 'wpforms_refresh_addons' => '1' ) ) ); ?>" class="add-new-h2 wpforms-btn-orange">
+					<?php esc_html_e( 'Refresh Addons', 'wpforms' ); ?>
+				</a>
+				<input type="search" placeholder="<?php esc_attr_e( 'Search Addons', 'wpforms' ); ?>" id="wpforms-admin-addons-search">
 			</h1>
 
 			<?php if ( empty( $this->addons ) ) : ?>
 
 				<div class="error notice">
-					<p><?php _e( 'There was an issue retrieving Addons for this site. Please click on the button above the refresh.', 'wpforms' ); ?></p>
+					<p><?php esc_html_e( 'There was an issue retrieving Addons for this site. Please click on the button above to refresh.', 'wpforms' ); ?></p>
 				</div>
 
 			<?php elseif ( ! empty( $errors ) ) : ?>
 
 				<div class="error notice">
-					<p><?php _e( 'In order to get access to Addons, you need to resolve your license key errors.', 'wpforms' ); ?></p>
+					<p><?php esc_html_e( 'In order to get access to Addons, you need to resolve your license key errors.', 'wpforms' ); ?></p>
 				</div>
 
 			<?php elseif ( empty( $type ) ) : ?>
 
 				<div class="error notice">
-					<p><?php _e( 'In order to get access to Addons, you need to verify your license key for WPForms.', 'wpforms' ); ?></p>
+					<p><?php esc_html_e( 'In order to get access to Addons, you need to verify your license key for WPForms.', 'wpforms' ); ?></p>
 				</div>
 
 			<?php else : ?>
@@ -116,7 +120,7 @@ class WPForms_Addons {
 				<?php if ( $refresh ) : ?>
 
 					<div class="updated notice">
-						<p><?php _e( 'Addons have successfully been refreshed.', 'wpforms' ); ?></p>
+						<p><?php esc_html_e( 'Addons have successfully been refreshed.', 'wpforms' ); ?></p>
 					</div>
 
 				<?php
@@ -141,7 +145,7 @@ class WPForms_Addons {
 							'</p>';
 					}
 
-					echo '<h4>' . esc_html__( 'Available Addons', 'wpforms' ) . '</h4>';
+					echo '<h4 id="addons-heading" data-text="' . esc_attr__( 'Available Addons', 'wpforms' ) . '">' . esc_html__( 'Available Addons', 'wpforms' ) . '</h4>';
 
 					echo '<div class="addons-container" id="wpforms-admin-addons-list">';
 
@@ -149,7 +153,7 @@ class WPForms_Addons {
 
 							if ( 'basic' === $type ) :
 
-								$this->addon_grid( $this->addons, $type, array( 'basic' )  );
+								$this->addon_grid( $this->addons, $type, array( 'basic' ) );
 								$this->addon_grid( $this->addons, $type, array( 'plus', 'pro' ), true );
 
 							elseif ( 'plus' === $type ) :
@@ -179,14 +183,13 @@ class WPForms_Addons {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $addons
-	 * @param string $type_current
-	 * @param array $type_show
-	 * @param bool $unlock
+	 * @param array  $addons List of addons.
+	 * @param string $type_current License type user currently have.
+	 * @param array  $type_show License type to show.
+	 * @param bool   $unlock Whether to display unlock text or not.
 	 */
 	public function addon_grid( $addons, $type_current, $type_show, $unlock = false ) {
 
-		$count   = 0;
 		$plugins = get_plugins();
 
 		if ( $unlock ) {
@@ -212,7 +215,8 @@ class WPForms_Addons {
 		}
 
 		// Ultimate is the same level pro.
-		if ( $type_current === 'ultimate' ) {
+
+		if ( in_array( $type_current, array( 'ultimate', 'agency', 'elite' ), true ) ) {
 			$type_current = 'pro';
 		}
 
@@ -263,30 +267,37 @@ class WPForms_Addons {
 
 					echo '<div class="actions wpforms-clear">';
 
+						// Status.
 						if ( ! empty( $status ) && 'upgrade' !== $status ) {
 							echo '<div class="status">';
-								echo '<strong>' . esc_html__( 'Status', 'wpforms' ) . ':</strong> ';
-								echo '<span class="status-label status-' . $status . '">' . $status_label . '</span>';
+								echo '<strong>' .
+									sprintf(
+										/* translators: %s - addon status label. */
+										esc_html__( 'Status: %s', 'wpforms' ),
+										'<span class="status-label status-' . esc_attr( $status ) . '">' . $status_label . '</span>'
+									) .
+									'</strong> ';
 							echo '</div>';
 						} else {
 							$action_class = 'upgrade-button';
 						}
 
-						echo '<div class="' . $action_class . '">';
+						// Button.
+						echo '<div class="' . esc_attr( $action_class ) . '">';
 							if ( 'active' === $status ) {
-								echo '<button class="status-' . $status . '" data-plugin="' . esc_attr( $plugin_basename ) . '">';
+								echo '<button class="status-' . esc_attr( $status ) . '" data-plugin="' . esc_attr( $plugin_basename ) . '" data-type="addon">';
 									echo '<i class="fa fa-toggle-on" aria-hidden="true"></i>';
-									_e( 'Deactivate', 'wpforms' );
+									esc_html_e( 'Deactivate', 'wpforms' );
 								echo '</button>';
 							} elseif ( 'inactive' === $status ) {
-								echo '<button class="status-' . $status . '" data-plugin="' . esc_attr( $plugin_basename ) . '">';
+								echo '<button class="status-' . esc_attr( $status ) . '" data-plugin="' . esc_attr( $plugin_basename ) . '" data-type="addon">';
 									echo '<i class="fa fa-toggle-on fa-flip-horizontal" aria-hidden="true"></i>';
-									_e( 'Activate', 'wpforms' );
+									esc_html_e( 'Activate', 'wpforms' );
 								echo '</button>';
 							} elseif ( 'download' === $status ) {
-								echo '<button class="status-' . $status . '" data-plugin="' . esc_url( $addon['url'] ) . '">';
+								echo '<button class="status-' . esc_attr( $status ) . '" data-plugin="' . esc_url( $addon['url'] ) . '" data-type="addon">';
 									echo '<i class="fa fa-cloud-download" aria-hidden="true"></i>';
-									_e( 'Install Addon', 'wpforms' );
+									esc_html_e( 'Install Addon', 'wpforms' );
 								echo '</button>';
 							} else {
 								echo '<a href="https://wpforms.com/account/" target="_blank" rel="noopener noreferrer" class="wpforms-btn wpforms-btn-orange">' . esc_html__( 'Upgrade Now', 'wpforms' ) . '</a>';
@@ -299,14 +310,10 @@ class WPForms_Addons {
 
 			echo '</div>';
 
-			$count++;
-
 			if ( ! empty( $this->addons[ $id ] ) ) {
 				unset( $this->addons[ $id ] );
 			}
 		}
-
-		//echo '<div style="clear:both;"></div>';
 	}
 
 	/**
@@ -315,7 +322,7 @@ class WPForms_Addons {
 	 * @since 1.0.0
 	 *
 	 * @param string $slug The plugin slug.
-	 * @param array $plugins List of plugins.
+	 * @param array  $plugins List of plugins.
 	 *
 	 * @return string The plugin basename if found, else the plugin slug.
 	 */
@@ -332,4 +339,4 @@ class WPForms_Addons {
 	}
 }
 
-new WPForms_Addons;
+new WPForms_Addons();

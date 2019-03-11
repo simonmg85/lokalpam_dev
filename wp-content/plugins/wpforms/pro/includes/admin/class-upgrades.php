@@ -58,6 +58,10 @@ class WPForms_Upgrades {
 			$this->v143_upgrade();
 		}
 
+		if ( version_compare( $version, '1.5.0', '<' ) ) {
+			$this->v150_upgrade();
+		}
+
 		// If upgrade has occurred, update version options in database.
 		if ( $this->upgraded ) {
 			update_option( 'wpforms_version_upgraded_from', $version );
@@ -229,6 +233,26 @@ class WPForms_Upgrades {
 				'count' => count( $entries ),
 			)
 		);
+	}
+
+	/**
+	 * Perform database upgrades for version 1.5.0.
+	 *
+	 * @since 1.5.0
+	 */
+	private function v150_upgrade() {
+
+		$forms = \wpforms()->form->get( '', array( 'fields' => 'ids' ) );
+
+		if ( empty( $forms ) || ! \is_array( $forms ) ) {
+			return;
+		}
+
+		foreach ( $forms as $form_id ) {
+			delete_post_meta( $form_id, 'wpforms_entries_count' );
+		}
+
+		$this->upgraded = true;
 	}
 
 	/**

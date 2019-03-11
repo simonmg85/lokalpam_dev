@@ -45,6 +45,15 @@ if( !empty($_POST['payment_submitt']) && isset($_POST['payment_submitt']) ){
             listing_set_metabox('changed_planid','', $postid);
         }
     }
+	
+	//if paid claim approval
+	$claimOrderNo = get_post_meta($postid, 'claimOrderNo', true);
+	if($order_id==$claimOrderNo){
+		$claimPlan_id = get_post_meta($postid, 'claimPlan_id', true);
+		listing_set_metabox('Plan_id',$claimPlan_id, $postid);
+	}
+	//end if paid claim approval
+	
 
     if($wpdb->get_var("SHOW TABLES LIKE '$table_name'") == $table_name) {
         $thepost = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM ".$dbprefix."listing_orders WHERE post_id = %d", $postid ) );
@@ -181,7 +190,6 @@ if(!function_exists('listingpro_invoices_page')){
                 <li class="failed" data-tab="tab-4"><a><?php echo esc_html__('Failed', 'listingpro-plugin'); ?> <span class="count"></span></a></li>
             </ul>
 
-            <form id="posts-filter" method="get">
 
                 <div class="tablenav top">
 
@@ -244,6 +252,7 @@ if(!function_exists('listingpro_invoices_page')){
 
 
                 <div class="listingpro_coupon_table">
+                    <div class="lp_admin_invoice_ajax_result"></div>
                     <!--all -->
                     <div id="tab-1" class="lp-backendtabs-content current">
                         <?php
@@ -275,8 +284,6 @@ if(!function_exists('listingpro_invoices_page')){
                     </div>
 
                 </div>
-
-            </form>
 
 
 

@@ -22,7 +22,7 @@ class WPForms_Field_CreditCard extends WPForms_Field {
 		$this->name  = esc_html__( 'Credit Card', 'wpforms' );
 		$this->type  = 'credit-card';
 		$this->icon  = 'fa-credit-card';
-		$this->order = 9;
+		$this->order = 90;
 		$this->group = 'payment';
 
 		// Define additional field properties.
@@ -30,6 +30,9 @@ class WPForms_Field_CreditCard extends WPForms_Field {
 
 		// Set field to required by default.
 		add_filter( 'wpforms_field_new_required', array( $this, 'default_required' ), 10, 2 );
+
+		// Hide field if supporting payment gateway is not activated.
+		add_action( 'wpforms_builder_print_footer_scripts', array( $this, 'builder_footer_scripts' ) );
 	}
 
 	/**
@@ -37,9 +40,9 @@ class WPForms_Field_CreditCard extends WPForms_Field {
 	 *
 	 * @since 1.3.8
 	 *
-	 * @param array $properties
-	 * @param array $field
-	 * @param array $form_data
+	 * @param array $properties Field properties.
+	 * @param array $field      Field settings.
+	 * @param array $form_data  Form data and settings.
 	 *
 	 * @return array
 	 */
@@ -175,22 +178,58 @@ class WPForms_Field_CreditCard extends WPForms_Field {
 	}
 
 	/**
+	 * @inheritdoc
+	 */
+	public function is_dynamic_population_allowed( $properties, $field ) {
+
+		return false;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function is_fallback_population_allowed( $properties, $field ) {
+
+		return false;
+	}
+
+	/**
 	 * Default to required.
 	 *
 	 * @since 1.0.9
 	 *
-	 * @param bool $field_required
-	 * @param array $field
+	 * @param bool  $required Required status, true is required.
+	 * @param array $field    Field settings.
 	 *
 	 * @return bool
 	 */
-	public function default_required( $field_required, $field ) {
+	public function default_required( $required, $field ) {
 
 		if ( 'credit-card' === $field['type'] ) {
 			return true;
 		}
 
-		return $field_required;
+		return $required;
+	}
+
+	/**
+	 * If a supporting payment gateway is not active, don't allow users to add
+	 * the field inside the form builder.
+	 *
+	 * @since 1.4.6
+	 */
+	public function builder_footer_scripts() {
+
+		if ( apply_filters( 'wpforms_field_credit_card_enable', false ) ) {
+			return;
+		}
+		?>
+		<script type="text/javascript">
+		jQuery(function($){
+			$( '#wpforms-add-fields-credit-card' ).remove();
+		});
+		</script>
+		<?php
 	}
 
 	/**
@@ -198,7 +237,7 @@ class WPForms_Field_CreditCard extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field
+	 * @param array $field Field settings.
 	 */
 	public function field_options( $field ) {
 		/*
@@ -227,7 +266,7 @@ class WPForms_Field_CreditCard extends WPForms_Field {
 		$this->field_option( 'basic-options', $field, $args );
 
 		/*
-		 * Advanced field options
+		 * Advanced field options.
 		 */
 
 		// Options open markup.
@@ -248,7 +287,7 @@ class WPForms_Field_CreditCard extends WPForms_Field {
 			echo '</div>';
 		echo '</div>';
 
-		// CVC/Secuity Code.
+		// CVC/Security Code.
 		$cardcvc_placeholder = ! empty( $field['cardcvc_placeholder'] ) ? esc_attr( $field['cardcvc_placeholder'] ) : '';
 		printf( '<div class="wpforms-clear wpforms-field-option-row wpforms-field-option-row-cvc" id="wpforms-field-option-row-%d-cvc" data-subfield="cvc" data-field-id="%d">', $field['id'], $field['id'] );
 			$this->field_element( 'label', $field, array( 'slug' => 'cardcvc_placeholder', 'value' => esc_html__( 'Security Code Placeholder Text', 'wpforms' ) ) );
@@ -287,7 +326,7 @@ class WPForms_Field_CreditCard extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field
+	 * @param array $field Field settings.
 	 */
 	public function field_preview( $field ) {
 
@@ -348,9 +387,9 @@ class WPForms_Field_CreditCard extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field
-	 * @param array $deprecated
-	 * @param array $form_data
+	 * @param array $field      Field data and settings.
+	 * @param array $deprecated Deprecated field attributes. Use field properties.
+	 * @param array $form_data  Form data and settings.
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
 
@@ -403,7 +442,8 @@ class WPForms_Field_CreditCard extends WPForms_Field {
 			// Name.
 			echo '<div ' . wpforms_html_attributes( false, $name['block'] ) . '>';
 				$this->field_display_sublabel( 'name', 'before', $field );
-				printf( '<input type="text" %s %s>',
+				printf(
+					'<input type="text" %s %s>',
 					wpforms_html_attributes( $name['id'], $name['class'], $name['data'], $name['attr'] ),
 					$name['required']
 				);
@@ -416,7 +456,8 @@ class WPForms_Field_CreditCard extends WPForms_Field {
 
 				// Month.
 				$this->field_display_sublabel( 'month', 'before', $field );
-				printf( '<select %s %s>',
+				printf(
+					'<select %s %s>',
 					wpforms_html_attributes( $month['id'], $month['class'], $month['data'], $month['attr'] ),
 					$month['required']
 				);
@@ -433,7 +474,8 @@ class WPForms_Field_CreditCard extends WPForms_Field {
 
 				// Year.
 				$this->field_display_sublabel( 'year', 'before', $field );
-				printf( '<select %s %s>',
+				printf(
+					'<select %s %s>',
 					wpforms_html_attributes( $year['id'], $year['class'], $year['data'], $year['attr'] ),
 					$year['required']
 				);
@@ -457,9 +499,9 @@ class WPForms_Field_CreditCard extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int $field_id
-	 * @param array $field_submit
-	 * @param array $form_data
+	 * @param int   $field_id     Field ID.
+	 * @param array $field_submit Submitted field value.
+	 * @param array $form_data    Form data and settings.
 	 */
 	public function validate( $field_id, $field_submit, $form_data ) {
 	}
@@ -469,9 +511,9 @@ class WPForms_Field_CreditCard extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int $field_id
-	 * @param array $field_submit
-	 * @param array $form_data
+	 * @param int   $field_id     Field ID.
+	 * @param array $field_submit Submitted field value.
+	 * @param array $form_data    Form data and settings.
 	 */
 	public function format( $field_id, $field_submit, $form_data ) {
 
@@ -487,5 +529,4 @@ class WPForms_Field_CreditCard extends WPForms_Field {
 		);
 	}
 }
-
-new WPForms_Field_CreditCard;
+new WPForms_Field_CreditCard();

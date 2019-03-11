@@ -46,7 +46,7 @@ abstract class WPForms_Analytics_Integration {
 	public $icon;
 
 	/**
-	 * Form data.
+	 * Form data and settings.
 	 *
 	 * @since 1.1.0
 	 * @var array
@@ -110,7 +110,7 @@ abstract class WPForms_Analytics_Integration {
 	 */
 	public function builder_form_data() {
 
-		$this->form_data = WPForms_Builder->form_data;
+		$this->form_data = WPForms_Builder::instance()->form_data;
 	}
 
 	/**

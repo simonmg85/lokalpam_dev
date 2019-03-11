@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Entry DB class
+ * Entry DB class.
  *
  * @package    WPForms
  * @author     WPForms
@@ -22,6 +22,7 @@ class WPForms_Entry_Handler extends WPForms_DB {
 
 		$this->table_name  = $wpdb->prefix . 'wpforms_entries';
 		$this->primary_key = 'entry_id';
+		$this->type        = 'entries';
 	}
 
 	/**
@@ -58,7 +59,18 @@ class WPForms_Entry_Handler extends WPForms_DB {
 	public function get_column_defaults() {
 
 		return array(
-			'date' => date( 'Y-m-d H:i:s' ),
+			'form_id'       => '',
+			'post_id'       => '',
+			'user_id'       => '',
+			'status'        => '',
+			'type'          => '',
+			'fields'        => '',
+			'meta'          => '',
+			'date'          => date( 'Y-m-d H:i:s' ),
+			'date_modified' => date( 'Y-m-d H:i:s' ),
+			'ip_address'    => '',
+			'user_agent'    => '',
+			'user_uuid'     => '',
 		);
 	}
 
@@ -69,7 +81,7 @@ class WPForms_Entry_Handler extends WPForms_DB {
 	 *
 	 * @since 1.1.6
 	 *
-	 * @param int|string $row_id Row ID.
+	 * @param int $row_id Entry ID.
 	 *
 	 * @return bool False if the record could not be deleted, true otherwise.
 	 */
@@ -87,8 +99,8 @@ class WPForms_Entry_Handler extends WPForms_DB {
 	 *
 	 * @since 1.1.5
 	 *
-	 * @param int $row_id
-	 * @param int $form_id
+	 * @param int $row_id  Entry ID.
+	 * @param int $form_id Form ID.
 	 *
 	 * @return mixed object or null
 	 */
@@ -116,8 +128,8 @@ class WPForms_Entry_Handler extends WPForms_DB {
 	 *
 	 * @since 1.1.5
 	 *
-	 * @param int $row_id
-	 * @param int $form_id
+	 * @param int $row_id  Entry ID.
+	 * @param int $form_id Form ID.
 	 *
 	 * @return mixed object or null
 	 */
@@ -141,11 +153,41 @@ class WPForms_Entry_Handler extends WPForms_DB {
 	}
 
 	/**
+	 * Get last entry.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param int $form_id Form ID.
+	 *
+	 * @return mixed Object from DB values or null.
+	 */
+	public function get_last( $form_id ) {
+
+		global $wpdb;
+
+		if ( empty( $form_id ) ) {
+			return false;
+		}
+
+		$last = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT * FROM {$this->table_name}
+				WHERE `form_id` = %d
+				ORDER BY {$this->primary_key} DESC
+				LIMIT 1;",
+				absint( $form_id )
+			)
+		);
+
+		return $last;
+	}
+
+	/**
 	 * Mark all entries read for a form.
 	 *
 	 * @since 1.1.6
 	 *
-	 * @param int $form_id
+	 * @param int $form_id Form ID.
 	 *
 	 * @return bool
 	 */
@@ -165,26 +207,60 @@ class WPForms_Entry_Handler extends WPForms_DB {
 	}
 
 	/**
+	 * Get next entries count.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param int $row_id  Entry ID.
+	 * @param int $form_id Form ID.
+	 *
+	 * @return int
+	 */
+	public function get_next_count( $row_id, $form_id ) {
+
+		global $wpdb;
+
+		if ( empty( $form_id ) ) {
+			return 0;
+		}
+
+		$prev_count = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT({$this->primary_key}) FROM {$this->table_name}
+				WHERE `form_id` = %d AND {$this->primary_key} > %d
+				ORDER BY {$this->primary_key} ASC;",
+				absint( $form_id ),
+				absint( $row_id )
+			)
+		);
+
+		return absint( $prev_count );
+	}
+
+	/**
 	 * Get previous entries count.
 	 *
+	 * @since 1.5.0 Changed return type to always be an integer.
 	 * @since 1.1.5
 	 *
-	 * @param int $row_id
-	 * @param int $form_id
+	 * @param int $row_id  Entry ID.
+	 * @param int $form_id Form ID.
 	 *
-	 * @return mixed object or null
+	 * @return int
 	 */
 	public function get_prev_count( $row_id, $form_id ) {
 
 		global $wpdb;
 
 		if ( empty( $row_id ) || empty( $form_id ) ) {
-			return false;
+			return 0;
 		}
 
 		$prev_count = $wpdb->get_var(
 			$wpdb->prepare(
-				"SELECT COUNT({$this->primary_key}) FROM {$this->table_name} WHERE `form_id` = %d AND {$this->primary_key} < %d ORDER BY {$this->primary_key};",
+				"SELECT COUNT({$this->primary_key}) FROM {$this->table_name}
+				WHERE `form_id` = %d AND {$this->primary_key} < %d
+				ORDER BY {$this->primary_key} ASC;",
 				absint( $form_id ),
 				absint( $row_id )
 			)
@@ -198,8 +274,8 @@ class WPForms_Entry_Handler extends WPForms_DB {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $args
-	 * @param bool $count
+	 * @param array $args  Redefine query parameters by providing own arguments.
+	 * @param bool  $count Whether to just count entries or get the list of them. True to just count.
 	 *
 	 * @return array|int
 	 */
@@ -272,7 +348,7 @@ class WPForms_Entry_Handler extends WPForms_DB {
 			if ( is_array( $args[ $key ] ) && ! empty( $args[ $key ] ) ) {
 				$ids = implode( ',', array_map( 'intval', $args[ $key ] ) );
 			} else {
-				$ids = intval( $args[ $key ] );
+				$ids = (int) $args[ $key ];
 			}
 
 			$where[ 'arg_' . $key ] = "`{$key}` IN ( {$ids} )";
@@ -352,8 +428,8 @@ class WPForms_Entry_Handler extends WPForms_DB {
 
 			// @codingStandardsIgnoreStart
 			$results = absint( $wpdb->get_var(
-				"SELECT COUNT({$this->primary_key}) 
-				FROM {$this->table_name} 
+				"SELECT COUNT({$this->primary_key})
+				FROM {$this->table_name}
 				WHERE {$where_sql};"
 			) );
 			// @codingStandardsIgnoreEnd
@@ -362,10 +438,10 @@ class WPForms_Entry_Handler extends WPForms_DB {
 
 			// @codingStandardsIgnoreStart
 			$results = $wpdb->get_results(
-				"SELECT {$select} 
-				FROM {$this->table_name} 
-				WHERE {$where_sql} 
-				ORDER BY {$args['orderby']} {$args['order']} 
+				"SELECT {$select}
+				FROM {$this->table_name}
+				WHERE {$where_sql}
+				ORDER BY {$args['orderby']} {$args['order']}
 				LIMIT {$args['offset']}, {$args['number']};"
 			);
 			// @codingStandardsIgnoreEnd

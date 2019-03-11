@@ -21,7 +21,12 @@ function lpinitMapPlaces() {
             service.getDetails({
                 placeId: place_id
             }, function(place, status) {
-                console.log(place);
+				jQuery('input[name="postTitle"]').val(place.name);
+				
+				/* console.log(place.geometry.location.lat());
+				console.log(place.geometry.location.lng()); */
+				/* console.log(place.name);
+                console.log(place); */
                 if (status === google.maps.places.PlacesServiceStatus.OK) {
                     var marker = new google.maps.Marker({
                         map: map,
@@ -37,12 +42,16 @@ function lpinitMapPlaces() {
                             if (arrAddress[i].types[0] === "locality") {
                                 var city = arrAddress[i].short_name;
                                 jQuery('input[name=locationn]').val(city);
-                                jQuery('input[name=location]').val(city)
+                                jQuery('input[name=location]').val(city);
+								jQuery('input[name=locationn]').data('isseleted', true);
                             }
                         }
                     }
                     if (!place.formatted_address) {} else {
-                        jQuery('input[name=gAddress]').val(place.formatted_address)
+                        jQuery('input[name=gAddress]').val(place.formatted_address);
+                        jQuery('input[name=latitude]').val(place.geometry.location.lat());
+                        jQuery('input[name=longitude]').val(place.geometry.location.lng());
+						
                     }
                     if (!place.website) {} else {
                         jQuery('input[name=website]').val(place.website)
@@ -79,7 +88,7 @@ function lpinitMapPlaces() {
 													</div>\
 												</div><a class="icon-jfi-trash jFiler-item-trash-action"><i class="fa fa-trash"></i></a>\
 											</li>';
-                            output.insertBefore(div, null)
+                            //output.insertBefore(div, null)
                         }
                     }
                 }

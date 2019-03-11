@@ -18,6 +18,8 @@ class Action_Base {
 	 */
 	protected $_handler;
 
+	protected static $_actions = array();
+
 	public function __construct( $capability, $args = null, $name = '', $handler = null, $fail_handler = null, $admin_post = false ) {
 		$this->_name = empty( $name ) ? static::NAME : $name;
 		$this->_args = $args;
@@ -28,6 +30,11 @@ class Action_Base {
 			add_action( 'admin_post_' . $this->name(), array( $this, 'handle_post' ) );
 		}
 		add_action( 'wp_ajax_' . $this->name(), array( $this, 'handle' ) );
+		static::$_actions[] = $this;
+	}
+
+	public static function actions() {
+		return self::$_actions;
 	}
 
 	public function name() {

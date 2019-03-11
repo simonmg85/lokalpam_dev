@@ -7,13 +7,14 @@
 
 
 												<th scope="col" id="title" class="manage-column column-title column-primary sortable desc">
-												<a><span><?php echo esc_html__('Receipt/inovice#', 'listingpro-plugin'); ?></span><span class="sorting-indicator"></span></a>
+												<a><span><?php echo esc_html__('Receipt/invoice#', 'listingpro-plugin'); ?></span><span class="sorting-indicator"></span></a>
 												</th>
 
 												<th class="manage-column column-tags"><?php echo esc_html__('Date', 'listingpro-plugin'); ?></th>
 												<th class="manage-column column-tags"><?php echo esc_html__('Method', 'listingpro-plugin'); ?></th>
 												<th class="manage-column column-tags"><?php echo esc_html__('Price', 'listingpro-plugin'); ?></th>
 												<th class="manage-column column-tags"><?php echo esc_html__('Status', 'listingpro-plugin'); ?></th>
+												<th class="manage-column column-tags"><?php echo esc_html__('Action', 'listingpro-plugin'); ?></th>
 											</tr>
 										</thead>
 										<tbody>
@@ -35,6 +36,7 @@
 														echo '</pre>'; */
 													foreach($results as $Index=>$Value){
 														$invoiceStatus = $Value->status;
+														$main_id = $Value->main_id;
 														?>
 
 														<tr>
@@ -45,13 +47,14 @@
 
 															<!-- <td><?php echo $counter; ?></td> -->
 																<td class="manage-column column-categories"><?php echo $Value->order_id; ?></td>
-																<td class="manage-column column-categories"><?php echo date(get_option('date_format'), strtotime($Value->date)) ?></td>
+																<td class="manage-column column-categories"><?php echo date_i18n(get_option('date_format'), strtotime($Value->date)) ?></td>
 																<td class="manage-column column-categories"><?php echo $Value->payment_method; ?></td>
 																<td class="manage-column column-categories"><?php echo $Value->price.$Value->currency; ?></td>
 																
 
-
+																
 																<td class="manage-column column-categories">
+																  <form class="posts-filter" method="POST">
 																	<?php
 																			if(!empty($invoiceStatus)){
 																				if($invoiceStatus=="success"){ ?>
@@ -60,17 +63,39 @@
 																				}elseif($invoiceStatus=="failed"){ ?>
 																					<input class="alert alert-danger" type="button" value="<?php echo esc_html__('Failed', 'listingpro-plugin'); ?>" >
 																				<?php 
-																				}elseif($invoiceStatus=="pending" || $invoiceStatus=="in progress"){ ?>
+																				}elseif($invoiceStatus=="pending" || $invoiceStatus=="in progress"){ 
+																					if($Value->payment_method=="wire"){
+																				?>
+																					<input class="alert alert-info" type="submit" value="<?php echo esc_html__('Pending', 'listingpro-plugin'); ?>" >
+																					<input type="hidden" name="payment_submitt" value="proceed">
+																					<input type="hidden" name="order_id" value="<?php echo $Value->order_id; ?>">
+																					<input type="hidden" name="post_id" value="<?php echo $Value->post_id; ?>">
+																				<?php
+																					}else{
+																					?>
 																					<input class="alert alert-info" type="button" value="<?php echo esc_html__('Pending', 'listingpro-plugin'); ?>" >
-																				<?php 
-																				} ?>
+																				<?php
+																					}																	
+																				} 
+																				?>
 
 																	<?php
 																		}
 																	?>
+																	</form>
 																</td>
 																
-																
+																<td>
+																	<form class="wp-core-ui" method="post">
+																		<input type="submit" name="delete_invoice" class="button action" value="<?php echo esc_html__('Delete', 'listingpro-plugin'); ?>" onclick="return window.confirm('Are you sure you want to proceed action?');" />
+																		<input type="hidden" name="main_id" value="<?php echo $main_id; ?>" />
+																	</form>
+																</td>
+																<td>
+																		<a href="#" class="lp_watchthisinvoice" data-invoiceid="<?php echo $main_id; ?>"><span class="dashicons dashicons-visibility"></span></a>
+																		<div class="lobackspinner"></div>
+
+																</td>
 															</tr>
 
 															<?php
@@ -87,12 +112,13 @@
 													<td class="manage-column column-cb check-column"><label class="screen-reader-text" for="cb-select-all-2">Select All</label><input id="cb-select-all-2" type="checkbox"></td>
 
 													<th class="manage-column column-title column-primary sortable desc">
-														<a><span>Receipt/inovice#</span>
+														<a><span>Receipt/invoice#</span>
 															<span class="sorting-indicator"></span></a></th>
 															<th class="manage-column column-tags"><?php echo esc_html__('Date', 'listingpro-plugin'); ?></th>
 															<th class="manage-column column-tags"><?php echo esc_html__('Method', 'listingpro-plugin'); ?></th>
 															<th class="manage-column column-tags"><?php echo esc_html__('Price', 'listingpro-plugin'); ?></th>
 															<th class="manage-column column-tags"><?php echo esc_html__('Status', 'listingpro-plugin'); ?></th>
+															<th class="manage-column column-tags"><?php echo esc_html__('Action', 'listingpro-plugin'); ?></th>
 														</tr>
 													</tfoot>
 												</table>

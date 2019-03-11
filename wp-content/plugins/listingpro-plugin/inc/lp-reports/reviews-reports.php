@@ -147,9 +147,11 @@ if(!function_exists('lp_reviews_flag_submenu_page_callback')){
 				}
 				else{
 					?>
-					<p>
-					<?php esc_html_e('Sorry! There is no report found', 'listingpro-plugin');?>
-					</p>
+					<tr>
+						<td  class="colspanchange" colspan="9">
+						<?php esc_html_e('Sorry! There is no report found', 'listingpro-plugin');?>
+						</td>
+					</tr>
 					<?php
 				}
 			?>

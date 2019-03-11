@@ -120,3 +120,24 @@ body.post-type-lp-ads .row-actions span.trash{
 .lpbackendtabs li:hover{
 	cursor:pointer;
 }
+.lobackspinner{
+    background: url('../../images/wpspin_light.gif') no-repeat;
+    background-size: 16px 16px;
+    display: none;
+    float: right;
+    opacity: .7;
+    filter: alpha(opacity=70);
+    width: 16px;
+    height: 16px;
+    margin: 5px 5px 0;
+}
+.lp_admin_invoice_ajax_result{
+    position: absolute;
+    z-index: 9999999;
+    background: #fff;
+    width: inherit;
+    border: solid 1px #ccc;
+    width: 100%;
+    left:0px;
+    top:0px;
+}

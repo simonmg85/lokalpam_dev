@@ -13,7 +13,6 @@ jQuery(document).ready(function ($) {
         return typeof v === "undefined" ? def : v;
     }
 
-    var oldTopValue = parseInt(getShadowProperty("body", ":before", "top", 0));
     var oldBottomValue = parseInt(getShadowProperty("body", ":after", "bottom", 0));
     var topContainer = jQuery("#wpautoterms-top-fixed-container");
     var bottomContainer = jQuery("#wpautoterms-bottom-fixed-container");
@@ -54,7 +53,7 @@ jQuery(document).ready(function ($) {
 
     $(".wpautoterms-notice-close").click(function () {
         var t = jQuery(this);
-        setCookie(t.attr("cookie"), t.attr("value"), 365);
+        setCookie(t.data("cookie"), t.data("value"), 365);
         var p1 = jQuery(this).parent();
         var p2 = p1.parent();
         p1.remove();

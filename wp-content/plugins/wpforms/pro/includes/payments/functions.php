@@ -273,9 +273,9 @@ function wpforms_sanitize_amount( $amount, $currency = '' ) {
  * @since 1.2.6
  * @link https://github.com/easydigitaldownloads/easy-digital-downloads/blob/master/includes/formatting.php#L83
  *
- * @param string $amount
+ * @param string  $amount
  * @param boolean $symbol
- * @param string $currency
+ * @param string  $currency
  *
  * @return string $amount Newly formatted amount or Price Not Available
  */
@@ -324,11 +324,12 @@ function wpforms_format_amount( $amount, $symbol = false, $currency = '' ) {
  * Return recognized payment field types.
  *
  * @since 1.0.0
+ *
  * @return array
  */
 function wpforms_payment_fields() {
 
-	$fields = array( 'payment-single', 'payment-multiple', 'payment-select' );
+	$fields = array( 'payment-single', 'payment-multiple', 'payment-checkbox', 'payment-select' );
 
 	return apply_filters( 'wpforms_payment_fields', $fields );
 }
@@ -338,12 +339,12 @@ function wpforms_payment_fields() {
  *
  * @since 1.0.0
  *
- * @param string $type
- * @param array|string $data
+ * @param string $type Either 'entry' or 'form'.
+ * @param array  $data List of form fields.
  *
  * @return bool
  */
-function wpforms_has_payment( $type = 'entry', $data = '' ) {
+function wpforms_has_payment( $type = 'entry', $data = array() ) {
 
 	$payment        = false;
 	$payment_fields = wpforms_payment_fields();
@@ -365,7 +366,7 @@ function wpforms_has_payment( $type = 'entry', $data = '' ) {
 				(
 					'entry' === $type &&
 					! empty( $field['amount'] ) &&
-					$field['amount'] != wpforms_sanitize_amount( '0' )
+					$field['amount'] != wpforms_sanitize_amount( 0 )
 				)
 			) {
 				$payment = true;
@@ -382,7 +383,7 @@ function wpforms_has_payment( $type = 'entry', $data = '' ) {
  *
  * @since 1.4.5
  *
- * @param array $form_data Form data.
+ * @param array $form_data Form data and settings.
  *
  * @return bool
  */
@@ -406,11 +407,11 @@ function wpforms_has_payment_gateway( $form_data ) {
  *
  * @since 1.0.0
  *
- * @param string $fields
+ * @param array $fields
  *
  * @return float
  */
-function wpforms_get_total_payment( $fields = '' ) {
+function wpforms_get_total_payment( $fields ) {
 
 	$fields = wpforms_get_payment_items( $fields );
 	$total  = 0;

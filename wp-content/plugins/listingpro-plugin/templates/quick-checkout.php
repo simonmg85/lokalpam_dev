@@ -19,6 +19,7 @@ if(!empty($_POST['planid']) && !empty($_POST['listingid'])){
 	$Taxrate='';
 	$Taxtype='';
 	$price = '';
+	$plan_price = round($plan_price,2);
 	$price = $plan_price;
 	
 	$deafaultFeatImg = lp_default_featured_image_listing();
@@ -38,12 +39,12 @@ if(!empty($_POST['planid']) && !empty($_POST['listingid'])){
 		$output .='<div class="lp-checkout-wrapper">';
 		
 			if(!empty($plan_price)){
-					$output .='<div class="lp-user-listings clearfix" data-plantype="'.$plan_type.'" data-recurringtext="'.esc_html__('Recurring Payment?', 'listingpro-plugin').'"><div class="col-md-12 col-sm-12 col-xs-12 lp-listing-clm lp-checkout-page-outer">';
+					$output .='<div class="lp-user-listings clearfix active-checkout-listing" data-plantype="'.$plan_type.'" data-recurringtext="'.esc_html__('Recurring Payment?', 'listingpro-plugin').'"><div class="col-md-12 col-sm-12 col-xs-12 lp-listing-clm lp-checkout-page-outer">';
 					
 					$output .= '<div class="col-md-1 col-sm-2 col-xs-6">';
 					
 					$output .='<div class="radio radio-danger lp_price_trigger_checkout">
-									<input type="radio" name="listing_id" data-taxenable = "'.$enableTax.'" data-taxrate = "'.$Taxrate.'" data-planprice = "'.$plan_price.'" data-title="'.get_the_title($plan_id).'" data-price="'.$price.'" id="'.$post_id.'" value="'.$post_id.'">
+									<input checked type="radio" name="listing_id" data-planid="'.$plan_id.'" data-taxenable = "'.$enableTax.'" data-taxrate = "'.$Taxrate.'" data-planprice = "'.$plan_price.'" data-title="'.get_the_title($plan_id).'" data-price="'.$price.'" id="'.$post_id.'" value="'.$post_id.'">
 									<label for="'.$post_id.'">
 									 
 									</label>
@@ -122,6 +123,15 @@ if(!empty($_POST['planid']) && !empty($_POST['listingid'])){
 				}
 			
 	$output .='</div>';
+	
+	$output .= '<input type="hidden" name="listings_tax_price" value="">';
+        $output .= '<input type="hidden" name="method" value="">';
+        $output .= '<input type="hidden" name="func" value="start">';
+		$output .= '<input type="hidden" name="plan_price" value="">';
+		$output .= '<input type="hidden" name="post_title" value="">';
+		$output .= '<input type="hidden" name="listings_id" value="">';
+		$output .= '<input type="hidden" name="plan_id" value="">';
+		$output .= '<input type="hidden" name="post_id" value="">';
 		
 	
 }

@@ -22,7 +22,7 @@ class WPForms_Field_Hidden extends WPForms_Field {
 		$this->name  = esc_html__( 'Hidden Field', 'wpforms' );
 		$this->type  = 'hidden';
 		$this->icon  = 'fa-eye-slash';
-		$this->order = 13;
+		$this->order = 150;
 		$this->group = 'fancy';
 	}
 
@@ -31,7 +31,7 @@ class WPForms_Field_Hidden extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field
+	 * @param array $field Field data and settings.
 	 */
 	public function field_options( $field ) {
 		/*
@@ -73,7 +73,7 @@ class WPForms_Field_Hidden extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field
+	 * @param array $field Field data and settings.
 	 */
 	public function field_preview( $field ) {
 
@@ -89,9 +89,9 @@ class WPForms_Field_Hidden extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field
-	 * @param array $deprecated
-	 * @param array $form_data
+	 * @param array $field      Field data and settings.
+	 * @param array $deprecated Not used any more field attributes.
+	 * @param array $form_data  Form data and settings.
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
 
@@ -106,4 +106,4 @@ class WPForms_Field_Hidden extends WPForms_Field {
 	}
 }
 
-new WPForms_Field_Hidden;
+new WPForms_Field_Hidden();

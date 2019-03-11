@@ -22,7 +22,7 @@ class WPForms_Field_Password extends WPForms_Field {
 		$this->name  = esc_html__( 'Password', 'wpforms' );
 		$this->type  = 'password';
 		$this->icon  = 'fa-lock';
-		$this->order = 9;
+		$this->order = 130;
 		$this->group = 'fancy';
 
 		// Define additional field properties.
@@ -35,11 +35,11 @@ class WPForms_Field_Password extends WPForms_Field {
 	/**
 	 * Define additional field properties.
 	 *
-	 * @since 1.8.7
+	 * @since 1.3.7
 	 *
-	 * @param array $properties
-	 * @param array $field
-	 * @param array $form_data
+	 * @param array $properties Field properties.
+	 * @param array $field      Field settings.
+	 * @param array $form_data  Form data and settings.
 	 *
 	 * @return array
 	 */
@@ -124,14 +124,23 @@ class WPForms_Field_Password extends WPForms_Field {
 			$properties['inputs']['secondary']['class'][] = 'wpforms-field-required';
 		}
 
-		// Input Secondary: dynamic value support.
-		if ( apply_filters( 'wpforms_frontend_dynamic_values', false ) ) {
-			if ( empty( $properties['inputs']['secondary']['attr']['value'] ) && ! empty( $_GET["f{$field_id}-secondary"] ) ) {
-				$properties['inputs']['secondary']['attr']['value'] = sanitize_text_field( $_GET["f{$field_id}-secondary"] );
-			}
-		}
-
 		return $properties;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function is_dynamic_population_allowed( $properties, $field ) {
+
+		return false;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function is_fallback_population_allowed( $properties, $field ) {
+
+		return false;
 	}
 
 	/**
@@ -140,7 +149,7 @@ class WPForms_Field_Password extends WPForms_Field {
 	 * @since 1.3.0
 	 *
 	 * @param string $class
-	 * @param array $field
+	 * @param array  $field
 	 *
 	 * @return string
 	 */
@@ -274,27 +283,27 @@ class WPForms_Field_Password extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field
+	 * @param array $field Current field specific data.
 	 */
 	public function field_preview( $field ) {
 
-		$placeholder         = ! empty( $field['placeholder'] ) ? esc_attr( $field['placeholder'] ) : '';
-		$confirm_placeholder = ! empty( $field['confirmation_placeholder'] ) ? esc_attr( $field['confirmation_placeholder'] ) : '';
+		$placeholder         = ! empty( $field['placeholder'] ) ? $field['placeholder'] : '';
+		$confirm_placeholder = ! empty( $field['confirmation_placeholder'] ) ? $field['confirmation_placeholder'] : '';
 		$confirm             = ! empty( $field['confirmation'] ) ? 'enabled' : 'disabled';
 
 		// Label.
 		$this->field_preview_option( 'label', $field );
 		?>
 
-		<div class="wpforms-confirm wpforms-confirm-<?php echo $confirm; ?>">
+		<div class="wpforms-confirm wpforms-confirm-<?php echo esc_attr( $confirm ); ?>">
 
 			<div class="wpforms-confirm-primary">
-				<input type="password" placeholder="<?php echo $placeholder; ?>" class="primary-input" disabled>
+				<input type="password" placeholder="<?php echo esc_attr( $placeholder ); ?>" class="primary-input" disabled>
 				<label class="wpforms-sub-label"><?php esc_html_e( 'Password', 'wpforms' ); ?></label>
 			</div>
 
 			<div class="wpforms-confirm-confirmation">
-				<input type="password" placeholder="<?php echo $confirm_placeholder; ?>" class="secondary-input" disabled>
+				<input type="password" placeholder="<?php echo esc_attr( $confirm_placeholder ); ?>" class="secondary-input" disabled>
 				<label class="wpforms-sub-label"><?php esc_html_e( 'Confirm Password', 'wpforms' ); ?></label>
 			</div>
 
@@ -310,9 +319,9 @@ class WPForms_Field_Password extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field
-	 * @param array $deprecated
-	 * @param array $form_data
+	 * @param array $field      Field data and settings.
+	 * @param array $deprecated Deprecated field attributes. Use field properties.
+	 * @param array $form_data  Form data and settings.
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
 
@@ -370,9 +379,9 @@ class WPForms_Field_Password extends WPForms_Field {
 	 *
 	 * @since 1.3.0
 	 *
-	 * @param int $field_id
-	 * @param array $field_submit
-	 * @param array $form_data
+	 * @param int   $field_id     Field ID.
+	 * @param array $field_submit Submitted field value.
+	 * @param array $form_data    Form data and settings.
 	 */
 	public function validate( $field_id, $field_submit, $form_data ) {
 
@@ -384,18 +393,18 @@ class WPForms_Field_Password extends WPForms_Field {
 		if ( empty( $fields[ $field_id ]['confirmation'] ) ) {
 
 			// Required check.
-			if ( ! empty( $fields[ $field_id ]['required'] ) && empty( $field_submit ) ) {
+			if ( empty( $field_submit ) && ! empty( $fields[ $field_id ]['required'] ) ) {
 				wpforms()->process->errors[ $form_id ][ $field_id ] = $required;
 			}
 		} else {
 
 			// Required check.
-			if ( ! empty( $fields[ $field_id ]['required'] ) && empty( $field_submit['primary'] ) ) {
+			if ( empty( $field_submit['primary'] ) && ! empty( $fields[ $field_id ]['required'] ) ) {
 				wpforms()->process->errors[ $form_id ][ $field_id ]['primary'] = $required;
 			}
 
 			// Required check, secondary confirmation field.
-			if ( ! empty( $fields[ $field_id ]['required'] ) && empty( $field_submit['secondary'] ) ) {
+			if ( empty( $field_submit['secondary'] ) && ! empty( $fields[ $field_id ]['required'] ) ) {
 				wpforms()->process->errors[ $form_id ][ $field_id ]['secondary'] = $required;
 			}
 
@@ -411,9 +420,9 @@ class WPForms_Field_Password extends WPForms_Field {
 	 *
 	 * @since 1.3.0
 	 *
-	 * @param int $field_id
-	 * @param array $field_submit
-	 * @param array $form_data
+	 * @param int   $field_id     Field ID.
+	 * @param array $field_submit Submitted field value.
+	 * @param array $form_data    Form data and settings.
 	 */
 	public function format( $field_id, $field_submit, $form_data ) {
 
@@ -436,4 +445,4 @@ class WPForms_Field_Password extends WPForms_Field {
 	}
 }
 
-new WPForms_Field_Password;
+new WPForms_Field_Password();

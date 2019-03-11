@@ -20,6 +20,9 @@ class Compliancekits extends Settings_Base {
 	const KIT_UPDATE_NOTICE = 'update_notice';
 
 	protected $_boxes;
+	/**
+	 * @var bool|Box
+	 */
 	protected $_box = false;
 
 	function __construct( $id, $title, License $license, $menu_title = null ) {
@@ -67,7 +70,6 @@ class Compliancekits extends Settings_Base {
 			wp_localize_script( WPAUTOTERMS_SLUG . '_compliancekits_page', 'wpautotermsComplianceKits', array(
 				'boxData' => array_reduce( $this->_boxes, function ( $acc, Box $x ) {
 					$acc[ $x->enable_action_id() ] = array(
-						'nonce' => $x->action()->nonce(),
 						'noticeText' => array(
 							$x->title() . ' ' . __( 'disabled.', WPAUTOTERMS_SLUG ),
 							$x->title() . ' ' . __( 'enabled.', WPAUTOTERMS_SLUG ),
@@ -86,6 +88,7 @@ class Compliancekits extends Settings_Base {
 				array( 'wp-color-picker' ),
 				false,
 				true );
+			$this->_box->enqueue_scripts();
 		}
 	}
 

@@ -181,13 +181,13 @@ class OMAPI_Content {
 	public function api( $panel, $object ) {
 
 		$link = $this->base->menu->get_action_link();
-		$text = $this->base->menu->has_trial_link() ? 'Click here to start your free 30-day trial!' : 'Click here to view OptinMonster plans and pricing.';
+		$text = $this->base->menu->has_trial_link() ? 'Click here to start your free 30-day trial!' : 'Click here to learn more about OptinMonster!';
 
 		$credentials = $this->base->get_api_credentials();
 
 		if ( ! $credentials ) : ?>
 		<p class="omapi-red"><strong><?php _e( 'You must authenticate your OptinMonster account before you can use OptinMonster on this site.', 'optin-monster-api' ); ?></strong></p>
-		<p><em><?php printf( __( 'Need an OptinMonster account? <a href="%s" title="Click here to view OptinMonster plans and pricing" target="_blank">%s</a>', 'optin-monster-api' ), $link, $text ); ?></em></p>
+		<p><em><?php printf( __( 'Need an OptinMonster account? <a href="%s" title="Click here to learn more about OptinMonster" target="_blank">%s</a>', 'optin-monster-api' ), $link, $text ); ?></em></p>
 		<?php endif; ?>
 
 		<?php echo $object->get_setting_ui( 'api', 'apikey' ); ?>

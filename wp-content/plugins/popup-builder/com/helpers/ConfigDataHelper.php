@@ -33,7 +33,7 @@ class ConfigDataHelper
 		return $query;
 	}
 
-	private static function getAllCustomPosts()
+	public static function getAllCustomPosts()
 	{
 		$args = array(
 			'public' => true,
@@ -41,9 +41,11 @@ class ConfigDataHelper
 		);
 
 		$allCustomPosts = get_post_types($args);
+
 		if (isset($allCustomPosts[SG_POPUP_POST_TYPE])) {
 			unset($allCustomPosts[SG_POPUP_POST_TYPE]);
 		}
+
 		return $allCustomPosts;
 	}
 
@@ -64,11 +66,16 @@ class ConfigDataHelper
 	public static function addPopupTargetParams($targetParams)
 	{
 		$allCustomPostTypes = self::getAllCustomPosts();
+		// for conditions, to exclude other post types, tags etc.
+		if (isset($targetParams['select_role'])) {
+			return $targetParams;
+		}
 
 		foreach ($allCustomPostTypes as $customPostType) {
 			$targetParams[$customPostType] = array(
 				$customPostType.'_all' => 'All '.ucfirst($customPostType).'s',
-				$customPostType.'_selected' => 'Select '.ucfirst($customPostType).'s'
+				$customPostType.'_selected' => 'Select '.ucfirst($customPostType).'s',
+				$customPostType.'_categories' => 'Select '.ucfirst($customPostType).' categories'
 			);
 		}
 
@@ -82,9 +89,21 @@ class ConfigDataHelper
 		foreach ($allCustomPostTypes as $customPostType) {
 			$targetData[$customPostType.'_all'] = null;
 			$targetData[$customPostType.'_selected'] = '';
+			$targetData[$customPostType.'_categories'] = self::getCustomPostCategories($customPostType);
 		}
 
 		return $targetData;
+	}
+
+	public static function getCustomPostCategories($postTypeName)
+	{
+		$taxonomyObjects = get_object_taxonomies($postTypeName);
+		if ($postTypeName == 'product') {
+			$taxonomyObjects = array('product_cat');
+		}
+		$categories = self::getPostsAllCategories($postTypeName, $taxonomyObjects);
+
+		return $categories;
 	}
 
 	public static function addPopupTargetTypes($targetTypes)
@@ -93,6 +112,7 @@ class ConfigDataHelper
 
 		foreach ($allCustomPostTypes as $customPostType) {
 			$targetTypes[$customPostType.'_selected'] = 'select';
+			$targetTypes[$customPostType.'_categories'] = 'select';
 		}
 
 		return $targetTypes;
@@ -105,6 +125,9 @@ class ConfigDataHelper
 		foreach ($allCustomPostTypes as $customPostType) {
 			$targetAttrs[$customPostType.'_selected']['htmlAttrs'] = array('class' => 'js-sg-select2 js-select-ajax', 'data-select-class' => 'js-select-ajax', 'data-select-type' => 'ajax', 'data-value-param' => $customPostType, 'multiple' => 'multiple');
 			$targetAttrs[$customPostType.'_selected']['infoAttrs'] = array('label' => __('Select ', SG_POPUP_TEXT_DOMAIN).$customPostType);
+
+			$targetAttrs[$customPostType.'_categories']['htmlAttrs'] = array('class' => 'js-sg-select2 js-select-ajax', 'data-select-class' => 'js-select-ajax', 'isNotPostType' => true, 'data-value-param' => $customPostType, 'multiple' => 'multiple');
+			$targetAttrs[$customPostType.'_categories']['infoAttrs'] = array('label' => __('Select ', SG_POPUP_TEXT_DOMAIN).$customPostType.' categories');
 		}
 
 		return $targetAttrs;
@@ -134,20 +157,29 @@ class ConfigDataHelper
 		return $allCustomPosts;
 	}
 
-	public static function getPostsAllCategories()
+	public static function getPostsAllCategories($postType = 'post', $taxonomies = array())
 	{
 
-		$cats =  get_categories(
+		$cats =  get_terms(
 			array(
 				'hide_empty' => 0,
-				'type'      => 'post',
+				'type'      => $postType,
 				'orderby'   => 'name',
 				'order'     => 'ASC'
 			)
 		);
+		$supportedTaxonomies = array('category');
+		if (!empty($taxonomies)) {
+			$supportedTaxonomies = $taxonomies;
+		}
+
 		$catsParams = array();
 		foreach ($cats as $cat) {
-
+			if (isset($cat->taxonomy)) {
+				if (!in_array($cat->taxonomy, $supportedTaxonomies)) {
+					continue;
+				}
+			}
 			$id = $cat->term_id;
 			$name = $cat->name;
 			$catsParams[$id] = $name;
@@ -166,18 +198,6 @@ class ConfigDataHelper
 		$postTypes['is_404'] = __('404 Pages', SG_POPUP_TEXT_DOMAIN);
 
 		return $postTypes;
-	}
-
-	public static function getDevices()
-	{
-		$devices = array();
-
-		$devices['is_desktop'] = __('Desktop', SG_POPUP_TEXT_DOMAIN);
-		$devices['is_tablet'] = __('Tablet', SG_POPUP_TEXT_DOMAIN);
-		$devices['is_mobile'] = __('Mobile', SG_POPUP_TEXT_DOMAIN);
-		$devices['is_bot'] = __('Bots', SG_POPUP_TEXT_DOMAIN);
-
-		return $devices;
 	}
 
 	public static function getPageTemplates()
@@ -366,7 +386,16 @@ class ConfigDataHelper
 			'70' => '70%',
 			'80' => '80%',
 			'90' => '90%',
-			'100' => '100%'
+			'100' => '100%',
+			'fullScreen' => __('Full screen', SG_POPUP_TEXT_DOMAIN)
+		);
+
+		$data['freeConditions'] = array(
+			'devices' => __('Devices', SG_POPUP_TEXT_DOMAIN),
+			'user-status' => __('User Status', SG_POPUP_TEXT_DOMAIN),
+			'after-x' => __('After x pages visit', SG_POPUP_TEXT_DOMAIN),
+			'user-role' => __('User Role', SG_POPUP_TEXT_DOMAIN),
+			'countries' => __('Countries', SG_POPUP_TEXT_DOMAIN)
 		);
 
 		$data['closeButtonPositions'] = array(
@@ -391,7 +420,7 @@ class ConfigDataHelper
 			SG_COUNTDOWN_COUNTER_SECONDS_HIDE => 'DD:HH:MM'
 		);
 
-		// proStartGoldproEndGold
+		$data['countdownTimezone'] = self::getPopupTimeZone();
 
 		$data['countdownLanguage'] = array(
 			'English'    => 'English',
@@ -404,6 +433,7 @@ class ConfigDataHelper
 			'Portuguese' => 'Português',
 			'Russian'    => 'Русский',
 			'Swedish'    => 'Svenska',
+			'Czech'      => 'Čeština',
 			'Chinese'    => '中文'
 		);
 
@@ -467,20 +497,13 @@ class ConfigDataHelper
 			)
 		);
 
-		$data['popupInsertEventTypes'] = array(
-			'inherit' => __('Inherit', SG_POPUP_TEXT_DOMAIN),
-			'onLoad' => __('On load', SG_POPUP_TEXT_DOMAIN),
-			'click' => __('On click', SG_POPUP_TEXT_DOMAIN),
-			'hover' => __('On hover', SG_POPUP_TEXT_DOMAIN)
-		);
-
-		$data['subscriptionSuccessBehavior'] = array(
+		$data['countdownDateFormat'] = array(
 			'template' => array(
 				'fieldWrapperAttr' => array(
-					'class' => 'col-md-6 sgpb-choice-option-wrapper'
+					'class' => 'col-md-5 sgpb-choice-option-wrapper'
 				),
 				'labelAttr' => array(
-					'class' => 'col-md-6 sgpb-choice-option-wrapper sgpb-sub-option-label'
+					'class' => 'col-md-5 sgpb-choice-option-wrapper sgpb-sub-option-label'
 				),
 				'groupWrapperAttr' => array(
 					'class' => 'row form-group sgpb-choice-wrapper'
@@ -492,48 +515,25 @@ class ConfigDataHelper
 				array(
 					'attr' => array(
 						'type' => 'radio',
-						'name' => 'sgpb-subs-success-behavior',
-						'class' => 'subs-success-message',
-						'data-attr-href' => 'subs-show-success-message',
-						'value' => 'showMessage'
+						'name' => 'sgpb-countdown-date-format',
+						'class' => 'sgpb-countdown-date-format-from-date',
+						'data-attr-href' => 'sgpb-countdown-date-format-from-date',
+						'value' => 'date'
 					),
 					'label' => array(
-						'name' => __('Success message', SG_POPUP_TEXT_DOMAIN).':'
+						'name' => __('Due Date', SG_POPUP_TEXT_DOMAIN).':'
 					)
 				),
 				array(
 					'attr' => array(
 						'type' => 'radio',
-						'name' => 'sgpb-subs-success-behavior',
-						'class' => 'subs-redirect-to-URL',
-						'data-attr-href' => 'subs-redirect-to-URL',
-						'value' => 'redirectToURL'
+						'name' => 'sgpb-countdown-date-format',
+						'class' => 'sgpb-countdown-date-format-from-date',
+						'data-attr-href' => 'sgpb-countdown-date-format-from-input',
+						'value' => 'input'
 					),
 					'label' => array(
-						'name' => __('Redirect to url', SG_POPUP_TEXT_DOMAIN).':'
-					)
-				),
-				array(
-					'attr' => array(
-						'type' => 'radio',
-						'name' => 'sgpb-subs-success-behavior',
-						'class' => 'subs-success-open-popup',
-						'data-attr-href' => 'subs-open-popup',
-						'value' => 'openPopup'
-					),
-					'label' => array(
-						'name' => __('Open popup', SG_POPUP_TEXT_DOMAIN).':'
-					)
-				),
-				array(
-					'attr' => array(
-						'type' => 'radio',
-						'name' => 'sgpb-subs-success-behavior',
-						'class' => 'subs-hide-popup',
-						'value' => 'hidePopup'
-					),
-					'label' => array(
-						'name' => __('Hide popup', SG_POPUP_TEXT_DOMAIN).':'
+						'name' => __('Timer', SG_POPUP_TEXT_DOMAIN).':'
 					)
 				)
 			)
@@ -628,6 +628,78 @@ class ConfigDataHelper
 			'inside' => __('Inside', SG_POPUP_TEXT_DOMAIN)
 		);
 
+		$data['popupInsertEventTypes'] = array(
+			'inherit' => __('Inherit', SG_POPUP_TEXT_DOMAIN),
+			'onLoad' => __('On load', SG_POPUP_TEXT_DOMAIN),
+			'click' => __('On click', SG_POPUP_TEXT_DOMAIN),
+			'hover' => __('On hover', SG_POPUP_TEXT_DOMAIN)
+		);
+
+		$data['subscriptionSuccessBehavior'] = array(
+			'template' => array(
+				'fieldWrapperAttr' => array(
+					'class' => 'col-md-6 sgpb-choice-option-wrapper'
+				),
+				'labelAttr' => array(
+					'class' => 'col-md-6 sgpb-choice-option-wrapper sgpb-sub-option-label'
+				),
+				'groupWrapperAttr' => array(
+					'class' => 'row form-group sgpb-choice-wrapper'
+				)
+			),
+			'buttonPosition' => 'right',
+			'nextNewLine' => true,
+			'fields' => array(
+				array(
+					'attr' => array(
+						'type' => 'radio',
+						'name' => 'sgpb-subs-success-behavior',
+						'class' => 'subs-success-message',
+						'data-attr-href' => 'subs-show-success-message',
+						'value' => 'showMessage'
+					),
+					'label' => array(
+						'name' => __('Success message', SG_POPUP_TEXT_DOMAIN).':'
+					)
+				),
+				array(
+					'attr' => array(
+						'type' => 'radio',
+						'name' => 'sgpb-subs-success-behavior',
+						'class' => 'subs-redirect-to-URL',
+						'data-attr-href' => 'subs-redirect-to-URL',
+						'value' => 'redirectToURL'
+					),
+					'label' => array(
+						'name' => __('Redirect to url', SG_POPUP_TEXT_DOMAIN).':'
+					)
+				),
+				array(
+					'attr' => array(
+						'type' => 'radio',
+						'name' => 'sgpb-subs-success-behavior',
+						'class' => 'subs-success-open-popup',
+						'data-attr-href' => 'subs-open-popup',
+						'value' => 'openPopup'
+					),
+					'label' => array(
+						'name' => __('Open popup', SG_POPUP_TEXT_DOMAIN).':'
+					)
+				),
+				array(
+					'attr' => array(
+						'type' => 'radio',
+						'name' => 'sgpb-subs-success-behavior',
+						'class' => 'subs-hide-popup',
+						'value' => 'hidePopup'
+					),
+					'label' => array(
+						'name' => __('Hide popup', SG_POPUP_TEXT_DOMAIN).':'
+					)
+				)
+			)
+		);
+
 		$data['buttonsType'] = array(
 			'standard' => __('Standard', SG_POPUP_TEXT_DOMAIN),
 			'box_count' => __('Box with count', SG_POPUP_TEXT_DOMAIN),
@@ -638,7 +710,6 @@ class ConfigDataHelper
 		$data['backroundImageModes'] = array(
 			'no-repeat' => __('None', SG_POPUP_TEXT_DOMAIN),
 			'cover' => __('Cover', SG_POPUP_TEXT_DOMAIN),
-			'fit' => __('Fit', SG_POPUP_TEXT_DOMAIN),
 			'contain' => __('Contain', SG_POPUP_TEXT_DOMAIN),
 			'repeat' => __('Repeat', SG_POPUP_TEXT_DOMAIN)
 		);
@@ -660,6 +731,25 @@ class ConfigDataHelper
 			'sgpb-jello' => __('Jello', SG_POPUP_TEXT_DOMAIN),
 			'sgpb-rotateIn' => __('RotateIn', SG_POPUP_TEXT_DOMAIN),
 			'sgpb-fadeIn' => __('FadeIn', SG_POPUP_TEXT_DOMAIN)
+		);
+
+		$data['closeAnimationEfects'] = array(
+			'No effect' => __('None', SG_POPUP_TEXT_DOMAIN),
+			'sgpb-flipInX' => __('Flip', SG_POPUP_TEXT_DOMAIN),
+			'sgpb-shake' => __('Shake', SG_POPUP_TEXT_DOMAIN),
+			'sgpb-wobble' => __('Wobble', SG_POPUP_TEXT_DOMAIN),
+			'sgpb-swing' => __('Swing', SG_POPUP_TEXT_DOMAIN),
+			'sgpb-flash' => __('Flash', SG_POPUP_TEXT_DOMAIN),
+			'sgpb-bounce' => __('Bounce', SG_POPUP_TEXT_DOMAIN),
+			'sgpb-bounceOutLeft' => __('BounceOutLeft', SG_POPUP_TEXT_DOMAIN),
+			'sgpb-bounceOut' => __('BounceOut', SG_POPUP_TEXT_DOMAIN),
+			'sgpb-pulse' => __('Pulse', SG_POPUP_TEXT_DOMAIN),
+			'sgpb-rubberBand' => __('RubberBand', SG_POPUP_TEXT_DOMAIN),
+			'sgpb-tada' => __('Tada', SG_POPUP_TEXT_DOMAIN),
+			'sgpb-slideOutUp' => __('SlideOutUp', SG_POPUP_TEXT_DOMAIN),
+			'sgpb-jello' => __('Jello', SG_POPUP_TEXT_DOMAIN),
+			'sgpb-rotateOut' => __('RotateOut', SG_POPUP_TEXT_DOMAIN),
+			'sgpb-fadeOut' => __('FadeOut', SG_POPUP_TEXT_DOMAIN)
 		);
 
 		$data['userRoles'] = self::getAllUserRoles();
@@ -685,262 +775,310 @@ class ConfigDataHelper
 		return $rulesArray;
 	}
 
-	public static function countriesIsoData()
+	public static function getClickActionOptions()
 	{
-		$countries = array (
-			'AF' => 'Afghanistan',
-			'AX' => 'Aland Islands',
-			'AL' => 'Albania',
-			'DZ' => 'Algeria',
-			'AS' => 'American Samoa',
-			'AD' => 'Andorra',
-			'AO' => 'Angola',
-			'AI' => 'Anguilla',
-			'AQ' => 'Antarctica',
-			'AG' => 'Antigua And Barbuda',
-			'AR' => 'Argentina',
-			'AM' => 'Armenia',
-			'AW' => 'Aruba',
-			'AU' => 'Australia',
-			'AT' => 'Austria',
-			'AZ' => 'Azerbaijan',
-			'BS' => 'Bahamas',
-			'BH' => 'Bahrain',
-			'BD' => 'Bangladesh',
-			'BB' => 'Barbados',
-			'BY' => 'Belarus',
-			'BE' => 'Belgium',
-			'BZ' => 'Belize',
-			'BJ' => 'Benin',
-			'BM' => 'Bermuda',
-			'BT' => 'Bhutan',
-			'BO' => 'Bolivia',
-			'BA' => 'Bosnia And Herzegovina',
-			'BW' => 'Botswana',
-			'BV' => 'Bouvet Island',
-			'BR' => 'Brazil',
-			'IO' => 'British Indian Ocean Territory',
-			'BN' => 'Brunei Darussalam',
-			'BG' => 'Bulgaria',
-			'BF' => 'Burkina Faso',
-			'BI' => 'Burundi',
-			'KH' => 'Cambodia',
-			'CM' => 'Cameroon',
-			'CA' => 'Canada',
-			'CV' => 'Cape Verde',
-			'KY' => 'Cayman Islands',
-			'CF' => 'Central African Republic',
-			'TD' => 'Chad',
-			'CL' => 'Chile',
-			'CN' => 'China',
-			'CX' => 'Christmas Island',
-			'CC' => 'Cocos (Keeling) Islands',
-			'CO' => 'Colombia',
-			'KM' => 'Comoros',
-			'CG' => 'Congo',
-			'CD' => 'Congo, Democratic Republic',
-			'CK' => 'Cook Islands',
-			'CR' => 'Costa Rica',
-			'CI' => "Cote D'Ivoire",
-			'HR' => 'Croatia',
-			'CU' => 'Cuba',
-			'CY' => 'Cyprus',
-			'CZ' => 'Czech Republic',
-			'DK' => 'Denmark',
-			'DJ' => 'Djibouti',
-			'DM' => 'Dominica',
-			'DO' => 'Dominican Republic',
-			'EC' => 'Ecuador',
-			'EG' => 'Egypt',
-			'SV' => 'El Salvador',
-			'GQ' => 'Equatorial Guinea',
-			'ER' => 'Eritrea',
-			'EE' => 'Estonia',
-			'ET' => 'Ethiopia',
-			'FK' => 'Falkland Islands (Malvinas)',
-			'FO' => 'Faroe Islands',
-			'FJ' => 'Fiji',
-			'FI' => 'Finland',
-			'FR' => 'France',
-			'GF' => 'French Guiana',
-			'PF' => 'French Polynesia',
-			'TF' => 'French Southern Territories',
-			'GA' => 'Gabon',
-			'GM' => 'Gambia',
-			'GE' => 'Georgia',
-			'DE' => 'Germany',
-			'GH' => 'Ghana',
-			'GI' => 'Gibraltar',
-			'GR' => 'Greece',
-			'GL' => 'Greenland',
-			'GD' => 'Grenada',
-			'GP' => 'Guadeloupe',
-			'GU' => 'Guam',
-			'GT' => 'Guatemala',
-			'GG' => 'Guernsey',
-			'GN' => 'Guinea',
-			'GW' => 'Guinea-Bissau',
-			'GY' => 'Guyana',
-			'HT' => 'Haiti',
-			'HM' => 'Heard Island & Mcdonald Islands',
-			'VA' => 'Holy See (Vatican City State)',
-			'HN' => 'Honduras',
-			'HK' => 'Hong Kong',
-			'HU' => 'Hungary',
-			'IS' => 'Iceland',
-			'IN' => 'India',
-			'ID' => 'Indonesia',
-			'IR' => 'Islamic Republic of Iran',
-			'IQ' => 'Iraq',
-			'IE' => 'Ireland',
-			'IM' => 'Isle Of Man',
-			'IL' => 'Israel',
-			'IT' => 'Italy',
-			'JM' => 'Jamaica',
-			'JP' => 'Japan',
-			'JE' => 'Jersey',
-			'JO' => 'Jordan',
-			'KZ' => 'Kazakhstan',
-			'KE' => 'Kenya',
-			'KI' => 'Kiribati',
-			'KR' => 'Korea',
-			'KW' => 'Kuwait',
-			'KG' => 'Kyrgyzstan',
-			'LA' => "Lao People's Democratic Republic",
-			'LV' => 'Latvia',
-			'LB' => 'Lebanon',
-			'LS' => 'Lesotho',
-			'LR' => 'Liberia',
-			'LY' => 'Libyan Arab Jamahiriya',
-			'LI' => 'Liechtenstein',
-			'LT' => 'Lithuania',
-			'LU' => 'Luxembourg',
-			'MO' => 'Macao',
-			'MK' => 'Macedonia',
-			'MG' => 'Madagascar',
-			'MW' => 'Malawi',
-			'MY' => 'Malaysia',
-			'MV' => 'Maldives',
-			'ML' => 'Mali',
-			'MT' => 'Malta',
-			'MH' => 'Marshall Islands',
-			'MQ' => 'Martinique',
-			'MR' => 'Mauritania',
-			'MU' => 'Mauritius',
-			'YT' => 'Mayotte',
-			'MX' => 'Mexico',
-			'FM' => 'Micronesia, Federated States Of',
-			'MD' => 'Moldova',
-			'MC' => 'Monaco',
-			'MN' => 'Mongolia',
-			'ME' => 'Montenegro',
-			'MS' => 'Montserrat',
-			'MA' => 'Morocco',
-			'MZ' => 'Mozambique',
-			'MM' => 'Myanmar',
-			'NA' => 'Namibia',
-			'NR' => 'Nauru',
-			'NP' => 'Nepal',
-			'NL' => 'Netherlands',
-			'AN' => 'Netherlands Antilles',
-			'NC' => 'New Caledonia',
-			'NZ' => 'New Zealand',
-			'NI' => 'Nicaragua',
-			'NE' => 'Niger',
-			'NG' => 'Nigeria',
-			'NU' => 'Niue',
-			'NF' => 'Norfolk Island',
-			'MP' => 'Northern Mariana Islands',
-			'NO' => 'Norway',
-			'OM' => 'Oman',
-			'PK' => 'Pakistan',
-			'PW' => 'Palau',
-			'PS' => 'Palestinian Territory, Occupied',
-			'PA' => 'Panama',
-			'PG' => 'Papua New Guinea',
-			'PY' => 'Paraguay',
-			'PE' => 'Peru',
-			'PH' => 'Philippines',
-			'PN' => 'Pitcairn',
-			'PL' => 'Poland',
-			'PT' => 'Portugal',
-			'PR' => 'Puerto Rico',
-			'QA' => 'Qatar',
-			'RE' => 'Reunion',
-			'RO' => 'Romania',
-			'RU' => 'Russian Federation',
-			'RW' => 'Rwanda',
-			'BL' => 'Saint Barthelemy',
-			'SH' => 'Saint Helena',
-			'KN' => 'Saint Kitts And Nevis',
-			'LC' => 'Saint Lucia',
-			'MF' => 'Saint Martin',
-			'PM' => 'Saint Pierre And Miquelon',
-			'VC' => 'Saint Vincent And Grenadines',
-			'WS' => 'Samoa',
-			'SM' => 'San Marino',
-			'ST' => 'Sao Tome And Principe',
-			'SA' => 'Saudi Arabia',
-			'SN' => 'Senegal',
-			'RS' => 'Serbia',
-			'SC' => 'Seychelles',
-			'SL' => 'Sierra Leone',
-			'SG' => 'Singapore',
-			'SK' => 'Slovakia',
-			'SI' => 'Slovenia',
-			'SB' => 'Solomon Islands',
-			'SO' => 'Somalia',
-			'ZA' => 'South Africa',
-			'GS' => 'South Georgia And Sandwich Isl.',
-			'ES' => 'Spain',
-			'LK' => 'Sri Lanka',
-			'SD' => 'Sudan',
-			'SR' => 'Suriname',
-			'SJ' => 'Svalbard And Jan Mayen',
-			'SZ' => 'Swaziland',
-			'SE' => 'Sweden',
-			'CH' => 'Switzerland',
-			'SY' => 'Syrian Arab Republic',
-			'TW' => 'Taiwan',
-			'TJ' => 'Tajikistan',
-			'TZ' => 'Tanzania',
-			'TH' => 'Thailand',
-			'TL' => 'Timor-Leste',
-			'TG' => 'Togo',
-			'TK' => 'Tokelau',
-			'TO' => 'Tonga',
-			'TT' => 'Trinidad And Tobago',
-			'TN' => 'Tunisia',
-			'TR' => 'Turkey',
-			'TM' => 'Turkmenistan',
-			'TC' => 'Turks And Caicos Islands',
-			'TV' => 'Tuvalu',
-			'UG' => 'Uganda',
-			'UA' => 'Ukraine',
-			'AE' => 'United Arab Emirates',
-			'GB' => 'United Kingdom',
-			'US' => 'United States',
-			'UM' => 'United States Outlying Islands',
-			'UY' => 'Uruguay',
-			'UZ' => 'Uzbekistan',
-			'VU' => 'Vanuatu',
-			'VE' => 'Venezuela',
-			'VN' => 'Viet Nam',
-			'VG' => 'Virgin Islands, British',
-			'VI' => 'Virgin Islands, U.S.',
-			'WF' => 'Wallis And Futuna',
-			'EH' => 'Western Sahara',
-			'YE' => 'Yemen',
-			'ZM' => 'Zambia',
-			'ZW' => 'Zimbabwe',
+		$settings = array(
+			'defaultClickClassName' => __('Default', SG_POPUP_TEXT_DOMAIN),
+			'clickActionCustomClass' => __('Custom class', SG_POPUP_TEXT_DOMAIN)
 		);
 
-		return $countries;
+		return $settings;
 	}
 
-	// proStartSilverproEndSilver
+	public static function getHoverActionOptions()
+	{
+		$settings = array(
+			'defaultHoverClassName' => __('Default', SG_POPUP_TEXT_DOMAIN),
+			'hoverActionCustomClass' => __('Custom class', SG_POPUP_TEXT_DOMAIN)
+		);
 
-	// proStartGoldproEndGold
+		return $settings;
+	}
+
+	// proStartSilver
+	public static function getPopupDefaultTimeZone()
+	{
+		$timeZone = get_option('timezone_string');
+		if (!$timeZone) {
+			$timeZone = SG_POPUP_DEFAULT_TIME_ZONE;
+		}
+
+		return $timeZone;
+	}
+	// proEndSilver
+
+	// proStartGold
+	public static function getPopupTimeZone()
+	{
+		return array(
+			'Pacific/Midway' => '(GMT-11:00) Midway',
+			'Pacific/Niue' => '(GMT-11:00) Niue',
+			'Pacific/Pago_Pago' => '(GMT-11:00) Pago Pago',
+			'Pacific/Honolulu' => '(GMT-10:00) Hawaii Time',
+			'Pacific/Rarotonga' => '(GMT-10:00) Rarotonga',
+			'Pacific/Tahiti' => '(GMT-10:00) Tahiti',
+			'Pacific/Marquesas' => '(GMT-09:30) Marquesas',
+			'America/Anchorage' => '(GMT-09:00) Alaska Time',
+			'Pacific/Gambier' => '(GMT-09:00) Gambier',
+			'America/Los_Angeles' => '(GMT-08:00) Pacific Time',
+			'America/Tijuana' => '(GMT-08:00) Pacific Time - Tijuana',
+			'America/Vancouver' => '(GMT-08:00) Pacific Time - Vancouver',
+			'America/Whitehorse' => '(GMT-08:00) Pacific Time - Whitehorse',
+			'Pacific/Pitcairn' => '(GMT-08:00) Pitcairn',
+			'America/Dawson_Creek' => '(GMT-07:00) Mountain Time - Dawson Creek',
+			'America/Denver' => '(GMT-07:00) Mountain Time',
+			'America/Edmonton' => '(GMT-07:00) Mountain Time - Edmonton',
+			'America/Hermosillo' => '(GMT-07:00) Mountain Time - Hermosillo',
+			'America/Mazatlan' => '(GMT-07:00) Mountain Time - Chihuahua, Mazatlan',
+			'America/Phoenix' => '(GMT-07:00) Mountain Time - Arizona',
+			'America/Yellowknife' => '(GMT-07:00) Mountain Time - Yellowknife',
+			'America/Belize' => '(GMT-06:00) Belize',
+			'America/Chicago' => '(GMT-06:00) Central Time',
+			'America/Costa_Rica' => '(GMT-06:00) Costa Rica',
+			'America/El_Salvador' => '(GMT-06:00) El Salvador',
+			'America/Guatemala' => '(GMT-06:00) Guatemala',
+			'America/Managua' => '(GMT-06:00) Managua',
+			'America/Mexico_City' => '(GMT-06:00) Central Time - Mexico City',
+			'America/Regina' => '(GMT-06:00) Central Time - Regina',
+			'America/Tegucigalpa' => '(GMT-06:00) Central Time - Tegucigalpa',
+			'America/Winnipeg' => '(GMT-06:00) Central Time - Winnipeg',
+			'Pacific/Easter' => '(GMT-06:00) Easter Island',
+			'Pacific/Galapagos' => '(GMT-06:00) Galapagos',
+			'America/Bogota' => '(GMT-05:00) Bogota',
+			'America/Cayman' => '(GMT-05:00) Cayman',
+			'America/Guayaquil' => '(GMT-05:00) Guayaquil',
+			'America/Havana' => '(GMT-05:00) Havana',
+			'America/Iqaluit' => '(GMT-05:00) Eastern Time - Iqaluit',
+			'America/Jamaica' => '(GMT-05:00) Jamaica',
+			'America/Lima' => '(GMT-05:00) Lima',
+			'America/Montreal' => '(GMT-05:00) Eastern Time - Montreal',
+			'America/Nassau' => '(GMT-05:00) Nassau',
+			'America/New_York' => '(GMT-05:00) Eastern Time',
+			'America/Panama' => '(GMT-05:00) Panama',
+			'America/Port-au-Prince' => '(GMT-05:00) Port-au-Prince',
+			'America/Rio_Branco' => '(GMT-05:00) Rio Branco',
+			'America/Toronto' => '(GMT-05:00) Eastern Time - Toronto',
+			'America/Caracas' => '(GMT-04:30) Caracas',
+			'America/Antigua' => '(GMT-04:00) Antigua',
+			'America/Asuncion' => '(GMT-04:00) Asuncion',
+			'America/Barbados' => '(GMT-04:00) Barbados',
+			'America/Boa_Vista' => '(GMT-04:00) Boa Vista',
+			'America/Campo_Grande' => '(GMT-04:00) Campo Grande',
+			'America/Cuiaba' => '(GMT-04:00) Cuiaba',
+			'America/Curacao' => '(GMT-04:00) Curacao',
+			'America/Grand_Turk' => '(GMT-04:00) Grand Turk',
+			'America/Guyana' => '(GMT-04:00) Guyana',
+			'America/Halifax' => '(GMT-04:00) Atlantic Time - Halifax',
+			'America/La_Paz' => '(GMT-04:00) La Paz',
+			'America/Manaus' => '(GMT-04:00) Manaus',
+			'America/Martinique' => '(GMT-04:00) Martinique',
+			'America/Port_of_Spain' => '(GMT-04:00) Port of Spain',
+			'America/Porto_Velho' => '(GMT-04:00) Porto Velho',
+			'America/Puerto_Rico' => '(GMT-04:00) Puerto Rico',
+			'America/Santiago' => '(GMT-04:00) Santiago',
+			'America/Santo_Domingo' => '(GMT-04:00) Santo Domingo',
+			'America/Thule' => '(GMT-04:00) Thule',
+			'Antarctica/Palmer' => '(GMT-04:00) Palmer',
+			'Atlantic/Bermuda' => '(GMT-04:00) Bermuda',
+			'America/St_Johns' => '(GMT-03:30) Newfoundland Time - St. Johns',
+			'America/Araguaina' => '(GMT-03:00) Araguaina',
+			'America/Argentina/Buenos_Aires' => '(GMT-03:00) Buenos Aires',
+			'America/Bahia' => '(GMT-03:00) Salvador',
+			'America/Belem' => '(GMT-03:00) Belem',
+			'America/Cayenne' => '(GMT-03:00) Cayenne',
+			'America/Fortaleza' => '(GMT-03:00) Fortaleza',
+			'America/Godthab' => '(GMT-03:00) Godthab',
+			'America/Maceio' => '(GMT-03:00) Maceio',
+			'America/Miquelon' => '(GMT-03:00) Miquelon',
+			'America/Montevideo' => '(GMT-03:00) Montevideo',
+			'America/Paramaribo' => '(GMT-03:00) Paramaribo',
+			'America/Recife' => '(GMT-03:00) Recife',
+			'America/Sao_Paulo' => '(GMT-03:00) Sao Paulo',
+			'Antarctica/Rothera' => '(GMT-03:00) Rothera',
+			'Atlantic/Stanley' => '(GMT-03:00) Stanley',
+			'America/Noronha' => '(GMT-02:00) Noronha',
+			'Atlantic/South_Georgia' => '(GMT-02:00) South Georgia',
+			'America/Scoresbysund' => '(GMT-01:00) Scoresbysund',
+			'Atlantic/Azores' => '(GMT-01:00) Azores',
+			'Atlantic/Cape_Verde' => '(GMT-01:00) Cape Verde',
+			'Africa/Abidjan' => '(GMT+00:00) Abidjan',
+			'Africa/Accra' => '(GMT+00:00) Accra',
+			'Africa/Bissau' => '(GMT+00:00) Bissau',
+			'Africa/Casablanca' => '(GMT+00:00) Casablanca',
+			'Africa/El_Aaiun' => '(GMT+00:00) El Aaiun',
+			'Africa/Monrovia' => '(GMT+00:00) Monrovia',
+			'America/Danmarkshavn' => '(GMT+00:00) Danmarkshavn',
+			'Atlantic/Canary' => '(GMT+00:00) Canary Islands',
+			'Atlantic/Faroe' => '(GMT+00:00) Faeroe',
+			'Atlantic/Reykjavik' => '(GMT+00:00) Reykjavik',
+			'Etc/GMT' => '(GMT+00:00) GMT (no daylight saving)',
+			'Europe/Dublin' => '(GMT+00:00) Dublin',
+			'Europe/Lisbon' => '(GMT+00:00) Lisbon',
+			'Europe/London' => '(GMT+00:00) London',
+			'Africa/Algiers' => '(GMT+01:00) Algiers',
+			'Africa/Ceuta' => '(GMT+01:00) Ceuta',
+			'Africa/Lagos' => '(GMT+01:00) Lagos',
+			'Africa/Ndjamena' => '(GMT+01:00) Ndjamena',
+			'Africa/Tunis' => '(GMT+01:00) Tunis',
+			'Africa/Windhoek' => '(GMT+01:00) Windhoek',
+			'Europe/Amsterdam' => '(GMT+01:00) Amsterdam',
+			'Europe/Andorra' => '(GMT+01:00) Andorra',
+			'Europe/Belgrade' => '(GMT+01:00) Central European Time - Belgrade',
+			'Europe/Berlin' => '(GMT+01:00) Berlin',
+			'Europe/Brussels' => '(GMT+01:00) Brussels',
+			'Europe/Budapest' => '(GMT+01:00) Budapest',
+			'Europe/Copenhagen' => '(GMT+01:00) Copenhagen',
+			'Europe/Gibraltar' => '(GMT+01:00) Gibraltar',
+			'Europe/Luxembourg' => '(GMT+01:00) Luxembourg',
+			'Europe/Madrid' => '(GMT+01:00) Madrid',
+			'Europe/Malta' => '(GMT+01:00) Malta',
+			'Europe/Monaco' => '(GMT+01:00) Monaco',
+			'Europe/Oslo' => '(GMT+01:00) Oslo',
+			'Europe/Paris' => '(GMT+01:00) Paris',
+			'Europe/Prague' => '(GMT+01:00) Central European Time - Prague',
+			'Europe/Rome' => '(GMT+01:00) Rome',
+			'Europe/Stockholm' => '(GMT+01:00) Stockholm',
+			'Europe/Tirane' => '(GMT+01:00) Tirane',
+			'Europe/Vienna' => '(GMT+01:00) Vienna',
+			'Europe/Warsaw' => '(GMT+01:00) Warsaw',
+			'Europe/Zurich' => '(GMT+01:00) Zurich',
+			'Africa/Cairo' => '(GMT+02:00) Cairo',
+			'Africa/Johannesburg' => '(GMT+02:00) Johannesburg',
+			'Africa/Maputo' => '(GMT+02:00) Maputo',
+			'Africa/Tripoli' => '(GMT+02:00) Tripoli',
+			'Asia/Amman' => '(GMT+02:00) Amman',
+			'Asia/Beirut' => '(GMT+02:00) Beirut',
+			'Asia/Damascus' => '(GMT+02:00) Damascus',
+			'Asia/Gaza' => '(GMT+02:00) Gaza',
+			'Asia/Jerusalem' => '(GMT+02:00) Jerusalem',
+			'Asia/Nicosia' => '(GMT+02:00) Nicosia',
+			'Europe/Athens' => '(GMT+02:00) Athens',
+			'Europe/Bucharest' => '(GMT+02:00) Bucharest',
+			'Europe/Chisinau' => '(GMT+02:00) Chisinau',
+			'Europe/Helsinki' => '(GMT+02:00) Helsinki',
+			'Europe/Istanbul' => '(GMT+02:00) Istanbul',
+			'Europe/Kaliningrad' => '(GMT+02:00) Moscow-01 - Kaliningrad',
+			'Europe/Kiev' => '(GMT+02:00) Kiev',
+			'Europe/Riga' => '(GMT+02:00) Riga',
+			'Europe/Sofia' => '(GMT+02:00) Sofia',
+			'Europe/Tallinn' => '(GMT+02:00) Tallinn',
+			'Europe/Vilnius' => '(GMT+02:00) Vilnius',
+			'Africa/Addis_Ababa' => '(GMT+03:00) Addis Ababa',
+			'Africa/Asmara' => '(GMT+03:00) Asmera',
+			'Africa/Dar_es_Salaam' => '(GMT+03:00) Dar es Salaam',
+			'Africa/Djibouti' => '(GMT+03:00) Djibouti',
+			'Africa/Kampala' => '(GMT+03:00) Kampala',
+			'Africa/Khartoum' => '(GMT+03:00) Khartoum',
+			'Africa/Mogadishu' => '(GMT+03:00) Mogadishu',
+			'Africa/Nairobi' => '(GMT+03:00) Nairobi',
+			'Antarctica/Syowa' => '(GMT+03:00) Syowa',
+			'Asia/Aden' => '(GMT+03:00) Aden',
+			'Asia/Baghdad' => '(GMT+03:00) Baghdad',
+			'Asia/Bahrain' => '(GMT+03:00) Bahrain',
+			'Asia/Kuwait' => '(GMT+03:00) Kuwait',
+			'Asia/Qatar' => '(GMT+03:00) Qatar',
+			'Asia/Riyadh' => '(GMT+03:00) Riyadh',
+			'Europe/Minsk' => '(GMT+03:00) Minsk',
+			'Europe/Moscow' => '(GMT+03:00) Moscow+00',
+			'Indian/Antananarivo' => '(GMT+03:00) Antananarivo',
+			'Indian/Comoro' => '(GMT+03:00) Comoro',
+			'Indian/Mayotte' => '(GMT+03:00) Mayotte',
+			'Asia/Tehran' => '(GMT+03:30) Tehran',
+			'Asia/Baku' => '(GMT+04:00) Baku',
+			'Asia/Dubai' => '(GMT+04:00) Dubai',
+			'Asia/Muscat' => '(GMT+04:00) Muscat',
+			'Asia/Tbilisi' => '(GMT+04:00) Tbilisi',
+			'Asia/Yerevan' => '(GMT+04:00) Yerevan',
+			'Europe/Samara' => '(GMT+04:00) Moscow+00 - Samara',
+			'Indian/Mahe' => '(GMT+04:00) Mahe',
+			'Indian/Mauritius' => '(GMT+04:00) Mauritius',
+			'Indian/Reunion' => '(GMT+04:00) Reunion',
+			'Asia/Kabul' => '(GMT+04:30) Kabul',
+			'Antarctica/Mawson' => '(GMT+05:00) Mawson',
+			'Asia/Aqtau' => '(GMT+05:00) Aqtau',
+			'Asia/Aqtobe' => '(GMT+05:00) Aqtobe',
+			'Asia/Ashgabat' => '(GMT+05:00) Ashgabat',
+			'Asia/Dushanbe' => '(GMT+05:00) Dushanbe',
+			'Asia/Karachi' => '(GMT+05:00) Karachi',
+			'Asia/Tashkent' => '(GMT+05:00) Tashkent',
+			'Asia/Yekaterinburg' => '(GMT+05:00) Moscow+02 - Yekaterinburg',
+			'Indian/Kerguelen' => '(GMT+05:00) Kerguelen',
+			'Indian/Maldives' => '(GMT+05:00) Maldives',
+			'Asia/Calcutta' => '(GMT+05:30) India Standard Time',
+			'Asia/Colombo' => '(GMT+05:30) Colombo',
+			'Asia/Katmandu' => '(GMT+05:45) Katmandu',
+			'Antarctica/Vostok' => '(GMT+06:00) Vostok',
+			'Asia/Almaty' => '(GMT+06:00) Almaty',
+			'Asia/Bishkek' => '(GMT+06:00) Bishkek',
+			'Asia/Dhaka' => '(GMT+06:00) Dhaka',
+			'Asia/Omsk' => '(GMT+06:00) Moscow+03 - Omsk, Novosibirsk',
+			'Asia/Thimphu' => '(GMT+06:00) Thimphu',
+			'Indian/Chagos' => '(GMT+06:00) Chagos',
+			'Asia/Rangoon' => '(GMT+06:30) Rangoon',
+			'Indian/Cocos' => '(GMT+06:30) Cocos',
+			'Antarctica/Davis' => '(GMT+07:00) Davis',
+			'Asia/Bangkok' => '(GMT+07:00) Bangkok',
+			'Asia/Hovd' => '(GMT+07:00) Hovd',
+			'Asia/Jakarta' => '(GMT+07:00) Jakarta',
+			'Asia/Krasnoyarsk' => '(GMT+07:00) Moscow+04 - Krasnoyarsk',
+			'Asia/Saigon' => '(GMT+07:00) Hanoi',
+			'Indian/Christmas' => '(GMT+07:00) Christmas',
+			'Antarctica/Casey' => '(GMT+08:00) Casey',
+			'Asia/Brunei' => '(GMT+08:00) Brunei',
+			'Asia/Choibalsan' => '(GMT+08:00) Choibalsan',
+			'Asia/Hong_Kong' => '(GMT+08:00) Hong Kong',
+			'Asia/Irkutsk' => '(GMT+08:00) Moscow+05 - Irkutsk',
+			'Asia/Kuala_Lumpur' => '(GMT+08:00) Kuala Lumpur',
+			'Asia/Macau' => '(GMT+08:00) Macau',
+			'Asia/Makassar' => '(GMT+08:00) Makassar',
+			'Asia/Manila' => '(GMT+08:00) Manila',
+			'Asia/Shanghai' => '(GMT+08:00) China Time - Beijing',
+			'Asia/Singapore' => '(GMT+08:00) Singapore',
+			'Asia/Taipei' => '(GMT+08:00) Taipei',
+			'Asia/Ulaanbaatar' => '(GMT+08:00) Ulaanbaatar',
+			'Australia/Perth' => '(GMT+08:00) Western Time - Perth',
+			'Asia/Dili' => '(GMT+09:00) Dili',
+			'Asia/Jayapura' => '(GMT+09:00) Jayapura',
+			'Asia/Pyongyang' => '(GMT+09:00) Pyongyang',
+			'Asia/Seoul' => '(GMT+09:00) Seoul',
+			'Asia/Tokyo' => '(GMT+09:00) Tokyo',
+			'Asia/Yakutsk' => '(GMT+09:00) Moscow+06 - Yakutsk',
+			'Pacific/Palau' => '(GMT+09:00) Palau',
+			'Australia/Adelaide' => '(GMT+09:30) Central Time - Adelaide',
+			'Australia/Darwin' => '(GMT+09:30) Central Time - Darwin',
+			'Antarctica/DumontDUrville' => '(GMT+10:00) Dumont D\'Urville',
+			'Asia/Magadan' => '(GMT+10:00) Moscow+08 - Magadan',
+			'Asia/Vladivostok' => '(GMT+10:00) Moscow+07 - Yuzhno-Sakhalinsk',
+			'Australia/Brisbane' => '(GMT+10:00) Eastern Time - Brisbane',
+			'Australia/Hobart' => '(GMT+10:00) Eastern Time - Hobart',
+			'Australia/Sydney' => '(GMT+10:00) Eastern Time - Melbourne, Sydney',
+			'Pacific/Chuuk' => '(GMT+10:00) Truk',
+			'Pacific/Guam' => '(GMT+10:00) Guam',
+			'Pacific/Port_Moresby' => '(GMT+10:00) Port Moresby',
+			'Pacific/Saipan' => '(GMT+10:00) Saipan',
+			'Pacific/Efate' => '(GMT+11:00) Efate',
+			'Pacific/Guadalcanal' => '(GMT+11:00) Guadalcanal',
+			'Pacific/Kosrae' => '(GMT+11:00) Kosrae',
+			'Pacific/Noumea' => '(GMT+11:00) Noumea',
+			'Pacific/Pohnpei' => '(GMT+11:00) Ponape',
+			'Pacific/Norfolk' => '(GMT+11:30) Norfolk',
+			'Asia/Kamchatka' => '(GMT+12:00) Moscow+08 - Petropavlovsk-Kamchatskiy',
+			'Pacific/Auckland' => '(GMT+12:00) Auckland',
+			'Pacific/Fiji' => '(GMT+12:00) Fiji',
+			'Pacific/Funafuti' => '(GMT+12:00) Funafuti',
+			'Pacific/Kwajalein' => '(GMT+12:00) Kwajalein',
+			'Pacific/Majuro' => '(GMT+12:00) Majuro',
+			'Pacific/Nauru' => '(GMT+12:00) Nauru',
+			'Pacific/Tarawa' => '(GMT+12:00) Tarawa',
+			'Pacific/Wake' => '(GMT+12:00) Wake',
+			'Pacific/Wallis' => '(GMT+12:00) Wallis',
+			'Pacific/Apia' => '(GMT+13:00) Apia',
+			'Pacific/Enderbury' => '(GMT+13:00) Enderbury',
+			'Pacific/Fakaofo' => '(GMT+13:00) Fakaofo',
+			'Pacific/Tongatapu' => '(GMT+13:00) Tongatapu',
+			'Pacific/Kiritimati' => '(GMT+14:00) Kiritimati'
+		);
+	}
 
 	public static function getJsLocalizedData()
 	{
@@ -948,9 +1086,25 @@ class ConfigDataHelper
 			'imageSupportAlertMessage' => __('Only image files supported', SG_POPUP_TEXT_DOMAIN),
 			'areYouSure' => __('Are you sure?', SG_POPUP_TEXT_DOMAIN),
 			'addButtonSpinner' => __('Add', SG_POPUP_TEXT_DOMAIN),
-			'audioSupportAlertMessage' => __('Only audio files supported (e.g.: mp3, wav, m4a, ogg)', SG_POPUP_TEXT_DOMAIN)
+			'audioSupportAlertMessage' => __('Only audio files supported (e.g.: mp3, wav, m4a, ogg)', SG_POPUP_TEXT_DOMAIN),
+			'publishPopupBeforeElemntor' => __('Please, publish the popup before starting to use Elementor with it!', SG_POPUP_TEXT_DOMAIN)
 		);
 
 		return $translatedData;
+	}
+
+	public static function getCurrentDateTime()
+	{
+		return date('Y-m-d H:i', strtotime(' +1 day'));
+	}
+
+	public static function getDefaultTimezone()
+	{
+		$timezone = get_option('timezone_string');
+		if (!$timezone) {
+			$timezone = 'America/New_York';
+		}
+
+		return $timezone;
 	}
 }

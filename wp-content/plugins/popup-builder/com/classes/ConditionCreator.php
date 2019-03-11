@@ -38,8 +38,14 @@ class ConditionCreator
 		$conditionsObj = $this->getConditionsObj();
 		$view = '';
 
+		if (empty($conditionsObj)) {
+			return array();
+		}
+
 		foreach ($conditionsObj as $conditionObj) {
+
 			$currentGroupId = $conditionObj->getGroupId();
+
 			$prevGroupId =  $this->getPrevGroupId();
 			$openGroupDiv = '';
 			$separator = '';
@@ -78,31 +84,32 @@ class ConditionCreator
 		<div class="sg-target-rule sg-target-rule-<?php echo $conditionDataObj->getRuleId(); ?> sgpb-event-row" data-rule-id="<?php echo $conditionDataObj->getRuleId(); ?>">
 			<div class="row">
 				<?php
-					$savedData = $conditionDataObj->getSavedData();
+				$savedData = $conditionDataObj->getSavedData();
 
-					if (!isset($savedData['value'])) {
-						$savedData['value'] = '';
-					}
+				if (!isset($savedData['value'])) {
+					$savedData['value'] = '';
+				}
 				?>
 				<?php $idHiddenDiv = $conditionDataObj->getConditionName().'_'.$conditionDataObj->getGroupId().'_'.$conditionDataObj->getRuleId();?>
 				<?php foreach ($savedData as $conditionName => $conditionSavedData): ?>
 					<?php
-						$showRowStatusClass = '';
-						$hideStatus = self::getParamRowHideStatus($conditionDataObj, $conditionName);
-						$ruleElementData = self::getRuleElementData($conditionDataObj, 'param');
-						$ruleSavedData = $ruleElementData['saved'];
+					$showRowStatusClass = '';
+					$hideStatus = self::getParamRowHideStatus($conditionDataObj, $conditionName);
+					$ruleElementData = self::getRuleElementData($conditionDataObj, 'param');
+					$ruleSavedData = $ruleElementData['saved'];
+					$currentArgs = array('savedData' => $ruleSavedData, 'conditionName' => $conditionName);
 
-						if ($conditionName == 'operator' && ($ruleSavedData == 'not_rule' || $ruleSavedData == 'select_role' || $ruleSavedData == 'select_event')) {
-							$hideStatus = true;
-						}
-						$showRowStatusClass = ($hideStatus) ? 'sg-hide-condition-row' : $showRowStatusClass;
-						?>
+					if (!self::allowToShowOperatorColumn($conditionDataObj, $currentArgs)) {
+						$hideStatus = true;
+					}
+					$showRowStatusClass = ($hideStatus) ? 'sg-hide-condition-row' : $showRowStatusClass;
+					?>
 					<?php if ($conditionName != 'hiddenOption'): ?>
 						<div data-condition-name="<?php echo $conditionName;?>" class="<?php echo 'col-sm-3 sg-condition-'.$conditionName.'-wrapper'.' '.$showRowStatusClass; ?>">
 							<?php
-								if (!$hideStatus) {
-									echo self::createConditionElement($conditionDataObj, $conditionName);
-								}
+							if (!$hideStatus) {
+								echo self::createConditionElement($conditionDataObj, $conditionName);
+							}
 							?>
 						</div>
 					<?php endif; ?>
@@ -119,6 +126,45 @@ class ConditionCreator
 		ob_end_clean();
 
 		return $targetOptionRow;
+	}
+
+	private static function allowToShowOperatorColumn($conditionDataObj, $currentArgs = array())
+	{
+		global $SGPB_DATA_CONFIG_ARRAY;
+		$conditionName = $conditionDataObj->getConditionName();
+		$conditionData = $SGPB_DATA_CONFIG_ARRAY[$conditionName];
+		$operatorAllowInConditions = array();
+
+		if (!empty($conditionData['operatorAllowInConditions'])) {
+			$operatorAllowInConditions  = $conditionData['operatorAllowInConditions'];
+		}
+
+		$savedData = $conditionDataObj->getSavedData();
+
+		$status = true;
+
+		if ($currentArgs['conditionName'] == 'operator') {
+			$currentSavedData = $currentArgs['savedData'];
+
+			if (($currentSavedData == 'not_rule' || $currentSavedData == 'select_role' || $currentSavedData == 'select_event')) {
+				$status = false;
+			}
+
+			if (is_array($operatorAllowInConditions)) {
+				if (in_array($savedData['param'], $operatorAllowInConditions)) {
+					$SGPB_DATA_CONFIG_ARRAY[$conditionName]['paramsData']['operator'] = $conditionData['paramsData'][$savedData['param'].'Operator'];
+				}
+				else if (!empty($savedData['tempParam']) && in_array($savedData['tempParam'], $operatorAllowInConditions)) {
+					$SGPB_DATA_CONFIG_ARRAY[$conditionName]['paramsData']['operator'] = $conditionData['paramsData'][$savedData['tempParam'].'Operator'];
+				}
+			}
+
+			if (empty($SGPB_DATA_CONFIG_ARRAY[$conditionName]['paramsData']['operator'])) {
+				$status = false;
+			}
+		}
+
+		return $status;
 	}
 
 	public static function createConditionOperators($conditionDataObj, $idHiddenDiv = '')
@@ -147,7 +193,7 @@ class ConditionCreator
 				continue;
 			}
 			$saveData = $conditionDataObj->getSavedData();
-			if (empty($saveData['hiddenOption']) && $operator['name'] == 'Edit' && @$saveData["param"] != 'load') {
+			if (empty($saveData['hiddenOption']) && $operator['name'] == 'Edit' && $saveData["param"] != 'load') {
 				continue;
 			}
 			if ($operator['operator'] == 'edit') {
@@ -185,16 +231,8 @@ class ConditionCreator
 		//more code added because of the lack of abstraction
 		//todo: remove ASAP if possible
 		$sData = $conditionDataObj->getSavedData();
-		if ($ruleName == 'param' && in_array(
-			$sData['param'],
-			array(
-				'select_behavior',
-				'open-popup',
-				'close-popup',
-				'redirect-url'
-			)
-		)) {
-			$sData['param'] = 'contact-form-7';
+		if ($ruleName == 'param' && !empty($sData['tempParam'])) {
+			$sData['param'] = $sData['tempParam'];
 			$newObj = clone $conditionDataObj;
 			$newObj->setSavedData($sData);
 			$conditionDataObj = $newObj;
@@ -258,18 +296,29 @@ class ConditionCreator
 			$savedParam =  $saveData[$ruleName];
 		}
 		else if (!empty($saveData['hiddenOption'])) {
-			$savedParam = @$saveData['hiddenOption'][$ruleName];
+			$savedParam = $saveData['hiddenOption'][$ruleName];
 		}
 
 		$ruleElementData['ruleName'] = $ruleName;
-		if ($ruleName == 'value') {
+		if ($ruleName == 'value' && !empty($saveData[$conditionDataObj->getTakeValueFrom()])) {
 			$ruleName = $saveData[$conditionDataObj->getTakeValueFrom()];
 		}
 
-		$type = $rulesType[$ruleName];
-		$data = $paramsData[$ruleName];
+		$type = array();
+		if (!empty($rulesType[$ruleName])) {
+			$type = $rulesType[$ruleName];
+		}
+		$data = array();
+		if (!empty($paramsData[$ruleName])) {
+			$data = $paramsData[$ruleName];
+		}
 
-		$optionAttr = $attrs[$ruleName];
+
+		$optionAttr = array();
+		if (!empty($attrs[$ruleName])) {
+			$optionAttr = $attrs[$ruleName];
+		}
+
 		$attr = array();
 
 		if (!empty($optionAttr['htmlAttrs'])) {
@@ -322,7 +371,7 @@ class ConditionCreator
 					}
 				}
 
- 				$rowField .= AdminHelper::createSelectBox($ruleElementData['data'], $savedData, $attr);
+				$rowField .= AdminHelper::createSelectBox($ruleElementData['data'], $savedData, $attr);
 				break;
 			case 'text':
 			case 'url':
@@ -340,9 +389,34 @@ class ConditionCreator
 				$attr['type'] = $type;
 				$rowField .= AdminHelper::createCheckBox($ruleElementData['data'], $ruleElementData['saved'], $attr);
 				break;
+			case  'conditionalText':
+				$popupId = self::getPopupId($conditionObj);
+				if(!empty($popupId)) {
+					$attr['value'] = $attr['value'].$popupId;
+					$rowField .= AdminHelper::createInput($ruleElementData['data'], $ruleElementData['saved'].$popupId, $attr);
+				}
+				else {
+					$rowField .= '<div class="sgpb-show-alert-before-save">'.$attr['beforeSaveLabel'].'</div>';
+				}
+				break;
 		}
 
 		return $rowField;
+	}
+
+	public static function getPopupId($conditionObj)
+	{
+		$popupId = 0;
+		$conditionPopupId = $conditionObj->getPopupId();
+
+		if (!empty($conditionPopupId)) {
+			$popupId = $conditionObj->getPopupId();
+		}
+		else if(!empty($_GET['post'])) {
+			$popupId = $_GET['post'];
+		}
+
+		return $popupId;
 	}
 
 	public static function createElementHeader($ruleElementData)
@@ -361,7 +435,7 @@ class ConditionCreator
 		$titleKey = $ruleName;
 
 
-		if ($ruleName == 'value') {
+		if ($ruleName == 'value' && !empty($saveData[$conditionObj->getTakeValueFrom()])) {
 			$titleKey = $saveData[$conditionObj->getTakeValueFrom()];
 		}
 
@@ -403,17 +477,17 @@ class ConditionCreator
 		<div class="sgpb-wrapper">
 			<div class="tab">
 				<?php
-					$activeTab = '';
-					if (!empty($tabs[0])) {
-						$activeTab = $tabs[0];
-					}
+				$activeTab = '';
+				if (!empty($tabs[0])) {
+					$activeTab = $tabs[0];
+				}
 				?>
 				<?php foreach ($tabs as $tab): ?>
 					<?php
-						$activeClassName = '';
-						if ($activeTab == $tab) {
-							$activeClassName = 'sgpb-active';
-						}
+					$activeClassName = '';
+					if ($activeTab == $tab) {
+						$activeClassName = 'sgpb-active';
+					}
 					?>
 					<button class="tablinks sgpb-tab-links <?php echo $activeClassName;?>" data-rule-id="<?php echo $ruleId; ?>" data-content-id="<?php echo $tab.'-'.$ruleId; ?>"><?php echo ucfirst($tab); ?></button>
 				<?php endforeach;?>
@@ -436,33 +510,33 @@ class ConditionCreator
 		ob_start();
 		?>
 		<?php foreach ($hiddenOptionsData as $key => $hiddenData): ?>
-			<div id="<?php echo $key.'-'.$ruleId; ?>" class="sgpb-tab-content-<?php echo $ruleId;?>">
-				<div id="<?php echo $key; ?>" class="sgpb-tab-content-options">
-					<?php foreach ($hiddenData as $name => $label): ?>
-						<?php
-							$hiddenOptionsView = self::optionLabelSupplement($conditionDataObj, $name);
-							$colMdValue = 6;
-							if (!empty($hiddenOptionsView)) {
-								$colMdValue = 2;
-							}
-						?>
-						<div class="row form-group">
-							<div class="col-md-6">
-								<?php echo self::createConditionFieldHeader($conditionDataObj, $name); ?>
-							</div>
-							<div class="col-md-<?php echo $colMdValue; ?>">
-								<?php echo self::createConditionField($conditionDataObj, $name); ?>
-							</div>
-							<?php if (!empty($hiddenOptionsView)): ?>
-								<div class="col-md-4">
-									<?php echo $hiddenOptionsView; ?>
-								</div>
-							<?php endif; ?>
+		<div id="<?php echo $key.'-'.$ruleId; ?>" class="sgpb-tab-content-<?php echo $ruleId;?>">
+			<div id="<?php echo $key; ?>" class="sgpb-tab-content-options">
+				<?php foreach ($hiddenData as $name => $label): ?>
+					<?php
+					$hiddenOptionsView = self::optionLabelSupplement($conditionDataObj, $name);
+					$colMdValue = 6;
+					if (!empty($hiddenOptionsView)) {
+						$colMdValue = 2;
+					}
+					?>
+					<div class="row form-group">
+						<div class="col-md-6">
+							<?php echo self::createConditionFieldHeader($conditionDataObj, $name); ?>
 						</div>
-					<?php endforeach; ?>
-				</div>
+						<div class="col-md-<?php echo $colMdValue; ?>">
+							<?php echo self::createConditionField($conditionDataObj, $name); ?>
+						</div>
+						<?php if (!empty($hiddenOptionsView)): ?>
+							<div class="col-md-4">
+								<?php echo $hiddenOptionsView; ?>
+							</div>
+						<?php endif; ?>
+					</div>
+				<?php endforeach; ?>
 			</div>
-		<?php endforeach;?>
+		</div>
+	<?php endforeach;?>
 		<?php
 		$hiddenPopupContent = ob_get_contents();
 		ob_end_clean();
@@ -488,12 +562,12 @@ class ConditionCreator
 		?>
 		<div class="row <?php echo 'sgpb-popup-hidden-content-'.$name.'-'.$conditionDataObj->getRuleId().'-wrapper'?> form-group">
 			<?php foreach ($subOptions as $subOption): ?>
-					<div class="col-md-6">
-						<?php echo self::createConditionFieldHeader($conditionDataObj, $subOption); ?>
-					</div>
-					<div class="col-md-6">
-						<?php echo self::createConditionField($conditionDataObj, $subOption); ?>
-					</div>
+				<div class="col-md-6">
+					<?php echo self::createConditionFieldHeader($conditionDataObj, $subOption); ?>
+				</div>
+				<div class="col-md-6">
+					<?php echo self::createConditionField($conditionDataObj, $subOption); ?>
+				</div>
 				<?php  echo self::hiddenSubOptionsView($subOption, $conditionDataObj)?>
 			<?php endforeach;?>
 		</div>
@@ -533,13 +607,16 @@ class ConditionCreator
 		$conditionName = $conditionDataObj->getConditionName();
 		$saveData = $conditionDataObj->getSavedData();
 		$conditionConfig = $SGPB_DATA_CONFIG_ARRAY[$conditionName];
-		$paramsData = $conditionConfig['paramsData'];
+		$paramsData = array();
+		if (!empty($conditionConfig['paramsData'])) {
+			$paramsData = $conditionConfig['paramsData'];
+		}
 
 		$ruleElementData['ruleName'] = $ruleName;
-		if ($ruleName == 'value') {
-			$ruleName = @$saveData[$conditionDataObj->getTakeValueFrom()];
+		if ($ruleName == 'value' && !empty($saveData) && !empty($saveData[$conditionDataObj->getTakeValueFrom()])) {
+			$ruleName = $saveData[$conditionDataObj->getTakeValueFrom()];
 		}
-		if (is_null(@$paramsData[$ruleName])) {
+		if ((!isset($paramsData[$ruleName]) && empty($paramsData[$ruleName])) || is_null($paramsData[$ruleName])) {
 			$status = true;
 		}
 

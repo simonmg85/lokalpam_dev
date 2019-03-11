@@ -6,7 +6,7 @@ jQuery(document).ready(function () {
         var s = jQuery("#status_" + id);
         jQuery.post(ajaxurl, {
             action: id,
-            nonce: wpautotermsComplianceKits.boxData[id].nonce
+            nonce: wpautotermsCommon.nonce[id]
         }).done(function (response) {
             if (typeof response !== "object") {
                 alert(response);
@@ -15,7 +15,7 @@ jQuery(document).ready(function () {
                 s.text(wpautotermsComplianceKits.statusText[response.enabled]).toggleClass('enabled', response.enabled)
                     .toggleClass('disabled', !response.enabled);
                 wpautoterms.setNotice(wpautotermsComplianceKits.boxData[id].noticeText[response.enabled],
-                    "updated notice");
+                    "updated notice is-dismissible");
             }
         }).fail(function (error) {
             console.log(error);

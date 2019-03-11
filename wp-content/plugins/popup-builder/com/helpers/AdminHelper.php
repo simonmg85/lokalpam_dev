@@ -3,9 +3,73 @@ namespace sgpb;
 use \DateTime;
 use \DateTimeZone;
 use \SgpbDataConfig;
+use \Elementor;
 
 class AdminHelper
 {
+	/**
+	 * Get extension options data which are included inside the free version
+	 *
+	 * @since 3.0.8
+	 *
+	 * @return assoc array $extensionOptions
+	 */
+	public static function getExtensionAvaliabilityOptions()
+	{
+		$extensionOptions = array();
+		// advanced closing option
+		$extensionOptions[SGPB_POPUP_ADVANCED_CLOSING_PLUGIN_KEY] = array(
+			'sgpb-auto-close',
+			'sgpb-enable-popup-overlay',
+			'sgpb-disable-popup-closing'
+		);
+		// schedule extension
+		$extensionOptions[SGPB_POPUP_SCHEDULING_EXTENSION_KEY] = array(
+			'otherConditionsMetaBoxView'
+		);
+		// geo targeting extension
+		$extensionOptions[SGPB_POPUP_GEO_TARGETING_EXTENSION_KEY] = array(
+			'popupConditionsSection'
+		);
+		// advanced targeting extension
+		$extensionOptions[SGPB_POPUP_ADVANCED_TARGETING_EXTENSION_KEY] = array(
+			'popupConditionsSection'
+		);
+
+		return $extensionOptions;
+	}
+
+	public static function getPopupTypesPageURL()
+	{
+		return admin_url('edit.php?post_type='.SG_POPUP_POST_TYPE.'&page='.SG_POPUP_POST_TYPE);
+	}
+
+	public static function getSettingsURL($args = array())
+	{
+		$url = admin_url('/edit.php?post_type='.SG_POPUP_POST_TYPE.'&page='.SG_POPUP_SETTINGS_PAGE);
+
+		return self::addArgsToURl($url, $args);
+	}
+
+	public static function getPopupExportURL()
+	{
+		$exportURL = admin_url('export.php');
+		$url = add_query_arg(array(
+			'download' => true,
+			'content' => SG_POPUP_POST_TYPE,
+			'sgpbExportAction' => 1
+		), $exportURL);
+
+		return $url;
+	}
+
+	public static function addArgsToURl($url, $args = array())
+	{
+		$resultURl = add_query_arg($args, $url);
+
+		return $resultURl;
+	}
+
 	public static function buildCreatePopupUrl($popupType)
 	{
 		$isAvailable = $popupType->isAvailable();
@@ -194,7 +258,7 @@ class AdminHelper
 			else {
 				$str .= '<div class="row form-group">';
 					$str .= '<label class="col-md-5 control-label">'.__($element['title'], SG_POPUP_TEXT_DOMAIN).'</label>';
-					$str .= '<div class="col-sm-7"><input type="radio" name="'.esc_attr($name).'" value="'.esc_attr($value).'" '.$checked.'></div>';
+					$str .= '<div class="col-sm-7"><input type="radio" name="'.esc_attr($name).'" value="'.esc_attr($value).'" '.$checked.' autocomplete="off"></div>';
 				$str .= '</div>';
 			}
 		}
@@ -202,60 +266,12 @@ class AdminHelper
 		echo $str;
 	}
 
-	// countdown popup (number) styles
-	public static function renderCountdownStyles($popupId = 0, $countdownBgColor, $countdownTextColor)
+	public static function getDateObjFromDate($dueDate, $timezone = 'America/Los_Angeles', $format = 'Y-m-d H:i:s')
 	{
-		return  "<style type='text/css'>
-			.sgpb-counts-content.sgpb-flipclock-js-$popupId.flip-clock-wrapper ul li a div div.inn {
-				background-color: $countdownBgColor;
-				color: $countdownTextColor;
-			}
-			.sgpb-countdown-wrapper {
-				width: 446px;
-				height: 130px;
-				padding-top: 22px;
-				box-sizing: border-box;
-				margin: 0 auto;
-			}
-			.sgpb-counts-content {
-				display: inline-block;
-			}
-			.sgpb-counts-content > ul.flip {
-				width: 40px;
-				margin: 4px;
-			}
-		</style>";
-	}
+		$dateObj = new DateTime($dueDate, new DateTimeZone($timezone));
+		$dateObj->format($format);
 
-	// countdown popup scripts and params
-	public static function renderCountdownScript($id, $seconds, $type, $language, $timezone, $autoclose)
-	{
-		$params = array(
-			'id'        => $id,
-			'seconds'   => $seconds,
-			'type'      => $type,
-			'language'  => $language,
-			'timezone'  => $timezone,
-			'autoclose' => $autoclose
-		);
-
-		return $params;
-	}
-
-	// convert date to seconds
-	public static function dateToSeconds($dueDate, $timezone)
-	{
-		if (empty($timezone)) {
-			return '';
-		}
-		$timeDate = new DateTime('now', new DateTimeZone($timezone));
-		$timeNow = strtotime($timeDate->format('Y-m-d H:i:s'));
-		$seconds = strtotime($dueDate)-$timeNow;
-		if ($seconds < 0) {
-			$seconds = 0;
-		}
-
-		return $seconds;
+		return $dateObj;
 	}
 
 	/**
@@ -298,33 +314,6 @@ class AdminHelper
 		return $size;
 	}
 
-	/**
-	 * Get site protocol
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return string $protocol
-	 *
-	 */
-	public static function getSiteProtocol()
-	{
-		$protocol = 'http';
-
-		if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
-			$protocol = 'https';
-		}
-
-		return $protocol;
-	}
-
-	public static function getCurrentUrl()
-	{
-		$protocol = self::getSiteProtocol();
-		$currentUrl = $protocol."://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
-
-		return $currentUrl;
-	}
-
 	public static function deleteSubscriptionPopupSubscribers($popupId)
 	{
 		global $wpdb;
@@ -342,7 +331,7 @@ class AdminHelper
 		if ($query == '') {
 			$query = 'SELECT firstName, lastName, email, cDate, '.$postsTablename.'.post_title AS subscriptionType FROM '.$subscribersTablename.' ';
 		}
-		$searchQuery = '';
+		$searchQuery = ' unsubscribed <> 1';
 		$filterCriteria = '';
 
 		$query .= ' LEFT JOIN '.$postsTablename.' ON '.$postsTablename.'.ID='.$subscribersTablename.'.subscriptionType';
@@ -350,15 +339,15 @@ class AdminHelper
 		if (isset($_GET['sgpb-subscription-popup-id']) && !empty($_GET['sgpb-subscription-popup-id'])) {
 			$filterCriteria = esc_sql($_GET['sgpb-subscription-popup-id']);
 			if ($filterCriteria != 'all') {
-				$searchQuery .= "subscriptionType = $filterCriteria";
+				$searchQuery .= " AND (subscriptionType = $filterCriteria)";
 			}
 		}
 		if ($filterCriteria != '' && $filterCriteria != 'all' && isset($_GET['s']) && !empty($_GET['s'])) {
-			$searchQuery .= ' LIKE ';
+			$searchQuery .= ' AND ';
 		}
 		if (isset($_GET['s']) && !empty($_GET['s'])) {
 			$searchCriteria = esc_sql($_GET['s']);
-			$searchQuery .= " firstName LIKE '%$searchCriteria%' or lastName LIKE '%$searchCriteria%' or email LIKE '%$searchCriteria%' or $postsTablename.post_title LIKE '%$searchCriteria%'";
+			$searchQuery .= " (firstName LIKE '%$searchCriteria%' or lastName LIKE '%$searchCriteria%' or email LIKE '%$searchCriteria%' or $postsTablename.post_title LIKE '%$searchCriteria%')";
 		}
 		if (isset($_GET['sgpb-subscribers-date']) && !empty($_GET['sgpb-subscribers-date'])) {
 			$filterCriteria = esc_sql($_GET['sgpb-subscribers-date']);
@@ -370,7 +359,7 @@ class AdminHelper
 			}
 		}
 		if ($searchQuery != '') {
-			$query .= " WHERE ($searchQuery)";
+			$query .= " WHERE $searchQuery";
 		}
 
 		return $query;
@@ -447,40 +436,42 @@ class AdminHelper
 		return $month.' '.$year;
 	}
 
-	public static function convertImageToData($image = '')
-	{
-		return $image;
-	}
-
 	public static function defaultButtonImage($theme, $closeImage = '')
 	{
+		$currentPostType = self::getCurrentPopupType();
+		if (defined('SGPB_POPUP_TYPE_RECENT_SALES') && $currentPostType == SGPB_POPUP_TYPE_RECENT_SALES) {
+			$theme = 'sgpb-theme-6';
+		}
 		// if no image, set default by theme
 		if ($closeImage == '') {
 			if ($theme == 'sgpb-theme-1' || !$theme) {
-				$closeImage = SG_POPUP_IMG_URL.'theme_1/close.png';
+				$closeImage = 'iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAADHElEQVQ4jaWVQU8bRxiGHxYHrwdbHW8gFhU5IKurWM0plTiQC1SqUFD6C7hEorfmSv9ChBC39NZDFCm3xrkl6gWoKjBCizgRoS0uh0Y1BjQ7ks3sGkK2B2MLY4dE7Xvd93v0zXzfvNsXxzG9VKlUprXWk8aYceAOkAOqwK4QYlNKuToyMvJbr9q+q1Ct9bflcvkRMCuEsNKZDIn+/vb39+fn1Gs1jDEfgBf5fP6ZlHL5o9D9/f0flFLzQgjXGf4SkRrgRn8ftm23PVEUcXYeY8JT1NE/GGN8x3EWx8bGfml5EleAT27lckOZdBopv+h5LbZtYwOZwRTJREytXncPq9UnAC1wonVkpdT8rVxuSGZvkhlM9QRelZSS/htJgKHDanU+m83+JaVctgDK5fIjIYSbSac/G9hSZjBFJp1GCOFezIJEpVKZBmallEgp2+a/373jT98H4CvX5fboKABr6+s0ooikbXN/YqLdcRiGGGNmK5XKC0trPSmEsFKpzg5l9iZ7e3uUSiXevH5N7SRkbX2d1ZUVSqUSTjbb4b+ot7TWk5YxZjydyXRMuHWsBzMzABwdHfHH7yusr60BUCgUKBQKHX7btnEcB2PMuEVzsXvq9ugok1NTAGxvb3N6esrw8DDfTT/o8l5q6o5F86V0ddrSN/fuMTAwQL1eZ2dnh6/v3v3UMHMWUH1/dvZRR7H4io2NDXzfp9Fo8PPTp2itr4NWLWAXmi/lqra2tnj58lcA5ubmSCaTNBoNFhYWuryX6nctIcSmUqoLqrVmaWkJANd1mZmZ4cfHjwHwfZ9isdgFVUohhNhMSClXjTE/hWFoXd7TnbdvefjwewCmpiYBuD8xQfXggChqEEWNDmgYhgAfpJSrxHGM53nPPc+LgyCI/4uCIIg9z4s9z3sexzEWQD6ffwb4QRBQOwmvG0KXaichQRAA+BecJlRKuew4zqJS6vj48OBT021La83x4QFKqWPHcRZbudqOvlZsKaXmoyhywzAklUo1o+5KnkZRRBiGaK175um1yQ9YjuMAzcfR2hClFMDnJf9l/Z9/1L81r78oUzK1YgAAAABJRU5ErkJggg==';
 			}
 			else if ($theme == 'sgpb-theme-2') {
-				$closeImage = SG_POPUP_IMG_URL.'theme_2/close.png';
+				$closeImage = 'iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABWWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS40LjAiPgogICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogICAgICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgICAgICAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyI+CiAgICAgICAgIDx0aWZmOk9yaWVudGF0aW9uPjE8L3RpZmY6T3JpZW50YXRpb24+CiAgICAgIDwvcmRmOkRlc2NyaXB0aW9uPgogICA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgpMwidZAAABWUlEQVQ4Ee2SS46CQBCGf8gAcgHFG+jGtfEWXIBHOBcKR+EScAQfG90RSGCGvyY9MtIuTFzMYippuqur6qO6qozPQfBGMd/IEtQ/8F7R2+0GLorqm9qv16vYlH6PAj7Gijqfz2fs93sYhoEwDLFcLsVE/XQ6Icsy0eM4xmKxUGGya5tSVRWappHFYEIoCkZb27Yoy1Luxx8tcLVaYTabSYYMJrQoCtmpU2zbxnq9HrPkbAx1mAw2ry6XC9I0Rdd16Pv+23l4Ms/8WRRF8DxvAtRmyFrN53MkSQLLsn41hbZnMNK1QBoYyEy5THPqpnkYw54Dj8cj8jyX4vOZYwBryknQyfTXgxedCavrWmJc14Xv+3AcR3Q25nA4/HR/DNYC1djw2YQEQYDNZiO1U1CODf0eRQvcbrfSFNVNDjbh7CobQigHerfbPfKgHZuJ1wsX2gxfiJ+4/n3gF7OOrAbt6WEPAAAAAElFTkSuQmCC';
 			}
 			else if ($theme == 'sgpb-theme-3') {
-				$closeImage = SG_POPUP_IMG_URL.'theme_3/close.png';
+				$closeImage = 'iVBORw0KGgoAAAANSUhEUgAAACcAAAAUCAMAAAA5k9QEAAAAllBMVEVHcEwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC0tbUhISHFxcYICAitr7EqKipKSkrMzMzHyMqIiouQkZO9vb0QEBB7e3tDRESlpaapq61qamvBw8Tk5ebe3t/R0tMZGRo6Ojp/gIGgoqRSUlLq6uuZmZnW1te3ubt2d3hf8fIfAAAAEXRSTlMAzFVEMRFmd7vumd2qbCKID4nBdwUAAADPSURBVCjPhdLXEoIwFATQBSIIVkKxACrdXv7/50RCDQj7krk7hwyTBERa6KNZEIDIwhjTxDV+EdUhJRCUIQNQmKCOVNVntmzKedZkwLyoj1Eu3Me9KOQWg8haw9yZGXTjmLJCBZfi8+0+g06S0AOb57wTapimL7tgusK7qV7B/a7cbch9vMg0t6MupO+n7XmnERcGtmsZAaWnQWfcfMfKFt92eo8PUFh/uVq5P1psXvJu0nvFU+DPhu2QroPWZTL6suKUKqI/ktb4yZnSfFFfkB8jKwCptUAAAAAASUVORK5CYII=';
 			}
 			else if ($theme == 'sgpb-theme-5') {
-				$closeImage = SG_POPUP_IMG_URL.'theme_5/close.png';
+				$closeImage = 'iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAAAXNSR0IArs4c6QAAAVlpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IlhNUCBDb3JlIDUuNC4wIj4KICAgPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICAgICAgPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIKICAgICAgICAgICAgeG1sbnM6dGlmZj0iaHR0cDovL25zLmFkb2JlLmNvbS90aWZmLzEuMC8iPgogICAgICAgICA8dGlmZjpPcmllbnRhdGlvbj4xPC90aWZmOk9yaWVudGF0aW9uPgogICAgICA8L3JkZjpEZXNjcmlwdGlvbj4KICAgPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4KTMInWQAAAVRJREFUOBGtVDuugzAQXBwhIA1UUKWgoOMAnIETcJwchxNwEgokSiqQUtAEEL/HWNongwJ6T8oWxti7w+CZtfZ6vdZ5nilNU2rblpIkIdd1qXu/aVkW4hBCkHW/U9M0MjcIAorjmMZxJMEA2ByGQSZgjgIUIo4AyMvznLIsI13X6fZ4PJ4o4gBoURTk+z45jkPrxsa0rF8GAOBAHdgLDMdQGZ0BcE1ZlqRtw4rzUL/ACYZhyPOpqoqXdk/s4wy1jckKWmdAuyrlhQEggoAKmAARG38JFQD1AjL+B+gIgHqpISZD35PneZLVFRv4A3nIZx9JEPjAME2q61pKeQUCNZCHfMVHeyd+UkkFVeVnQ35HnSt5cYiboz+qpjK6bfI+P/0CqxBFkWwBtAJaQg1uEWHbtrou5wwA//Rdd+kjqCW49RlJBYB/pmk69VEYhvI60L5xn/wAjtgb/fA0ZZYAAAAASUVORK5CYII=';
 			}
 			else if ($theme == 'sgpb-theme-6') {
-				$closeImage = SG_POPUP_IMG_URL.'theme_6/close.png';
+				$closeImage = 'iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAA6HWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxMzggNzkuMTU5ODI0LCAyMDE2LzA5LzE0LTAxOjA5OjAxICAgICAgICAiPgogICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogICAgICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgICAgICAgICB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iCiAgICAgICAgICAgIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIKICAgICAgICAgICAgeG1sbnM6cGhvdG9zaG9wPSJodHRwOi8vbnMuYWRvYmUuY29tL3Bob3Rvc2hvcC8xLjAvIgogICAgICAgICAgICB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIKICAgICAgICAgICAgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIKICAgICAgICAgICAgeG1sbnM6dGlmZj0iaHR0cDovL25zLmFkb2JlLmNvbS90aWZmLzEuMC8iCiAgICAgICAgICAgIHhtbG5zOmV4aWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20vZXhpZi8xLjAvIj4KICAgICAgICAgPHhtcDpDcmVhdGVEYXRlPjIwMTgtMDItMjdUMTQ6MTQ6MzgrMDQ6MDA8L3htcDpDcmVhdGVEYXRlPgogICAgICAgICA8eG1wOk1vZGlmeURhdGU+MjAxOC0wMi0yN1QxNDoxNjoxMSswNDowMDwveG1wOk1vZGlmeURhdGU+CiAgICAgICAgIDx4bXA6TWV0YWRhdGFEYXRlPjIwMTgtMDItMjdUMTQ6MTY6MTErMDQ6MDA8L3htcDpNZXRhZGF0YURhdGU+CiAgICAgICAgIDx4bXA6Q3JlYXRvclRvb2w+QWRvYmUgUGhvdG9zaG9wIENDIDIwMTcgKFdpbmRvd3MpPC94bXA6Q3JlYXRvclRvb2w+CiAgICAgICAgIDxkYzpmb3JtYXQ+aW1hZ2UvcG5nPC9kYzpmb3JtYXQ+CiAgICAgICAgIDxwaG90b3Nob3A6Q29sb3JNb2RlPjM8L3Bob3Rvc2hvcDpDb2xvck1vZGU+CiAgICAgICAgIDx4bXBNTTpJbnN0YW5jZUlEPnhtcC5paWQ6MWNlZWE3YWMtNTIxMC02MjQ2LWFiMDQtZTA1YmEwYjljOTQ1PC94bXBNTTpJbnN0YW5jZUlEPgogICAgICAgICA8eG1wTU06RG9jdW1lbnRJRD5hZG9iZTpkb2NpZDpwaG90b3Nob3A6MzFlZDk3OGEtMWJhNy0xMWU4LTg0YTctZjA4OTdlNjEzNGM0PC94bXBNTTpEb2N1bWVudElEPgogICAgICAgICA8eG1wTU06T3JpZ2luYWxEb2N1bWVudElEPnhtcC5kaWQ6OWFmYzkxOTgtOWNlNC1lZDQ4LThlNjYtNmFkMzdiNGFmOTQxPC94bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ+CiAgICAgICAgIDx4bXBNTTpIaXN0b3J5PgogICAgICAgICAgICA8cmRmOlNlcT4KICAgICAgICAgICAgICAgPHJkZjpsaSByZGY6cGFyc2VUeXBlPSJSZXNvdXJjZSI+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDphY3Rpb24+c2F2ZWQ8L3N0RXZ0OmFjdGlvbj4KICAgICAgICAgICAgICAgICAgPHN0RXZ0Omluc3RhbmNlSUQ+eG1wLmlpZDo5YWZjOTE5OC05Y2U0LWVkNDgtOGU2Ni02YWQzN2I0YWY5NDE8L3N0RXZ0Omluc3RhbmNlSUQ+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDp3aGVuPjIwMTgtMDItMjdUMTQ6MTY6MTErMDQ6MDA8L3N0RXZ0OndoZW4+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDpzb2Z0d2FyZUFnZW50PkFkb2JlIFBob3Rvc2hvcCBDQyAyMDE3IChXaW5kb3dzKTwvc3RFdnQ6c29mdHdhcmVBZ2VudD4KICAgICAgICAgICAgICAgICAgPHN0RXZ0OmNoYW5nZWQ+Lzwvc3RFdnQ6Y2hhbmdlZD4KICAgICAgICAgICAgICAgPC9yZGY6bGk+CiAgICAgICAgICAgICAgIDxyZGY6bGkgcmRmOnBhcnNlVHlwZT0iUmVzb3VyY2UiPgogICAgICAgICAgICAgICAgICA8c3RFdnQ6YWN0aW9uPnNhdmVkPC9zdEV2dDphY3Rpb24+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDppbnN0YW5jZUlEPnhtcC5paWQ6MWNlZWE3YWMtNTIxMC02MjQ2LWFiMDQtZTA1YmEwYjljOTQ1PC9zdEV2dDppbnN0YW5jZUlEPgogICAgICAgICAgICAgICAgICA8c3RFdnQ6d2hlbj4yMDE4LTAyLTI3VDE0OjE2OjExKzA0OjAwPC9zdEV2dDp3aGVuPgogICAgICAgICAgICAgICAgICA8c3RFdnQ6c29mdHdhcmVBZ2VudD5BZG9iZSBQaG90b3Nob3AgQ0MgMjAxNyAoV2luZG93cyk8L3N0RXZ0OnNvZnR3YXJlQWdlbnQ+CiAgICAgICAgICAgICAgICAgIDxzdEV2dDpjaGFuZ2VkPi88L3N0RXZ0OmNoYW5nZWQ+CiAgICAgICAgICAgICAgIDwvcmRmOmxpPgogICAgICAgICAgICA8L3JkZjpTZXE+CiAgICAgICAgIDwveG1wTU06SGlzdG9yeT4KICAgICAgICAgPHRpZmY6T3JpZW50YXRpb24+MTwvdGlmZjpPcmllbnRhdGlvbj4KICAgICAgICAgPHRpZmY6WFJlc29sdXRpb24+NzIwMDAwLzEwMDAwPC90aWZmOlhSZXNvbHV0aW9uPgogICAgICAgICA8dGlmZjpZUmVzb2x1dGlvbj43MjAwMDAvMTAwMDA8L3RpZmY6WVJlc29sdXRpb24+CiAgICAgICAgIDx0aWZmOlJlc29sdXRpb25Vbml0PjI8L3RpZmY6UmVzb2x1dGlvblVuaXQ+CiAgICAgICAgIDxleGlmOkNvbG9yU3BhY2U+NjU1MzU8L2V4aWY6Q29sb3JTcGFjZT4KICAgICAgICAgPGV4aWY6UGl4ZWxYRGltZW5zaW9uPjMwPC9leGlmOlBpeGVsWERpbWVuc2lvbj4KICAgICAgICAgPGV4aWY6UGl4ZWxZRGltZW5zaW9uPjMwPC9leGlmOlBpeGVsWURpbWVuc2lvbj4KICAgICAgPC9yZGY6RGVzY3JpcHRpb24+CiAgIDwvcmRmOlJERj4KPC94OnhtcG1ldGE+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgCjw/eHBhY2tldCBlbmQ9InciPz7HmtNXAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAjWSURBVHjanFd9bFPXFf/d9/zsZ/v5ObZfAnbIUpI0fCxMhGlJkxaNKpFAKkqntUIIaYRJJR9FiEGoJqoOov1RMVE1UxvSsoIqbVJVCoJuomVlypYh8aERWEoZ6dwSlYJxkmcndj7s5/d19k9s4TZM64509a7ufff+zjn3nHN/l+HRwhhjICIAIAAIBoNuv9/v1XVdBCAA4Fwul+F2u/XZ2VnNNM2ZiYkJ27Is/F/CGGMcxzHGGHM6nS5FUb5XWVnZuHPnzhey2ewJIjpPRKNEdJeI/kVEf83lcr+bn5//6c6dO6uXL1/u5TjuO2MyQRB4nuedHo9naWtra9ulS5fO0oJkMhlSVZXi8TjFYjGKx+Okqipls9n8Lyki+k1XV9fampqaPDr7FtA3+zzPcwAckUjk+z09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';
 			}
 		}
+		else {
+			$closeImage = self::getImageDataFromUrl($closeImage);
+		}
 
-		return self::convertImageToData($closeImage);
+		return $closeImage;
 	}
 
 	public static function getPopupPostAllowedUserRoles()
 	{
 		$userSavedRoles = get_option('sgpb-user-roles');
 
-		if (!$userSavedRoles) {
+		if (empty($userSavedRoles) || !is_array($userSavedRoles)) {
 			$userSavedRoles = array('administrator');
 		}
 		else {
@@ -493,9 +484,12 @@ class AdminHelper
 	public static function showMenuForCurrentUser()
 	{
 		$savedUserRoles = self::getPopupPostAllowedUserRoles();
-		$currentUserRole = AdminHelper::getCurrentUserRole();
+		$currentUserRole = self::getCurrentUserRole();
+		if (!is_array($savedUserRoles) || !is_array($currentUserRole)) {
+			return true;
+		}
 
-		return in_array($currentUserRole, $savedUserRoles);
+		return array_intersect($currentUserRole, $savedUserRoles);
 	}
 
 	public static function getPopupsIdAndTitle($excludesPopups = array())
@@ -577,7 +571,7 @@ class AdminHelper
 
 	public static function getCurrentUserRole()
 	{
-		$role = 'administrator';
+		$role = array('administrator');
 
 		if (is_multisite()) {
 
@@ -591,7 +585,7 @@ class AdminHelper
 					if ($userData->ID == get_current_user_id()) {
 						$roles = $userData->roles;
 						if (is_array($roles) && !empty($roles)) {
-							$role = $roles[0];
+							$role[] = $roles[0];
 						}
 					}
 				}
@@ -600,33 +594,14 @@ class AdminHelper
 			return $role;
 		}
 
-		global $current_user, $wpdb;
-		$userRoleKey = $wpdb->prefix . 'capabilities';
-		$userRoleName = $current_user->$userRoleKey;
+		global $current_user;
+		$userRoleName = $current_user->roles;
 
-		if ($userRoleName) {
-			$usersRoles = array_keys($userRoleName);
-
-			if (is_array($usersRoles) && !empty($usersRoles)) {
-				$role = $usersRoles[0];
-			}
+		if (!empty($userRoleName)) {
+			$role = $userRoleName;
 		}
 
 		return $role;
-	}
-
-	public static function isAppleMobileDevice()
-	{
-		$isIOS = false;
-
-		$useragent = @$_SERVER['HTTP_USER_AGENT'];
-		preg_match('/iPhone|Android|iPad|iPod|webOS/', $useragent, $matches);
-		$os = current($matches);
-		if ($os == 'iPad' || $os == 'iPhone' || $os == 'iPod') {
-			$isIOS = true;
-		}
-
-		return $isIOS;
 	}
 
 	public static function hexToRgba($color, $opacity = false)
@@ -694,8 +669,8 @@ class AdminHelper
 			<p class="sgpb-extension-notice-close">x</p>
 			<div class="sgpb-extensions-list-wrapper">
 				<div class="sgpb-notice-header">
-					<h3><?php _e('Popup Builder plugin has been successfully updated', SG_POPUP_TEXT_DOMAIN)?></h3>
-					<h4><?php _e('The following extensions need to be updated manually', SG_POPUP_TEXT_DOMAIN)?></h4>
+					<h3><?php _e('Popup Builder plugin has been successfully updated', SG_POPUP_TEXT_DOMAIN); ?></h3>
+					<h4><?php _e('The following extensions need to be updated manually', SG_POPUP_TEXT_DOMAIN); ?></h4>
 				</div>
 				<ul class="sgpb-extensions-list">
 					<?php foreach ($extensions as $extensionName): ?>
@@ -703,7 +678,7 @@ class AdminHelper
 					<?php endforeach; ?>
 				</ul>
 			</div>
-			<p class="sgpb-extension-notice-dont-show"><?php _e('Don\'t show again')?></p>
+			<p class="sgpb-extension-notice-dont-show"><?php _e('Don\'t show again', SG_POPUP_TEXT_DOMAIN)?></p>
 		<?php
 		$content = ob_get_contents();
 		ob_get_clean();
@@ -755,16 +730,742 @@ class AdminHelper
 			<div class="welcome-panel-content">
 				<p class="sgpb-problem-notice-close">x</p>
 				<div class="sgpb-alert-problem-text-wrapper">
-					<h3>Popup Builder plugin has been updated to the new version 3.</h3>
-					<h5>A lot of changes and improvements have been made.</h5>
-					<h5>In case of any issues, please contact us <a href="<?php echo SG_POPUP_TICKET_URL; ?>" target="_blank">here</a>.</h5>
+					<h3><?php _e('Popup Builder plugin has been updated to the new version 3.', SG_POPUP_TEXT_DOMAIN); ?></h3>
+					<h5><?php _e('A lot of changes and improvements have been made.', SG_POPUP_TEXT_DOMAIN); ?></h5>
+					<h5><?php _e('In case of any issues, please contact us <a href="<?php echo SG_POPUP_TICKET_URL; ?>" target="_blank">here</a>.', SG_POPUP_TEXT_DOMAIN); ?></h5>
 				</div>
-				<p class="sgpb-problem-notice-dont-show"><?php _e('Don\'t show again')?></p>
+				<p class="sgpb-problem-notice-dont-show"><?php _e('Don\'t show again', SG_POPUP_TEXT_DOMAIN); ?></p>
 			</div>
 		</div>
 		<?php
 		$content = ob_get_clean();
 
 		return $content;
+	}
+
+	public static function getTaxonomyBySlug($slug = '')
+	{
+		$allTerms = get_terms(array('hide_empty' => false));
+
+		$result = array();
+		if (empty($allTerms)) {
+			return $result;
+		}
+		if ($slug == '') {
+			return $allTerms;
+		}
+		foreach ($allTerms as $term) {
+			if ($term->slug == $slug) {
+				return $term;
+			}
+		}
+	}
+
+	public static function getCurrentPopupType()
+	{
+		$type = '';
+		if (!empty($_GET['sgpb_type'])) {
+			$type  = $_GET['sgpb_type'];
+		}
+
+		$currentPostType = self::getCurrentPostType();
+
+		if ($currentPostType == SG_POPUP_POST_TYPE && !empty($_GET['post'])) {
+			$popupObj = SGPopup::find($_GET['post']);
+			if (is_object($popupObj)) {
+				$type = $popupObj->getType();
+			}
+		}
+
+		return $type;
+	}
+
+	public static function getCurrentPostType()
+	{
+		global $post_type;
+		global $post;
+		$currentPostType = '';
+
+		if (is_object($post)) {
+			$currentPostType = @$post->post_type;
+		}
+
+		// in some themes global $post returns null
+		if (empty($currentPostType)) {
+			$currentPostType = $post_type;
+		}
+
+		return $currentPostType;
+	}
+
+	/**
+	 * Get image encoded data from URL
+	 *
+	 * @param $imageUrl
+	 *
+	 * @return string
+	 */
+	public static function getImageDataFromUrl($imageUrl)
+	{
+		$data = '';
+		$remoteData = wp_remote_get($imageUrl);
+
+		if (is_wp_error($remoteData)) {
+			return $imageUrl;
+		}
+
+		$imageData = wp_remote_retrieve_body($remoteData);
+
+		return base64_encode($imageData);
+	}
+
+	public static function deleteUserFromSubscribers($params = array())
+	{
+		global $wpdb;
+
+		$token = '';
+		$email = '';
+		$popup = '';
+		$noSubscriber = true;
+
+		if (isset($params['token'])) {
+			$token = $params['token'];
+		}
+		if (isset($params['email'])) {
+			$email = $params['email'];
+		}
+		if (isset($params['popup'])) {
+			$popup = $params['popup'];
+		}
+
+		$prepareSql = $wpdb->prepare('SELECT id FROM '.$wpdb->prefix.SGPB_SUBSCRIBERS_TABLE_NAME.' WHERE email = %s && subscriptionType = %s', $email, $popup);
+		$res = $wpdb->get_row($prepareSql, ARRAY_A);
+		if (!isset($res['id'])) {
+			$noSubscriber = false;
+		}
+		$params['subscriberId'] = $res['id'];
+
+		$subscriber = self::subscriberExists($params);
+		if ($subscriber && $noSubscriber) {
+			self::deleteSubscriber($params);
+		}
+		else if (!$noSubscriber) {
+			_e('<span>Oops, something went wrong, please try again or contact the administrator to check more info.</span>', SG_POPUP_TEXT_DOMAIN);
+			wp_die();
+		}
+	}
+
+	public static function subscriberExists($params = array())
+	{
+		if (empty($params)) {
+			return false;
+		}
+
+		$receivedToken = $params['token'];
+		$realToken = md5($params['subscriberId'].$params['email']);
+		if ($receivedToken == $realToken) {
+			return true;
+		}
+
+	}
+
+	public static function deleteSubscriber($params = array())
+	{
+		global $wpdb;
+		$homeUrl = get_home_url();
+
+		if (empty($params)) {
+			return false;
+		}
+		// send email to admin about user unsubscription
+		self::sendEmailAboutUnsubscribe($params);
+
+		$prepareSql = $wpdb->prepare('UPDATE '.$wpdb->prefix.SGPB_SUBSCRIBERS_TABLE_NAME.' SET unsubscribed = 1 WHERE id = %s ', $params['subscriberId']);
+		$wpdb->query($prepareSql);
+
+		_e('<span>You have successfully unsubscribed. <a href="'.esc_attr($homeUrl).'">click here</a> to go to the home page.</span>', SG_POPUP_TEXT_DOMAIN);
+		wp_die();
+	}
+
+	public static function sendEmailAboutUnsubscribe($params = array())
+	{
+		if (empty($params)) {
+			return false;
+		}
+
+		$newsletterOptions = get_option('SGPB_NEWSLETTER_DATA');
+		$receiverEmail = get_bloginfo('admin_email');
+		$userEmail = $params['email'];
+		$emailTitle = __('Unsubscription', SG_POPUP_TEXT_DOMAIN);
+		$subscriptionFormId = (int)$newsletterOptions['subscriptionFormId'];
+		$subscriptionFormTitle = get_the_title($subscriptionFormId);
+
+		$message = __('User with '.$userEmail.' email has unsubscribed from '.$subscriptionFormTitle.' mail list', SG_POPUP_TEXT_DOMAIN);
+
+		$headers  = 'MIME-Version: 1.0'."\r\n";
+		$headers .= 'From: WordPress Popup Builder'."\r\n";
+		$headers .= 'Content-type: text/html; charset=UTF-8'."\r\n"; //set UTF-8
+
+		$sendStatus = wp_mail($receiverEmail, $emailTitle, $message, $headers);
+	}
+
+	public static function addUnsubscribeColumn()
+	{
+		global $wpdb;
+
+		$sql = 'ALTER TABLE '.$wpdb->prefix.SGPB_SUBSCRIBERS_TABLE_NAME.' ADD COLUMN unsubscribed INT NOT NULL DEFAULT 0 ';
+		$wpdb->query($sql);
+	}
+
+	public static function isPluginActive($key)
+	{
+		$allExtensions = SgpbDataConfig::allExtensionsKeys();
+		$isActive = false;
+		foreach ($allExtensions as $extension) {
+			if (isset($extension['key']) && $extension['key'] == $key) {
+				if (is_plugin_active($extension['pluginKey'])) {
+					$isActive = true;
+					return $isActive;
+				}
+			}
+		}
+
+		return $isActive;
+	}
+
+	public static function getMaxCountPopup()
+	{
+		$allPopups = SGPopup::getAllPopups();
+		$dontShowPopup = get_option('sgpbDontShowAskReviewBanner');
+		if ($dontShowPopup) {
+			return false;
+		}
+		$result = array();
+
+		if (empty($allPopups)) {
+			return false;
+		}
+		foreach ($allPopups as $popup) {
+			if (empty($popup)) {
+				continue;
+			}
+			$popupId = $popup->getId();
+			$count = SGPopup::getPopupOpeningCountById($popupId);
+
+			$title = $popup->getTitle();
+			$result['title'] = $title;
+			$result['count'] = $count;
+		}
+
+		return $result;
+	}
+
+	public static function showReviewPopup()
+	{
+		$popupContent = '';
+		$maxOpenPopupStatus = self::shouldOpenForMaxOpenPopupMessage();
+
+		if ($maxOpenPopupStatus) {
+			$popupContent = self::getMaxOpenPopupsMessage();
+			self::addContentToFooter($popupContent);
+			return;
+		}
+
+		$shouldOpenForDays = self::shouldOpenReviewPopupForDays();
+
+		if ($shouldOpenForDays) {
+			$popupContent = self::getMaxOpenDaysMessage();
+			self::addContentToBanner($popupContent);
+			return;
+		}
+	}
+
+	public static function getMaxOpenDaysMessage()
+	{
+		$getUsageDays = self::getPopupUsageDays();
+		$firstHeader = '<h1 class="sgpb-review-h1"><strong class="sgrb-review-strong">'.__('Wow!', SG_POPUP_TEXT_DOMAIN).'</strong>'.__('You have been using Popup Builder on your site for '.$getUsageDays.' days', SG_POPUP_TEXT_DOMAIN).'</h1>';
+		$popupContent = self::getMaxOpenPopupContent($firstHeader, 'days');
+
+		return $popupContent;
+	}
+
+	public static function getPopupUsageDays()
+	{
+		$installDate = get_option('SGPBInstallDate');
+
+		$timeDate = new \DateTime('now');
+		$timeNow = strtotime($timeDate->format('Y-m-d H:i:s'));
+		$diff = $timeNow-$installDate;
+		$days  = floor($diff/(60*60*24));
+
+		return $days;
+	}
+
+	public static function getMaxOpenPopupContent($firstHeader, $type)
+	{
+		ob_start();
+		?>
+		<style>
+			.sgpb-buttons-wrapper .press{
+				box-sizing:border-box;
+				cursor:pointer;
+				display:inline-block;
+				font-size:1em;
+				margin:0;
+				padding:0.5em 0.75em;
+				text-decoration:none;
+				transition:background 0.15s linear
+			}
+			.sgpb-buttons-wrapper .press-grey {
+				background-color:#9E9E9E;
+				border:2px solid #9E9E9E;
+				color: #FFF;
+			}
+			.sgpb-buttons-wrapper .press-lightblue {
+				background-color:#03A9F4;
+				border:2px solid #03A9F4;
+				color: #FFF;
+			}
+			.sgpb-review-wrapper{
+				text-align: center;
+				padding: 20px;
+			}
+			.sgpb-review-wrapper p {
+				color: black;
+			}
+			.sgpb-review-h1 {
+				font-size: 22px;
+				font-weight: normal;
+				line-height: 1.384;
+			}
+			.sgrb-review-h2{
+				font-size: 20px;
+				font-weight: normal;
+			}
+			:root {
+				--main-bg-color: #1ac6ff;
+			}
+			.sgrb-review-strong{
+				color: var(--main-bg-color);
+			}
+			.sgrb-review-mt20{
+				margin-top: 20px
+			}
+		</style>
+		<div class="sgpb-review-wrapper">
+			<div class="sgpb-review-description">
+				<?php echo $firstHeader; ?>
+				<h2 class="sgrb-review-h2"><?php _e('This is really great for your website score.', SG_POPUP_TEXT_DOMAIN); ?></h2>
+				<p class="sgrb-review-mt20"><?php _e('Have your input in the development of our plugin, and we’ll provide better conversions for your site!<br /> Leave your 5-star positive review and help us go further to the perfection!', SG_POPUP_TEXT_DOMAIN); ?></p>
+			</div>
+			<div class="sgpb-buttons-wrapper">
+				<button class="press press-grey sgpb-button-1 sg-already-did-review"><?php _e('I already did', SG_POPUP_TEXT_DOMAIN); ?></button>
+				<button class="press press-lightblue sgpb-button-3 sg-you-worth-it"><?php _e('You worth it!', SG_POPUP_TEXT_DOMAIN); ?></button>
+				<button class="press press-grey sgpb-button-2 sg-show-popup-period" data-message-type="<?php echo $type; ?>"><?php _e('Maybe later', SG_POPUP_TEXT_DOMAIN); ?></button></div>
+			<div> </div>
+		</div>
+		<?php
+		$popupContent = ob_get_clean();
+
+		return $popupContent;
+	}
+
+	public static function shouldOpenReviewPopupForDays()
+	{
+		$shouldOpen = true;
+		$dontShowAgain = get_option('SGPBCloseReviewPopup');
+		$periodNextTime = get_option('SGPBOpenNextTime');
+
+		if ($dontShowAgain) {
+			return false;
+		}
+
+		// When period next time does not exits it means the user is old
+		if (!$periodNextTime) {
+			$usageDays = self::getPopupMainTableCreationDate();
+			update_option('SGPBUsageDays', $usageDays);
+			if (!defined('SGPB_REVIEW_POPUP_PERIOD')) {
+				define('SGPB_REVIEW_POPUP_PERIOD', '500');
+			}
+			// For old users
+			if (defined('SGPB_REVIEW_POPUP_PERIOD') && $usageDays > SGPB_REVIEW_POPUP_PERIOD && !$dontShowAgain) {
+				return $shouldOpen;
+			}
+			$remainingDays = SGPB_REVIEW_POPUP_PERIOD - $usageDays;
+
+			$popupTimeZone = \ConfigDataHelper::getDefaultTimezone();
+			$timeDate = new DateTime('now', new DateTimeZone($popupTimeZone));
+			$timeDate->modify('+'.$remainingDays.' day');
+
+			$timeNow = strtotime($timeDate->format('Y-m-d H:i:s'));
+			update_option('SGPBOpenNextTime', $timeNow);
+
+			return false;
+		}
+
+		$currentData = new \DateTime('now');
+		$timeNow = $currentData->format('Y-m-d H:i:s');
+		$timeNow = strtotime($timeNow);
+
+		if ($periodNextTime > $timeNow) {
+			$shouldOpen = false;
+		}
+
+		return $shouldOpen;
+	}
+
+	public static function getPopupMainTableCreationDate()
+	{
+		global $wpdb;
+
+		$query = $wpdb->prepare('SELECT table_name, create_time FROM information_schema.tables WHERE table_schema="%s" AND table_name="%s"', DB_NAME, $wpdb->prefix.'sgpb_subscribers');
+		$results = $wpdb->get_results($query, ARRAY_A);
+		if (empty($results)) {
+			return 0;
+		}
+
+		$createTime = $results[0]['create_time'];
+		$createTime = strtotime($createTime);
+		update_option('SGPBInstallDate', $createTime);
+		$diff = time() - $createTime;
+		$days = floor($diff/(60*60*24));
+
+		return $days;
+	}
+
+	public static function addContentToBanner($popupContent)
+	{
+		echo '<div class="sgpb-wrapper sgpb-review-popup-banner-wrapper">'.$popupContent.'</div>';
+	}
+
+	public static function addContentToFooter($popupContent)
+	{
+		if (function_exists('get_current_screen')) {
+			$screen = get_current_screen();
+			if ($screen->base == 'post') {
+				self::addContentToBanner($popupContent);
+				return;
+			}
+		}
+		add_action('admin_footer', function() use ($popupContent) {
+				$popupId = 0;
+				$popupOptions = array();
+				$events = array(array('onload'));
+				$events = json_encode($events);
+				$popupContent = '<div style="position:absolute;top: -999999999999999999999px;">
+							<div class="sg-popup-builder-content" id="sg-popup-content-wrapper-'.$popupId.'" data-id="'.esc_attr($popupId).'" data-events="'.esc_attr($events).'" data-options="'.esc_attr($popupOptions).'">
+								<div class="sgpb-popup-builder-content-'.esc_attr($popupId).' sgpb-popup-builder-content-html">'.$popupContent.'</div>
+							</div>
+						  </div>';
+
+				echo $popupContent;
+			});
+	}
+
+	public static function shouldOpenForMaxOpenPopupMessage()
+	{
+		$counterMaxPopup = self::getMaxOpenPopupId();
+
+		if (empty($counterMaxPopup)) {
+			return false;
+		}
+		$dontShowAgain = get_option('SGPBCloseReviewPopup');
+		$maxCountDefine = get_option('SGPBMaxOpenCount');
+
+		if (!$maxCountDefine) {
+			$maxCountDefine = SGPB_ASK_REVIEW_POPUP_COUNT;
+		}
+
+		return $counterMaxPopup['maxCount'] >= $maxCountDefine && !$dontShowAgain;
+	}
+
+	public static function getMaxOpenPopupId()
+	{
+		$popupsCounterData = get_option('SgpbCounter');
+		if (!$popupsCounterData) {
+			return 0;
+		}
+
+		$counters = array_values($popupsCounterData);
+		$maxCount = max($counters);
+		$popupId  = array_search($maxCount, $popupsCounterData);
+
+		$maxPopupData = array(
+			'popupId' => $popupId,
+			'maxCount' => $maxCount
+		);
+
+		return $maxPopupData;
+	}
+
+	public static function getMaxOpenPopupsMessage()
+	{
+		$counterMaxPopup = self::getMaxOpenPopupId();
+		$popupTitle = '';
+		$maxCountDefine = get_option('SGPBMaxOpenCount');
+		$popupTitle = get_the_title($counterMaxPopup['popupId']);
+
+		if (!empty($counterMaxPopup['maxCount'])) {
+			$maxCountDefine = $counterMaxPopup['maxCount'];
+		}
+
+		$firstHeader = __('<h1 class="sgpb-review-h1"><strong class="sgrb-review-strong">Wow!</strong> <b>Popup Builder</b> plugin helped you to share your message via <strong class="sgrb-review-strong">'.$popupTitle.'</strong> popup with your users for <strong class="sgrb-review-strong">'.$maxCountDefine.' times!</strong></h1>', SG_POPUP_TEXT_DOMAIN);
+		$popupContent = self::getMaxOpenPopupContent($firstHeader, 'count');
+
+		return $popupContent;
+	}
+
+	/**
+	 * Get email headers
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param email $fromEmail
+	 * @param array $args
+	 *
+	 * @return string $headers
+	 */
+	public static function getEmailHeader($fromEmail, $args = array())
+	{
+		$contentType = 'text/html';
+		$charset = 'UTF-8';
+
+		if (!empty($args['contentType'])) {
+			$contentType = $args['contentType'];
+		}
+		if (!empty($args['charset'])) {
+			$charset = $args['charset'];
+		}
+		$headers  = 'MIME-Version: 1.0'."\r\n";
+		$headers .= 'From: '.$fromEmail."\r\n";
+		$headers .= 'Content-type: '.$contentType.'; charset='.$charset.''."\r\n"; //set UTF-8
+
+		return $headers;
+	}
+
+	/**
+	 * Get file content from URL
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param $url
+	 *
+	 * @return string
+	 */
+	public static function getFileFromURL($url)
+	{
+		$data = '';
+		$remoteData = wp_remote_get($url);
+
+		if (is_wp_error($remoteData)) {
+			return $data;
+		}
+
+		$data = wp_remote_retrieve_body($remoteData);
+
+		return $data;
+	}
+
+	public static function getBannerText()
+	{
+		$bannerText = get_option('sgpb-banner-remote-get');
+		return $bannerText;
+	}
+
+	public static function getRightMetaboxBannerText()
+	{
+		$bannerText = get_option('sgpb-metabox-banner-remote-get');
+		return $bannerText;
+	}
+
+	public static function getGutenbergPopupsIdAndTitle($excludesPopups = array())
+	{
+		$allPopups = SGPopup::getAllPopups();
+		$popupIdTitles = array();
+
+		if (empty($allPopups)) {
+			return $popupIdTitles;
+		}
+
+		foreach ($allPopups as $popup) {
+			if (empty($popup)) {
+				continue;
+			}
+
+			$id = $popup->getId();
+			$title = $popup->getTitle();
+			$type = $popup->getType();
+
+			if (!empty($excludesPopups)) {
+				foreach ($excludesPopups as $excludesPopupId) {
+					if ($excludesPopupId != $id) {
+						$array = array();
+						$array['id'] = $id;
+						$array['title'] = $title . ' - ' . $type;
+						$popupIdTitles[] = $array;
+					}
+				}
+			}
+			else {
+				$array = array();
+				$array['id'] = $id;
+				$array['title'] = $title . ' - ' . $type;
+				$popupIdTitles[] = $array;
+			}
+		}
+
+		return $popupIdTitles;
+	}
+
+	public static function getGutenbergPopupsEvents()
+	{
+		$data =  array(
+			array('value' => '', 'title' => __('Select Event', SG_POPUP_TEXT_DOMAIN)),
+			array('value' => 'inherit', 'title' => __('Inherit', SG_POPUP_TEXT_DOMAIN)),
+			array('value' => 'onLoad', 'title' => __('On load', SG_POPUP_TEXT_DOMAIN)),
+			array('value' => 'click', 'title' => __('On click', SG_POPUP_TEXT_DOMAIN)),
+			array('value' => 'hover', 'title' => __('On hover', SG_POPUP_TEXT_DOMAIN))
+		);
+
+		return $data;
+	}
+
+	public static function checkEditorByPopupId($popupId)
+	{
+		$popupContent = '';
+		if (class_exists('\Elementor\Plugin')) {
+			$elementorContent = get_post_meta($popupId, '_elementor_edit_mode', true);
+			if (!empty($elementorContent) && $elementorContent == 'builder') {
+				$popupContent = Elementor\Plugin::instance()->frontend->get_builder_content_for_display($popupId);
+			}
+		}
+
+		return $popupContent;
+	}
+
+	// countdown popup
+	public static function renderCountdownStyles($popupId = 0, $countdownBgColor, $countdownTextColor)
+	{
+		return  "<style type='text/css'>
+			.sgpb-counts-content.sgpb-flipclock-js-$popupId.flip-clock-wrapper ul li a div div.inn {
+				background-color: $countdownBgColor;
+				color: $countdownTextColor;
+			}
+			.sgpb-countdown-wrapper {
+				width: 446px;
+				height: 130px;
+				padding-top: 22px;
+				box-sizing: border-box;
+				margin: 0 auto;
+			}
+			.sgpb-counts-content {
+				display: inline-block;
+			}
+			.sgpb-counts-content > ul.flip {
+				width: 40px;
+				margin: 4px;
+			}
+		</style>";
+	}
+
+	// countdown popup scripts and params
+	public static function renderCountdownScript($id, $seconds, $type, $language, $timezone, $autoclose)
+	{
+		$params = array(
+			'id'        => $id,
+			'seconds'   => $seconds,
+			'type'      => $type,
+			'language'  => $language,
+			'timezone'  => $timezone,
+			'autoclose' => $autoclose
+		);
+
+		return $params;
+	}
+
+	// countdown popup, convert date to seconds
+	public static function dateToSeconds($dueDate, $timezone)
+	{
+		if (empty($timezone)) {
+			return '';
+		}
+
+		$dateObj = self::getDateObjFromDate('now', $timezone);
+		$timeNow = @strtotime($dateObj);
+		$seconds = @strtotime($dueDate)-$timeNow;
+		if ($seconds < 0) {
+			$seconds = 0;
+		}
+
+		return $seconds;
+	}
+
+	/**
+	 * Get site protocol
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string $protocol
+	 *
+	 */
+	public static function getSiteProtocol()
+	{
+		$protocol = 'http';
+
+		if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+			$protocol = 'https';
+		}
+
+		return $protocol;
+	}
+
+	public static function getCurrentUrl()
+	{
+		$protocol = self::getSiteProtocol();
+		$currentUrl = $protocol."://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+
+		return $currentUrl;
+	}
+
+	public static function isAppleMobileDevice()
+	{
+		$isIOS = false;
+
+		$useragent = @$_SERVER['HTTP_USER_AGENT'];
+		preg_match('/iPhone|Android|iPad|iPod|webOS/', $useragent, $matches);
+		$os = current($matches);
+		if ($os == 'iPad' || $os == 'iPhone' || $os == 'iPod') {
+			$isIOS = true;
+		}
+
+		return $isIOS;
+	}
+
+	public static function setPushToBottom($element = '')
+	{
+		$style = '<style type="text/css">';
+		$style .= "$element";
+		$style .= '{position: absolute !important;';
+		$style .= 'left: 0 !important;';
+		$style .= 'right: 0 !important;';
+		$style .= 'bottom: 2px !important;}';
+		$style .= '</style>';
+
+		return $style;
+	}
+
+	public static function findSubscribersByEmail($subscriberEmail = '', $list = 0)
+	{
+		global $wpdb;
+		$subscriber = array();
+
+		$prepareSql = $wpdb->prepare('SELECT * FROM '.$wpdb->prefix.SGPB_SUBSCRIBERS_TABLE_NAME.' WHERE email = %s AND subscriptionType = %d ', $subscriberEmail, $list);
+		$subscriber = $wpdb->get_row($prepareSql, ARRAY_A);
+		if (!$list) {
+			$prepareSql = $wpdb->prepare('SELECT * FROM '.$wpdb->prefix.SGPB_SUBSCRIBERS_TABLE_NAME.' WHERE email = %s ', $subscriberEmail);
+			$subscriber = $wpdb->get_results($prepareSql, ARRAY_A);
+		}
+
+		return $subscriber;
 	}
 }

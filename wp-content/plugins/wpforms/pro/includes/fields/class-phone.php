@@ -22,7 +22,7 @@ class WPForms_Field_Phone extends WPForms_Field {
 		$this->name  = esc_html__( 'Phone', 'wpforms' );
 		$this->type  = 'phone';
 		$this->icon  = 'fa-phone';
-		$this->order = 9;
+		$this->order = 50;
 		$this->group = 'fancy';
 
 		// Define additional field properties.
@@ -34,9 +34,9 @@ class WPForms_Field_Phone extends WPForms_Field {
 	 *
 	 * @since 1.3.8
 	 *
-	 * @param array $properties
-	 * @param array $field
-	 * @param array $form_data
+	 * @param array $properties Field properties.
+	 * @param array $field      Field settings.
+	 * @param array $form_data  Form data and settings.
 	 *
 	 * @return array
 	 */
@@ -46,6 +46,11 @@ class WPForms_Field_Phone extends WPForms_Field {
 		if ( 'us' === $field['format'] ) {
 			$properties['inputs']['primary']['class'][]           = 'wpforms-masked-input';
 			$properties['inputs']['primary']['data']['inputmask'] = "'mask': '(999) 999-9999'";
+		}
+
+		// Input primary: RTL support for input masks.
+		if ( is_rtl() ) {
+			$properties['inputs']['primary']['attr']['dir'] = 'rtl';
 		}
 
 		return $properties;
@@ -173,9 +178,9 @@ class WPForms_Field_Phone extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field
-	 * @param array $deprecated
-	 * @param array $form_data
+	 * @param array $field      Field data and settings.
+	 * @param array $deprecated Deprecated field attributes. Use field properties.
+	 * @param array $form_data  Form data and settings.
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
 
@@ -195,4 +200,4 @@ class WPForms_Field_Phone extends WPForms_Field {
 	}
 }
 
-new WPForms_Field_Phone;
+new WPForms_Field_Phone();

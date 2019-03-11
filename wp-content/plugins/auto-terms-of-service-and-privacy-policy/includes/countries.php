@@ -7,8 +7,8 @@ use wpautoterms\admin\Options;
 include_once WPAUTOTERMS_PLUGIN_DIR . 'data/countries.php';
 
 abstract class Countries {
-	const LOCALE_PATH = 'js/data/translations/{locale}/strings.js';
-	const LOCALE_PATH_PHP = 'data/translations/{locale}/countries.php';
+	const LOCALE_PATH = 'js/data/translations/%s/strings.js';
+	const LOCALE_PATH_PHP = 'data/translations/%s/countries.php';
 
 	const DEFAULT_LOCALE = 'en';
 
@@ -27,7 +27,7 @@ abstract class Countries {
 		}
 		$template = WPAUTOTERMS_PLUGIN_DIR . $template;
 		$files = array_map( function ( $x ) use ( $template ) {
-			return Util::format( $template, array( 'locale' => $x ) );
+			return sprintf( $template, $x );
 		}, $locales );
 
 		$file = Util::first_existing( $files );
@@ -101,8 +101,8 @@ abstract class Countries {
 			false, false, true );
 
 		wp_localize_script( WPAUTOTERMS_SLUG . '_countries', 'wpautotermsCountry', array(
-			'country' => Options::get_option( Options::OPTION_COUNTRY ),
-			'state' => Options::get_option( Options::OPTION_STATE ),
+			'country' => Options::get_option( Options::COUNTRY ),
+			'state' => Options::get_option( Options::STATE ),
 			'locale' => $ret[1]
 		) );
 	}

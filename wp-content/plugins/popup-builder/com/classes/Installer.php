@@ -70,6 +70,8 @@ class Installer
 
 		self::createTables($filteredTables);
 
+		self::setupInstallationsDateConfig($filteredTables);
+
 		// get_current_blog_id() == 1 When plugin activated inside the child of multisite instance
 		if (is_multisite() && get_current_blog_id() == 1) {
 			global $wp_version;
@@ -95,6 +97,34 @@ class Installer
 				}
 			}
 		}
+
+		// install extensions
+		if (SGPB_POPUP_PKG != SGPB_POPUP_PKG_FREE) {
+			$obj = new PopupExtensionActivator();
+			$obj->install();
+		}
+	}
+
+	public static function setupInstallationsDateConfig()
+	{
+		update_option('sgpbUnsubscribeColumnFixed', 1);
+		$usageDays = get_option('SGPBUsageDays');
+		if (!$usageDays) {
+			update_option('SGPBUsageDays', 0);
+
+			$timeDate = new \DateTime('now');
+			$installTime = strtotime($timeDate->format('Y-m-d H:i:s'));
+			update_option('SGPBInstallDate', $installTime);
+			$timeDate->modify('+'.SGPB_REVIEW_POPUP_PERIOD.' day');
+
+			$timeNow = strtotime($timeDate->format('Y-m-d H:i:s'));
+			update_option('SGPBOpenNextTime', $timeNow);
+		}
+
+		$maxPopupCount = get_option('SGPBMaxOpenCount');
+		if (!$maxPopupCount) {
+			update_option('SGPBMaxOpenCount', SGPB_ASK_REVIEW_POPUP_COUNT);
+		}
 	}
 
 	public static function uninstall()
@@ -106,12 +136,15 @@ class Installer
 			return false;
 		}
 		delete_option('sgpb-dont-delete-data');
+		delete_option('sgpb-new-subscriber');
+		delete_option('sgpbUnsubscribeColumnFixed');
+		delete_option('sgpbActivateExtensions');
+		delete_option('sgpbExtensionsInfo');
 
 		// Trigger popup data delete action
 		do_action('sgpbDeletePopupData');
 
 		self::deletePopups();
-		self::deleteCustomTerms(SG_POPUP_CATEGORY_TAXONOMY);
 		self::deleteCustomTables();
 
 		if (is_multisite()) {
@@ -158,6 +191,8 @@ class Installer
 
 		$terms = $wpdb->get_results($customTermsQuery);
 
+		$terms = apply_filters('sgpbDeleteTerms', $terms);
+
 		foreach ($terms as $term) {
 			if (empty($term)) {
 				continue;
@@ -191,6 +226,7 @@ class Installer
 				)
 			)
 		);
+		$popups = apply_filters('sgpbDeletePopups', $popups);
 
 		foreach ($popups as $popup) {
 			if (empty($popup)) {
@@ -236,6 +272,8 @@ class Installer
 		if (empty($popupTypes)) {
 			return $tables;
 		}
+
+		require_once(SG_POPUP_CONFIG_PATH.'configPackage.php');
 
 		foreach ($popupTypes as $popupTypeKey => $popupTypeLevel) {
 			if (SGPB_POPUP_PKG >= $popupTypeLevel) {
@@ -283,6 +321,7 @@ class Installer
 					'boxLabel' => __('Popup Builder License', SG_POPUP_TEXT_DOMAIN)
 				)
 			);
+			$options = apply_filters('sgpbRegisterOptions', $options);
 		}
 
 		@SgpbPopupExtensionRegister::register($pluginName, $classPath, $className, $options);

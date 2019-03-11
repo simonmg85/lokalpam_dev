@@ -4,14 +4,26 @@ require_once(dirname(__FILE__).'/SGPopup.php');
 
 class ImagePopup extends SGPopup
 {
-	public function popupFrontJsFilter($jsFiles)
+	public function save()
 	{
-		return $jsFiles;
-	}
+		$imageData = '';
+		$savedImageUrl = '';
+		$data = $this->getSanitizedData();
+		$imageUrl = @$data['sgpb-image-url'];
+		$savedPopup = $this->getSavedPopup();
 
-	public function popupAdminJsFilter($jsFiles)
-	{
-		return $jsFiles;
+		if (is_object($savedPopup)) {
+			$imageData = $savedPopup->getOptionvalue('sgpb-image-data');
+			$savedImageUrl = $savedPopup->getOptionValue('sgpb-image-url');
+		}
+
+		if ($imageUrl != $savedImageUrl) {
+			$imageData = AdminHelper::getImageDataFromUrl($imageUrl);
+		}
+		$data['sgpb-image-data'] = $imageData;
+		$this->setSanitizedData($data);
+
+		parent::save();
 	}
 
 	public function getOptionValue($optionName, $forceDefaultValue = false)
@@ -28,10 +40,15 @@ class ImagePopup extends SGPopup
 	{
 		// Where 1 mean this options must not show for this popup type
 		$removeOptions = array(
-			'sgpb-reopen-after-form-submission' => 1
+			'sgpb-reopen-after-form-submission' => 1,
+			'sgpb-background-image' => 1,
+			'sgpb-background-image-mode' => 1,
+			'sgpb-force-rtl' => 1,
+			'sgpb-content-padding' => 1
 		);
+		$parentOptions = parent::getRemoveOptions();
 
-		return $removeOptions;
+		return $removeOptions + $parentOptions;
 	}
 
 	public function getPopupTypeMainView()
@@ -56,30 +73,7 @@ class ImagePopup extends SGPopup
 
 	public function getPopupTypeContent()
 	{
-		$imageContent = '';
-		$popupOptions = $this->getOptions();
-
-		$image = $popupOptions['sgpb-image-url'];
-		$maxWidth = $popupOptions['sgpb-max-width'];
-		$maxHeight = $popupOptions['sgpb-max-height'];
-
-		$styles = '';
-
-		if ($maxWidth) {
-			$styles .= 'max-width: '.$maxWidth.'px;';
-		}
-		if ($maxHeight) {
-			$styles .= 'max-height: '.$maxHeight.'px;';
-		}
-		if ($styles) {
-			$styles = ' style="'.$styles.'"';
-		}
-
-		$imageContent .= '<div class="sgpb-main-image-content-wrapper">';
-		$imageContent .= '<img src="'.esc_attr($image).'"'.$styles.'>';
-		$imageContent .= '</div>';
-
-		return $imageContent;
+		return '';
 	}
 
 	public function getExtraRenderOptions()

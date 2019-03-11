@@ -22,7 +22,7 @@ class WPForms_Field_HTML extends WPForms_Field {
 		$this->name  = esc_html__( 'HTML', 'wpforms' );
 		$this->type  = 'html';
 		$this->icon  = 'fa-code';
-		$this->order = 15;
+		$this->order = 170;
 		$this->group = 'fancy';
 
 		// Define additional field properties.
@@ -34,9 +34,9 @@ class WPForms_Field_HTML extends WPForms_Field {
 	 *
 	 * @since 1.3.7
 	 *
-	 * @param array $properties
-	 * @param array $field
-	 * @param array $form_data
+	 * @param array $properties Field properties.
+	 * @param array $field      Field settings.
+	 * @param array $form_data  Form data and settings.
 	 *
 	 * @return array
 	 */
@@ -49,6 +49,22 @@ class WPForms_Field_HTML extends WPForms_Field {
 		$properties['inputs']['primary']['code'] = ! empty( $field['code'] ) ? $field['code'] : '';
 
 		return $properties;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function is_dynamic_population_allowed( $properties, $field ) {
+
+		return false;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function is_fallback_population_allowed( $properties, $field ) {
+
+		return false;
 	}
 
 	/**
@@ -130,9 +146,9 @@ class WPForms_Field_HTML extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field
-	 * @param array $deprecated
-	 * @param array $form_data
+	 * @param array $field      Field data and settings.
+	 * @param array $deprecated Deprecated field attributes. Use field properties.
+	 * @param array $form_data  Form data and settings.
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
 
@@ -152,12 +168,12 @@ class WPForms_Field_HTML extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int $field_id
-	 * @param array $field_submit
-	 * @param array $form_data
+	 * @param int   $field_id     Field ID.
+	 * @param array $field_submit Submitted field value.
+	 * @param array $form_data    Form data and settings.
 	 */
 	public function format( $field_id, $field_submit, $form_data ) {
 	}
 }
 
-new WPForms_Field_HTML;
+new WPForms_Field_HTML();

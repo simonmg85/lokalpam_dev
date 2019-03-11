@@ -1,6 +1,9 @@
 <?php
-
 	global $wpdb, $listingpro_options;
+	$selectThisId = '';
+    if(isset($_SESSION['listing_id_checkout'])){
+        $selectThisId = $_SESSION['listing_id_checkout'];
+    }
 	$dbprefix = '';
 	$dbprefix = $wpdb->prefix;
 	$user_ID = '';
@@ -24,9 +27,16 @@
 	if( count($results) >0 ){
 		$outputCheck .='<div class="lp-checkout-wrapper lp-checkout-wrapper-new">';
 				foreach ( $results as $info ) {
-								
+					
+								$checked = '';
+                                $active_box_class = '';
 								if(isset($info->post_id)){
 									$post_id = $info->post_id;
+									
+                                    if($selectThisId==$post_id){
+                                        $checked = 'checked';
+                                        $active_box_class = 'active-checkout-listing';
+                                    }
 									
 								}
 										//$postmeta = get_post_meta($post_id, 'lp_listingpro_options', true);
@@ -37,6 +47,7 @@
 										$terms = wp_get_post_terms( $post_id, 'listing-category', array() );
 										$price = '';
 										$price = $plan_price;
+										$price = round($price,2);
 										$deafaultFeatImg = lp_default_featured_image_listing();
 										
 										$catname = '';
@@ -44,7 +55,7 @@
 											$catname = $terms[0]->name;
 										}
 										if(!empty($plan_price)){
-											$outputCheck .='<div class="lp-user-listings clearfix" data-plantype="'.$plan_type.'" data-recurringtext="'.esc_html__('Recurring Payment?', 'listingpro-plugin').'"><div class="col-md-12 col-sm-12 col-xs-12 lp-listing-clm lp-checkout-page-outer lp-checkout-page-outer-new">';
+											$outputCheck .='<div class="lp-user-listings clearfix '.$active_box_class.'" data-plantype="'.$plan_type.'" data-recurringtext="'.esc_html__('Recurring Payment?', 'listingpro-plugin').'"><div class="col-md-12 col-sm-12 col-xs-12 lp-listing-clm lp-checkout-page-outer lp-checkout-page-outer-new">';
 											
 											$outputCheck .= '<div class="col-md-10 col-sm-6 col-xs-6">';
 												/* left side */
@@ -53,7 +64,7 @@
 													$outputCheck .= '<div class="col-md-1 col-sm-2 col-xs-6">';
 
 														$outputCheck .='<div class="radio radio-danger lp_price_trigger_checkout">
-															<input type="radio" name="listing_id" data-taxenable = "'.$enableTax.'" data-planid="'.$plan_id.'" data-taxrate = "'.$Taxrate.'" data-planprice = "'.$plan_price.'" data-title="'.get_the_title($plan_id).'" data-price="'.$price.'" id="'.$post_id.'" value="'.$post_id.'">
+															<input '.$checked.' type="radio" name="listing_id" data-taxenable = "'.$enableTax.'" data-planid="'.$plan_id.'" data-taxrate = "'.$Taxrate.'" data-planprice = "'.$plan_price.'" data-title="'.get_the_title($plan_id).'" data-price="'.$price.'" id="'.$post_id.'" value="'.$post_id.'">
 															<label for="'.$post_id.'">
 															 
 															</label>

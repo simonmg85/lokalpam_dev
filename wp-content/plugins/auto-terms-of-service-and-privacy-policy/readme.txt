@@ -2,9 +2,9 @@
 Contributors: wpautoterms
 Tags: gdpr, privacy policy, terms and conditions, terms of service, terms of use, disclosure, disclaimer, affiliate, cookies, cookie consent, legal
 Requires at least: 4.2
-Tested up to: 4.9.7
+Tested up to: 5.0.2
 Requires PHP: 5.3
-Stable tag: 2.1.3
+Stable tag: 2.2.3
 License: GPL version 3 or any later version
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -48,6 +48,10 @@ WP AutoTerms is provided with the purpose of helping you with compliance. While 
 
 We're just getting started. Have a chat with us and let us know what you'd like to see added.
 
+== Honory Mention ==
+
+Special thanks to this plugin's original author, Clifford Paulick of https://tourkick.com/
+
 == Frequently Asked Questions ==
 
 = Is WP AutoTerms free? =
@@ -59,9 +63,9 @@ A premium license is available to purchase as a one-time fee if you'd like to up
 - Include a Cookies Notice banner
 - Inform users of your affiliate links usage
 
-= What legal agreements can I create with WPAutoTerms? =
+= What legal agreements can I create with WP AutoTerms? =
 
-You can create the following legal agreements with WPAutoTerms:
+You can create the following legal agreements with WP AutoTerms:
 
 - Terms & Conditions
 - Privacy Policy
@@ -112,6 +116,60 @@ Installing the plugin is easy. Just follow these steps:
 5. When the upload is finished, activate the plugin via the prompt. A message will show confirming a successful activation.
 
 == Changelog ==
+
+= Version 2.2.3 =
+* Jan 7, 2019
+* Bug fix for short codes
+
+= Version 2.2.2 =
+* Jan 7, 2019
+* Tested up to WordPress 5.0.2
+* Short codes for generated Legal Pages
+* Option for Pages Widget to list published legal pages
+* Add our very own WP AutoTerms Legal Pages Widget
+* CSS Syntax Highlighter for Additional CSS textarea
+* Display CSS selectors related to WP AutoTerms in Additional CSS textarea
+* Add Help page with FAQ section for faster support
+* Bug fix for User Type capabilities
+* Bug fix for maximum links when using Links to Legal Pages Compliance Kit
+
+= Version 2.2.1 =
+* Nov 09, 2018
+* Allow for the license key to be used on multiple websites
+* Show WP AutoTerms created Legal Pages in WooCommerce Settings
+* Show WP AutoTerms created Legal Pages in WP > Settings > Privacy tab
+
+= Version 2.2.0 =
+* Oct 1, 2018
+* Fix body opening tag not found error
+
+= Version 2.1.9 =
+* Sep 23, 2018
+* Add z-index values to prevent theme issues
+* Add a new option for Links to Legal Pages Compliance Kit: open in a new tab
+* Various bugfixes under the hood
+
+= Version 2.1.8 =
+* Sep 9, 2018
+* Bugfix for loading plugin scripts regardless of third party scripts
+
+= Version 2.1.7 =
+* Sep 3, 2018
+* Bugfix for user roles capabilities
+
+= Version 2.1.6 =
+* Aug 26, 2018
+* Bugfix for headers already sent in admin pages
+
+= Version 2.1.5 =
+* Aug 25, 2018
+* Bugfix for legal page slug
+
+= Version 2.1.4 =
+* Aug 23, 2018
+* Various bugfixes
+* Allow to change the legal page slug
+* Allow to change Page Template for created legal pages through Page Attributes widget
 
 = Version 2.1.3 =
 * Aug 6, 2018

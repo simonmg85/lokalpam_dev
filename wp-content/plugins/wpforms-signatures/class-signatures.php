@@ -22,7 +22,7 @@ class WPForms_Field_Signature extends WPForms_Field {
 		$this->name  = esc_html__( 'Signature', 'wpforms-signatures' );
 		$this->type  = 'signature';
 		$this->icon  = 'fa-pencil';
-		$this->order = 30;
+		$this->order = 310;
 		$this->group = 'fancy';
 
 		// Form frontend javascript.
@@ -33,6 +33,9 @@ class WPForms_Field_Signature extends WPForms_Field {
 
 		// Admin form builder enqueues.
 		add_action( 'wpforms_builder_enqueues', array( $this, 'admin_builder_enqueues' ) );
+
+		// Field styles for Gutenberg.
+		add_action( 'enqueue_block_editor_assets', array( $this, 'gutenberg_enqueues' ) );
 
 		// Admin form builder default field settings.
 		add_filter( 'wpforms_field_new_default', array( $this, 'admin_builder_defaults' ) );
@@ -88,14 +91,14 @@ class WPForms_Field_Signature extends WPForms_Field {
 	public function frontend_css( $forms ) {
 
 		if (
-			wpforms()->frontend->assets_global() ||
-			true === wpforms_has_field_type( 'signature', $forms, true )
+			true === wpforms_has_field_type( 'signature', $forms, true ) ||
+			wpforms()->frontend->assets_global()
 		) {
 
 			$min = wpforms_get_min_suffix();
 
 			wp_enqueue_style(
-				'wpforms-signature',
+				'wpforms-signatures',
 				plugin_dir_url( __FILE__ ) . "assets/css/wpforms-signatures{$min}.css",
 				array(),
 				WPFORMS_SIGNATURES_VERSION
@@ -115,6 +118,24 @@ class WPForms_Field_Signature extends WPForms_Field {
 		wp_enqueue_style(
 			'wpforms-builder-signatures',
 			plugin_dir_url( __FILE__ ) . "assets/css/admin-builder-signatures{$min}.css",
+			array(),
+			WPFORMS_SIGNATURES_VERSION
+		);
+	}
+
+	/**
+	 * Load enqueues for the Gutenberg editor.
+	 *
+	 * @since 1.1.3
+	 */
+	public function gutenberg_enqueues() {
+
+		$min = wpforms_get_min_suffix();
+
+		// CSS.
+		wp_enqueue_style(
+			'wpforms-signatures',
+			plugin_dir_url( __FILE__ ) . "assets/css/wpforms-signatures{$min}.css",
 			array(),
 			WPFORMS_SIGNATURES_VERSION
 		);
@@ -147,7 +168,7 @@ class WPForms_Field_Signature extends WPForms_Field {
 	 *
 	 * @param string $value     Field value.
 	 * @param array  $field     Field settings.
-	 * @param array  $form_data Form data.
+	 * @param array  $form_data Form data and settings.
 	 * @param string $context   Value display context.
 	 *
 	 * @return string
@@ -175,15 +196,11 @@ class WPForms_Field_Signature extends WPForms_Field {
 	 *
 	 * @param array $properties Field properties.
 	 * @param array $field      Field settings.
-	 * @param array $form_data  Form data.
+	 * @param array $form_data  Form data and settings.
 	 *
 	 * @return array
 	 */
 	public function field_properties( $properties, $field, $form_data ) {
-
-		// Define data.
-		$form_id  = absint( $form_data['id'] );
-		$field_id = absint( $field['id'] );
 
 		$properties['inputs']['primary']['class'] = array( 'wpforms-signature-input', 'wpforms-screen-reader-element' );
 
@@ -195,6 +212,22 @@ class WPForms_Field_Signature extends WPForms_Field {
 	}
 
 	/**
+	 * @inheritdoc
+	 */
+	public function is_dynamic_population_allowed( $properties, $field ) {
+
+		return false;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function is_fallback_population_allowed( $properties, $field ) {
+
+		return false;
+	}
+
+	/**
 	 * Field options panel inside the builder.
 	 *
 	 * @since 1.0.0
@@ -202,15 +235,18 @@ class WPForms_Field_Signature extends WPForms_Field {
 	 * @param array $field Field settings.
 	 */
 	public function field_options( $field ) {
-
-		// -------------------------------------------------------------------//
-		// Basic field options.
-		// -------------------------------------------------------------------//
+		/*
+		 * Basic field options.
+		 */
 
 		// Options open markup.
-		$this->field_option( 'basic-options', $field, array(
-			'markup' => 'open',
-		) );
+		$this->field_option(
+			'basic-options',
+			$field,
+			array(
+				'markup' => 'open',
+			)
+		);
 
 		// Label.
 		$this->field_option( 'label', $field );
@@ -222,18 +258,26 @@ class WPForms_Field_Signature extends WPForms_Field {
 		$this->field_option( 'required', $field );
 
 		// Options close markup.
-		$this->field_option( 'basic-options', $field, array(
-			'markup' => 'close',
-		) );
+		$this->field_option(
+			'basic-options',
+			$field,
+			array(
+				'markup' => 'close',
+			)
+		);
 
-		// -------------------------------------------------------------------//
-		// Advanced field options.
-		// -------------------------------------------------------------------//
+		/*
+		 * Advanced field options.
+		 */
 
 		// Options open markup.
-		$this->field_option( 'advanced-options', $field, array(
-			'markup' => 'open',
-		) );
+		$this->field_option(
+			'advanced-options',
+			$field,
+			array(
+				'markup' => 'open',
+			)
+		);
 
 		// Ink color picker.
 		$lbl = $this->field_element(
@@ -256,11 +300,15 @@ class WPForms_Field_Signature extends WPForms_Field {
 			),
 			false
 		);
-		$this->field_element( 'row', $field, array(
-			'slug'    => 'ink_color',
-			'content' => $lbl . $fld,
-			'class'   => 'color-picker-row',
-		) );
+		$this->field_element(
+			'row',
+			$field,
+			array(
+				'slug'    => 'ink_color',
+				'content' => $lbl . $fld,
+				'class'   => 'color-picker-row',
+			)
+		);
 
 		// Size.
 		$this->field_option( 'size', $field );
@@ -272,9 +320,13 @@ class WPForms_Field_Signature extends WPForms_Field {
 		$this->field_option( 'css', $field );
 
 		// Options close markup.
-		$this->field_option( 'advanced-options', $field, array(
-			'markup' => 'close',
-		) );
+		$this->field_option(
+			'advanced-options',
+			$field,
+			array(
+				'markup' => 'close',
+			)
+		);
 	}
 
 	/**
@@ -303,7 +355,7 @@ class WPForms_Field_Signature extends WPForms_Field {
 	 *
 	 * @param array $field      Field settings.
 	 * @param array $field_atts Deprecated array.
-	 * @param array $form_data  Form data.
+	 * @param array $form_data  Form data and settings.
 	 */
 	public function field_display( $field, $field_atts, $form_data ) {
 
@@ -316,14 +368,16 @@ class WPForms_Field_Signature extends WPForms_Field {
 		printf( '<div class="wpforms-signature-wrap%s">', esc_attr( $size ) );
 
 			// Signature canvas.
-			printf( '<canvas class="wpforms-signature-canvas" id="wpforms-%d-field_%d-signature" data-color="%s"></canvas>',
+			printf(
+				'<canvas class="wpforms-signature-canvas" id="wpforms-%d-field_%d-signature" data-color="%s"></canvas>',
 				absint( $form_data['id'] ),
 				absint( $field['id'] ),
 				esc_attr( $color )
 			);
 
 			// Clear button to reset canvas.
-			printf( '<button class="wpforms-signature-clear" title="%s">%s</button>',
+			printf(
+				'<button class="wpforms-signature-clear" title="%s">%s</button>',
 				esc_attr__( 'Clear Signature', 'wpforms-signatures' ),
 				esc_html__( 'Clear Signature', 'wpforms-signature' )
 			);
@@ -331,7 +385,8 @@ class WPForms_Field_Signature extends WPForms_Field {
 		echo '</div>';
 
 		// Hidden input that contains dataURL.
-		printf( '<input type="text" %s %s>',
+		printf(
+			'<input type="text" %s %s>',
 			wpforms_html_attributes( $primary['id'], $primary['class'], $primary['data'], $primary['attr'] ),
 			$primary['required']
 		); // WPCS: XSS ok.
@@ -342,9 +397,9 @@ class WPForms_Field_Signature extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int   $field_id     Field ID.
-	 * @param array $field_submit Submitted form field data.
-	 * @param array $form_data    Form data.
+	 * @param int    $field_id     Field ID.
+	 * @param string $field_submit Submitted form field value.
+	 * @param array  $form_data    Form data and settings.
 	 */
 	public function validate( $field_id, $field_submit, $form_data ) {
 
@@ -384,7 +439,7 @@ class WPForms_Field_Signature extends WPForms_Field {
 	 *
 	 * @param int    $field_id     Field ID.
 	 * @param string $field_submit Submitted form data.
-	 * @param array  $form_data    Form data.
+	 * @param array  $form_data    Form data and settings.
 	 */
 	public function format( $field_id, $field_submit, $form_data ) {
 
@@ -462,4 +517,5 @@ class WPForms_Field_Signature extends WPForms_Field {
 		);
 	}
 }
+
 new WPForms_Field_Signature();

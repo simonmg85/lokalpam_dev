@@ -1,12 +1,14 @@
 <?php
 namespace sgpb;
+
 class ConditionBuilder
 {
 	private $savedData = array();
-	private $groupId;
-	private $ruleId;
+	private $groupId = 0;
+	private $ruleId = 0;
 	private $conditionName;
 	private $groupTotal;
+	private $popupId;
 	private $takeValueFrom = 'param';
 
 	public function setSavedData($savedData)
@@ -27,6 +29,16 @@ class ConditionBuilder
 	public function getGroupTotal()
 	{
 		return $this->groupTotal;
+	}
+
+	public function setPopupId($popupId)
+	{
+		$this->popupId = $popupId;
+	}
+
+	public function getPopupId()
+	{
+		return $this->popupId;
 	}
 
 	public function setGroupId($groupId)
@@ -111,7 +123,8 @@ class ConditionBuilder
 			if(empty($groupData)) {
 				continue;
 			}
-
+			global $SGPB_DATA_CONFIG_ARRAY;
+			$eventsData = $SGPB_DATA_CONFIG_ARRAY['events']['operatorAllowInConditions'];
 			foreach($groupData as $ruleId => $ruleData) {
 				$builderObj = new ConditionBuilder();
 				$builderObj->setGroupId($groupId);
@@ -119,6 +132,11 @@ class ConditionBuilder
 				/*Assoc array where key option name value saved Data*/
 				$builderObj->setSavedData($ruleData);
 				$builderObj->setConditionName('events');
+
+				// in some cases value data must take from operator
+				if (is_array($eventsData) && in_array($ruleData['param'], $eventsData)) {
+					$builderObj->setTakeValueFrom('operator');
+				}
 
 				$builderObj->setGroupTotal(sizeof($groupData) - 1);
 				$eventsDataObj[] = $builderObj;
@@ -184,5 +202,46 @@ class ConditionBuilder
 		}
 
 		return $dataObj;
+	}
+
+	public static function additionalConditionBuilder()
+	{
+		$dataObj = apply_filters('sgpbAdditionalConditionBuilder', array());
+
+		if (empty($dataObj)) {
+			return array();
+		}
+		$allCondition = array();
+		$result = array();
+
+		foreach ($dataObj as $data) {
+			if (empty($data['conditionName'])) {
+				continue;
+			}
+			$conditionName = $data['conditionName'];
+			unset($data['conditionName']);
+
+			foreach ($data as $groupId => $groupData) {
+
+				if (empty($groupData)) {
+					continue;
+				}
+
+				foreach ($groupData as $ruleId => $ruleData) {
+
+					$builderObj = new ConditionBuilder();
+					$builderObj->setGroupId(0);
+					$builderObj->setRuleId($ruleId);
+					$builderObj->setSavedData($ruleData);
+					$builderObj->setConditionName($conditionName);
+					$builderObj->setGroupTotal(count($groupData) - 1);
+					$builderObj->setTakeValueFrom('operator');
+					$allCondition[] = $builderObj;
+				}
+			}
+			$result[$conditionName] = $allCondition;
+		}
+
+		return $result;
 	}
 }

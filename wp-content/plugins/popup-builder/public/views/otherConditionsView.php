@@ -97,6 +97,12 @@ $conditionsCanBeUsed = PopupBuilderActivePackage::canUseSection('popupOtherCondi
 	</div>
 </div>
 
+<style type="text/css">
+	#ui-datepicker-div {
+		z-index: 9999 !important;
+	}
+</style>
+
 <?php if (!$conditionsCanBeUsed): ?>
 	<div class="sgpb-other-pro-options">
 		<div class="sgpb-wrapper">

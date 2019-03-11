@@ -4,7 +4,7 @@ Plugin Name: Loco Translate
 Plugin URI: https://wordpress.org/plugins/loco-translate/
 Description: Translate themes and plugins directly in WordPress
 Author: Tim Whitlock
-Version: 2.1.4
+Version: 2.2.1
 Author URI: https://localise.biz/wordpress/plugin
 Text Domain: loco-translate
 Domain Path: /languages/
@@ -36,13 +36,13 @@ function loco_plugin_file(){
  * @return string
  */
 function loco_plugin_version(){
-    return '2.1.4';
+    return '2.2.1';
 }
 
 
 /**
  * Get Loco plugin handle, used by WordPress to identify plugin as a relative path
- * @return string
+ * @return string probably "loco-translate/loco.php"
  */
 function loco_plugin_self(){
     static $handle;
@@ -53,7 +53,7 @@ function loco_plugin_self(){
 
 /**
  * Get absolute path to plugin root directory
- * @return string
+ * @return string __DIR__
  */
 function loco_plugin_root(){
     static $root;
@@ -82,6 +82,7 @@ function loco_doing_ajax(){
 
 /**
  * Evaluate a constant by name
+ * @param string
  * @return mixed
  */
 function loco_constant( $name ){
@@ -97,7 +98,8 @@ function loco_constant( $name ){
 
 /**
  * Runtime inclusion of any file under plugin root
- * @return mixed
+ * @param string PHP file path relative to __DIR__
+ * @return mixed return value from included file
  */
 function loco_include( $relpath ){
     $path = loco_plugin_root().'/'.$relpath;
@@ -110,6 +112,7 @@ function loco_include( $relpath ){
 
 /**
  * Require dependant library once only
+ * @param string PHP file path relative to ./lib
  * @return void
  */
 function loco_require_lib( $path ){
@@ -119,28 +122,32 @@ function loco_require_lib( $path ){
 
 /**
  * Check PHP extension required by Loco and load polyfill if needed
+ * @param string
  * @return bool
  */
-function loco_check_extension( $name ){
+function loco_check_extension( $name ) {
     static $cache = array();
-    if( ! isset($cache[$name]) ){
-        if( extension_loaded($name) ){
-            $cache[$name] = true;
+    if ( ! isset( $cache[$name] ) ) {
+        if ( extension_loaded($name) ) {
+            $cache[ $name ] = true;
         }
         else {
             Loco_error_AdminNotices::warn( sprintf( __('Loco requires the "%s" PHP extension. Ask your hosting provider to install it','loco-translate'), $name ) );
             $class = 'Loco_compat_'.ucfirst($name).'Extension.php';
-            $cache[$name] = class_exists( $class );
+            $cache[$name] = class_exists($class);
         }
     }
-    return $cache[$name];
+    return $cache[ $name ];
 }
 
 
 /**
  * Class autoloader for Loco classes under src directory.
  * e.g. class "Loco_foo_FooBar" wil be found in "src/foo/FooBar.php"
- * Also does autoload for polyfills under "src/compat" if classname < 20 chars
+ * Also does autoload for polyfills under "src/compat" if $name < 20 chars
+ * 
+ * @internal 
+ * @param string
  * @return void
  */
 function loco_autoload( $name ){
@@ -157,7 +164,7 @@ spl_autoload_register( 'loco_autoload', false );
 
 // provide safe directory for custom translations that won't be deleted during auto-updates
 if( ! defined('LOCO_LANG_DIR') ){
-    define( 'LOCO_LANG_DIR', rtrim(loco_constant('WP_LANG_DIR'),'/').'/loco' );
+    define( 'LOCO_LANG_DIR', trailingslashit(loco_constant('WP_LANG_DIR')).'loco' );
 }
 
 

@@ -91,7 +91,7 @@ class Loco_admin_init_InitPoController extends Loco_admin_bundle_BaseController 
     public function render(){
         
         $breadcrumb = $this->prepareNavigation();
-        // "new" tab is confising when no project-scope navigation
+        // "new" tab is confusing when no project-scope navigation
         // $this->get('tabs')->add( __('New PO','loco-translate'), '', true );
         
         // bundle mandatory, but project optional
@@ -117,7 +117,7 @@ class Loco_admin_init_InitPoController extends Loco_admin_bundle_BaseController 
         
         // default locale is a placeholder
         $locale = new Loco_Locale('zxx');
-        $content_dir = rtrim( loco_constant('WP_CONTENT_DIR'), '/' );
+        $content_dir = untrailingslashit( loco_constant('WP_CONTENT_DIR') );
         $copying = false;
         
         // Permit using any provided file a template instead of POT
@@ -186,7 +186,7 @@ class Loco_admin_init_InitPoController extends Loco_admin_bundle_BaseController 
         }
 
 
-        // show information about POT file if we are initialializing from template
+        // show information about POT file if we are initializing from template
         if( $potfile && $potfile->exists() ){
             $meta = Loco_gettext_Metadata::load($potfile);
             $total = $meta->getTotal();
@@ -203,7 +203,7 @@ class Loco_admin_init_InitPoController extends Loco_admin_bundle_BaseController 
                 $filechoice->add( $pofile );
             }
             /// else if POT is in a folder we don't know about, we may as well add to the choices
-            // TODO this means another utilty function in project for prefixing rules on individual location
+            // TODO this means another utility function in project for prefixing rules on individual location
         }
         // else no template exists, so we prompt to extract from source
         else {
@@ -230,20 +230,28 @@ class Loco_admin_init_InitPoController extends Loco_admin_bundle_BaseController 
                 if( $potfile ){
                     $this->set('pot', Loco_mvc_FileParams::create($potfile) );
                 }
+                // else offer assignment of a new file
+                else {
+                    $this->set( 'conf', new Loco_mvc_ViewParams( array(
+                        'link' => Loco_mvc_AdminRouter::generate( $this->get('type').'-conf', array_intersect_key($_GET,array('bundle'=>'')) ),
+                        'text' => __('Assign template','loco-translate'),
+                    ) ) );
+                }
                 return $this->view('admin/init/init-prompt');
             }
         }
         $this->set( 'summary', $summary );
         
-        // group established locations into types (offical, etc..) 
+        // group established locations into types (official, etc..)
         // there is no point checking whether any of these file exist, because we don't know what language will be chosen yet.
         $sortable = array();
         $locations = array();
         $fs_protect = Loco_data_Settings::get()->fs_protect;
         $fs_failure = null;
-        /* @var $pofile Loco_fs_File */
+        /* @var Loco_fs_File $pofile */
         foreach( $filechoice as $pofile ){
             $parent = new Loco_fs_LocaleDirectory( $pofile->dirname() );
+            $systype = $parent->getUpdateType();
             $typeId = $parent->getTypeId();
             if( ! isset($locations[$typeId]) ){
                 $locations[$typeId] = new Loco_mvc_ViewParams( array(
@@ -262,15 +270,14 @@ class Loco_admin_init_InitPoController extends Loco_admin_bundle_BaseController 
             }
             // folder may be unwritable (requiring connect to create file) or may be denied under security settings
             try {
-                $disabled = false;
-                $systype = $parent->getUpdateType();
                 $context = $parent->getWriteContext()->authorize();
                 $writable = $context->writable();
+                $disabled = false;
             }
             catch( Loco_error_WriteException $e ){
                 $fs_failure = $e->getMessage();
-                $disabled = true;
                 $writable = false;
+                $disabled = true;
             }
             $choice = new Loco_mvc_ViewParams( array (
                 'checked' => '',

@@ -20,11 +20,12 @@ class WPForms_Form_Handler {
 	 */
 	public function __construct() {
 
-		// Register wpforms custom post type
+		// Register wpforms custom post type.
 		$this->register_cpt();
 
-		// Add wpforms to new-content admin bar menu
+		// Add wpforms to new-content admin bar menu.
 		add_action( 'admin_bar_menu', array( $this, 'admin_bar' ), 99 );
+
 	}
 
 	/**
@@ -34,7 +35,7 @@ class WPForms_Form_Handler {
 	 */
 	public function register_cpt() {
 
-		// Custom post type arguments, which can be filtered if needed
+		// Custom post type arguments, which can be filtered if needed.
 		$args = apply_filters(
 			'wpforms_post_type_args',
 			array(
@@ -47,10 +48,11 @@ class WPForms_Form_Handler {
 				'query_var'           => false,
 				'can_export'          => false,
 				'supports'            => array( 'title' ),
+				'capability_type'     => wpforms_get_capability_manage_options(),
 			)
 		);
 
-		// Register the post type
+		// Register the post type.
 		register_post_type( 'wpforms', $args );
 	}
 
@@ -59,7 +61,7 @@ class WPForms_Form_Handler {
 	 *
 	 * @since 1.1.7.2
 	 *
-	 * @param object $wp_admin_bar
+	 * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
 	 */
 	public function admin_bar( $wp_admin_bar ) {
 
@@ -69,7 +71,7 @@ class WPForms_Form_Handler {
 
 		$args = array(
 			'id'     => 'wpforms',
-			'title'  => esc_html__( 'WPForms', 'wpforms' ),
+			'title'  => esc_html__( 'WPForms', 'wpforms-lite' ),
 			'href'   => admin_url( 'admin.php?page=wpforms-builder' ),
 			'parent' => 'new-content',
 		);
@@ -105,7 +107,7 @@ class WPForms_Form_Handler {
 			}
 		} else {
 
-			// No ID provided, get multiple forms
+			// No ID provided, get multiple forms.
 			$defaults = array(
 				'post_type'     => 'wpforms',
 				'orderby'       => 'id',
@@ -133,7 +135,7 @@ class WPForms_Form_Handler {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $ids
+	 * @param array $ids Form IDs.
 	 *
 	 * @return boolean
 	 */
@@ -154,7 +156,7 @@ class WPForms_Form_Handler {
 
 			$form = wp_delete_post( $id, true );
 
-			if ( class_exists( 'WPForms_Entry_Handler' ) ) {
+			if ( class_exists( 'WPForms_Entry_Handler', false ) ) {
 				wpforms()->entry->delete_by( 'form_id', $id );
 				wpforms()->entry_meta->delete_by( 'form_id', $id );
 				wpforms()->entry_fields->delete_by( 'form_id', $id );
@@ -201,7 +203,7 @@ class WPForms_Form_Handler {
 			),
 		);
 
-		// Merge args and create the form
+		// Merge args and create the form.
 		$form    = wp_parse_args(
 			$args,
 			array(
@@ -223,9 +225,9 @@ class WPForms_Form_Handler {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $form_id
-	 * @param array $data
-	 * @param array $args
+	 * @param string $form_id Form ID.
+	 * @param array  $data Data retrieved from $_POST and processed.
+	 * @param array  $args Empty by default, may have custom data not intended to be saved.
 	 *
 	 * @return mixed
 	 * @internal param string $title
@@ -234,6 +236,9 @@ class WPForms_Form_Handler {
 
 		// This filter breaks forms if they contain HTML.
 		remove_filter( 'content_save_pre', 'balanceTags', 50 );
+
+		// Add filter of the link rel attr to avoid JSON damage.
+		add_filter( 'wp_targeted_link_rel', '__return_empty_string', 50, 1 );
 
 		// Check for permissions.
 		if ( ! wpforms_current_user_can() ) {
@@ -290,11 +295,14 @@ class WPForms_Form_Handler {
 		}
 
 		// Sanitize notification names.
-		foreach ( $data['settings']['notifications'] as $id => &$notification ) {
-			if ( ! empty( $notification['notification_name'] ) ) {
-				$notification['notification_name'] = sanitize_text_field( $notification['notification_name'] );
+		if ( isset( $data['settings']['notifications'] ) ) {
+			foreach ( $data['settings']['notifications'] as $id => &$notification ) {
+				if ( ! empty( $notification['notification_name'] ) ) {
+					$notification['notification_name'] = sanitize_text_field( $notification['notification_name'] );
+				}
 			}
 		}
+		unset( $notification );
 
 		$form = apply_filters(
 			'wpforms_save_form_args',
@@ -320,11 +328,14 @@ class WPForms_Form_Handler {
 	 *
 	 * @since 1.1.4
 	 *
-	 * @param array $ids
+	 * @param array $ids Form IDs to duplicate.
 	 *
 	 * @return boolean
 	 */
 	public function duplicate( $ids = array() ) {
+
+		// Add filter of the link rel attr to avoid JSON damage.
+		add_filter( 'wp_targeted_link_rel', '__return_empty_string', 50, 1 );
 
 		// Check for permissions.
 		if ( ! wpforms_current_user_can() ) {
@@ -466,6 +477,9 @@ class WPForms_Form_Handler {
 	 */
 	public function update_meta( $form_id, $meta_key, $meta_value ) {
 
+		// Add filter of the link rel attr to avoid JSON damage.
+		add_filter( 'wp_targeted_link_rel', '__return_empty_string', 50, 1 );
+
 		// Check for permissions.
 		if ( ! wpforms_current_user_can() ) {
 			return false;
@@ -509,6 +523,9 @@ class WPForms_Form_Handler {
 	 * @return bool
 	 */
 	public function delete_meta( $form_id, $meta_key ) {
+
+		// Add filter of the link rel attr to avoid JSON damage.
+		add_filter( 'wp_targeted_link_rel', '__return_empty_string', 50, 1 );
 
 		// Check for permissions.
 		if ( ! wpforms_current_user_can() ) {

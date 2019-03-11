@@ -26,15 +26,19 @@ final class ITSEC_Global_Settings_New extends ITSEC_Settings {
 			'infinitewp_compatibility'  => false,
 			'did_upgrade'               => false,
 			'lock_file'                 => false,
-			'proxy_override'            => false,
+			'proxy'                     => 'automatic',
+			'proxy_header'              => 'HTTP_X_FORWARDED_FOR',
 			'hide_admin_bar'            => false,
 			'show_error_codes'          => false,
 			'show_security_check'       => true,
 			'build'                     => 0,
+			'initial_build'             => 0,
 			'activation_timestamp'      => 0,
 			'cron_status'               => - 1,
 			'use_cron'                  => true,
 			'cron_test_time'            => 0,
+			'enable_grade_report'       => false,
+			'server_ips'                => array(),
 		);
 	}
 
@@ -46,6 +50,17 @@ final class ITSEC_Global_Settings_New extends ITSEC_Settings {
 
 		if ( $this->settings['use_cron'] !== $old_settings['use_cron'] ) {
 			$this->handle_cron_change( $this->settings['use_cron'] );
+		}
+
+		if ( $this->settings['enable_grade_report'] && ! $old_settings['enable_grade_report'] ) {
+			update_site_option( 'itsec-enable-grade-report', true );
+			ITSEC_Modules::load_module_file( 'activate.php', 'grade-report' );
+			ITSEC_Response::flag_new_notifications_available();
+			ITSEC_Response::refresh_page();
+		} else if ( ! $this->settings['enable_grade_report'] && $old_settings['enable_grade_report'] ) {
+			update_site_option( 'itsec-enable-grade-report', false );
+			ITSEC_Modules::load_module_file( 'deactivate.php', 'grade-report' );
+			ITSEC_Response::refresh_page();
 		}
 	}
 

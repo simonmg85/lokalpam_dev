@@ -3,7 +3,7 @@
 Plugin Name: ListingPro Ads
 Plugin URI: 
 Description: This plugin Only compatible With listingpro Theme By CridioStudio.
-Version: 1.0.2
+Version: 1.0.4
 Author: CridioStudio (Dev Team)
 Author URI: http://www.cridio.io
 Author Email: support@cridio.com
@@ -45,6 +45,6 @@ function includeScripts(){
 		//wp_register_style('jquery-uui', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css');
 		//wp_enqueue_style('jquery-uui');
 		//wp_enqueue_script('jquery-ui-datepicker');
-		//wp_enqueue_script('plugin-mainjs', PLUGIN_DIR_PATH .'/js/main.js', array('jquery'));
+		wp_enqueue_script('plugin-mainjs', PLUGIN_DIR_PATH .'/js/main.js', array('jquery'));
 		}
 }

@@ -6,50 +6,53 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WPAUTOTERMS_CPT', WPAUTOTERMS_SLUG . '_page' );
-define( 'WPAUTOTERMS_CAP_SINGULAR', WPAUTOTERMS_SLUG . '_page' );
-define( 'WPAUTOTERMS_CAP_PLURAL', WPAUTOTERMS_SLUG . '_pages' );
 
 abstract class CPT {
+	const ROLE = 'manage_wpautoterms_pages';
+	const ROLE_EDITOR = 'manage_wpautoterms_pages_editor';
+	const BASE_ROLE = 'editor';
+	protected static $_taxonomies = array( 'category' );
 
-	static function init() {
-		add_action( 'init', array( __CLASS__, 'add_caps' ) );
+	public static function init() {
+		add_filter( 'theme_' . static::type() . '_templates', array( __CLASS__, 'filter_templates' ), 10, 2 );
 		add_filter( 'map_meta_cap', array( __CLASS__, 'map_meta_cap' ), 10, 4 );
+		add_action( 'admin_menu', array( __CLASS__, 'remove_taxonomies' ) );
 	}
 
-	static function get_default_caps() {
+	public static function edit_cap() {
+		return 'edit_' . static::cap_plural();
+	}
+
+	public static function type() {
+		return WPAUTOTERMS_SLUG . '_page';
+	}
+
+	public static function cap_singular() {
+		return WPAUTOTERMS_SLUG . '_page';
+	}
+
+	public static function cap_plural() {
+		return WPAUTOTERMS_SLUG . '_pages';
+	}
+
+	public static function caps() {
+		$p = static::cap_plural();
+
 		return array(
-			'administrator' => array(
-				'edit_' . WPAUTOTERMS_CAP_PLURAL => true,
-				'edit_others_' . WPAUTOTERMS_CAP_PLURAL => true,
-				'edit_private_' . WPAUTOTERMS_CAP_PLURAL => true,
-				'edit_published_' . WPAUTOTERMS_CAP_PLURAL => true,
-				'read_' . WPAUTOTERMS_CAP_PLURAL => true,
-				'read_private_' . WPAUTOTERMS_CAP_PLURAL => true,
-				'delete_' . WPAUTOTERMS_CAP_PLURAL => true,
-				'delete_others_' . WPAUTOTERMS_CAP_PLURAL => true,
-				'delete_private_' . WPAUTOTERMS_CAP_PLURAL => true,
-				'delete_published_' . WPAUTOTERMS_CAP_PLURAL => true,
-				'publish_' . WPAUTOTERMS_CAP_PLURAL => true,
-			),
-			'subscriber' => array(
-				'edit_' . WPAUTOTERMS_CAP_PLURAL => false,
-				'edit_others_' . WPAUTOTERMS_CAP_PLURAL => false,
-				'edit_private_' . WPAUTOTERMS_CAP_PLURAL => false,
-				'edit_published_' . WPAUTOTERMS_CAP_PLURAL => false,
-				'read_' . WPAUTOTERMS_CAP_PLURAL => true,
-				'read_private_' . WPAUTOTERMS_CAP_PLURAL => false,
-				'delete_' . WPAUTOTERMS_CAP_PLURAL => false,
-				'delete_others_' . WPAUTOTERMS_CAP_PLURAL => false,
-				'delete_private_' . WPAUTOTERMS_CAP_PLURAL => false,
-				'delete_published_' . WPAUTOTERMS_CAP_PLURAL => false,
-				'publish_' . WPAUTOTERMS_CAP_PLURAL => false,
-			),
+			'edit_' . $p => true,
+			'edit_others_' . $p => true,
+			'edit_private_' . $p => true,
+			'edit_published_' . $p => true,
+			'read_private_' . $p => true,
+			'delete_' . $p => true,
+			'delete_others_' . $p => true,
+			'delete_private_' . $p => true,
+			'delete_published_' . $p => true,
+			'publish_' . $p => true,
 		);
 	}
 
-	static function register() {
-
+	public static function register( $slug ) {
 		$labels = array(
 			'name' => __( 'Legal Pages', WPAUTOTERMS_SLUG ),
 			'all_items' => __( 'All Legal Pages', WPAUTOTERMS_SLUG ),
@@ -71,8 +74,8 @@ abstract class CPT {
 
 		$args = array(
 			'labels' => $labels,
-			'hierarchical' => false,
-			'supports' => array( 'title', 'editor', 'revisions' ),
+			'hierarchical' => true,
+			'supports' => array( 'title', 'editor', 'revisions', 'page-attributes', 'custom-fields' ),
 			'public' => true,
 			'show_ui' => true,
 			//'show_in_nav_menus'   => false,
@@ -82,61 +85,86 @@ abstract class CPT {
 			'has_archive' => true,
 			'query_var' => true,
 			'can_export' => true,
-			'rewrite' => array( 'slug' => 'wpautoterms' ),
+			'rewrite' => array( 'slug' => $slug ),
 			'map_meta_cap' => true,
-			'capability_type' => array( WPAUTOTERMS_CAP_SINGULAR, WPAUTOTERMS_CAP_PLURAL ),
+			'capability_type' => array( static::cap_singular(), static::cap_plural() ),
 			'menu_icon' => WPAUTOTERMS_PLUGIN_URL . 'images/icon.png',
 			'show_admin_column' => true,
+			'taxonomies' => static::$_taxonomies
 		);
 
-		register_post_type( WPAUTOTERMS_CPT, $args );
+		register_post_type( static::type(), $args );
 	}
 
-	static function add_caps() {
-
-		global $wp_roles;
-		if ( ! isset( $wp_roles ) ) {
-			$wp_roles = new \WP_Roles;
+	public static function register_roles() {
+		add_role( static::ROLE, __( 'WPAutoTerms Pages Editor (additional)' ), static::caps() );
+		$role = get_role( static::BASE_ROLE );
+		if ( ! empty( $role ) ) {
+			add_role( static::ROLE_EDITOR,
+				__( 'Editor + WPAutoTerms Pages Editor' ),
+				array_merge( $role->capabilities, static::caps() ) );
 		}
+	}
 
-		$default_caps = static::get_default_caps();
-		foreach ( $wp_roles->role_names as $role => $label ) {
-
-			if ( array_key_exists( $role, $default_caps ) ) {
-				$caps = $default_caps[ $role ];
-			} else {
-				$caps = $default_caps['subscriber'];
+	public static function unregister_roles() {
+		remove_role( static::ROLE );
+		$users = get_users( array( 'role' => static::ROLE_EDITOR ) );
+		if ( ! empty( $users ) ) {
+			/**
+			 * @var $user \WP_User
+			 */
+			foreach ( $users as $user ) {
+				$user->add_role( static::BASE_ROLE );
+				$user->remove_role( static::ROLE_EDITOR );
 			}
+		}
+		remove_role( static::ROLE_EDITOR );
+	}
 
-			foreach ( $caps as $cap => $grant ) {
+	/**
+	 * @param [] $post_templates
+	 * @param \WP_Theme $theme
+	 *
+	 * @return array
+	 */
+	public static function filter_templates( $post_templates, $theme ) {
+		return array_merge( $post_templates, $theme->get_page_templates() );
+	}
 
-				if ( ! isset( $wp_roles->roles[ $role ]['capabilities'][ $cap ] ) ) {
-					$wp_roles->add_cap( $role, $cap, $grant );
+	public static function endswith( $haystack, $needle ) {
+		return $needle === substr( $haystack, - strlen( $needle ) );
+	}
+
+	protected static function is_current_cap( $cap ) {
+		return static::endswith( $cap, static::cap_singular() ) || static::endswith( $cap, static::cap_plural() );
+	}
+
+	public static function map_meta_cap( $caps, $cap, $user_id, $args ) {
+		if ( isset( $args[0] ) ) {
+			$ok = false;
+			foreach ( $caps as $c ) {
+				if ( static::is_current_cap( $caps[0] ) ) {
+					$ok = true;
+					break;
 				}
-
 			}
-		}
-	}
-
-	static function map_meta_cap( $caps, $cap, $userID, $args = null ) {
-
-		$cpt = get_post_type_object( WPAUTOTERMS_CPT );
-		if ( ! $cpt ) {
+			if ( ! $ok ) {
+				return $caps;
+			}
+		} elseif ( ! static::is_current_cap( $cap ) ) {
 			return $caps;
 		}
-
-		/*
-		switch ( $cap ) {
-		case 'edit_' . static::CAP_SINGULAR:
-			if ( false ) { // deny condition
-				$caps[] = 'do_not_allow';
-			}
-			break;
+		if ( is_super_admin( $user_id ) ) {
+			return array();
 		}
-		*/
 
 		return $caps;
-
 	}
 
+	public static function remove_taxonomies() {
+		foreach ( static::$_taxonomies as $t ) {
+			remove_submenu_page( 'edit.php?post_type=' . static::type(),
+				'edit-tags.php?taxonomy=' . $t . '&amp;post_type=' . static::type() );
+		}
+	}
 }

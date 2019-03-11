@@ -18,6 +18,7 @@ abstract class SGPopup
 	private $options;
 	private $loadableModes;
 	private $saveMode = '';
+	private $savedPopup = false;
 
 
 	public function setId($id)
@@ -110,12 +111,30 @@ abstract class SGPopup
 		return $this->saveMode;
 	}
 
+	public function setSavedPopup($savedPopup)
+	{
+		$this->savedPopup = $savedPopup;
+	}
+
+	public function getSavedPopup()
+	{
+		return $this->savedPopup;
+	}
+
 	public function setContent($content)
 	{
 		$this->content = $content;
 	}
 
-	public function getPopupAllEvents($postId, $popupId)
+	public function setSavedPopupById($popupId)
+	{
+		$popup = SGPopup::find($popupId);
+		if (is_object($popup)) {
+			$this->setSavedPopup($popup);
+		}
+	}
+
+	public function getPopupAllEvents($postId, $popupId, $popupObj = false)
 	{
 		$events = array();
 
@@ -128,18 +147,25 @@ abstract class SGPopup
 
 		if (@$loadableModes['option_event'] || is_null($loadableModes)) {
 			$optionEvents = $this->getEvents();
-			if (empty($optionEvents)) {
-				return $events;
+			if (!is_array($optionEvents)) {
+				$optionEvents = array();
 			}
 			$events = array_merge($events, $optionEvents);
 		}
 
-		return $events;
+		return apply_filters('sgpbPopupEvents', $events, $popupObj);
 	}
 
 	public function getContent()
 	{
-		return wpautop($this->content);
+		$postId = $this->getId();
+		$popupContent = wpautop($this->content);
+		$editorContent = AdminHelper::checkEditorByPopupId($postId);
+		if (!empty($editorContent)) {
+			$popupContent = $editorContent;
+		}
+
+		return $popupContent;
 	}
 
 	public function setPostData($postData)
@@ -216,7 +242,7 @@ abstract class SGPopup
 
 		$saveMode = '';
 		global $post;
-		if ((is_preview() && $post->ID == $popupId) || isset($args['preview'])) {
+		if ((@is_preview() && $post->ID == $popupId) || isset($args['preview'])) {
 			$saveMode = '_preview';
 		}
 		if (isset($args['insidePopup']) && $args['insidePopup'] == 'on') {
@@ -226,11 +252,13 @@ abstract class SGPopup
 		require_once(dirname(__FILE__).'/PopupData.php');
 		$savedData = PopupData::getPopupDataById($popupId, $saveMode);
 
+		$savedData = apply_filters('sgpbPopupSavedData', $savedData);
+
 		if (empty($savedData)) {
 			return false;
 		}
 
-		$type = $savedData['sgpb-type'];
+		$type = @$savedData['sgpb-type'];
 
 		$popupClassName = self::getPopupClassNameFormType($type);
 		$typePath = self::getPopupTypeClassPath($type);
@@ -270,17 +298,17 @@ abstract class SGPopup
 		$eventsData = array();
 		if (!empty($events)) {
 			foreach ($events as $event) {
-			    if (empty($event['hiddenOption'])) {
-				    $eventsData[] = $event;
-				    continue;
-                }
+				if (empty($event['hiddenOption'])) {
+					$eventsData[] = $event;
+					continue;
+				}
 				$hiddenOptions = $event['hiddenOption'];
 				unset($event['hiddenOption']);
 				$eventsData[] = $event + $hiddenOptions;
 			}
 		}
 
-		return $eventsData;
+		return apply_filters('sgpbEventsToOneArray', $eventsData);
 	}
 
 	public static function getPopupClassNameFormType($type)
@@ -288,7 +316,7 @@ abstract class SGPopup
 		$popupName = ucfirst(strtolower($type));
 		$popupClassName = $popupName.'Popup';
 
-		return $popupClassName;
+		return apply_filters('sgpbPopupClassNameFromType', $popupClassName);
 	}
 
 	public static function getPopupTypeClassPath($type)
@@ -307,7 +335,12 @@ abstract class SGPopup
 	{
 		switch ($type) {
 			case 'string':
-				$sanitizedValue = htmlspecialchars($value);
+				if (is_array($value)) {
+					$sanitizedValue = $this->recursiveSanitizeTextField($value);
+				}
+				else {
+					$sanitizedValue = htmlspecialchars($value);
+				}
 				break;
 			case 'text':
 				$sanitizedValue = htmlspecialchars($value);
@@ -404,7 +437,10 @@ abstract class SGPopup
 			}
 		}
 
+		$obj->setSavedPopupById($data['sgpb-post-id']);
 		$result = $obj->save();
+
+		$result = apply_filters('sgpbPopupCreateResult', $result);
 
 		if ($result) {
 			return $obj;
@@ -415,6 +451,7 @@ abstract class SGPopup
 
 	public function save()
 	{
+		$this->convertImagesToData();
 		$data = $this->getSanitizedData();
 		$popupId = $data['sgpb-post-id'];
 
@@ -442,6 +479,40 @@ abstract class SGPopup
 		$options = $this->popupOptionsSave();
 
 		return ($targets && $events && $options);
+	}
+
+	public function convertImagesToData()
+	{
+		$buttonImageData = '';
+		$savedImageUrl = '';
+		$savedContentBackgroundImageUrl = '';
+		$contentBackgroundImageData = '';
+
+		$data = $this->getSanitizedData();
+		$buttonImageUrl = @$data['sgpb-button-image'];
+		$contentBackgroundImageUrl = @$data['sgpb-background-image'];
+
+		$savedPopup = $this->getSavedPopup();
+
+		if (is_object($savedPopup)) {
+			$buttonImageData = $savedPopup->getOptionvalue('sgpb-button-image-data');
+			$savedImageUrl = $savedPopup->getOptionValue('sgpb-button-image');
+			$contentBackgroundImageData = $savedPopup->getOptionValue('sgpb-background-image-data');
+			$savedContentBackgroundImageUrl = $savedPopup->getOptionValue('sgpb-background-image');
+		}
+
+		if ($buttonImageUrl != $savedImageUrl) {
+			$buttonImageData = AdminHelper::getImageDataFromUrl($buttonImageUrl);
+		}
+		if ($contentBackgroundImageUrl != $savedContentBackgroundImageUrl) {
+			$contentBackgroundImageData = AdminHelper::getImageDataFromUrl($contentBackgroundImageUrl);
+		}
+
+		$data['sgpb-button-image-data'] = $buttonImageData;
+		$data['sgpb-background-image-data'] = $contentBackgroundImageData;
+
+		$data = apply_filters('sgpbConvertImagesToData', $data);
+		$this->setSanitizedData($data);
 	}
 
 	private function targetSave()
@@ -504,6 +575,8 @@ abstract class SGPopup
 			return true;
 		}
 
+		$popupTarget = apply_filters('sgpbPopupTargetMetaData', $popupTarget);
+
 		return update_post_meta($popupId, 'sg_popup_target'.$saveMode, $popupTarget);
 	}
 
@@ -524,7 +597,7 @@ abstract class SGPopup
 				$hiddenOptions = array();
 				$currentData = array();
 				foreach ($ruleData as $name => $value) {
-					if ($name == 'param' || $name == 'value') {
+					if ($name == 'param' || $name == 'value' || $name == 'operator') {
 						$currentData[$name] = $value;
 					}
 					else {
@@ -548,16 +621,18 @@ abstract class SGPopup
 			$eventsFromPopup[] = $SGPB_DATA_CONFIG_ARRAY['events']['initialData'];
 		}
 
+		$eventsFromPopup = apply_filters('sgpbPopupEventsMetadata', $eventsFromPopup);
+
 		return update_post_meta($popupId, 'sg_popup_events'.$saveMode, $eventsFromPopup);
 	}
 
 	private function popupOptionsSave()
 	{
 		$popupOptions = $this->getOptions();
-
+		$popupOptions = apply_filters('sgpbSavePopupOptions', $popupOptions);
 		//special code added for "Behavior After Special Events" section
 		//todo: remove in the future if possible
-		$specialBehaviors = $popupOptions['sgpb-behavior-after-special-events'];
+		$specialBehaviors = @$popupOptions['sgpb-behavior-after-special-events'];
 		if (!empty($specialBehaviors) && is_array($specialBehaviors)) {
 			foreach ($specialBehaviors as $groupId => $groupRow) {
 				foreach ($groupRow as $ruleId => $ruleRow) {
@@ -582,6 +657,8 @@ abstract class SGPopup
 		if ($alreadySavedOptions === $popupOptions) {
 			return true;
 		}
+
+		$popupOptions = apply_filters('sgpbPopupSavedOptionsMetaData', $popupOptions);
 
 		return update_post_meta($popupId, 'sg_popup_options'.$saveMode, $popupOptions);
 	}
@@ -644,8 +721,12 @@ abstract class SGPopup
 			$popupSavedData['sgpb-events'] = self::getEventsDataById($popupId, $saveMode);
 		}
 		if (!empty($targetData)) {
-			$popupSavedData['sgpb-target'] = $targetData['sgpb-target'];
-			$popupSavedData['sgpb-conditions'] = $targetData['sgpb-conditions'];
+			if (!empty($targetData['sgpb-target'])) {
+				$popupSavedData['sgpb-target'] = $targetData['sgpb-target'];
+			}
+			if (!empty($targetData['sgpb-conditions'])) {
+				$popupSavedData['sgpb-conditions'] = $targetData['sgpb-conditions'];
+			}
 		}
 
 		$popupSavedData += self::getPopupOptionsById($popupId, $saveMode);
@@ -803,7 +884,7 @@ abstract class SGPopup
 				}
 				else {
 					$targetData[$postId][] = $id;
- 				}
+				}
 			}
 		}
 
@@ -880,6 +961,9 @@ abstract class SGPopup
 				}
 			}
 		}
+
+		$targetData = apply_filters('sgpbPopupTargetData', $targetData);
+		$eventsData = apply_filters('sgpbPopupEventsData', $eventsData);
 
 		self::saveToTargetFromPage($targetData);
 		self::saveToEventsFromPage($eventsData);
@@ -1129,7 +1213,7 @@ abstract class SGPopup
 			}
 		}
 
-		return $options;
+		return apply_filters('sgpbPopupInsideShortcodes', $options);
 	}
 
 	/**
@@ -1145,7 +1229,29 @@ abstract class SGPopup
 	public static function getPopupsByTermSlug($popupTermSlug)
 	{
 		$popupIds = array();
-		// proStartSilverproEndSilver
+		// proStartSilver
+		$termPopups = get_posts(
+			array(
+				'post_type' => 'popupbuilder',
+				'numberposts' => -1,
+				'tax_query' => array(
+					array(
+						'taxonomy' => SG_POPUP_CATEGORY_TAXONOMY,
+						'field' => 'slug',
+						'terms' => $popupTermSlug
+					)
+				)
+			)
+		);
+
+		if (empty($termPopups)) {
+			return $popupIds;
+		}
+
+		foreach ($termPopups as $termPopup) {
+			$popupIds[] = $termPopup->ID;
+		}
+		// proEndSilver
 		return $popupIds;
 	}
 
@@ -1224,7 +1330,7 @@ abstract class SGPopup
 	{
 		$removeOptions = array();
 
-		return $removeOptions;
+		return apply_filters('sgpbRemoveOptions', $removeOptions);
 	}
 
 	public static function createPopupTypeObjById($popupId)
@@ -1281,7 +1387,7 @@ abstract class SGPopup
 		return array();
 	}
 
-    /**
+	/**
 	 *
 	 * Get WordPress localization name
 	 *
@@ -1425,7 +1531,7 @@ abstract class SGPopup
 			}
 			// true = find inside popup
 			$insidePopup = self::find($insidePopupId, $args);
-			if (empty($insidePopup) || $insidePopup == 'trash') {
+			if (empty($insidePopup) || $insidePopup == 'trash' || $insidePopup == 'inherit') {
 				continue;
 			}
 			$events = array('insideclick');
@@ -1448,7 +1554,7 @@ abstract class SGPopup
 		$popupCountFromAnalyticsData = 0;
 		$tableName = $wpdb->prefix.'sgpb_analytics';
 		if ($wpdb->get_var("SHOW TABLES LIKE '$tableName'") == $tableName) {
-			$popupCountFromAnalyticsData = $this->getAnalyticsDataByPopupId($popupId);
+			$popupCountFromAnalyticsData = self::getAnalyticsDataByPopupId($popupId);
 		}
 		if (isset($popupsCounterData[$popupId])) {
 			$allCount += $popupsCounterData[$popupId];
@@ -1458,11 +1564,11 @@ abstract class SGPopup
 		return $allCount;
 	}
 
-	public function getAnalyticsDataByPopupId($popupId)
+	public static function getAnalyticsDataByPopupId($popupId)
 	{
 		global $wpdb;
 		// 7, 12, 13 => exclude close, subscription success, contact success events
-		$stmt = $wpdb->prepare('SELECT COUNT(*) FROM '.$wpdb->prefix.'sgpb_analytics WHERE target_id = %d AND event_id NOT IN (12, 13)', $popupId);
+		$stmt = $wpdb->prepare('SELECT COUNT(*) FROM '.$wpdb->prefix.'sgpb_analytics WHERE target_id = %d AND event_id NOT IN (7, 12, 13)', $popupId);
 		$popupAnalyticsData = $wpdb->get_var($stmt);
 
 		return $popupAnalyticsData;
@@ -1475,6 +1581,9 @@ abstract class SGPopup
 			'post_type' => SG_POPUP_POST_TYPE,
 			'post_status' => array('trash', 'publish')
 		);
+		if (!class_exists('ConfigDataHelper')) {
+			return $activePopupsQuery;
+		}
 		$allPostData = ConfigDataHelper::getQueryDataByArgs($args);
 		$args['checkActivePopupType'] = true;
 		$allPopups = $allPostData->posts;

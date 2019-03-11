@@ -1,6 +1,5 @@
 <?php
 namespace sgpb;
-
 /**
  * Popup Builder Style
  *
@@ -17,13 +16,10 @@ class Style
 		global $post_type;
 		$pageName = $hook;
 		$styles = array();
-		$currentPostType = @$post->post_type;
-		// in some themes global $post returns null
-		if (empty($currentPostType)) {
-			$currentPostType = $post_type;
-		}
+		$popupType = AdminHelper::getCurrentPopupType();
+		$currentPostType = AdminHelper::getCurrentPostType();
 
-		if ($hook == 'popupbuilder_page_popupbuilder') {
+		if($hook == SG_POPUP_POST_TYPE.'_page_'.SG_POPUP_POST_TYPE) {
 			$pageName = 'popupType';
 		}
 		else if (($hook == 'post-new.php' || $hook == 'post.php') && $currentPostType == SG_POPUP_POST_TYPE) {
@@ -32,8 +28,8 @@ class Style
 		else if ($hook == 'edit.php' && !empty($currentPostType) && $currentPostType == SG_POPUP_POST_TYPE) {
 			$pageName = 'popupspage';
 		}
-		else if ($hook == 'popupbuilder_page_subscribers') {
-			$pageName = 'subscribers';
+		else if ($hook == SG_POPUP_POST_TYPE.'_page_'.SG_POPUP_SUBSCRIBERS_PAGE) {
+			$pageName = SG_POPUP_SUBSCRIBERS_PAGE;
 		}
 
 		$registeredPlugins = get_option('SG_POPUP_BUILDER_REGISTERED_PLUGINS');
@@ -73,8 +69,10 @@ class Style
 			if (!$classObj instanceof $extensionInterface) {
 				continue;
 			}
-
-			$styleData = $classObj->getStyles($pageName , array());
+			$args  = array(
+				'popupType' => $popupType
+			);
+			$styleData = $classObj->getStyles($pageName , $args);
 			if (!empty($styleData['cssFiles'])) {
 				$styles[] = $styleData;
 			}

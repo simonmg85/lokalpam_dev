@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Post_Links extends Sub_Shortcode {
 
-	function handle( $values, $content ) {
+	public function handle( $values, $content ) {
 		global $wpautoterms_posts;
 		if ( empty( $wpautoterms_posts ) ) {
 			return '';

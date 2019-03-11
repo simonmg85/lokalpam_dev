@@ -16,6 +16,7 @@ class SGPBTable extends SGPBListTable
 	protected $rowsPerPage = 10;
 	protected $initialOrder = array();
 	private $previewPopup = false;
+	private $isVisibleExtraNav = true;
 
 	public function __construct($id, $popupPreviewId = false)
 	{
@@ -71,6 +72,21 @@ class SGPBTable extends SGPBListTable
 	public function get_columns()
 	{
 		return $this->displayColumns;
+	}
+
+	public function setIsVisibleExtraNav($isVisibleExtraNav)
+	{
+		$this->isVisibleExtraNav = $isVisibleExtraNav;
+	}
+
+	public function getIsVisibleExtraNav()
+	{
+		return $this->isVisibleExtraNav;
+	}
+
+	public function getNavPopupsConditions()
+	{
+		return '';
 	}
 
 	public function prepare_items()
@@ -179,7 +195,6 @@ class SGPBTable extends SGPBListTable
 		<form method="get" id="posts-filter">
 		<p class="search-box">
 			 <input type="hidden" name="post_type" value="popupbuilder" />
-			 <input type="hidden" name="page" value="subscribers" />
 			 <?php $this->search_box('search', 'search_id'); ?>
 		</p>
 		<?php $this->display();?>
@@ -191,61 +206,24 @@ class SGPBTable extends SGPBListTable
 	// parent class method overriding
 	public function extra_tablenav($which)
 	{
-		$subscriptionPopups = SubscriptionPopup::getAllSubscriptionForms();
-		$subscribersDates = SubscriptionPopup::getAllSubscribersDate();
-		$uniqueDates = array();
-		$uniqueDates[] = array('date-title' => 'All dates', 'date-value' => 'all');
-		foreach ($subscribersDates as $arr) {
-			$uniqueDates[] = $arr;
+		$isVisibleExtraNav = $this->getIsVisibleExtraNav();
+
+		if (!$isVisibleExtraNav) {
+			return '';
 		}
-		$uniqueDates = array_unique($uniqueDates, SORT_REGULAR);
-		$selectedPopup = '';
-		$selectedDate = '';
-		$dateList = '';
-		$list = '';
-		$selected = '';
-		if (isset($_GET['sgpb-subscription-popup-id'])) {
-			$selectedPopup = (int)$_GET['sgpb-subscription-popup-id'];
-		}
-		if (isset($_GET['sgpb-subscribers-date'])) {
-			$selectedDate = esc_sql($_GET['sgpb-subscribers-date']);
-		}
+		
+
+		
+
+		
 		?>
 		<div class="alignleft actions daterangeactions">
 			<label class="screen-reader-text" for="sgpb-subscription-popup"><?php _e('Filter by popup', SG_POPUP_TEXT_DOMAIN)?></label>
-			<input type="hidden" class="sgpb-subscription-popup-id" name="sgpb-subscription-popup-id" value="<?php echo $selectedPopup;?>">
-			<select name="sgpb-subscription-popup" id="sgpb-subscription-popup">
-				<?php
-				$list .= '<option value="all">'.__('All', SG_POPUP_TEXT_DOMAIN).'</option>';
-				foreach ($subscriptionPopups as $popupId => $popupTitle) {
-					if ($selectedPopup == $popupId) {
-						$selected = ' selected';
-					}
-					else {
-						$selected = '';
-					}
-					$list .= '<option value="'.esc_attr($popupId).'"'.$selected.'>'.$popupTitle.'</option>';
-				}
-				echo $list;
-				?>
-			</select>
+			<?php echo $this->getNavPopupsConditions(); ?>
+
 			<label class="screen-reader-text" for="sgpb-subscribers-dates"><?php _e('Filter by date', SG_POPUP_TEXT_DOMAIN)?></label>
-			<input type="hidden" class="sgpb-subscribers-date" name="sgpb-subscribers-date" value="<?php echo $selectedDate;?>">
-			<select name="sgpb-subscribers-dates" id="sgpb-subscribers-dates">
-				<?php
-				$dateList = '';
-				foreach ($uniqueDates as $date) {
-					if ($selectedDate == $date['date-value']) {
-						$selected = ' selected';
-					}
-					else {
-						$selected = '';
-					}
-					$dateList .= '<option value="'.$date['date-value'].'"'.$selected.'>'.$date['date-title'].'</option>';
-				}
-				echo $dateList;
-				?>
-			</select>
+			<?php  echo $this->getNavDateConditions(); ?>
+			
 			<input name="filter_action" id="post-query-submit" class="button" value="<?php _e('Filter', SG_POPUP_TEXT_DOMAIN)?>" type="submit">
 		</div>
 		<?php

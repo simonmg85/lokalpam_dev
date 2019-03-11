@@ -8,6 +8,7 @@ class ScriptsLoader
 	// all loadable popups objects
 	private $loadablePopups = array();
 	private $isAdmin = false;
+	private static $alreadyLoadedPopups = array();
 
 	public function setLoadablePopups($loadablePopups)
 	{
@@ -29,9 +30,35 @@ class ScriptsLoader
 		return $this->isAdmin;
 	}
 
+	/**
+	 * Get encoded popup options
+	 *
+	 * @since 3.0.4
+	 *
+	 * @param object $popup
+	 *
+	 * @return array|mixed|string|void $popupOptions
+	 */
+	private function getEncodedOptionsFromPopup($popup)
+	{
+		$extraOptions = $popup->getExtraRenderOptions();
+		$popupOptions = $popup->getOptions();
+		$popupOptions = apply_filters('sgpbPopupRenderOptions', $popupOptions);
+		$popupCondition = $popup->getConditions();
+
+		$popupOptions = array_merge($popupOptions, $extraOptions);
+		$popupOptions['sgpbConditions'] = apply_filters('sgpbRenderCondtions',  $popupCondition);
+		// These two lines have been added in order to not use the json_econde and to support PHP 5.3 version.
+		$popupOptions = AdminHelper::serializeData($popupOptions);
+		$popupOptions = base64_encode($popupOptions);
+
+		return $popupOptions;
+	}
+
 	// load popup scripts and styles and add popup data to the footer
 	public function loadToFooter()
 	{
+		$alreadyLoadedPopups = array();
 		$popups = $this->getLoadablePopups();
 
 		if (empty($popups)) {
@@ -42,36 +69,43 @@ class ScriptsLoader
 			$this->loadToAdmin();
 			return true;
 		}
-	
+
 		global $post;
-		if (empty($post)) {
-			return false;
+		$postId = 0;
+
+		if (!empty($post)) {
+			$postId = $post->ID;
 		}
-		$postId = $post->ID;
 
 		foreach ($popups as $popup) {
 			$popupId = $popup->getId();
 
-			$extraOptions = $popup->getExtraRenderOptions();
-			$events = $popup->getPopupAllEvents($postId, $popupId);
-
-			$events = json_encode($events);
-
-			$popupOptions = $popup->getOptions();
-			$popupOptions = apply_filters('sgpbPopupRenderOptions', $popupOptions);
-
-			$popupOptions = array_merge($popupOptions, $extraOptions);
-
-			// These two lines have been added in order to not use the json_econde and to support PHP 5.3 version.
-			$popupOptions = AdminHelper::serializeData($popupOptions);
-			$popupOptions = base64_encode($popupOptions);
-			
-			$popupOptions = htmlspecialchars($popupOptions);
-
 			$popupContent = apply_filters('sgpbPopupContentLoadToPage', $popup->getPopupTypeContent());
 
+			$events = $popup->getPopupAllEvents($postId, $popupId, $popup);
+			// if popup's data has already loaded into the page with the same event
+			if (isset(self::$alreadyLoadedPopups[$popupId])) {
+				if (self::$alreadyLoadedPopups[$popupId] == $events) {
+					continue;
+				}
+			}
+			foreach ($events as $event) {
+				if (isset($event['param'])) {
+					if (isset(self::$alreadyLoadedPopups[$popupId])) {
+						if (self::$alreadyLoadedPopups[$popupId] == $event['param']) {
+							continue;
+						}
+					}
+				}
+			}
+			self::$alreadyLoadedPopups[$popupId] = $events;
+			$events = json_encode($events);
+
+			$popupOptions = $this->getEncodedOptionsFromPopup($popup);
+			$popupOptions = apply_filters('sgpbLoadToFooterOptions', $popupOptions);
+
 			add_action('wp_footer', function() use ($popupId, $events, $popupOptions, $popupContent) {
-				$footerPopupContent = '<div style="position:absolute;top: -999999999999999999999px;">
+				$footerPopupContent = '<div style="position:fixed;bottom: -999999999999999999999px;">
 							<div class="sg-popup-builder-content" id="sg-popup-content-wrapper-'.$popupId.'" data-id="'.esc_attr($popupId).'" data-events="'.esc_attr($events).'" data-options="'.esc_attr($popupOptions).'">
 								<div class="sgpb-popup-builder-content-'.esc_attr($popupId).' sgpb-popup-builder-content-html">'.$popupContent.'</div>
 							</div>
@@ -80,6 +114,7 @@ class ScriptsLoader
 				echo $footerPopupContent;
 			});
 		}
+
 		$this->includeScripts();
 		$this->includeStyles();
 	}
@@ -91,18 +126,11 @@ class ScriptsLoader
 		foreach ($popups as $popup) {
 			$popupId = $popup->getId();
 
-			$extraOptions = $popup->getExtraRenderOptions();
 			$events = array();
 
 			$events = json_encode($events);
 
-			$popupOptions = $popup->getOptions();
-			$popupOptions = apply_filters('sgpbPopupRenderOptions', $popupOptions);
-
-			$popupOptions = array_merge($popupOptions, $extraOptions);
-
-			$popupOptions = AdminHelper::serializeData($popupOptions);
-			$popupOptions = htmlspecialchars($popupOptions);
+			$popupOptions = $this->getEncodedOptionsFromPopup($popup);
 
 			$popupContent = apply_filters('sgpbPopupContentLoadToPage', $popup->getPopupTypeContent());
 

@@ -30,7 +30,7 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 		$this->name  = esc_html__( 'File Upload', 'wpforms' );
 		$this->type  = 'file-upload';
 		$this->icon  = 'fa-upload';
-		$this->order = 15;
+		$this->order = 90;
 		$this->group = 'fancy';
 
 		// Define additional field properties.
@@ -48,9 +48,9 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 	 *
 	 * @since 1.3.7
 	 *
-	 * @param array $properties
-	 * @param array $field
-	 * @param array $form_data
+	 * @param array $properties Field properties.
+	 * @param array $field      Field data and settings.
+	 * @param array $form_data  Form data and settings.
 	 *
 	 * @return array
 	 */
@@ -99,13 +99,31 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 	}
 
 	/**
+	 * @inheritdoc
+	 */
+	public function is_dynamic_population_allowed( $properties, $field ) {
+
+		// We need to disable an ability to steal files from user computer.
+		return false;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function is_fallback_population_allowed( $properties, $field ) {
+
+		// We need to disable an ability to steal files from user computer.
+		return false;
+	}
+
+	/**
 	 * Customize format for HTML email notifications.
 	 *
 	 * @since 1.1.3
 	 *
 	 * @param string $val
-	 * @param array $field
-	 * @param array $form_data
+	 * @param array  $field
+	 * @param array  $form_data
 	 * @param string $context
 	 *
 	 * @return string
@@ -175,7 +193,7 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 		$this->field_element( 'row', $field, $args );
 
 		// Max file size.
-		$lbl = $this->field_element(
+		$lbl  = $this->field_element(
 			'label',
 			$field,
 			array(
@@ -223,7 +241,7 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 		// Hide Label.
 		$this->field_option( 'label_hide', $field );
 
-		// Media Libary toggle.
+		// Media Library toggle.
 		$fld  = $this->field_element(
 			'checkbox',
 			$field,
@@ -275,9 +293,9 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $field
-	 * @param array $deprecated
-	 * @param array $form_data
+	 * @param array $field      Field data and settings.
+	 * @param array $deprecated Deprecated field attributes. Use field properties.
+	 * @param array $form_data  Form data and settings.
 	 */
 	public function field_display( $field, $deprecated, $form_data ) {
 
@@ -297,9 +315,9 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int $field_id
-	 * @param array $field_submit
-	 * @param array $form_data
+	 * @param int   $field_id     Field ID.
+	 * @param array $field_submit Submitted field value.
+	 * @param array $form_data    Form data and settings.
 	 */
 	public function validate( $field_id, $field_submit, $form_data ) {
 
@@ -425,9 +443,9 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param int $field_id
-	 * @param array $field_submit
-	 * @param array $form_data
+	 * @param int   $field_id     Field ID.
+	 * @param array $field_submit Submitted field value.
+	 * @param array $form_data    Form data and settings.
 	 */
 	public function format( $field_id, $field_submit, $form_data ) {
 
@@ -528,7 +546,6 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 			// Create the attachment for the file.
 			$attachment_args = array(
 				'post_type'      => 'attachment',
-				'post_type'      => '',
 				'post_content'   => '',
 				'post_status'    => 'publish',
 				'post_mime_type' => $file['type'],
@@ -570,7 +587,7 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 	 *
 	 * @since 1.3.8
 	 *
-	 * @param array $form_data
+	 * @param array $form_data Form data and settings.
 	 */
 	public function format_conditional( $form_data ) {
 
@@ -639,4 +656,4 @@ class WPForms_Field_File_Upload extends WPForms_Field {
 	}
 }
 
-new WPForms_Field_File_Upload;
+new WPForms_Field_File_Upload();

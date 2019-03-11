@@ -5,6 +5,14 @@ namespace Stripe;
 /**
  * Class SubscriptionItem
  *
+ * @property string $id
+ * @property string $object
+ * @property int $created
+ * @property AttachedObject $metadata
+ * @property Plan $plan
+ * @property int $quantity
+ * @property string $subscription
+ *
  * @package Stripe
  */
 class SubscriptionItem extends ApiResource
@@ -21,7 +29,8 @@ class SubscriptionItem extends ApiResource
     }
 
     /**
-     * @param string $id The ID of the subscription item to retrieve.
+     * @param array|string $id The ID of the subscription item to retrieve, or
+     *     an options array containing an `id` key.
      * @param array|string|null $opts
      *
      * @return SubscriptionItem

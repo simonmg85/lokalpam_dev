@@ -15,13 +15,13 @@ jQuery(function($) {
     });
     jQuery('button.add-hours').on('click', function(event) {
         event.preventDefault();
- 
+
         var $this = jQuery(this);
         var lp2times = $this.closest('#day-hours-BusinessHours').data('lpenabletwotimes');
         var error = !1;
         var fullday = '';
         var fullhoursclass = '';
-        var lpdash = "-";
+        var lpdash = "~";
         if (lp2times == "disable") {
             var weekday = jQuery('select.weekday').val();
             if (jQuery(".fulldayopen").is(":checked")) {
@@ -38,16 +38,38 @@ jQuery(function($) {
             } else {
                 var startVal = jQuery('select.hours-start').val();
                 var endVal = jQuery('select.hours-end').val();
-                var hrstart = jQuery('select.hours-start').find('option:selected').text();
-                var hrend = jQuery('select.hours-end').find('option:selected').text();
+                var hrstart = jQuery('select.hours-start').find('option:selected').val();
+                var hrend = jQuery('select.hours-end').find('option:selected').val();
                 var startVal_digit = hrstart.replace(':', '');
                 var endVal_digit = hrend.replace(':', '');
+
+                if (startVal_digit.indexOf('am') > -1) {
+                    startVal_digit = startVal_digit.replace('am', '');
+                }
+                else if (startVal_digit.indexOf('pm') > -1) {
+                    startVal_digit = startVal_digit.replace('pm', '');
+                    if (startVal_digit != '1200' && startVal_digit != '1230') {
+                        startVal_digit = parseInt(startVal_digit) + 1200;
+                    }
+                }
+                if (endVal_digit.indexOf('am') > -1) {
+                    endVal_digit = endVal_digit.replace('am', '');
+                    endVal_digit = parseInt(endVal_digit);
+                    if(endVal_digit >= 1200){
+                        endVal_digit = parseInt(endVal_digit) - 1200;
+                    }
+
+                }
+                else if (endVal_digit.indexOf('pm') > -1) {
+                    endVal_digit = endVal_digit.replace('pm', '');
+                    endVal_digit = parseInt(endVal_digit) + 1200;
+                }
                 if (startVal_digit > endVal_digit) {
                     nextWeekday = jQuery("select.weekday option:selected+option").val();
                     if (typeof nextWeekday === "undefined") {
                         nextWeekday = jQuery("select.weekday").find("option:first-child").val()
                     }
-                    weekday = weekday + "-" + nextWeekday
+                    weekday = weekday + "~" + nextWeekday
                 }
             }
             var sorryMsg = jQuery(this).data('sorrymsg');
@@ -102,29 +124,71 @@ jQuery(function($) {
             } else {
                 var startVal1 = jQuery('select.hours-start').val();
                 var endVal1 = jQuery('select.hours-end').val();
-                var hrstart1 = jQuery('select.hours-start').find('option:selected').text();
-                var hrend1 = jQuery('select.hours-end').find('option:selected').text();
+                var hrstart1 = jQuery('select.hours-start').find('option:selected').val();
+                var hrend1 = jQuery('select.hours-end').find('option:selected').val();
                 var startVal1_digit = hrstart1.replace(':', '');
                 var endVal1_digit = hrend1.replace(':', '');
+
+                if (startVal1_digit.indexOf('am') > -1) {
+                    startVal1_digit = startVal1_digit.replace('am', '');
+                }
+                else if (startVal1_digit.indexOf('pm') > -1) {
+                    startVal1_digit = startVal1_digit.replace('pm', '');
+                    if (startVal1_digit != '1200' && startVal1_digit != '1230') {
+                        startVal1_digit = parseInt(startVal1_digit) + 1200;
+                    }
+                }
+                if (endVal1_digit.indexOf('am') > -1) {
+                    endVal1_digit = endVal1_digit.replace('am', '');
+                    endVal1_digit = parseInt(endVal1_digit);
+                    if( endVal1_digit >= 1200 ){
+                        endVal1_digit = parseInt(endVal1_digit) - 1200;
+                    }
+                }
+                else if (endVal1_digit.indexOf('pm') > -1) {
+                    endVal1_digit = endVal1_digit.replace('pm', '');
+                    endVal1_digit = parseInt(endVal1_digit) + 1200;
+                }
                 if (startVal1_digit > endVal1_digit) {
                     nextWeekday = jQuery("select.weekday option:selected+option").val();
                     if (typeof nextWeekday === "undefined") {
                         nextWeekday = jQuery("select.weekday").find("option:first-child").val()
                     }
-                    weekday1 = weekday + "-" + nextWeekday
+                    weekday1 = weekday + "~" + nextWeekday
                 }
                 var startVal2 = jQuery('select.hours-start2').val();
                 var endVal2 = jQuery('select.hours-end2').val();
-                var hrstart2 = jQuery('select.hours-start2').find('option:selected').text();
-                var hrend2 = jQuery('select.hours-end2').find('option:selected').text();
+                var hrstart2 = jQuery('select.hours-start2').find('option:selected').val();
+                var hrend2 = jQuery('select.hours-end2').find('option:selected').val();
                 var startVal2_digit = hrstart2.replace(':', '');
                 var endVal2_digit = hrend2.replace(':', '');
+
+                if (startVal2_digit.indexOf('am') > -1) {
+                    startVal2_digit = startVal2_digit.replace('am', '');
+                }
+                else if (startVal2_digit.indexOf('pm') > -1) {
+                    startVal2_digit = startVal2_digit.replace('pm', '');
+                    if (startVal2_digit != '1200' && startVal2_digit != '1230') {
+                        startVal2_digit = parseInt(startVal2_digit) + 1200;
+                    }
+                }
+                if (endVal2_digit.indexOf('am') > -1) {
+                    endVal2_digit = endVal2_digit.replace('am', '');
+                    endVal2_digit = parseInt(endVal2_digit);
+                    if( endVal2_digit >= 1200 ){
+                        endVal2_digit = parseInt(endVal2_digit) - 1200;
+                    }
+                }
+                else if (endVal2_digit.indexOf('pm') > -1) {
+                    endVal2_digit = endVal2_digit.replace('pm', '');
+                    endVal2_digit = parseInt(endVal2_digit) + 1200;
+                }
                 if (startVal2_digit > endVal2_digit) {
                     nextWeekday = jQuery("select.weekday option:selected+option").val();
                     if (typeof nextWeekday === "undefined") {
                         nextWeekday = jQuery("select.weekday").find("option:first-child").val()
                     }
-                    weekday2 = weekday + "-" + nextWeekday
+                    weekday2 = weekday + "~" + nextWeekday
                 }
             }
             var sorryMsg = jQuery(this).data('sorrymsg');
@@ -213,13 +277,21 @@ jQuery(function() {
         jQuery(thContent).appendTo(th);
         jQuery(tdContent).appendTo(td)
     });
-    jQuery(window).load(function($) {
+	
+	
+		/* jQuery( document ).ajaxComplete(function() {
+			
+		}); */
+		
+    //jQuery(document).on('change', '#listing-categorychecklist input', function() {
+		jQuery(document).on('click', '.editor-post-taxonomies__hierarchical-terms-list[aria-label="Available Categories"] input', function(){
         var listID = jQuery('#post_ID').val();
-        var termID = jQuery('#listing-categorychecklist input:checked').map(function() {
+        var termID = jQuery('.editor-post-taxonomies__hierarchical-terms-list[aria-label="Available Categories"] input:checked').map(function() {
             return this.value
         }).get();
         if (termID != undefined && termID != '') {
             jQuery('.extrafieldsdiv').remove();
+            jQuery('.editor-post-taxonomies__hierarchical-terms-list[aria-label="Available Categories"] input').attr("disabled", !0);
             jQuery.ajax({
                 type: 'POST',
                 dataType: 'json',
@@ -230,46 +302,7 @@ jQuery(function() {
                     'list_id': listID,
                 },
                 success: function(data) {
-                    if (data) {
-                        $output1 = "<div id='commentstatusdiv12' class='lp-metaboxes postbox extrafieldsdiv'><h2 class='hndle ui-sortable-handle'><span>Extra Fields</span></h2><div class='inside'><table class='form-table lp-metaboxes'><tbody>";
-                        $outputf = "<div id='commentstatusdiv' class='lp-metaboxes postbox extrafieldsdiv'><h2 class='hndle ui-sortable-handle'><span>Please select Features</span></h2><div class='inside'><table class='form-table lp-metaboxes'><tbody>";
-                        $output2 = "</tbody></table></div></div>";
-                        if (data.features != null) {
-                            jQuery('#postbox-container-2').append($outputf + data.features + $output2)
-                        } else {
-                            jQuery('#postbox-container-2').append($output1 + '<p>No Fields Associated</p>' + $output2)
-                        }
-                        if (data.fields != null) {
-                            jQuery('#postbox-container-2').append($output1 + data.fields + $output2)
-                        } else {
-                            jQuery('#postbox-container-2').append($output1 + '<p>No Fields Associated</p>' + $output2)
-                        }
-                    }
-                }
-            })
-        } else {
-            jQuery('.extrafieldsdiv').remove()
-        }
-    });
-    jQuery(document).on('change', '#listing-categorychecklist input', function() {
-        var listID = jQuery('#post_ID').val();
-        var termID = jQuery('#listing-categorychecklist input:checked').map(function() {
-            return this.value
-        }).get();
-        if (termID != undefined && termID != '') {
-            jQuery('.extrafieldsdiv').remove();
-            jQuery("#listing-categorychecklist input").attr("disabled", !0);
-            jQuery.ajax({
-                type: 'POST',
-                dataType: 'json',
-                url: ajaxurl,
-                data: {
-                    'action': 'lp_get_fields',
-                    'term_id': termID,
-                    'list_id': listID,
-                },
-                success: function(data) {
-                    jQuery("#listing-categorychecklist input").removeAttr("disabled");
+                    jQuery('.editor-post-taxonomies__hierarchical-terms-list[aria-label="Available Categories"] input').removeAttr("disabled");
                     if (data) {
                         $output1 = "<div id='commentstatusdiv12' class='lp-metaboxes postbox extrafieldsdiv'><h2 class='hndle ui-sortable-handle'><span>Extra Fields</span></h2><div class='inside'><table class='form-table lp-metaboxes'><tbody>";
                         $outputf = "<div id='commentstatusdiv' class='lp-metaboxes postbox extrafieldsdiv'><h2 class='hndle ui-sortable-handle'><span>Please select Features</span></h2><div class='inside'><table class='form-table lp-metaboxes'><tbody>";
@@ -433,18 +466,36 @@ jQuery(document).ready(function() {
         }
     });
     jQuery('#plan_duration_type select').on('change', function() {
+        jQuery('div#plan_time_monthyear_box').show();
         $this = jQuery(this);
-        $duration = $this.find(':selected').data('days');
-        jQuery('input#plan_time').val($duration)
-    })
+        if($this.val()!='default'){
+            $duration = $this.find(':selected').data('days');
+            jQuery('input#plan_time').val($duration);
+            jQuery('div#plan_time_monthyear_box').hide();
+            //jQuery("input#plan_time").prop("disabled", !0);
+            //jQuery("input#plan_time").prop("readonly", !0);
+        }else{
+            jQuery("input#plan_time").prop("disabled", false);
+            jQuery("input#plan_time").prop("readonly", false);
+        }
+    });
     if (jQuery('#plan_duration_type').length) {
-        jQuery("input#plan_time").prop("disabled", !0);
-        jQuery("input#plan_time").prop("readonly", !0);
-        $duration = jQuery('#plan_duration_type select').find(':selected').data('days');
-        jQuery('input#plan_time').val($duration)
+        $durationtype = jQuery('#plan_duration_type :selected').val();
+
+        if($durationtype!=='default'){
+            jQuery("input#plan_time").prop("disabled", !0);
+            jQuery("input#plan_time").prop("readonly", !0);
+            $duration = jQuery('#plan_duration_type select').find(':selected').data('days');
+            jQuery('input#plan_time').val($duration);
+        }else{
+            jQuery("input#plan_time").prop("disabled", false);
+            jQuery("input#plan_time").prop("readonly", false);
+        }
     }
     jQuery('button#claim_actionBtn').on('click', function() {
         $this = jQuery(this);
+        $this.css("position", "relative");
+        $this.append('<i class="lp-listing-spingg fa-li fa fa-spinner fa-spin"></i>');
         $this.toggleClass('active');
         if ($this.hasClass('active')) {
             $listing_id = jQuery('input[name=claimed_listing]').val();
@@ -465,15 +516,20 @@ jQuery(document).ready(function() {
                     'claim_post_ID': $claim_post_ID,
                 },
                 success: function(res) {
-                    jQuery(res.htmlData).insertAfter('tr#claim_actionBtn')
+                    jQuery(res.htmlData).insertAfter('tr#claim_actionBtn');
+                    $this.remove('.lp-listing-spingg');
+                    jQuery('.lp-listing-spingg').remove();
                 }
             })
         } else {
-            jQuery('tr#lp_claim_email').remove()
+            jQuery('tr#lp_claim_email').remove();
+            jQuery('.lp-listing-spingg').remove();
         }
     })
-    jQuery(document).on('click', 'button.lp_trigger_paidclaim_email', function() {
+    jQuery(document).on('click', 'button.lp_trigger_paidclaim_email', function(e) {
         $this = jQuery(this);
+        $this.css("position", "relative");
+        jQuery('.lp-listing-spingg').show();
         $this.prop('disabled', !0);
         $claimer_id = jQuery('input[name=claimer_id]').val();
         $to_claimer_email = jQuery('input[name=to_claimer_email]').val();
@@ -491,10 +547,14 @@ jQuery(document).ready(function() {
                 'lp_claim_email': $lp_claim_email,
             },
             success: function(res) {
-                alert(res.msg);
-                $this.prop('disabled', !1)
+                //alert(res.msg);
+                $this.after( "<p>"+res.msg+"</p>" );
+                $this.prop('disabled', !1);
+                jQuery('.lp-listing-spingg').hide();
             }
-        })
+        });
+        jQuery('.lp-listing-spingg').hide();
+        e.preventDefault();
     })
     jQuery(document).on('change', 'select[name=field-type]', function() {
         var $this = jQuery(this);
@@ -596,3 +656,197 @@ jQuery(document).on('change', '.lp_backend_inv_filter select', function(){
         }
     })
 });
+
+/* for invoices */
+jQuery(document).on('click', 'a.lp_watchthisinvoice', function(e){
+    $this = jQuery(this);
+    var $invoiceid = $this.data('invoiceid');
+    $this.next(".lobackspinner").show();
+    jQuery('.lp_admin_invoice_ajax_result').html('');
+    jQuery.ajax({
+        type: 'POST',
+        dataType: 'json',
+        url: ajaxurl,
+        data: {
+            'action': 'lp_get_admin_invoice_details',
+            'invoiceid': $invoiceid,
+        },
+        success: function(res) {
+            jQuery(".lobackspinner").hide();
+            //alert(jQuery('lp_admin_invoice_ajax_result').html(''););
+            jQuery('.lp_admin_invoice_ajax_result').html(res);
+            jQuery('.lpinvoiceadminpop').trigger('click');
+        }
+    });
+    e.preventDefault();
+});
+
+jQuery(document).ready(function() {
+    /* event google address */
+    function initializeEventAddr() {
+        if(jQuery('#event_loc').length){
+            var input = document.getElementById('event_loc');
+            var autocomplete = new google.maps.places.Autocomplete(input);
+            google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                var place = autocomplete.getPlace();
+                var lat = place.geometry.location.lat();
+                var lon =  place.geometry.location.lng();
+                jQuery('input#event_lat').val(lat);
+                jQuery('input#event_lon').val(lon);
+            });
+        }
+    }
+    if(jQuery('#event_loc').length) {
+        google.maps.event.addDomListener(window, 'load', initializeEventAddr);
+    }
+});
+
+
+
+
+
+
+//new code for 5.0 v
+jQuery(window).load(function(){
+	var myVarCycle = setInterval(detectCatsDisplay, 1000);
+	 
+	function detectCatsDisplay() {
+	  if(jQuery('div.editor-post-taxonomies__hierarchical-terms-choice')[0]){
+		  //run ajax on loading taxonomy categorychecklist
+				var listID = jQuery('#post_ID').val();
+				var termID = jQuery('.editor-post-taxonomies__hierarchical-terms-list[aria-label="Available Categories"] input:checked').map(function() {
+					return this.value
+				}).get();
+				if (termID != undefined && termID != '') {
+					jQuery('.extrafieldsdiv').remove();
+					jQuery.ajax({
+						type: 'POST',
+						dataType: 'json',
+						url: ajaxurl,
+						async: false,
+						data: {
+							'action': 'lp_get_fields',
+							'term_id': termID,
+							'list_id': listID,
+						},
+						success: function(data) {
+							if (data) {
+								$output1 = "<div id='commentstatusdiv12' class='lp-metaboxes postbox extrafieldsdiv'><h2 class='hndle ui-sortable-handle'><span>Extra Fields</span></h2><div class='inside'><table class='form-table lp-metaboxes'><tbody>";
+								$outputf = "<div id='commentstatusdiv' class='lp-metaboxes postbox extrafieldsdiv'><h2 class='hndle ui-sortable-handle'><span>Please select Features</span></h2><div class='inside'><table class='form-table lp-metaboxes'><tbody>";
+								$output2 = "</tbody></table></div></div>";
+								if (data.features != null) {
+									jQuery('#postbox-container-2').append($outputf + data.features + $output2)
+								} else {
+									jQuery('#postbox-container-2').append($output1 + '<p>No Fields Associated</p>' + $output2)
+								}
+								if (data.fields != null) {
+									jQuery('#postbox-container-2').append($output1 + data.fields + $output2)
+								} else {
+									jQuery('#postbox-container-2').append($output1 + '<p>No Fields Associated</p>' + $output2)
+								}
+							}
+						}
+					})
+				} else {
+					jQuery('.extrafieldsdiv').remove()
+				}
+		  
+		  //ends
+		  stopInternvalTax();
+	  }
+	}
+	 
+	function stopInternvalTax() {
+	  clearInterval(myVarCycle);
+	}
+});
+
+//for compatibitly with older versio of wp . . before 5.0
+
+
+jQuery(document).ready(function($){
+	
+	jQuery(document).on('change', '#listing-categorychecklist input', function() {
+        var listID = jQuery('#post_ID').val();
+        var termID = jQuery('#listing-categorychecklist input:checked').map(function() {
+            return this.value
+        }).get();
+        if (termID != undefined && termID != '') {
+            jQuery('.extrafieldsdiv').remove();
+            jQuery("#listing-categorychecklist input").attr("disabled", !0);
+            jQuery.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: ajaxurl,
+                data: {
+                    'action': 'lp_get_fields',
+                    'term_id': termID,
+                    'list_id': listID,
+                },
+                success: function(data) {
+                    jQuery("#listing-categorychecklist input").removeAttr("disabled");
+                    if (data) {
+                        $output1 = "<div id='commentstatusdiv12' class='lp-metaboxes postbox extrafieldsdiv'><h2 class='hndle ui-sortable-handle'><span>Extra Fields</span></h2><div class='inside'><table class='form-table lp-metaboxes'><tbody>";
+                        $outputf = "<div id='commentstatusdiv' class='lp-metaboxes postbox extrafieldsdiv'><h2 class='hndle ui-sortable-handle'><span>Please select Features</span></h2><div class='inside'><table class='form-table lp-metaboxes'><tbody>";
+                        $output2 = "</tbody></table></div></div>";
+                        if (data.features != null) {
+                            jQuery('#postbox-container-2').append($outputf + data.features + $output2)
+                        } else {
+                            jQuery('#postbox-container-2').append($output1 + '<p>No Fields Associated</p>' + $output2)
+                        }
+                        if (data.fields != null) {
+                            jQuery('#postbox-container-2').append($output1 + data.fields + $output2)
+                        } else {
+                            jQuery('#postbox-container-2').append($output1 + '<p>No Fields Associated</p>' + $output2)
+                        }
+                    }
+                }
+            })
+        } else {
+            jQuery('.extrafieldsdiv').remove()
+        }
+    });
+	
+});
+
+
+jQuery(window).load(function($) {
+        var listID = jQuery('#post_ID').val();
+        var termID = jQuery('#listing-categorychecklist input:checked').map(function() {
+            return this.value
+        }).get();
+        if (termID != undefined && termID != '') {
+            jQuery('.extrafieldsdiv').remove();
+            jQuery.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: ajaxurl,
+                data: {
+                    'action': 'lp_get_fields',
+                    'term_id': termID,
+                    'list_id': listID,
+                },
+                success: function(data) {
+                    if (data) {
+                        $output1 = "<div id='commentstatusdiv12' class='lp-metaboxes postbox extrafieldsdiv'><h2 class='hndle ui-sortable-handle'><span>Extra Fields</span></h2><div class='inside'><table class='form-table lp-metaboxes'><tbody>";
+                        $outputf = "<div id='commentstatusdiv' class='lp-metaboxes postbox extrafieldsdiv'><h2 class='hndle ui-sortable-handle'><span>Please select Features</span></h2><div class='inside'><table class='form-table lp-metaboxes'><tbody>";
+                        $output2 = "</tbody></table></div></div>";
+                        if (data.features != null) {
+                            jQuery('#postbox-container-2').append($outputf + data.features + $output2)
+                        } else {
+                            jQuery('#postbox-container-2').append($output1 + '<p>No Fields Associated</p>' + $output2)
+                        }
+                        if (data.fields != null) {
+                            jQuery('#postbox-container-2').append($output1 + data.fields + $output2)
+                        } else {
+                            jQuery('#postbox-container-2').append($output1 + '<p>No Fields Associated</p>' + $output2)
+                        }
+                    }
+                }
+            })
+        } else {
+            jQuery('.extrafieldsdiv').remove()
+        }
+    });
+//end for compatibitly with older versio of wp . . before 5.0
+

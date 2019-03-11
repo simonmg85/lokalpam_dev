@@ -82,11 +82,12 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
     }
 
     public function getRawDefaultButton() {
-        return '<span class="nsl-button nsl-button-default nsl-button-' . $this->id . '" style="background-color:' . $this->color . ';">' . $this->svg . '<span>{{label}}</span></span>';
+
+        return '<span class="nsl-button nsl-button-default nsl-button-' . $this->id . '" style="background-color:' . $this->color . ';"><span class="nsl-button-svg-container">' . $this->svg . '</span><span class="nsl-button-label-container">{{label}}</span></span>';
     }
 
     public function getRawIconButton() {
-        return '<span class="nsl-button nsl-button-icon nsl-button-' . $this->id . '" style="background-color:' . $this->color . ';">' . $this->svg . '</span>';
+        return '<span class="nsl-button nsl-button-icon nsl-button-' . $this->id . '" style="background-color:' . $this->color . ';"><span class="nsl-button-svg-container">' . $this->svg . '</span></span>';
     }
 
     public function getDefaultButton($label) {
@@ -121,6 +122,10 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
         $args = array('loginSocial' => $this->getId());
 
         return add_query_arg($args, NextendSocialLogin::getLoginUrl());
+    }
+
+    public function getRedirectUriForApp() {
+        return $this->getRedirectUri();
     }
 
     public function needPro() {
@@ -280,6 +285,16 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
             ));
         }
 
+        // Redirect if the registration is blocked by another Plugin like Cerber.
+        if (function_exists('cerber_is_allowed')) {
+            $allowed = cerber_is_allowed();
+            if (!$allowed) {
+                global $wp_cerber;
+                $error = $wp_cerber->getErrorMsg();
+                \NSL\Notices::addError($error);
+                $this->redirectToLoginForm();
+            }
+        }
 
         do_action($this->id . '_login_action_before', $this);
 
@@ -332,14 +347,28 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
                     <title><?php _e('Authentication successful', 'nextend-facebook-connect'); ?></title>
                     <script type="text/javascript">
 						try {
-                            if (window.opener !== null) {
-                                window.opener.location = <?php echo wp_json_encode($this->getLoginUrl()); ?>;
-                                window.close();
+                            if (window.opener !== null && window.opener !== window) {
+                                var sameOrigin = true;
+                                try {
+                                    var currentOrigin = window.location.protocol + '//' + window.location.hostname;
+                                    if (window.opener.location.href.substring(0, currentOrigin.length) !== currentOrigin) {
+                                        sameOrigin = false;
+                                    }
+
+                                } catch (e) {
+                                    // Blocked cross origin
+                                    sameOrigin = false;
+                                }
+                                if (sameOrigin) {
+                                    window.opener.location = <?php echo wp_json_encode($this->getLoginUrl()); ?>;
+                                    window.close();
+                                } else {
+                                    window.location.reload(true);
+                                }
                             } else {
                                 window.location.reload(true);
                             }
-                        }
-                        catch (e) {
+                        } catch (e) {
                             window.location.reload(true);
                         }
                     </script>
@@ -448,11 +477,16 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
     }
 
     protected function unlinkUser() {
-        $user_info = wp_get_current_user();
-        if ($user_info->ID) {
-            $this->removeConnectionByUserID($user_info->ID);
+        //Filter to disable unlinking social accounts
+        $unlinkAllowed = apply_filters('nsl_allow_unlink', true);
+        
+        if ($unlinkAllowed) {
+            $user_info = wp_get_current_user();
+            if ($user_info->ID) {
+                $this->removeConnectionByUserID($user_info->ID);
 
-            return true;
+                return true;
+            }
         }
 
         return false;
@@ -585,6 +619,8 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
             if (isset($_GET['action']) && $_GET['action'] == 'unlink') {
                 if ($this->unlinkUser()) {
                     \NSL\Notices::addSuccess(__('Unlink successful.', 'nextend-facebook-connect'));
+                } else {
+                    \NSL\Notices::addError(__('Unlink is not allowed!', 'nextend-facebook-connect'));
                 }
             }
 
@@ -707,6 +743,13 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
                 } else {
                     $redirect_to = $requested_redirect_to;
                 }
+                $redirect_to = wp_sanitize_redirect($redirect_to);
+                $redirect_to = wp_validate_redirect($redirect_to, site_url());
+
+                $redirect_to = $this->validateRedirect($redirect_to);
+            } else if (!empty($_GET['redirect']) && NextendSocialLogin::isAllowedRedirectUrl($_GET['redirect'])) {
+                $redirect_to = $_GET['redirect'];
+
                 $redirect_to = wp_sanitize_redirect($redirect_to);
                 $redirect_to = wp_validate_redirect($redirect_to, site_url());
 
@@ -837,11 +880,23 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
                 <title><?php echo __('Authentication failed', 'nextend-facebook-connect'); ?></title>
                 <script type="text/javascript">
 					try {
-                        if (window.opener !== null) {
-                            window.close();
+                        if (window.opener !== null && window.opener !== window) {
+                            var sameOrigin = true;
+                            try {
+                                var currentOrigin = window.location.protocol + '//' + window.location.hostname;
+                                if (window.opener.location.href.substring(0, currentOrigin.length) !== currentOrigin) {
+                                    sameOrigin = false;
+                                }
+
+                            } catch (e) {
+                                // Blocked cross origin
+                                sameOrigin = false;
+                            }
+                            if (sameOrigin) {
+                                window.close();
+                            }
                         }
-                    }
-                    catch (e) {
+                    } catch (e) {
                     }
                     window.location = <?php echo wp_json_encode($url); ?>;
                 </script>
@@ -914,9 +969,22 @@ abstract class NextendSocialProvider extends NextendSocialProviderDummy {
             <title><?php echo $title; ?></title>
             <script type="text/javascript">
 				try {
-                    if (window.opener !== null) {
-                        window.opener.location = <?php echo wp_json_encode($url); ?>;
-                        window.close();
+                    if (window.opener !== null && window.opener !== window) {
+                        var sameOrigin = true;
+                        try {
+                            var currentOrigin = window.location.protocol + '//' + window.location.hostname;
+                            if (window.opener.location.href.substring(0, currentOrigin.length) !== currentOrigin) {
+                                sameOrigin = false;
+                            }
+
+                        } catch (e) {
+                            // Blocked cross origin
+                            sameOrigin = false;
+                        }
+                        if (sameOrigin) {
+                            window.opener.location = <?php echo wp_json_encode($url); ?>;
+                            window.close();
+                        }
                     }
                 }
                 catch (e) {

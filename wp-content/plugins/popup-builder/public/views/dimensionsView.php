@@ -30,7 +30,7 @@
 			<div class="sg-hide sg-full-width" id="responsive-dimension-wrapper">
 				<div class="row form-group">
 					<label class="col-md-5<?php echo $subOptionClass; ?>" for="max-height"><?php _e('Size', SG_POPUP_TEXT_DOMAIN)  ?>:</label>
-					<div class="col-md-6"><?php echo AdminHelper::createSelectBox($defaultData['responsiveDimensions'], esc_html($popupTypeObj->getOptionValue('sgpb-responsive-dimension-measure')), array('name' => 'sgpb-responsive-dimension-measure', 'class'=>'js-sg-select2')); ?></div>
+					<div class="col-md-6"><?php echo AdminHelper::createSelectBox($defaultData['responsiveDimensions'], esc_html($popupTypeObj->getOptionValue('sgpb-responsive-dimension-measure')), array('name' => 'sgpb-responsive-dimension-measure', 'class'=>'js-sg-select2 sgpb-responsive-mode-change-js')); ?></div>
 				</div>
 			</div>
 			<div class="row form-group">

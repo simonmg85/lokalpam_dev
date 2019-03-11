@@ -1,69 +1,147 @@
-;(function($) {
+/* global wpforms_builder */
 
-	var WPFormsStripe = {
+/**
+ * WPForms Stripe function.
+ *
+ * @since 1.2.0
+*/
+var WPFormsStripe = window.WPFormsStripe || ( function( document, window, $ ) {
+
+	'use strict';
+
+	/**
+	 * Public functions and properties.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @type {Object}
+	 */
+	var app = {
 
 		/**
 		 * Start the engine.
 		 *
-		 * @since 1.0.0
+		 * @since 1.2.0
 		 */
 		init: function() {
 
-			WPFormsStripe.bindUIActions();
+			app.bindUIActions();
 
-			$(document).ready(WPFormsStripe.ready);
+			$( document ).ready( app.ready );
 		},
 
 		/**
-		 * Document ready.
+		 * Initialized once the DOM and Providers are fully loaded.
 		 *
-		 * @since 1.0.0
+		 * @since 1.2.0
 		 */
 		ready: function() {
 
-			WPFormsStripe.creditcardFieldCheck();
+			app.settingsDisplay();
+			app.recurringSettingsDisplay();
 		},
 
 		/**
-		 * Element bindings.
+		 * Process various events as a response to UI interactions.
 		 *
-		 * @since 1.0.0
+		 * @since 1.2.0
 		 */
-		bindUIActions: function() {
+		bindUIActions: function () {
 
-			// Check for CC field
-			$(document).on('wpformsFieldUpdate', WPFormsStripe.creditcardFieldCheck);
+			$( document ).on( 'wpformsFieldUpdate', app.settingsDisplay );
+			$( document ).on( 'wpformsSaved', app.requiredFieldsCheck );
 		},
 
 		/**
-		 * Check to see if we have a CC field in the form. If we do not then
-		 * alert the user via a message in the Stripe provider panel.
+		 * Toggles visibility of the Stripe addon settings.
 		 *
-		 * @since 1.0.0
+		 * If a credit card field has been added then reveal the settings,
+		 * otherwise hide them.
+		 *
+		 * @since 1.2.0
 		 */
-		creditcardFieldCheck: function(e, fields) {
+		settingsDisplay: function() {
 
-			var hasCreditCard = false;
+			var $alert   = $( '#stripe-credit-card-alert' ),
+				$content = $( '#stripe-provider' );
 
-			// Previously checked fields or used getFields, but that is less
-			// performant than simply checking the DOM.
-			if ( $('.wpforms-field-option-credit-card').length ) {
-				hasCreditCard = true;
-			}
-
-			var $message = $('.stripe-missing-cc'),
-				$content = $('#stripe-provider');
-
-			if ( ! hasCreditCard ) {
-				$message.show();
-				$content.find('.wpforms-panel-field').hide();
-				$content.find('#wpforms-panel-field-stripe-enable').prop('checked', false);
+			if ( $( '.wpforms-field-option-credit-card' ).length ) {
+				$alert.hide();
+				$content.find( '.wpforms-panel-field, .wpforms-conditional-block-panel, h2' ).show();
 			} else {
-				$message.hide();
-				$content.find('.wpforms-panel-field').show();
+				$alert.show();
+				$content.find( '.wpforms-panel-field, .wpforms-conditional-block-panel, h2' ).hide();
+				$content.find( '#wpforms-panel-field-stripe-enable' ).prop( 'checked', false );
 			}
-		}
-	}
+		},
 
-	WPFormsStripe.init();
-})(jQuery);
+		/**
+		 * Toggles the visibility of the recurring related settings.
+		 *
+		 * @since 1.2.0
+		 */
+		recurringSettingsDisplay: function() {
+
+			/* jshint ignore:start */
+			$( '#wpforms-panel-field-stripe-recurring-enable' ).conditions( {
+				conditions: {
+					element: '#wpforms-panel-field-stripe-recurring-enable',
+					type: 'checked',
+					operator: 'is'
+				},
+				actions: {
+					if: {
+						element: '#wpforms-panel-field-stripe-recurring-period-wrap,#wpforms-panel-field-stripe-recurring-conditional_logic-wrap,#wpforms-conditional-groups-payments-stripe-recurring,#wpforms-panel-field-stripe-recurring-email-wrap,#wpforms-panel-field-stripe-recurring-name-wrap',
+						action: 'show'
+					},
+					else: {
+						element: '#wpforms-panel-field-stripe-recurring-period-wrap,#wpforms-panel-field-stripe-recurring-conditional_logic-wrap,#wpforms-conditional-groups-payments-stripe-recurring,#wpforms-panel-field-stripe-recurring-email-wrap,#wpforms-panel-field-stripe-recurring-name-wrap',
+						action:  'hide'
+					}
+				},
+				effect: 'appear'
+			} );
+			/* jshint ignore:end */
+		},
+
+		/**
+		 * On form save notify users about required fields.
+		 *
+		 * @since 1.2.0
+		 */
+		requiredFieldsCheck: function() {
+
+			if (
+				! $( '#wpforms-panel-field-stripe-enable' ).is( ':checked' )
+				|| ! $( '#wpforms-panel-field-stripe-recurring-enable' ).is( ':checked' )
+			) {
+				return;
+			}
+
+			if ( $( '#wpforms-panel-field-stripe-recurring-email' ).val() ) {
+				return;
+			}
+
+			$.alert( {
+				title: wpforms_builder.heads_up,
+				content: wpforms_builder.stripe_recurring_email,
+				icon: 'fa fa-exclamation-circle',
+				type: 'orange',
+				buttons: {
+					confirm: {
+						text: wpforms_builder.ok,
+						btnClass: 'btn-confirm',
+						keys: [ 'enter' ]
+					}
+				}
+			} );
+		}
+	};
+
+	// Provide access to public functions/properties.
+	return app;
+
+})( document, window, jQuery );
+
+// Initialize.
+WPFormsStripe.init();

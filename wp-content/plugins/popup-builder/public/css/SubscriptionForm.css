@@ -10,6 +10,11 @@
 	font-size: 13px;
 }
 
+.sgpb-form-wrapper .sgpb-field-textarea-wrapper,
+.sgpb-form-wrapper .sgpb-field-dropdown-wrapper {
+	margin: 5px  auto !important;
+}
+
 .sgpb-form-wrapper input[type="submit"],
 .sgpb-form-wrapper input[type="button"] {
 	cursor: pointer;
@@ -104,4 +109,61 @@
 	line-height: 1.4em;
 	font-size: 13px;
 	font-family: BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+}
+
+/*form builder styles*/
+.sgpb-form-wrapper select {
+	width: 100%;
+	padding: 7px;
+	border: 1px solid #CCCCCC;
+}
+
+.sgpb-choice-option-label,
+.sgpb-choice-option-wrapper {
+	display: inline-block !important;
+}
+
+.sgpb-choice-option-wrapper input,
+.sgpb-field-gdpr-wrapper input[type=checkbox] {
+	margin: 0  10px 0 0px !important;
+}
+
+.sgpb-buttons-wrapper,
+.sgpb-field-gdpr-wrapper {
+	text-align: left;
+}
+
+.sgpb-subs-text-checkbox-gdpr {
+	font-size: 13px;
+	text-align: left;
+}
+
+.sgpb-label-wrapper {
+	text-align: left;
+	font-weight: 900;
+}
+
+.sgpb-field-gdpr-wrapper,
+.sgpb-label-gdpr-wrapper {
+	display: inline-block;
+}
+
+.sgpb-field-wrapper {
+	max-width: 100% !important;
+}
+
+.sgpb-subscription-plus-form-error-placement label {
+	color: #ff0000;
+}
+
+.sgpb-field-checkbox-wrapper .sgpb-sub-option-label {
+	padding-left: 0 !important;
+}
+
+.sgpb-templates-shortcodes-wrapper .row {
+	margin-bottom: 10px;
+}
+
+.sgpb-subscription-plus-form {
+    display: inline-block;
 }

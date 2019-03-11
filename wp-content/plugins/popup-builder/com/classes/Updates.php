@@ -74,6 +74,11 @@ class Updates
 			}
 
 			$version = @constant('SG_VERSION_'.$key);
+
+			// If the version of the extension is not found, update will not possibly be shown
+			if(empty($version)) {
+				continue;
+			}
 			$sgpbUpdater = new EDD_SL_Plugin_Updater($storeURL, $pluginMainFilePath, array(
 				'version' 	=> $version,		// current version number
 				'license' 	=> $licenseKey,	// license key (used get_option above to retrieve from DB)
@@ -243,5 +248,3 @@ class Updates
 		}
 	}
 }
-
-new Updates();

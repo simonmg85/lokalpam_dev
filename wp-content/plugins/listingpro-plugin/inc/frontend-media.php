@@ -51,7 +51,7 @@ class Listingpro_Front_End_Media_Upload {
 	function frontend_shortcode( $args ) {
 		if ( current_user_can( 'upload_files' ) ) {
 			$str = esc_html__( 'Select File', 'listingpro-plugin' );
-			return '<input type="hidden" class="frontend-input" name="frontend_input"><input class="frontend-button" type="button" value="' . $str . '" class="button upload-btn" style="position: relative; z-index: 1;"><div class="clearfix"></div><img class="frontend-image" />';
+			return '<input type="hidden" class="frontend-input" name="frontend_input"><label><input class="frontend-button" type="button" value="' . $str . '" class="button upload-btn" style="position: relative; z-index: 1;"> </label><div class="clearfix"></div><img class="frontend-image" />';
 		}
 
 		return esc_html__( 'Please Login To Upload', 'listingpro-plugin' );

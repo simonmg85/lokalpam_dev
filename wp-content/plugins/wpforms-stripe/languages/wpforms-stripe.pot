@@ -1,155 +1,228 @@
-# Copyright (C) 2017 WPForms Stripe
+# Copyright (C) 2019 WPForms Stripe
 # This file is distributed under the same license as the WPForms Stripe package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WPForms Stripe 1.1.1\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wpforms-stripe\n"
-"POT-Creation-Date: 2017-08-24 13:41:45+00:00\n"
+"Project-Id-Version: WPForms Stripe\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: WPForms <support@wpforms.com>\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: class-stripe.php:82
-msgid ""
-"Keys can be found in your Stripe account dashboard. For more information see "
-"our <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">Stripe "
-"documentation</a>."
+#. translators: %s - WPForms.com documentation page URL.
+#: wpforms-stripe.php:62
+msgid "The WPForms Stripe plugin has been deactivated. Your site is running an outdated version of PHP that is no longer supported and is not compatible with the Stripe addon. <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">Read more</a> for additional information."
 msgstr ""
 
-#: class-stripe.php:86
-msgid "Stripe"
+#: src/Process.php:182
+msgid "Stripe payment stopped by conditional logic."
 msgstr ""
 
-#: class-stripe.php:93
-msgid "Test Secret Key"
+#: src/Process.php:196
+msgid "Stripe payment stopped, missing token."
 msgstr ""
 
-#: class-stripe.php:98
-msgid "Test Publishable Key"
+#: src/Process.php:203
+msgid "Stripe payment stopped, missing keys."
 msgstr ""
 
-#: class-stripe.php:103
-msgid "Live Secret Key"
+#: src/Process.php:209
+msgid "Stripe payment stopped, missing payment fields."
 msgstr ""
 
-#: class-stripe.php:108
-msgid "Live Publishable Key"
+#: src/Process.php:216
+msgid "Stripe payment stopped, invalid/empty amount."
 msgstr ""
 
-#: class-stripe.php:113
-msgid "Test Mode"
+#: src/Process.php:218
+msgid "Stripe payment stopped, amount less than minimum charge required."
 msgstr ""
 
-#: class-stripe.php:114
-msgid "In test mode and no live Stripe transactions are processed."
+#: src/Process.php:367, src/Process.php:504
+msgid "Too many requests made to the API too quickly."
 msgstr ""
 
-#: class-stripe.php:180
-msgid "Stripe Payment stopped by conditional logic"
+#: src/Process.php:371, src/Process.php:508
+msgid "Invalid parameters were supplied to Stripe API."
 msgstr ""
 
-#: class-stripe.php:193
-msgid "Stripe Payment stopped, missing token"
+#: src/Process.php:375, src/Process.php:512
+msgid "Authentication with Stripe API failed."
 msgstr ""
 
-#: class-stripe.php:198
-msgid "Stripe Payment stopped, missing keys"
+#: src/Process.php:379, src/Process.php:516
+msgid "Network communication with Stripe failed."
 msgstr ""
 
-#: class-stripe.php:206
-msgid "Stripe Payment stopped, missing payment fields"
+#: src/Process.php:383, src/Process.php:520
+msgid "Unable to process Stripe payment."
 msgstr ""
 
-#: class-stripe.php:212
-msgid "Stripe Payment stopped, invalid/empty amount"
+#: src/Process.php:388, src/Process.php:525
+msgid "Unable to process payment."
 msgstr ""
 
-#: class-stripe.php:303 class-stripe.php:310 class-stripe.php:317
-#: class-stripe.php:324 class-stripe.php:331 class-stripe.php:338
-#: class-stripe.php:345
-msgid "Credit Card Payment Error: "
+#. translators: %s - error message.
+#. translators: %s - error message.
+#: src/Process.php:396, src/Process.php:533
+msgid "Credit Card Payment Error: %s"
 msgstr ""
 
-#: class-stripe.php:350
-msgid "Stripe Payment stopped by error"
+#: src/Process.php:402
+msgid "Stripe payment stopped by error"
 msgstr ""
 
-#: class-stripe.php:490
-msgid ""
-"Before enabling Stripe payments you need to setup your Stripe API keys (both "
-"Live and Test) on the <a href=\"%s\">Settings page</a>."
+#: src/Process.php:421
+msgid "Stripe subscription payment stopped, missing form settings."
 msgstr ""
 
-#: class-stripe.php:496
+#: src/Process.php:426
+msgid "Stripe subscription payment stopped, customer email not found."
+msgstr ""
+
+#: src/Process.php:539
+msgid "Stripe subscription payment stopped by error"
+msgstr ""
+
+#: src/Process.php:593, src/Admin/Builder.php:196
+msgid "Daily"
+msgstr ""
+
+#: src/Process.php:601, src/Admin/Builder.php:197
+msgid "Weekly"
+msgstr ""
+
+#: src/Process.php:609, src/Admin/Builder.php:198
+msgid "Monthly"
+msgstr ""
+
+#: src/Process.php:617, src/Admin/Builder.php:199
+msgid "Quarterly"
+msgstr ""
+
+#: src/Process.php:625, src/Admin/Builder.php:200
+msgid "Semi-Yearly"
+msgstr ""
+
+#: src/Process.php:634, src/Admin/Builder.php:201
+msgid "Yearly"
+msgstr ""
+
+#: src/Admin/Builder.php:51
+msgid "When recurring subscription payments are enabled, the Customer Email is required. Please go to the Stripe payment settings and select a Customer Email."
+msgstr ""
+
+#. translators: %s - Admin area Payments settings page URL.
+#: src/Admin/Builder.php:88
+msgid "Before enabling Stripe payments you need to setup your Stripe API keys (both Live and Test) on the <a href=\"%s\">Settings page</a>."
+msgstr ""
+
+#: src/Admin/Builder.php:102
 msgid "To use Stripe payments you need to add a Credit Card field to the form"
 msgstr ""
 
-#: class-stripe.php:503
+#: src/Admin/Builder.php:110
 msgid "Enable Stripe payments"
 msgstr ""
 
-#: class-stripe.php:514
+#: src/Admin/Builder.php:122
 msgid "Payment Description"
 msgstr ""
 
-#: class-stripe.php:517
-msgid "Enter your payment description. Eg: Donation for the soccer team."
+#: src/Admin/Builder.php:125
+msgid "Enter your payment description. Eg: Donation for the soccer team. Only used for standard one-time payments."
 msgstr ""
 
-#: class-stripe.php:525
+#: src/Admin/Builder.php:134
 msgid "Stripe Payment Receipt"
 msgstr ""
 
-#: class-stripe.php:529
-msgid "-- Select Email --"
+#: src/Admin/Builder.php:138, src/Admin/Builder.php:217
+msgid "--- Select Email ---"
 msgstr ""
 
-#: class-stripe.php:530
-msgid ""
-"If you would like to have Stripe send a receipt after payment, select the "
-"email field to use. This is optional but recommended."
+#: src/Admin/Builder.php:139
+msgid "If you would like to have Stripe send a receipt after payment, select the email field to use. This is optional but recommended. Only used for standard one-time payments."
 msgstr ""
 
-#: class-stripe.php:541
+#: src/Admin/Builder.php:150, src/Admin/Builder.php:230
 msgid "Process"
 msgstr ""
 
-#: class-stripe.php:542
+#: src/Admin/Builder.php:151, src/Admin/Builder.php:231
 msgid "Don't process"
 msgstr ""
 
-#: class-stripe.php:544
+#: src/Admin/Builder.php:153
 msgid "this charge if"
 msgstr ""
 
-#: class-stripe.php:545
-msgid "Stripe payment"
+#: src/Admin/Builder.php:164
+msgid "Enable recurring subscription payments"
 msgstr ""
 
-#: class-stripe.php:548
-msgid ""
-"Install the <a href=\"%s\">Conditional Logic add-on</a> to enable "
-"conditional logic for Stripe payments."
+#: src/Admin/Builder.php:177
+msgid "Plan Name"
 msgstr ""
 
-#. Plugin Name of the plugin/theme
-msgid "WPForms Stripe"
+#: src/Admin/Builder.php:181
+msgid "Enter the subscription name. Eg: Email Newsletter. Subscription period and price are automatically appended. If left empty the form name will be used."
 msgstr ""
 
-#. #-#-#-#-#  wpforms-stripe.pot (WPForms Stripe 1.1.1)  #-#-#-#-#
-#. Plugin URI of the plugin/theme
-#. #-#-#-#-#  wpforms-stripe.pot (WPForms Stripe 1.1.1)  #-#-#-#-#
-#. Author URI of the plugin/theme
-msgid "https://wpforms.com"
+#: src/Admin/Builder.php:190
+msgid "Recurring Period"
 msgstr ""
 
-#. Description of the plugin/theme
-msgid "Stripe integration with WPForms."
+#: src/Admin/Builder.php:203
+msgid "How often you would like the charge to recur."
 msgstr ""
 
-#. Author of the plugin/theme
-msgid "WPForms"
+#: src/Admin/Builder.php:212
+msgid "Customer Email"
+msgstr ""
+
+#: src/Admin/Builder.php:218
+msgid "Select the field that contains the customers email address. This field is required."
+msgstr ""
+
+#: src/Admin/Builder.php:233
+msgid "payment as recurring if"
+msgstr ""
+
+#. translators: %s - WPForms.com Stripe documentation article URL.
+#: src/Admin/Settings.php:50
+msgid "Keys can be found in your Stripe account dashboard. For more information see our <a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\">Stripe documentation</a>."
+msgstr ""
+
+#: src/Admin/Settings.php:64
+msgid "Stripe"
+msgstr ""
+
+#: src/Admin/Settings.php:71
+msgid "Test Secret Key"
+msgstr ""
+
+#: src/Admin/Settings.php:76
+msgid "Test Publishable Key"
+msgstr ""
+
+#: src/Admin/Settings.php:81
+msgid "Live Secret Key"
+msgstr ""
+
+#: src/Admin/Settings.php:86
+msgid "Live Publishable Key"
+msgstr ""
+
+#: src/Admin/Settings.php:91
+msgid "Test Mode"
+msgstr ""
+
+#: src/Admin/Settings.php:92
+msgid "In test mode and no live Stripe transactions are processed."
 msgstr ""

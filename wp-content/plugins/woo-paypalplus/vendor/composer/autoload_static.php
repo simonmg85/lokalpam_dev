@@ -4,8 +4,12 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit276a3c142aa9ef36c5dc336e6f6a8230
+class ComposerStaticInit3c99a908a579340cdf99b50028015716
 {
+    public static $files = array (
+        '20f86fbd3fee21c74310ef0ebd64eec8' => __DIR__ . '/../..' . '/src/inc/functions.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
         'W' => 
         array (
@@ -391,11 +395,16 @@ class ComposerStaticInit276a3c142aa9ef36c5dc336e6f6a8230
         'Psr\\Log\\NullLogger' => __DIR__ . '/..' . '/psr/log/Psr/Log/NullLogger.php',
         'Psr\\Log\\Test\\DummyTest' => __DIR__ . '/..' . '/psr/log/Psr/Log/Test/LoggerInterfaceTest.php',
         'Psr\\Log\\Test\\LoggerInterfaceTest' => __DIR__ . '/..' . '/psr/log/Psr/Log/Test/LoggerInterfaceTest.php',
+        'Psr\\Log\\Test\\TestLogger' => __DIR__ . '/..' . '/psr/log/Psr/Log/Test/TestLogger.php',
         'WCPayPalPlus\\Backend' => __DIR__ . '/../..' . '/src/Backend.php',
         'WCPayPalPlus\\Common' => __DIR__ . '/../..' . '/src/Common.php',
         'WCPayPalPlus\\Controller' => __DIR__ . '/../..' . '/src/Controller.php',
         'WCPayPalPlus\\Exception\\WCPayPalPlusException' => __DIR__ . '/../..' . '/src/Exception/WCPayPalPlusException.php',
         'WCPayPalPlus\\Frontend' => __DIR__ . '/../..' . '/src/Frontend.php',
+        'WCPayPalPlus\\NetworkState' => __DIR__ . '/../..' . '/src/NetworkState.php',
+        'WCPayPalPlus\\Notice\\Admin' => __DIR__ . '/../..' . '/src/Notice/Admin.php',
+        'WCPayPalPlus\\Notice\\DismissibleNoticeOption' => __DIR__ . '/../..' . '/src/Notice/DismissibleNoticeOption.php',
+        'WCPayPalPlus\\PayPalModel72MonkeyPatch' => __DIR__ . '/../..' . '/src/PayPalModel72MonkeyPatch.php',
         'WCPayPalPlus\\Plugin' => __DIR__ . '/../..' . '/src/Plugin.php',
         'WCPayPalPlus\\WC\\CredentialVerification' => __DIR__ . '/../..' . '/src/WC/CredentialVerification.php',
         'WCPayPalPlus\\WC\\DefaultGatewayOverride' => __DIR__ . '/../..' . '/src/WC/DefaultGatewayOverride.php',
@@ -417,6 +426,7 @@ class ComposerStaticInit276a3c142aa9ef36c5dc336e6f6a8230
         'WCPayPalPlus\\WC\\Payment\\OrderDataCommon' => __DIR__ . '/../..' . '/src/WC/Payment/OrderDataCommon.php',
         'WCPayPalPlus\\WC\\Payment\\OrderDataProcessor' => __DIR__ . '/../..' . '/src/WC/Payment/OrderDataProcessor.php',
         'WCPayPalPlus\\WC\\Payment\\OrderDataProvider' => __DIR__ . '/../..' . '/src/WC/Payment/OrderDataProvider.php',
+        'WCPayPalPlus\\WC\\Payment\\OrderDataTest' => __DIR__ . '/../..' . '/src/WC/Payment/OrderDataTest.php',
         'WCPayPalPlus\\WC\\Payment\\OrderDiscountData' => __DIR__ . '/../..' . '/src/WC/Payment/OrderDiscountData.php',
         'WCPayPalPlus\\WC\\Payment\\OrderFeeData' => __DIR__ . '/../..' . '/src/WC/Payment/OrderFeeData.php',
         'WCPayPalPlus\\WC\\Payment\\OrderItemData' => __DIR__ . '/../..' . '/src/WC/Payment/OrderItemData.php',
@@ -440,10 +450,10 @@ class ComposerStaticInit276a3c142aa9ef36c5dc336e6f6a8230
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit276a3c142aa9ef36c5dc336e6f6a8230::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit276a3c142aa9ef36c5dc336e6f6a8230::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit276a3c142aa9ef36c5dc336e6f6a8230::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit276a3c142aa9ef36c5dc336e6f6a8230::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit3c99a908a579340cdf99b50028015716::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit3c99a908a579340cdf99b50028015716::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit3c99a908a579340cdf99b50028015716::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit3c99a908a579340cdf99b50028015716::$classMap;
 
         }, null, ClassLoader::class);
     }

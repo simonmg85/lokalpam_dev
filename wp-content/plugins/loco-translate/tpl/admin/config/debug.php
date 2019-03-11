@@ -30,9 +30,9 @@ $this->extend('../layout');
             <dl>
                 <dt>UTF-8 rendering:</dt>
                 <dd><?php echo $encoding->OK?> <span id="loco-utf8-check"><?php echo $encoding->tick?></span></dd>
-                
+
                 <dt>Multibyte support:</dt>
-                <dd><?php echo $encoding->mbstring?'Yes':'No'?></dd>
+                <dd><?php echo $encoding->mbstring?></dd>
             </dl>
         </div>
     
@@ -48,8 +48,8 @@ $this->extend('../layout');
                 <dt>JSON decoding:</dt>
                 <dd><?php echo $encoding->json?></dd>
     
-                <dt>Ajax test result:</dt>
-                <dd id="loco-ajax-check"><span class="inline-spinner"> </span></dd>
+                <dt class="jsonly">Ajax test result:</dt>
+                <dd class="jsonly" id="loco-ajax-check"><span class="inline-spinner"> </span></dd>
             </dl>
         </div>
     

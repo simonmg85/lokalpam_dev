@@ -21,7 +21,7 @@ class Agreement {
 	protected $_license;
 
 	const _EP_AGREEMENT = 'agreement/v1/text/';
-	const _EP_WIZARD = 'agreement/v1/wizard/{name}/{lang}';
+	const _EP_WIZARD = 'agreement/v1/wizard/%s/%s';
 
 	const _RESP_TEXT = 'html';
 
@@ -70,10 +70,10 @@ class Agreement {
 				$args['state'] = '';
 			}
 		} else {
-			$args['country'] = Options::get_option( Options::OPTION_COUNTRY );
-			$args['state'] = Options::get_option( Options::OPTION_STATE );
+			$args['country'] = Options::get_option( Options::COUNTRY );
+			$args['state'] = Options::get_option( Options::STATE );
 		}
-		$headers = array( WPAUTOTERMS_API_KEY_HEADER . ': ' .  $this->_license->api_key() );
+		$headers = array( WPAUTOTERMS_API_KEY_HEADER => $this->_license->api_key() );
 		$resp = $this->_query->post_json( static::_EP_AGREEMENT . $agreement_id . '/', $args, $headers );
 		$json = $resp->json();
 		if ( ! $resp->has_error() && isset( $json[ static::_RESP_TEXT ] ) ) {
@@ -95,14 +95,14 @@ class Agreement {
 				$params[ $k ] = $v;
 			}
 		}
-		$headers = array( WPAUTOTERMS_API_KEY_HEADER . ': ' .  $this->_license->api_key() );
+		$headers = array( WPAUTOTERMS_API_KEY_HEADER => $this->_license->api_key() );
 		$data = array(
 			'name' => $agreement_id,
-			'country' => Options::get_option( Options::OPTION_COUNTRY ),
-			'state' => Options::get_option( Options::OPTION_STATE ),
+			'country' => Options::get_option( Options::COUNTRY ),
+			'state' => Options::get_option( Options::STATE ),
 			'lang' => 'en',
 		);
-		$resp = $this->_query->get( Util::format( static::_EP_WIZARD, $data ), $params, $headers );
+		$resp = $this->_query->get( sprintf( static::_EP_WIZARD, $data['name'], $data['lang'] ), $params, $headers );
 		$json = $resp->json();
 		if ( ! $resp->has_error() && isset( $json[ static::_RESP_TEXT ] ) ) {
 			return $json[ static::_RESP_TEXT ];

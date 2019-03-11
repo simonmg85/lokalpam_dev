@@ -339,6 +339,7 @@
 													$taxprice = (float)(($taxrate/100)*$post_price);
 													$post_price = (float)$post_price + (float)$taxprice;
 												}
+												$post_price = round($post_price,2);
 												$lp_currency_position = $listingpro_options['pricingplan_currency_position'];
 												if(isset($lp_currency_position) && $lp_currency_position=="left"){
 													$output1 .='<p>'.listingpro_currency_sign().$post_price.'</p>';
@@ -365,7 +366,7 @@
 								</div>
 								<div class="section_description_choose_detail">
 									<div class="lp_pricing_plan_description">
-									<p>'.esc_html__("Here will go some sort of description for this plan.").'</p>
+									<p>'.get_post_meta(get_the_ID(), 'plan_desc_content', true).'</p>
 									</div>';
 										$output1 .='
 									<div class="section-lp-price-list">';
@@ -397,7 +398,7 @@
 												$output1 .= '</span>';
 												$output1 .= '<div class="tooltip_price_features">
 															<span><i class="fa fa-question"></i></span>
-															<p class="lp_tooltip_text">Lorem ipsum dolor sit amet, lorem sit.</p>
+															<p class="lp_tooltip_text">'.esc_html__('Lorem ipsum dolor sit amet, lorem sit.', 'listingpro-plugin').'</p>
 															</div>';
 												$output1 .='</li>';
 												
@@ -417,115 +418,144 @@
 												}
 											
 											if($listingpro_options['lp_showhide_address']=="1"){
-												$output1 .='
-												<li>
-													<span class="icon icons8-Cancel">'.listingpro_fontawesome_icon($map_checked).'</span>
-													<span>'.esc_html__('Map Display', 'listingpro-plugin').'</span>
-												</li>';
+												if(get_post_meta(get_the_ID(), 'map_show_hide', true)==''){
+													$output1 .='
+													<li>
+														<span class="icon icons8-Cancel">'.listingpro_fontawesome_icon($map_checked).'</span>
+														<span>'.esc_html__('Map Display', 'listingpro-plugin').'</span>
+													</li>';
+												}
 											}
 											if($listingpro_options['phone_switch']=="1"){
-												$output1 .='
-														<li>
-															<span class="icon icons8-Cancel">'.listingpro_fontawesome_icon($contact_checked).'</span>
-															<span>'.esc_html__('Contact Display', 'listingpro-plugin').'</span>
+												if(get_post_meta(get_the_ID(), 'contact_show_hide', true)==''){
+													$output1 .='
+															<li>
+																<span class="icon icons8-Cancel">'.listingpro_fontawesome_icon($contact_checked).'</span>
+																<span>'.esc_html__('Contact Display', 'listingpro-plugin').'</span>
 
-														</li>';
+															</li>';
+												}
 											}
 											if($listingpro_options['file_switch']=="1"){
-												$output1 .='
-													<li>
-														<span class="icon icons8-Cancel">'.listingpro_fontawesome_icon($gallery_checked).'</span>
-														<span>'.esc_html__('Image Gallery', 'listingpro-plugin').'</span>
-													</li>
-													';
+												if(get_post_meta(get_the_ID(), 'gall_show_hide', true)==''){
+													$output1 .='
+														<li>
+															<span class="icon icons8-Cancel">'.listingpro_fontawesome_icon($gallery_checked).'</span>
+															<span>'.esc_html__('Image Gallery', 'listingpro-plugin').'</span>
+														</li>
+														';
+												}
 											}
 											if($listingpro_options['vdo_switch']=="1"){
-												$output1 .='
-													<li>
-														<span class="icon icons8-Cancel">'.listingpro_fontawesome_icon($video_checked).'</span>
-														<span>'.esc_html__('Video', 'listingpro-plugin').'</span>
-													</li>
-													';
+												if(get_post_meta(get_the_ID(), 'video_show_hide', true)==''){
+													$output1 .='
+														<li>
+															<span class="icon icons8-Cancel">'.listingpro_fontawesome_icon($video_checked).'</span>
+															<span>'.esc_html__('Video', 'listingpro-plugin').'</span>
+														</li>
+														';
+												}
 											}
-											$output1 .='
-											<li>
-												<span class="icon-text">'.listingpro_fontawesome_icon($tagline_checked).'</span>
-												<span>'.esc_html__('Business Tagline', 'listingpro-plugin').'</span>
-											</li>
-											';
-											if($listingpro_options['location_switch']=="1"){
-												$output1 .='
-													<li>
-														<span class="icon-text">'.listingpro_fontawesome_icon($location_checked).'</span>
-														<span>'.esc_html__('Location', 'listingpro-plugin').'</span>
-													</li>';
-											}
-											if($listingpro_options['web_switch']=="1"){
+											if(get_post_meta(get_the_ID(), 'tagline_show_hide', true)==''){
 												$output1 .='
 												<li>
-													<span class="icon-text">'.listingpro_fontawesome_icon($website_checked).'</span>
-													<span>'.esc_html__('Website', 'listingpro-plugin').'</span>
-												</li>';
+													<span class="icon-text">'.listingpro_fontawesome_icon($tagline_checked).'</span>
+													<span>'.esc_html__('Business Tagline', 'listingpro-plugin').'</span>
+												</li>
+												';
+											}
+											if($listingpro_options['location_switch']=="1"){
+												if(get_post_meta(get_the_ID(), 'location_show_hide', true)==''){
+													$output1 .='
+														<li>
+															<span class="icon-text">'.listingpro_fontawesome_icon($location_checked).'</span>
+															<span>'.esc_html__('Location', 'listingpro-plugin').'</span>
+														</li>';
+												}
+											}
+											if($listingpro_options['web_switch']=="1"){
+												if(get_post_meta(get_the_ID(), 'website_show_hide', true)==''){
+													$output1 .='
+													<li>
+														<span class="icon-text">'.listingpro_fontawesome_icon($website_checked).'</span>
+														<span>'.esc_html__('Website', 'listingpro-plugin').'</span>
+													</li>';
+												}
 												
 											}
 											
 											if($listingpro_options['listin_social_switch']=="1"){
-												$output1 .='
-												<li>
-													<span class="icon-text">'.listingpro_fontawesome_icon($social_checked).'</span>
-													<span>'.esc_html__('Social Links', 'listingpro-plugin').'</span>
-												</li>
-												';
+												if(get_post_meta(get_the_ID(), 'social_show_hide', true)==''){
+													$output1 .='
+													<li>
+														<span class="icon-text">'.listingpro_fontawesome_icon($social_checked).'</span>
+														<span>'.esc_html__('Social Links', 'listingpro-plugin').'</span>
+													</li>
+													';
+												}
 											}
 											if($listingpro_options['faq_switch']=="1"){
-												$output1 .='
-													<li>
-														<span class="icon-text">'.listingpro_fontawesome_icon($faq_checked).'</span>
-														<span>'.esc_html__('FAQ', 'listingpro-plugin').'</span>
-													</li>
-													';
+												if(get_post_meta(get_the_ID(), 'faqs_show_hide', true)==''){
+													$output1 .='
+														<li>
+															<span class="icon-text">'.listingpro_fontawesome_icon($faq_checked).'</span>
+															<span>'.esc_html__('FAQ', 'listingpro-plugin').'</span>
+														</li>
+														';
+												}
 											}
 											if($listingpro_options['currency_switch']=="1"){
-												$output1 .='
-													<li>
-														<span class="icon-text">'.listingpro_fontawesome_icon($price_checked).'</span>
-														<span>'.esc_html__('Price Range', 'listingpro-plugin').'</span>
-													</li>
-													';
+												if(get_post_meta(get_the_ID(), 'price_show_hide', true)==''){
+													$output1 .='
+														<li>
+															<span class="icon-text">'.listingpro_fontawesome_icon($price_checked).'</span>
+															<span>'.esc_html__('Price Range', 'listingpro-plugin').'</span>
+														</li>
+														';
+												}
 											}
 											
 											if($listingpro_options['tags_switch']=="1"){
-												$output1 .='
-													<li>
-														<span class="icon-text">'.listingpro_fontawesome_icon($tag_key_checked).'</span>
-														<span>'.esc_html__('Tags/Keywords', 'listingpro-plugin').'</span>
-													</li>
-													';
+												if(get_post_meta(get_the_ID(), 'tags_show_hide', true)==''){
+													$output1 .='
+														<li>
+															<span class="icon-text">'.listingpro_fontawesome_icon($tag_key_checked).'</span>
+															<span>'.esc_html__('Tags/Keywords', 'listingpro-plugin').'</span>
+														</li>
+														';
+												}
 											}
 											if($listingpro_options['oph_switch']=="1"){
-												$output1 .='		
-												<li>
-													<span class="icon-text">'.listingpro_fontawesome_icon($bhours_checked).'</span>
-													<span>'.esc_html__('Business Hours', 'listingpro-plugin').'</span>
-												</li>
-												';
+												if(get_post_meta(get_the_ID(), 'bhours_show_hide', true)==''){
+													$output1 .='		
+													<li>
+														<span class="icon-text">'.listingpro_fontawesome_icon($bhours_checked).'</span>
+														<span>'.esc_html__('Business Hours', 'listingpro-plugin').'</span>
+													</li>
+													';
+												}
 											}
 											
 											/* new option */
 											if(lp_theme_option('lp_featured_file_switch')){
+												if(get_post_meta(get_the_ID(), 'reserva_show_hide', true)==''){
+													$output1 .='
+														<li>
+															<span class="icon-text">'.listingpro_fontawesome_icon($resurva_show).'</span>
+															<span>'.esc_html__('Resurva', 'listingpro-plugin').'</span>
+														</li>
+														';
+												}
+											}
+											if(get_post_meta(get_the_ID(), 'timekit_show_hide', true)==''){
 												$output1 .='
 													<li>
-														<span class="icon-text">'.listingpro_fontawesome_icon($resurva_show).'</span>
-														<span>'.esc_html__('Resurva', 'listingpro-plugin').'</span>
+														<span class="icon-text">'.listingpro_fontawesome_icon($timekit_show).'</span>
+														<span>'.esc_html__('Timekit', 'listingpro-plugin').'</span>
 													</li>
 													';
 											}
-											$output1 .='
-												<li>
-													<span class="icon-text">'.listingpro_fontawesome_icon($timekit_show).'</span>
-													<span>'.esc_html__('Timekit', 'listingpro-plugin').'</span>
-												</li>
-												';
+											if(get_post_meta(get_the_ID(), 'menu_show_hide', true)==''){
 												
 												$output1 .='
 												<li>
@@ -533,36 +563,39 @@
 													<span>'.esc_html__('Menu', 'listingpro-plugin').'</span>
 												</li>
 												';
+											}
+											if(get_post_meta(get_the_ID(), 'announcment_show_hide', true)==''){
 												$output1 .='
 												<li>
 													<span class="icon-text">'.listingpro_fontawesome_icon($announcment_show).'</span>
 													<span>'.esc_html__('Announcment', 'listingpro-plugin').'</span>
 												</li>
 												';
+											}
+											if(get_post_meta(get_the_ID(), 'deals_show_hide', true)==''){
 												$output1 .='
 												<li>
 													<span class="icon-text">'.listingpro_fontawesome_icon($deals_show).'</span>
 													<span>'.esc_html__('Deals-Offers-Discounts', 'listingpro-plugin').'</span>
 												</li>
 												';
+											}
+											if(get_post_meta(get_the_ID(), 'metacampaign_show_hide', true)==''){
 												$output1 .='
 												<li>
 													<span class="icon-text">'.listingpro_fontawesome_icon($competitor_show).'</span>
 													<span>'.esc_html__('Hide competitors Ads', 'listingpro-plugin').'</span>
 												</li>
 												';
-												$output1 .='
-												<li>
-													<span class="icon-text">'.listingpro_fontawesome_icon($featured_show).'</span>
-													<span>'.esc_html__('Featured Image', 'listingpro-plugin').'</span>
-												</li>
-												';
+											}
+											if(get_post_meta(get_the_ID(), 'events_show_hide', true)==''){	
 												$output1 .='
 												<li>
 													<span class="icon-text">'.listingpro_fontawesome_icon($event_show).'</span>
 													<span>'.esc_html__('Events', 'listingpro-plugin').'</span>
 												</li>
 												';
+											}
 											/* new option emd */
 											
 											

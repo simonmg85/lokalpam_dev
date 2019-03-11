@@ -2,6 +2,8 @@
 
 namespace wpautoterms\admin\page;
 
+use wpautoterms\cpt\CPT;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -30,10 +32,10 @@ class Base {
 	}
 
 	public function register_menu() {
-		add_submenu_page( 'edit.php?post_type=' . WPAUTOTERMS_CPT,
+		add_submenu_page( 'edit.php?post_type=' . CPT::type(),
 			$this->title(),
 			$this->menu_title(),
-			'manage_options',
+			CPT::edit_cap(),
 			$this->id(),
 			array( $this, 'render' )
 		);
